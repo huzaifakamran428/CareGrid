@@ -1,0 +1,26 @@
+# Starter file. Uncomment services as they become ready.
+services:
+  postgres:
+    image: pgvector/pgvector:pg16
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports: ["5432:5432"]
+    volumes: [pgdata:/var/lib/postgresql/data]
+
+  # auth_service:
+  #   build: ./backend/auth_service
+  #   env_file: ./backend/auth_service/.env
+  #   ports: ["8001:8001"]
+  #   depends_on: [postgres]
+  # (same pattern for ngo_service 8002, food_service 8003, medical_service 8004,
+  #  finance_service 8005, notification_service 8006, admin_portal 8007,
+  #  food_demand 9001, prescription_ocr 9002, rag_chatbot 9003)
+
+  # gateway:
+  #   image: nginx:alpine
+  #   volumes: ["./backend/gateway/nginx.conf:/etc/nginx/nginx.conf:ro"]
+  #   ports: ["80:80"]
+
+volumes:
+  pgdata:
