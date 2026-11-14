@@ -8,7 +8,7 @@ Integrated welfare platform linking restaurants, NGOs, pharmacies, labs, donors 
 |---|---|---|
 | `frontend/mobile_app/` | Beneficiary, Restaurant and Sponsor/Donor app | Flutter |
 | `frontend/web/shared/` | Shared web UI (base layout, components, Bootstrap, theme) extended by every Django service | HTML, CSS, Bootstrap |
-| `backend/services/` | 11 Django microservices (MVT), one database each, own models, views and templates per module | Django, DRF, PostgreSQL |
+| `backend/services/` | 11 Django microservices (MVT), one database each, own models, views and templates per module | Djang, PostgreSQL |
 | `backend/ai_services/` | Food demand prediction, prescription OCR, RAG chatbot | FastAPI, pgvector, LangChain, Gemini |
 | `backend/gateway/` | Single entry point for web and mobile | Nginx |
 | `backend/shared/` | `caregrid_common` library (JWT, roles, audit log, service clients) | Python |
