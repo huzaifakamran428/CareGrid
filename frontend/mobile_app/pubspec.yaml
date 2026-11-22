@@ -1,0 +1,20 @@
+name: caregrid_mobile
+version: 0.1.0+1
+description: CareGrid mobile UI preview for digital IDs and beneficiary complaints.
+publish_to: 'none'
+
+environment:
+  sdk: '>=3.2.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/images/caregrid_logo.jpg
