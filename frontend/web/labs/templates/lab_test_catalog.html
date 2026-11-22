@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CareGrid | Lab Tests & Time Slots Management</title>
+  <style>
+    :root {
+      --primary-green: #14634B;
+      --primary-green-dark: #0F4E3B;
+      --header-badge-bg: #1E755B;
+      --header-badge-border: #3E8E75;
+      --amber-badge: #F4A623;
+      --mint-card-bg: #DDF2EA;
+      --mint-card-border: #2B7A62;
+      --dark-forest-text: #1B4332;
+      --muted-text: #4A635A;
+      --canvas-bg: #F8FAFC;
+      --neutral-btn-bg: #F1F5F4;
+      --neutral-btn-border: #D5DFDC;
+      --soft-red-bg: #FBE9EC;
+      --soft-red-border: #D6455D;
+      --crimson-badge: #D92D4B;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Inter, -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+    }
+
+    body {
+      background-color: var(--canvas-bg);
+      color: var(--dark-forest-text);
+      min-height: 100vh;
+      display: flex;
+    }
+
+    /* SIDEBAR NAVIGATION */
+    .sidebar {
+      width: 265px;
+      background-color: var(--primary-green);
+      color: #FFFFFF;
+      display: flex;
+      flex-direction: column;
+      padding: 24px 18px;
+      position: fixed;
+      top: 0;
+      bottom: 0;
+      left: 0;
+    }
+
+    .brand-box {
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--header-badge-border);
+      margin-bottom: 20px;
+    }
+
+    .brand-pill {
+      display: inline-block;
+      background-color: var(--amber-badge);
+      color: var(--dark-forest-text);
+      font-size: 11px;
+      font-weight: 800;
+      padding: 4px 10px;
+      border-radius: 6px;
+      letter-spacing: 0.4px;
+      margin-bottom: 10px;
+    }
+
+    .brand-title {
+      font-size: 21px;
+      font-weight: 800;
+      letter-spacing: -0.2px;
+    }
+
+    .brand-sub {
+      font-size: 12.5px;
+      color: rgba(255, 255, 255, 0.85);
+      margin-top: 3px;
+    }
+
+    .nav-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      flex: 1;
+    }
+
+    .nav-item a {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: rgba(255, 255, 255, 0.88);
+      font-size: 14px;
+      font-weight: 600;
+      padding: 11px 14px;
+      border-radius: 12px;
+      transition: background 0.15s ease;
+    }
+
+    .nav-item a:hover {
+      background-color: var(--header-badge-bg);
+    }
+
+    .nav-item a.active {
+      background-color: var(--mint-card-bg);
+      color: var(--dark-forest-text);
+      font-weight: 800;
+    }
+
+    .lab-profile-footer {
+      background-color: var(--header-badge-bg);
+      border: 1px solid var(--header-badge-border);
+      border-radius: 12px;
+      padding: 13px;
+      font-size: 12px;
+    }
+
+    .lab-profile-footer strong {
+      display: block;
+      font-size: 13px;
+      margin-bottom: 3px;
+    }
+
+    /* MAIN CONTENT WORKSPACE */
+    .main-wrapper {
+      margin-left: 265px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .top-banner {
+      background-color: var(--primary-green);
+      color: #FFFFFF;
+      padding: 24px 32px 36px 32px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .top-banner h1 {
+      font-size: 24px;
+      font-weight: 800;
+      letter-spacing: -0.2px;
+    }
+
+    .top-banner p {
+      font-size: 13.5px;
+      color: rgba(255, 255, 255, 0.88);
+      margin-top: 4px;
+    }
+
+    .status-chip {
+      background-color: var(--header-badge-bg);
+      border: 1px solid var(--header-badge-border);
+      padding: 8px 14px;
+      border-radius: 10px;
+      font-size: 12.5px;
+      font-weight: 700;
+    }
+
+    .content-sheet {
+      background-color: var(--canvas-bg);
+      border-top-left-radius: 28px;
+      border-top-right-radius: 28px;
+      margin-top: -18px;
+      padding: 26px 32px 48px 32px;
+      flex: 1;
+    }
+
+    /* TWO-COLUMN TOP SECTION: ADD TEST FORM + TIME SLOTS */
+    .top-panels {
+      display: grid;
+      grid-template-columns: 1.35fr 1fr;
+      gap: 20px;
+      margin-bottom: 28px;
+    }
+
+    .panel-card {
+      background-color: #FFFFFF;
+      border: 1.5px solid var(--neutral-btn-border);
+      border-radius: 18px;
+      padding: 20px;
+    }
+
+    .panel-card.mint {
+      background-color: var(--mint-card-bg);
+      border-color: var(--mint-card-border);
+    }
+
+    .panel-title {
+      font-size: 17px;
+      font-weight: 800;
+      color: var(--dark-forest-text);
+      margin-bottom: 4px;
+    }
+
+    .panel-sub {
+      font-size: 12.5px;
+      color: var(--muted-text);
+      margin-bottom: 16px;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .form-group.full {
+      grid-column: span 2;
+    }
+
+    .form-group label {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--dark-forest-text);
+    }
+
+    .form-control {
+      padding: 10px 12px;
+      border-radius: 10px;
+      border: 1.3px solid var(--neutral-btn-border);
+      background-color: var(--neutral-btn-bg);
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--dark-forest-text);
+      outline: none;
+    }
+
+    .form-control:focus {
+      border-color: var(--primary-green);
+      background-color: #FFFFFF;
+    }
+
+    .subsidy-preview-strip {
+      grid-column: span 2;
+      background-color: var(--mint-card-bg);
+      border: 1.2px solid var(--mint-card-border);
+      border-radius: 10px;
+      padding: 10px 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 12.5px;
+      font-weight: 700;
+    }
+
+    .btn-primary {
+      background-color: var(--primary-green);
+      color: #FFFFFF;
+      border: none;
+      padding: 11px 18px;
+      border-radius: 11px;
+      font-size: 13.5px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.15s ease;
+    }
+
+    .btn-primary:hover {
+      background-color: var(--primary-green-dark);
+    }
+
+    /* TIME SLOTS GRID */
+    .slots-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 9px;
+      margin-bottom: 14px;
+    }
+
+    .slot-chip {
+      background-color: #FFFFFF;
+      border: 1.4px solid var(--mint-card-border);
+      border-radius: 10px;
+      padding: 10px 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      font-size: 12.5px;
+      font-weight: 800;
+      color: var(--dark-forest-text);
+    }
+
+    .slot-chip.closed {
+      background-color: var(--neutral-btn-bg);
+      border-color: var(--neutral-btn-border);
+      color: var(--muted-text);
+      opacity: 0.72;
+    }
+
+    .slot-status {
+      font-size: 10.5px;
+      padding: 2px 7px;
+      border-radius: 6px;
+      background-color: var(--primary-green);
+      color: #FFFFFF;
+    }
+
+    .slot-chip.closed .slot-status {
+      background-color: var(--muted-text);
+    }
+
+    /* TEST CATALOG TABLE */
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 14px;
+    }
+
+    .section-header h2 {
+      font-size: 18px;
+      font-weight: 800;
+    }
+
+    .table-card {
+      background-color: #FFFFFF;
+      border: 1.5px solid var(--neutral-btn-border);
+      border-radius: 18px;
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 820px;
+    }
+
+    thead {
+      background-color: var(--neutral-btn-bg);
+      border-bottom: 1.5px solid var(--neutral-btn-border);
+    }
+
+    th {
+      text-align: left;
+      padding: 14px 16px;
+      font-size: 11.5px;
+      font-weight: 800;
+      color: var(--muted-text);
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+    }
+
+    td {
+      padding: 15px 16px;
+      font-size: 13.5px;
+      border-bottom: 1px solid var(--neutral-btn-border);
+      vertical-align: middle;
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    .badge-mint {
+      background-color: var(--mint-card-bg);
+      color: var(--primary-green);
+      border: 1px solid var(--mint-card-border);
+      padding: 4px 10px;
+      border-radius: 7px;
+      font-size: 11px;
+      font-weight: 800;
+    }
+
+    .badge-paused {
+      background-color: var(--soft-red-bg);
+      color: var(--crimson-badge);
+      border: 1px solid var(--soft-red-border);
+      padding: 4px 10px;
+      border-radius: 7px;
+      font-size: 11px;
+      font-weight: 800;
+    }
+
+    .btn-toggle {
+      background-color: var(--neutral-btn-bg);
+      color: var(--dark-forest-text);
+      border: 1.2px solid var(--neutral-btn-border);
+      padding: 7px 12px;
+      border-radius: 9px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .btn-toggle:hover {
+      background-color: var(--mint-card-bg);
+      border-color: var(--mint-card-border);
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background-color: var(--primary-green);
+      color: #FFFFFF;
+      padding: 13px 20px;
+      border-radius: 12px;
+      font-size: 13.5px;
+      font-weight: 700;
+      box-shadow: 0 8px 20px rgba(20, 99, 75, 0.25);
+      display: none;
+      z-index: 1000;
+    }
+
+    @media (max-width: 960px) {
+      .sidebar {
+        display: none;
+      }
+      .main-wrapper {
+        margin-left: 0;
+      }
+      .top-panels {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="brand-box">
+      <span class="brand-pill">DIAGNOSTIC PARTNER</span>
+      <div class="brand-title">CareGrid Labs</div>
+      <div class="brand-sub">Welfare Diagnostic Portal</div>
+    </div>
+
+    <ul class="nav-list">
+      <li class="nav-item">
+        <a href="lab_dashboard.html">Appointment Queue</a>
+      </li>
+      <li class="nav-item">
+        <a href="lab_test_catalog.html" class="active">Tests & Time Slots</a>
+      </li>
+      <li class="nav-item">
+        <a href="lab_report_upload.html">Upload Digital Reports</a>
+      </li>
+    </ul>
+
+    <div class="lab-profile-footer">
+      <strong>Chughtai Lab - Johar Town</strong>
+      <span>Reg ID: CG-LAB-0042 • Lahore</span>
+    </div>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <div class="main-wrapper">
+    <header class="top-banner">
+      <div>
+        <h1>Diagnostic Tests, Pricing & Time Slots</h1>
+        <p>Configure subsidized lab tests, turnaround times, and daily appointment booking availability.</p>
+      </div>
+      <div class="status-chip">Welfare Subsidy Tier: 80% Covered</div>
+    </header>
+
+    <main class="content-sheet">
+      <!-- TOP PANELS -->
+      <section class="top-panels">
+        <!-- ADD NEW DIAGNOSTIC TEST FORM -->
+        <div class="panel-card">
+          <div class="panel-title">Add Subsidized Diagnostic Test</div>
+          <div class="panel-sub">Published tests appear immediately on the CareGrid Beneficiary mobile app.</div>
+
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="testName">Diagnostic Test Name</label>
+              <input type="text" id="testName" class="form-control" placeholder="e.g., Thyroid Profile (TSH, T3, T4)" />
+            </div>
+            <div class="form-group">
+              <label for="testCategory">Category</label>
+              <select id="testCategory" class="form-control">
+                <option value="Hematology">Hematology</option>
+                <option value="Biochemistry">Biochemistry</option>
+                <option value="Diabetes Care">Diabetes Care</option>
+                <option value="Radiology">Radiology</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="standardPrice">Standard Lab Fee (PKR)</label>
+              <input type="number" id="standardPrice" class="form-control" value="2000" oninput="updateSubsidyPreview()" />
+            </div>
+            <div class="form-group">
+              <label for="turnaround">Report Turnaround Time</label>
+              <input type="text" id="turnaround" class="form-control" value="Same Day (6 Hours)" />
+            </div>
+
+            <div class="subsidy-preview-strip">
+              <span>CareGrid Welfare Subsidy (80%): <strong id="previewSubsidy">Rs. 1,600</strong></span>
+              <span>Patient Payable: <strong id="previewPayable" style="color:var(--primary-green);">Rs. 400</strong></span>
+            </div>
+
+            <div class="form-group full" style="margin-top:4px;">
+              <button class="btn-primary" onclick="addNewTest()">Publish Test to CareGrid Catalog</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- DAILY APPOINTMENT TIME SLOTS -->
+        <div class="panel-card mint">
+          <div class="panel-title">Daily Appointment Time Slots</div>
+          <div class="panel-sub">Click any time slot below to toggle patient booking availability for this branch.</div>
+
+          <div class="slots-grid" id="slotsGrid"></div>
+
+          <div style="font-size:12px;color:var(--dark-forest-text);font-weight:600;">
+            Open slots sync live with the Beneficiary appointment booking screen.
+          </div>
+        </div>
+      </section>
+
+      <!-- ACTIVE CATALOG TABLE -->
+      <div class="section-header">
+        <h2>Branch Diagnostic Test Catalog</h2>
+        <span class="badge-mint" id="catalogCountBadge">4 Active Tests</span>
+      </div>
+
+      <div class="table-card">
+        <table>
+          <thead>
+            <tr>
+              <th>Code</th>
+              <th>Test Name & Category</th>
+              <th>Standard Fee</th>
+              <th>Subsidy (80%)</th>
+              <th>Beneficiary Pays</th>
+              <th>Turnaround</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="catalogBody"></tbody>
+        </table>
+      </div>
+    </main>
+  </div>
+
+  <div id="toast" class="toast"></div>
+
+  <script>
+    const timeSlots = [
+      { time: '09:30 AM', open: true },
+      { time: '10:15 AM', open: true },
+      { time: '11:00 AM', open: false },
+      { time: '12:30 PM', open: true },
+      { time: '02:30 PM', open: true },
+      { time: '04:00 PM', open: true },
+      { time: '05:15 PM', open: false },
+      { time: '06:30 PM', open: true }
+    ];
+
+    const testCatalog = [
+      {
+        code: 'LAB-CBC-104',
+        name: 'Complete Blood Count (CBC)',
+        category: 'Hematology',
+        price: 1500,
+        turnaround: 'Same Day (6 Hrs)',
+        active: true
+      },
+      {
+        code: 'LAB-HBA-208',
+        name: 'HbA1c (Glycated Hemoglobin)',
+        category: 'Diabetes Care',
+        price: 2200,
+        turnaround: 'Same Day (8 Hrs)',
+        active: true
+      },
+      {
+        code: 'LAB-LFT-312',
+        name: 'Liver Function Tests (LFTs)',
+        category: 'Biochemistry',
+        price: 2500,
+        turnaround: 'Same Day (6 Hrs)',
+        active: true
+      },
+      {
+        code: 'LAB-XRY-410',
+        name: 'Chest X-Ray (PA View)',
+        category: 'Radiology',
+        price: 1800,
+        turnaround: 'Within 2 Hours',
+        active: true
+      }
+    ];
+
+    function showToast(msg) {
+      const toast = document.getElementById('toast');
+      toast.textContent = msg;
+      toast.style.display = 'block';
+      setTimeout(() => {
+        toast.style.display = 'none';
+      }, 2200);
+    }
+
+    function updateSubsidyPreview() {
+      const price = parseInt(document.getElementById('standardPrice').value, 10) || 0;
+      const subsidy = Math.round(price * 0.8);
+      const payable = price - subsidy;
+      document.getElementById('previewSubsidy').textContent = 'Rs. ' + subsidy.toLocaleString();
+      document.getElementById('previewPayable').textContent = 'Rs. ' + payable.toLocaleString();
+    }
+
+    function addNewTest() {
+      const name = document.getElementById('testName').value.trim();
+      const category = document.getElementById('testCategory').value;
+      const price = parseInt(document.getElementById('standardPrice').value, 10) || 0;
+      const turnaround = document.getElementById('turnaround').value.trim() || 'Same Day';
+
+      if (!name || price <= 0) {
+        showToast('Please enter a valid test name and fee.');
+        return;
+      }
+
+      const newCode = 'LAB-NEW-' + (500 + testCatalog.length);
+      testCatalog.unshift({
+        code: newCode,
+        name: name,
+        category: category,
+        price: price,
+        turnaround: turnaround,
+        active: true
+      });
+
+      document.getElementById('testName').value = '';
+      renderCatalog();
+      showToast(name + ' added to branch catalog');
+    }
+
+    function toggleTestStatus(index) {
+      testCatalog[index].active = !testCatalog[index].active;
+      renderCatalog();
+      showToast(
+        testCatalog[index].name +
+          (testCatalog[index].active ? ' marked Available' : ' paused')
+      );
+    }
+
+    function toggleSlot(index) {
+      timeSlots[index].open = !timeSlots[index].open;
+      renderSlots();
+      showToast(
+        'Slot ' +
+          timeSlots[index].time +
+          (timeSlots[index].open ? ' opened for bookings' : ' marked full')
+      );
+    }
+
+    function renderSlots() {
+      const grid = document.getElementById('slotsGrid');
+      grid.innerHTML = '';
+      timeSlots.forEach((slot, idx) => {
+        const div = document.createElement('div');
+        div.className = 'slot-chip' + (slot.open ? '' : ' closed');
+        div.onclick = () => toggleSlot(idx);
+        div.innerHTML = `
+          <span>${slot.time}</span>
+          <span class="slot-status">${slot.open ? 'OPEN' : 'FULL'}</span>
+        `;
+        grid.appendChild(div);
+      });
+    }
+
+    function renderCatalog() {
+      const tbody = document.getElementById('catalogBody');
+      tbody.innerHTML = '';
+
+      let activeCount = 0;
+      testCatalog.forEach((item, idx) => {
+        if (item.active) activeCount++;
+        const subsidy = Math.round(item.price * 0.8);
+        const payable = item.price - subsidy;
+
+        const row = `
+          <tr>
+            <td><strong>${item.code}</strong></td>
+            <td>
+              <strong>${item.name}</strong><br/>
+              <span style="font-size:12px;color:var(--muted-text);">${item.category}</span>
+            </td>
+            <td style="text-decoration:line-through;color:var(--muted-text);">Rs. ${item.price.toLocaleString()}</td>
+            <td style="color:var(--primary-green);font-weight:700;">- Rs. ${subsidy.toLocaleString()}</td>
+            <td><strong>Rs. ${payable.toLocaleString()}</strong></td>
+            <td>${item.turnaround}</td>
+            <td>
+              <span class="${item.active ? 'badge-mint' : 'badge-paused'}">
+                ${item.active ? 'AVAILABLE' : 'PAUSED'}
+              </span>
+            </td>
+            <td>
+              <button class="btn-toggle" onclick="toggleTestStatus(${idx})">
+                ${item.active ? 'Pause Test' : 'Activate'}
+              </button>
+            </td>
+          </tr>
+        `;
+        tbody.insertAdjacentHTML('beforeend', row);
+      });
+
+      document.getElementById('catalogCountBadge').textContent = activeCount + ' Active Tests';
+    }
+
+    renderSlots();
+    renderCatalog();
+  </script>
+</body>
+</html>

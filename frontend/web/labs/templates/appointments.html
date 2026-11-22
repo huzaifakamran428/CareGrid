@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CareGrid | Appointment & Counter Check-In</title>
+  <style>
+    :root {
+      --primary-green: #14634B;
+      --primary-green-dark: #0F4E3B;
+      --header-badge-bg: #1E755B;
+      --header-badge-border: #3E8E75;
+      --amber-badge: #F4A623;
+      --mint-card-bg: #DDF2EA;
+      --mint-card-border: #2B7A62;
+      --dark-forest-text: #1B4332;
+      --muted-text: #4A635A;
+      --canvas-bg: #F8FAFC;
+      --neutral-btn-bg: #F1F5F4;
+      --neutral-btn-border: #D5DFDC;
+      --soft-red-bg: #FBE9EC;
+      --soft-red-border: #D6455D;
+      --crimson-badge: #D92D4B;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Inter, -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+    }
+
+    body {
+      background-color: var(--canvas-bg);
+      color: var(--dark-forest-text);
+      min-height: 100vh;
+      display: flex;
+    }
+
+    /* SIDEBAR NAVIGATION */
+    .sidebar {
+      width: 265px;
+      background-color: var(--primary-green);
+      color: #FFFFFF;
+      display: flex;
+      flex-direction: column;
+      padding: 24px 18px;
+      position: fixed;
+      top: 0;
+      bottom: 0;
+      left: 0;
+    }
+
+    .brand-box {
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--header-badge-border);
+      margin-bottom: 20px;
+    }
+
+    .brand-pill {
+      display: inline-block;
+      background-color: var(--amber-badge);
+      color: var(--dark-forest-text);
+      font-size: 11px;
+      font-weight: 800;
+      padding: 4px 10px;
+      border-radius: 6px;
+      letter-spacing: 0.4px;
+      margin-bottom: 10px;
+    }
+
+    .brand-title {
+      font-size: 21px;
+      font-weight: 800;
+      letter-spacing: -0.2px;
+    }
+
+    .brand-sub {
+      font-size: 12.5px;
+      color: rgba(255, 255, 255, 0.85);
+      margin-top: 3px;
+    }
+
+    .nav-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+      flex: 1;
+    }
+
+    .nav-item a {
+      display: flex;
+      align-items: center;
+      text-decoration: none;
+      color: rgba(255, 255, 255, 0.88);
+      font-size: 13.5px;
+      font-weight: 600;
+      padding: 10px 14px;
+      border-radius: 12px;
+      transition: background 0.15s ease;
+    }
+
+    .nav-item a:hover {
+      background-color: var(--header-badge-bg);
+    }
+
+    .nav-item a.active {
+      background-color: var(--mint-card-bg);
+      color: var(--dark-forest-text);
+      font-weight: 800;
+    }
+
+    .lab-profile-footer {
+      background-color: var(--header-badge-bg);
+      border: 1px solid var(--header-badge-border);
+      border-radius: 12px;
+      padding: 13px;
+      font-size: 12px;
+    }
+
+    .lab-profile-footer strong {
+      display: block;
+      font-size: 13px;
+      margin-bottom: 3px;
+    }
+
+    /* MAIN CONTENT WORKSPACE */
+    .main-wrapper {
+      margin-left: 265px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .top-banner {
+      background-color: var(--primary-green);
+      color: #FFFFFF;
+      padding: 24px 32px 36px 32px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .back-link {
+      display: inline-block;
+      background-color: var(--header-badge-bg);
+      border: 1px solid var(--header-badge-border);
+      color: #FFFFFF;
+      text-decoration: none;
+      padding: 6px 12px;
+      border-radius: 8px;
+      font-size: 11.5px;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+
+    .top-banner h1 {
+      font-size: 23px;
+      font-weight: 800;
+    }
+
+    .top-banner p {
+      font-size: 13.5px;
+      color: rgba(255, 255, 255, 0.88);
+      margin-top: 3px;
+    }
+
+    .amber-pill {
+      background-color: var(--amber-badge);
+      color: var(--dark-forest-text);
+      padding: 7px 14px;
+      border-radius: 9px;
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .content-sheet {
+      background-color: var(--canvas-bg);
+      border-top-left-radius: 28px;
+      border-top-right-radius: 28px;
+      margin-top: -18px;
+      padding: 26px 32px 48px 32px;
+      flex: 1;
+    }
+
+    /* PROGRESS STEPPER */
+    .stepper-card {
+      background-color: var(--mint-card-bg);
+      border: 1.5px solid var(--mint-card-border);
+      border-radius: 18px;
+      padding: 18px 22px;
+      margin-bottom: 22px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+    }
+
+    .step-item {
+      background-color: #FFFFFF;
+      border: 1.2px solid var(--mint-card-border);
+      border-radius: 12px;
+      padding: 12px 14px;
+    }
+
+    .step-item.done {
+      background-color: var(--primary-green);
+      color: #FFFFFF;
+      border-color: var(--primary-green);
+    }
+
+    .step-num {
+      font-size: 10.5px;
+      font-weight: 800;
+      text-transform: uppercase;
+      opacity: 0.85;
+    }
+
+    .step-title {
+      font-size: 13.5px;
+      font-weight: 800;
+      margin-top: 3px;
+    }
+
+    /* TWO COLUMN APPOINTMENT LAYOUT */
+    .appt-grid {
+      display: grid;
+      grid-template-columns: 1.35fr 1fr;
+      gap: 20px;
+    }
+
+    .card {
+      background-color: #FFFFFF;
+      border: 1.5px solid var(--neutral-btn-border);
+      border-radius: 18px;
+      padding: 20px;
+      margin-bottom: 18px;
+    }
+
+    .card-title {
+      font-size: 16.5px;
+      font-weight: 800;
+      color: var(--dark-forest-text);
+      margin-bottom: 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .info-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--neutral-btn-border);
+      font-size: 13.5px;
+    }
+
+    .info-row:last-child {
+      border-bottom: none;
+    }
+
+    .info-label {
+      color: var(--muted-text);
+      font-weight: 600;
+    }
+
+    .info-val {
+      font-weight: 800;
+      color: var(--dark-forest-text);
+    }
+
+    .checklist-box {
+      background-color: var(--neutral-btn-bg);
+      border: 1.2px solid var(--neutral-btn-border);
+      border-radius: 12px;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .checklist-box label {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      cursor: pointer;
+    }
+
+    .barcode-box {
+      background-color: var(--mint-card-bg);
+      border: 1.5px dashed var(--mint-card-border);
+      border-radius: 12px;
+      padding: 14px;
+      text-align: center;
+      margin-bottom: 14px;
+    }
+
+    .barcode-code {
+      font-family: monospace;
+      font-size: 16px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: var(--dark-forest-text);
+    }
+
+    .select-slot {
+      width: 100%;
+      padding: 10px 12px;
+      border-radius: 10px;
+      border: 1.3px solid var(--neutral-btn-border);
+      background-color: var(--neutral-btn-bg);
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--dark-forest-text);
+      margin-bottom: 12px;
+    }
+
+    .btn-primary {
+      background-color: var(--primary-green);
+      color: #FFFFFF;
+      border: none;
+      padding: 12px 18px;
+      border-radius: 12px;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      width: 100%;
+      margin-bottom: 10px;
+    }
+
+    .btn-primary:hover {
+      background-color: var(--primary-green-dark);
+    }
+
+    .btn-outline {
+      background-color: var(--neutral-btn-bg);
+      color: var(--dark-forest-text);
+      border: 1.2px solid var(--neutral-btn-border);
+      padding: 11px 16px;
+      border-radius: 12px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      width: 100%;
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background-color: var(--primary-green);
+      color: #FFFFFF;
+      padding: 13px 20px;
+      border-radius: 12px;
+      font-size: 13.5px;
+      font-weight: 700;
+      box-shadow: 0 8px 20px rgba(20, 99, 75, 0.25);
+      display: none;
+      z-index: 1000;
+    }
+
+    @media (max-width: 960px) {
+      .sidebar {
+        display: none;
+      }
+      .main-wrapper {
+        margin-left: 0;
+      }
+      .stepper-card,
+      .appt-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="brand-box">
+      <span class="brand-pill">DIAGNOSTIC PARTNER</span>
+      <div class="brand-title">CareGrid Labs</div>
+      <div class="brand-sub">Welfare Diagnostic Portal</div>
+    </div>
+
+    <ul class="nav-list">
+      <li class="nav-item">
+        <a href="lab_dashboard.html">Counter Dashboard</a>
+      </li>
+      <li class="nav-item">
+        <a href="lab_requests.html">Lab Requests</a>
+      </li>
+      <li class="nav-item">
+        <a href="request_details.html">Request Details</a>
+      </li>
+      <li class="nav-item">
+        <a href="appointment_details.html" class="active">Appointments</a>
+      </li>
+      <li class="nav-item">
+        <a href="lab_test_catalog.html">Tests & Time Slots</a>
+      </li>
+      <li class="nav-item">
+        <a href="lab_report_upload.html">Upload Digital Reports</a>
+      </li>
+    </ul>
+
+    <div class="lab-profile-footer">
+      <strong>Chughtai Lab - Johar Town</strong>
+      <span>Reg ID: CG-LAB-0042 • Lahore</span>
+    </div>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <div class="main-wrapper">
+    <header class="top-banner">
+      <div>
+        <a href="lab_dashboard.html" class="back-link">← BACK TO COUNTER DASHBOARD</a>
+        <h1>Appointment Pass: BKG-2026-4912</h1>
+        <p>Manage patient counter check-in, phlebotomy sample collection, and appointment slot updates.</p>
+      </div>
+      <div class="amber-pill" id="apptStatusPill">SCHEDULED • 10:15 AM</div>
+    </header>
+
+    <main class="content-sheet">
+      <!-- 4-STAGE LIFECYCLE STEPPER -->
+      <section class="stepper-card">
+        <div class="step-item done" id="step1">
+          <div class="step-num">Stage 1</div>
+          <div class="step-title">Slot Confirmed</div>
+        </div>
+        <div class="step-item" id="step2">
+          <div class="step-num">Stage 2</div>
+          <div class="step-title">Counter Check-In</div>
+        </div>
+        <div class="step-item" id="step3">
+          <div class="step-num">Stage 3</div>
+          <div class="step-title">Sample Collected</div>
+        </div>
+        <div class="step-item" id="step4">
+          <div class="step-num">Stage 4</div>
+          <div class="step-title">Report Published</div>
+        </div>
+      </section>
+
+      <div class="appt-grid">
+        <!-- LEFT COLUMN: APPOINTMENT & SAMPLE PROTOCOL -->
+        <div>
+          <div class="card">
+            <div class="card-title">
+              <span>Appointment & Patient Summary</span>
+              <span style="font-size:12px;color:var(--primary-green);">Verified Pass</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">Booking Reference</span>
+              <span class="info-val">BKG-2026-4912</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">Patient Name</span>
+              <span class="info-val">Ayesha Bibi</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">CareGrid Digital ID</span>
+              <span class="info-val" style="color:var(--primary-green);">CG-BEN-2026-009481</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">Scheduled Date & Time</span>
+              <span class="info-val" id="scheduledTimeText">Monday, 23 Nov 2026 • 10:15 AM</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">Diagnostic Investigation</span>
+              <span class="info-val">Complete Blood Count (CBC)</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">Patient Counter Fee (20%)</span>
+              <span class="info-val" style="color:var(--primary-green);">Rs. 300 (Rs. 1,200 NGO Covered)</span>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-title">Phlebotomy & Pre-Collection Checklist</div>
+            <div class="checklist-box">
+              <label><input type="checkbox" checked /> CareGrid Digital ID verified against CNIC at reception</label>
+              <label><input type="checkbox" checked /> Subsidized co-payment (Rs. 300) receipt issued</label>
+              <label><input type="checkbox" id="chkTube" /> 3 mL EDTA vacutainer labeled with sample barcode</label>
+            </div>
+          </div>
+        </div>
+
+        <!-- RIGHT COLUMN: COUNTER ACTIONS & RESCHEDULE -->
+        <div>
+          <div class="card">
+            <div class="card-title">Sample Barcode & Counter Actions</div>
+            <div class="barcode-box">
+              <div style="font-size:11px;font-weight:700;color:var(--muted-text);margin-bottom:4px;">PHLEBOTOMY SPECIMEN ID</div>
+              <div class="barcode-code">|||| ||| || |||| SMP-4912-CBC</div>
+            </div>
+
+            <button class="btn-primary" onclick="checkInPatient()">1. Check-In Patient at Reception</button>
+            <button class="btn-primary" style="background-color:var(--header-badge-bg);" onclick="collectSample()">
+              2. Confirm Venous Sample Collected
+            </button>
+          </div>
+
+          <div class="card">
+            <div class="card-title">Reschedule Time Slot</div>
+            <select id="newSlotSelect" class="select-slot">
+              <option value="Monday, 23 Nov 2026 • 12:30 PM">Monday, 23 Nov 2026 • 12:30 PM</option>
+              <option value="Monday, 23 Nov 2026 • 02:30 PM">Monday, 23 Nov 2026 • 02:30 PM</option>
+              <option value="Tuesday, 24 Nov 2026 • 09:30 AM">Tuesday, 24 Nov 2026 • 09:30 AM</option>
+            </select>
+            <button class="btn-outline" onclick="rescheduleSlot()">Update Appointment Time Slot</button>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <div id="toast" class="toast"></div>
+
+  <script>
+    function showToast(msg) {
+      const toast = document.getElementById('toast');
+      toast.textContent = msg;
+      toast.style.display = 'block';
+      setTimeout(() => {
+        toast.style.display = 'none';
+      }, 2400);
+    }
+
+    function checkInPatient() {
+      document.getElementById('step2').classList.add('done');
+      const pill = document.getElementById('apptStatusPill');
+      pill.textContent = 'CHECKED IN AT COUNTER';
+      pill.style.backgroundColor = '#DDF2EA';
+      pill.style.color = '#14634B';
+      showToast('Patient Ayesha Bibi checked in at reception');
+    }
+
+    function collectSample() {
+      document.getElementById('step2').classList.add('done');
+      document.getElementById('step3').classList.add('done');
+      document.getElementById('chkTube').checked = true;
+      const pill = document.getElementById('apptStatusPill');
+      pill.textContent = 'SAMPLE COLLECTED';
+      pill.style.backgroundColor = '#DDF2EA';
+      pill.style.color = '#14634B';
+      showToast('Specimen SMP-4912-CBC logged for laboratory testing');
+    }
+
+    function rescheduleSlot() {
+      const val = document.getElementById('newSlotSelect').value;
+      document.getElementById('scheduledTimeText').textContent = val;
+      document.getElementById('apptStatusPill').textContent = 'RESCHEDULED';
+      showToast('Appointment updated to ' + val);
+    }
+  </script>
+</body>
+</html>

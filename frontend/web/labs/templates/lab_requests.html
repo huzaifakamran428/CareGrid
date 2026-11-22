@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CareGrid | Incoming Lab Test Requests</title>
+  <style>
+    :root {
+      --primary-green: #14634B;
+      --primary-green-dark: #0F4E3B;
+      --header-badge-bg: #1E755B;
+      --header-badge-border: #3E8E75;
+      --amber-badge: #F4A623;
+      --mint-card-bg: #DDF2EA;
+      --mint-card-border: #2B7A62;
+      --dark-forest-text: #1B4332;
+      --muted-text: #4A635A;
+      --canvas-bg: #F8FAFC;
+      --neutral-btn-bg: #F1F5F4;
+      --neutral-btn-border: #D5DFDC;
+      --soft-red-bg: #FBE9EC;
+      --soft-red-border: #D6455D;
+      --crimson-badge: #D92D4B;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Inter, -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+    }
+
+    body {
+      background-color: var(--canvas-bg);
+      color: var(--dark-forest-text);
+      min-height: 100vh;
+      display: flex;
+    }
+
+    /* SIDEBAR NAVIGATION */
+    .sidebar {
+      width: 265px;
+      background-color: var(--primary-green);
+      color: #FFFFFF;
+      display: flex;
+      flex-direction: column;
+      padding: 24px 18px;
+      position: fixed;
+      top: 0;
+      bottom: 0;
+      left: 0;
+    }
+
+    .brand-box {
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--header-badge-border);
+      margin-bottom: 20px;
+    }
+
+    .brand-pill {
+      display: inline-block;
+      background-color: var(--amber-badge);
+      color: var(--dark-forest-text);
+      font-size: 11px;
+      font-weight: 800;
+      padding: 4px 10px;
+      border-radius: 6px;
+      letter-spacing: 0.4px;
+      margin-bottom: 10px;
+    }
+
+    .brand-title {
+      font-size: 21px;
+      font-weight: 800;
+      letter-spacing: -0.2px;
+    }
+
+    .brand-sub {
+      font-size: 12.5px;
+      color: rgba(255, 255, 255, 0.85);
+      margin-top: 3px;
+    }
+
+    .nav-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+      flex: 1;
+    }
+
+    .nav-item a {
+      display: flex;
+      align-items: center;
+      text-decoration: none;
+      color: rgba(255, 255, 255, 0.88);
+      font-size: 13.5px;
+      font-weight: 600;
+      padding: 10px 14px;
+      border-radius: 12px;
+      transition: background 0.15s ease;
+    }
+
+    .nav-item a:hover {
+      background-color: var(--header-badge-bg);
+    }
+
+    .nav-item a.active {
+      background-color: var(--mint-card-bg);
+      color: var(--dark-forest-text);
+      font-weight: 800;
+    }
+
+    .lab-profile-footer {
+      background-color: var(--header-badge-bg);
+      border: 1px solid var(--header-badge-border);
+      border-radius: 12px;
+      padding: 13px;
+      font-size: 12px;
+    }
+
+    .lab-profile-footer strong {
+      display: block;
+      font-size: 13px;
+      margin-bottom: 3px;
+    }
+
+    /* MAIN CONTENT WORKSPACE */
+    .main-wrapper {
+      margin-left: 265px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .top-banner {
+      background-color: var(--primary-green);
+      color: #FFFFFF;
+      padding: 24px 32px 36px 32px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .top-banner h1 {
+      font-size: 24px;
+      font-weight: 800;
+      letter-spacing: -0.2px;
+    }
+
+    .top-banner p {
+      font-size: 13.5px;
+      color: rgba(255, 255, 255, 0.88);
+      margin-top: 4px;
+    }
+
+    .status-chip {
+      background-color: var(--header-badge-bg);
+      border: 1px solid var(--header-badge-border);
+      padding: 8px 14px;
+      border-radius: 10px;
+      font-size: 12.5px;
+      font-weight: 700;
+    }
+
+    .content-sheet {
+      background-color: var(--canvas-bg);
+      border-top-left-radius: 28px;
+      border-top-right-radius: 28px;
+      margin-top: -18px;
+      padding: 26px 32px 48px 32px;
+      flex: 1;
+    }
+
+    /* SEARCH & FILTER BAR */
+    .toolbar-card {
+      background-color: var(--mint-card-bg);
+      border: 1.5px solid var(--mint-card-border);
+      border-radius: 16px;
+      padding: 16px 20px;
+      margin-bottom: 22px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 14px;
+    }
+
+    .search-input {
+      padding: 10px 14px;
+      border-radius: 10px;
+      border: 1.4px solid var(--mint-card-border);
+      background-color: #FFFFFF;
+      font-size: 13.5px;
+      font-weight: 600;
+      color: var(--dark-forest-text);
+      width: 310px;
+      outline: none;
+    }
+
+    .filter-group {
+      display: flex;
+      background-color: #FFFFFF;
+      border: 1.2px solid var(--mint-card-border);
+      border-radius: 11px;
+      padding: 4px;
+      gap: 4px;
+    }
+
+    .filter-tab {
+      border: none;
+      background: transparent;
+      padding: 7px 14px;
+      border-radius: 8px;
+      font-size: 12.5px;
+      font-weight: 700;
+      color: var(--muted-text);
+      cursor: pointer;
+    }
+
+    .filter-tab.active {
+      background-color: var(--primary-green);
+      color: #FFFFFF;
+    }
+
+    /* REQUESTS TABLE */
+    .table-card {
+      background-color: #FFFFFF;
+      border: 1.5px solid var(--neutral-btn-border);
+      border-radius: 18px;
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 860px;
+    }
+
+    thead {
+      background-color: var(--neutral-btn-bg);
+      border-bottom: 1.5px solid var(--neutral-btn-border);
+    }
+
+    th {
+      text-align: left;
+      padding: 14px 16px;
+      font-size: 11.5px;
+      font-weight: 800;
+      color: var(--muted-text);
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+    }
+
+    td {
+      padding: 15px 16px;
+      font-size: 13.5px;
+      border-bottom: 1px solid var(--neutral-btn-border);
+      vertical-align: middle;
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 7px;
+      font-size: 11px;
+      font-weight: 800;
+    }
+
+    .badge-amber {
+      background-color: var(--amber-badge);
+      color: var(--dark-forest-text);
+    }
+
+    .badge-mint {
+      background-color: var(--mint-card-bg);
+      color: var(--primary-green);
+      border: 1px solid var(--mint-card-border);
+    }
+
+    .badge-red {
+      background-color: var(--soft-red-bg);
+      color: var(--crimson-badge);
+      border: 1px solid var(--soft-red-border);
+    }
+
+    .btn-primary-sm {
+      display: inline-block;
+      background-color: var(--primary-green);
+      color: #FFFFFF;
+      text-decoration: none;
+      padding: 8px 14px;
+      border-radius: 9px;
+      font-size: 12.5px;
+      font-weight: 700;
+      transition: background 0.15s ease;
+    }
+
+    .btn-primary-sm:hover {
+      background-color: var(--primary-green-dark);
+    }
+
+    @media (max-width: 960px) {
+      .sidebar {
+        display: none;
+      }
+      .main-wrapper {
+        margin-left: 0;
+      }
+      .search-input {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="brand-box">
+      <span class="brand-pill">DIAGNOSTIC PARTNER</span>
+      <div class="brand-title">CareGrid Labs</div>
+      <div class="brand-sub">Welfare Diagnostic Portal</div>
+    </div>
+
+    <ul class="nav-list">
+      <li class="nav-item">
+        <a href="lab_dashboard.html">Counter Dashboard</a>
+      </li>
+      <li class="nav-item">
+        <a href="lab_requests.html" class="active">Lab Requests</a>
+      </li>
+      <li class="nav-item">
+        <a href="request_details.html">Request Details</a>
+      </li>
+      <li class="nav-item">
+        <a href="appointment_details.html">Appointments</a>
+      </li>
+      <li class="nav-item">
+        <a href="lab_test_catalog.html">Tests & Time Slots</a>
+      </li>
+      <li class="nav-item">
+        <a href="lab_report_upload.html">Upload Digital Reports</a>
+      </li>
+    </ul>
+
+    <div class="lab-profile-footer">
+      <strong>Chughtai Lab - Johar Town</strong>
+      <span>Reg ID: CG-LAB-0042 • Lahore</span>
+    </div>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <div class="main-wrapper">
+    <header class="top-banner">
+      <div>
+        <h1>Incoming Subsidized Lab Requests</h1>
+        <p>Review incoming diagnostic requests, validate prescription attachments, and confirm appointment slots.</p>
+      </div>
+      <div class="status-chip">Pending Reviews: 4 Requests</div>
+    </header>
+
+    <main class="content-sheet">
+      <!-- SEARCH & STATUS TABS -->
+      <section class="toolbar-card">
+        <input
+          type="text"
+          id="searchInput"
+          class="search-input"
+          placeholder="Search by Request ID, Patient Name, or Digital ID..."
+          oninput="renderRequests()"
+        />
+
+        <div class="filter-group">
+          <button class="filter-tab active" onclick="setFilter('All', this)">All (5)</button>
+          <button class="filter-tab" onclick="setFilter('Pending Review', this)">Pending Review</button>
+          <button class="filter-tab" onclick="setFilter('Approved', this)">Approved</button>
+          <button class="filter-tab" onclick="setFilter('Action Needed', this)">Action Needed</button>
+        </div>
+      </section>
+
+      <!-- REQUESTS TABLE -->
+      <div class="table-card">
+        <table>
+          <thead>
+            <tr>
+              <th>Request ID</th>
+              <th>Beneficiary & Digital ID</th>
+              <th>Requested Test</th>
+              <th>Preferred Date & Slot</th>
+              <th>Prescription</th>
+              <th>Status</th>
+              <th>Inspect</th>
+            </tr>
+          </thead>
+          <tbody id="requestsBody"></tbody>
+        </table>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    const labRequests = [
+      {
+        reqId: 'REQ-2026-8841',
+        name: 'Ayesha Bibi',
+        digitalId: 'CG-BEN-2026-009481',
+        test: 'Complete Blood Count (CBC)',
+        dateTime: '23 Nov 2026 • 10:15 AM',
+        rxFile: 'RX-2026-114 (Attached)',
+        status: 'Pending Review'
+      },
+      {
+        reqId: 'REQ-2026-8845',
+        name: 'Muhammad Boota',
+        digitalId: 'CG-BEN-2026-008742',
+        test: 'HbA1c (Glycated Hemoglobin)',
+        dateTime: '23 Nov 2026 • 11:00 AM',
+        rxFile: 'RX-2026-119 (Attached)',
+        status: 'Pending Review'
+      },
+      {
+        reqId: 'REQ-2026-8832',
+        name: 'Zainab Bibi',
+        digitalId: 'CG-BEN-2026-009110',
+        test: 'Liver Function Tests (LFTs)',
+        dateTime: '23 Nov 2026 • 09:30 AM',
+        rxFile: 'RX-2026-108 (Verified)',
+        status: 'Approved'
+      },
+      {
+        reqId: 'REQ-2026-8829',
+        name: 'Farhan Siddiqui',
+        digitalId: 'CG-BEN-2026-007912',
+        test: 'Renal Function Tests (RFTs)',
+        dateTime: '24 Nov 2026 • 02:30 PM',
+        rxFile: 'Unclear Doctor Stamp',
+        status: 'Action Needed'
+      },
+      {
+        reqId: 'REQ-2026-8818',
+        name: 'Ruqayya Parveen',
+        digitalId: 'CG-BEN-2026-008305',
+        test: 'Lipid Profile Complete',
+        dateTime: '23 Nov 2026 • 08:45 AM',
+        rxFile: 'RX-2026-099 (Verified)',
+        status: 'Approved'
+      }
+    ];
+
+    let activeFilter = 'All';
+
+    function setFilter(status, btn) {
+      activeFilter = status;
+      document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+      btn.classList.add('active');
+      renderRequests();
+    }
+
+    function renderRequests() {
+      const query = document.getElementById('searchInput').value.trim().toLowerCase();
+      const tbody = document.getElementById('requestsBody');
+      tbody.innerHTML = '';
+
+      const filtered = labRequests.filter(item => {
+        const matchesStatus = activeFilter === 'All' || item.status === activeFilter;
+        const matchesQuery =
+          item.reqId.toLowerCase().includes(query) ||
+          item.name.toLowerCase().includes(query) ||
+          item.digitalId.toLowerCase().includes(query) ||
+          item.test.toLowerCase().includes(query);
+        return matchesStatus && matchesQuery;
+      });
+
+      filtered.forEach(item => {
+        let badgeClass = 'badge-amber';
+        if (item.status === 'Approved') badgeClass = 'badge-mint';
+        if (item.status === 'Action Needed') badgeClass = 'badge-red';
+
+        const row = `
+          <tr>
+            <td><strong>${item.reqId}</strong></td>
+            <td>
+              <strong>${item.name}</strong><br/>
+              <span style="font-size:12px;color:var(--primary-green);font-weight:700;">${item.digitalId}</span>
+            </td>
+            <td>${item.test}</td>
+            <td><strong>${item.dateTime}</strong></td>
+            <td style="font-size:12.5px;color:var(--muted-text);font-weight:600;">${item.rxFile}</td>
+            <td><span class="badge ${badgeClass}">${item.status.toUpperCase()}</span></td>
+            <td>
+              <a href="request_details.html" class="btn-primary-sm">View Details</a>
+            </td>
+          </tr>
+        `;
+        tbody.insertAdjacentHTML('beforeend', row);
+      });
+    }
+
+    renderRequests();
+  </script>
+</body>
+</html>

@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CareGrid | Laboratory Partner Dashboard</title>
+  <style>
+    :root {
+      --primary-green: #14634B;
+      --primary-green-dark: #0F4E3B;
+      --header-badge-bg: #1E755B;
+      --header-badge-border: #3E8E75;
+      --amber-badge: #F4A623;
+      --mint-card-bg: #DDF2EA;
+      --mint-card-border: #2B7A62;
+      --dark-forest-text: #1B4332;
+      --muted-text: #4A635A;
+      --canvas-bg: #F8FAFC;
+      --neutral-btn-bg: #F1F5F4;
+      --neutral-btn-border: #D5DFDC;
+      --soft-red-bg: #FBE9EC;
+      --soft-red-border: #D6455D;
+      --crimson-badge: #D92D4B;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Inter, -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+    }
+
+    body {
+      background-color: var(--canvas-bg);
+      color: var(--dark-forest-text);
+      min-height: 100vh;
+      display: flex;
+    }
+
+    /* SIDEBAR NAVIGATION */
+    .sidebar {
+      width: 265px;
+      background-color: var(--primary-green);
+      color: #FFFFFF;
+      display: flex;
+      flex-direction: column;
+      padding: 24px 18px;
+      position: fixed;
+      top: 0;
+      bottom: 0;
+      left: 0;
+    }
+
+    .brand-box {
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--header-badge-border);
+      margin-bottom: 20px;
+    }
+
+    .brand-pill {
+      display: inline-block;
+      background-color: var(--amber-badge);
+      color: var(--dark-forest-text);
+      font-size: 11px;
+      font-weight: 800;
+      padding: 4px 10px;
+      border-radius: 6px;
+      letter-spacing: 0.4px;
+      margin-bottom: 10px;
+    }
+
+    .brand-title {
+      font-size: 21px;
+      font-weight: 800;
+      letter-spacing: -0.2px;
+    }
+
+    .brand-sub {
+      font-size: 12.5px;
+      color: rgba(255, 255, 255, 0.85);
+      margin-top: 3px;
+    }
+
+    .nav-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      flex: 1;
+    }
+
+    .nav-item a {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: rgba(255, 255, 255, 0.88);
+      font-size: 14px;
+      font-weight: 600;
+      padding: 11px 14px;
+      border-radius: 12px;
+      transition: background 0.15s ease;
+    }
+
+    .nav-item a:hover {
+      background-color: var(--header-badge-bg);
+    }
+
+    .nav-item a.active {
+      background-color: var(--mint-card-bg);
+      color: var(--dark-forest-text);
+      font-weight: 800;
+    }
+
+    .lab-profile-footer {
+      background-color: var(--header-badge-bg);
+      border: 1px solid var(--header-badge-border);
+      border-radius: 12px;
+      padding: 13px;
+      font-size: 12px;
+    }
+
+    .lab-profile-footer strong {
+      display: block;
+      font-size: 13px;
+      margin-bottom: 3px;
+    }
+
+    /* MAIN CONTENT WORKSPACE */
+    .main-wrapper {
+      margin-left: 265px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .top-banner {
+      background-color: var(--primary-green);
+      color: #FFFFFF;
+      padding: 24px 32px 36px 32px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .top-banner h1 {
+      font-size: 24px;
+      font-weight: 800;
+      letter-spacing: -0.2px;
+    }
+
+    .top-banner p {
+      font-size: 13.5px;
+      color: rgba(255, 255, 255, 0.88);
+      margin-top: 4px;
+    }
+
+    .status-chip {
+      background-color: var(--header-badge-bg);
+      border: 1px solid var(--header-badge-border);
+      padding: 8px 14px;
+      border-radius: 10px;
+      font-size: 12.5px;
+      font-weight: 700;
+    }
+
+    .content-sheet {
+      background-color: var(--canvas-bg);
+      border-top-left-radius: 28px;
+      border-top-right-radius: 28px;
+      margin-top: -18px;
+      padding: 26px 32px 48px 32px;
+      flex: 1;
+    }
+
+    /* KPI STATS GRID */
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .kpi-card {
+      background-color: #FFFFFF;
+      border: 1.5px solid var(--neutral-btn-border);
+      border-radius: 16px;
+      padding: 18px;
+    }
+
+    .kpi-card.highlight {
+      background-color: var(--mint-card-bg);
+      border-color: var(--mint-card-border);
+    }
+
+    .kpi-label {
+      font-size: 12.5px;
+      font-weight: 700;
+      color: var(--muted-text);
+    }
+
+    .kpi-value {
+      font-size: 26px;
+      font-weight: 800;
+      color: var(--dark-forest-text);
+      margin: 6px 0 4px 0;
+    }
+
+    .kpi-sub {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--primary-green);
+    }
+
+    /* VERIFY BENEFICIARY DIGITAL ID CARD */
+    .verify-box {
+      background-color: var(--mint-card-bg);
+      border: 1.5px solid var(--mint-card-border);
+      border-radius: 18px;
+      padding: 20px 22px;
+      margin-bottom: 26px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .verify-info h2 {
+      font-size: 17px;
+      font-weight: 800;
+      color: var(--dark-forest-text);
+    }
+
+    .verify-info p {
+      font-size: 13px;
+      color: var(--muted-text);
+      margin-top: 3px;
+    }
+
+    .verify-controls {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .verify-input {
+      padding: 11px 14px;
+      border-radius: 11px;
+      border: 1.5px solid var(--mint-card-border);
+      background-color: #FFFFFF;
+      font-size: 13.5px;
+      font-weight: 700;
+      color: var(--dark-forest-text);
+      width: 260px;
+      outline: none;
+    }
+
+    .btn-primary {
+      background-color: var(--primary-green);
+      color: #FFFFFF;
+      border: none;
+      padding: 11px 18px;
+      border-radius: 11px;
+      font-size: 13.5px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.15s ease;
+    }
+
+    .btn-primary:hover {
+      background-color: var(--primary-green-dark);
+    }
+
+    .btn-outline {
+      background-color: var(--neutral-btn-bg);
+      color: var(--dark-forest-text);
+      border: 1.2px solid var(--neutral-btn-border);
+      padding: 8px 13px;
+      border-radius: 9px;
+      font-size: 12.5px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .btn-outline:hover {
+      background-color: var(--mint-card-bg);
+      border-color: var(--mint-card-border);
+    }
+
+    .verify-result-banner {
+      width: 100%;
+      background-color: #FFFFFF;
+      border: 1.2px solid var(--mint-card-border);
+      border-radius: 12px;
+      padding: 12px 16px;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--primary-green);
+      display: none;
+    }
+
+    /* SECTION HEADER & FILTER TABS */
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 14px;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .section-header h2 {
+      font-size: 18px;
+      font-weight: 800;
+    }
+
+    .filter-group {
+      display: flex;
+      background-color: var(--neutral-btn-bg);
+      border: 1px solid var(--neutral-btn-border);
+      border-radius: 11px;
+      padding: 4px;
+      gap: 4px;
+    }
+
+    .filter-tab {
+      border: none;
+      background: transparent;
+      padding: 7px 14px;
+      border-radius: 8px;
+      font-size: 12.5px;
+      font-weight: 700;
+      color: var(--muted-text);
+      cursor: pointer;
+    }
+
+    .filter-tab.active {
+      background-color: var(--primary-green);
+      color: #FFFFFF;
+    }
+
+    /* APPOINTMENTS TABLE CARD */
+    .table-card {
+      background-color: #FFFFFF;
+      border: 1.5px solid var(--neutral-btn-border);
+      border-radius: 18px;
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 840px;
+    }
+
+    thead {
+      background-color: var(--neutral-btn-bg);
+      border-bottom: 1.5px solid var(--neutral-btn-border);
+    }
+
+    th {
+      text-align: left;
+      padding: 14px 16px;
+      font-size: 11.5px;
+      font-weight: 800;
+      color: var(--muted-text);
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+    }
+
+    td {
+      padding: 15px 16px;
+      font-size: 13.5px;
+      border-bottom: 1px solid var(--neutral-btn-border);
+      vertical-align: middle;
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 7px;
+      font-size: 11px;
+      font-weight: 800;
+    }
+
+    .badge-amber {
+      background-color: var(--amber-badge);
+      color: var(--dark-forest-text);
+    }
+
+    .badge-mint {
+      background-color: var(--mint-card-bg);
+      color: var(--primary-green);
+      border: 1px solid var(--mint-card-border);
+    }
+
+    .badge-green {
+      background-color: var(--primary-green);
+      color: #FFFFFF;
+    }
+
+    /* TOAST NOTIFICATION */
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background-color: var(--primary-green);
+      color: #FFFFFF;
+      padding: 13px 20px;
+      border-radius: 12px;
+      font-size: 13.5px;
+      font-weight: 700;
+      box-shadow: 0 8px 20px rgba(20, 99, 75, 0.25);
+      display: none;
+      z-index: 1000;
+    }
+
+    @media (max-width: 960px) {
+      .sidebar {
+        display: none;
+      }
+      .main-wrapper {
+        margin-left: 0;
+      }
+      .kpi-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="brand-box">
+      <span class="brand-pill">DIAGNOSTIC PARTNER</span>
+      <div class="brand-title">CareGrid Labs</div>
+      <div class="brand-sub">Welfare Diagnostic Portal</div>
+    </div>
+
+    <ul class="nav-list">
+      <li class="nav-item">
+        <a href="lab_dashboard.html" class="active">Appointment Queue</a>
+      </li>
+      <li class="nav-item">
+        <a href="lab_test_catalog.html">Tests & Time Slots</a>
+      </li>
+      <li class="nav-item">
+        <a href="lab_report_upload.html">Upload Digital Reports</a>
+      </li>
+    </ul>
+
+    <div class="lab-profile-footer">
+      <strong>Chughtai Lab - Johar Town</strong>
+      <span>Reg ID: CG-LAB-0042 • Lahore</span>
+    </div>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <div class="main-wrapper">
+    <header class="top-banner">
+      <div>
+        <h1>Laboratory Appointment & Counter Desk</h1>
+        <p>Verify beneficiary Digital IDs, log sample collections, and track subsidized diagnostic bookings.</p>
+      </div>
+      <div class="status-chip">Branch Status: Open (08:00 AM – 10:00 PM)</div>
+    </header>
+
+    <main class="content-sheet">
+      <!-- KPI METRICS -->
+      <section class="kpi-grid">
+        <div class="kpi-card highlight">
+          <div class="kpi-label">Today's Bookings</div>
+          <div class="kpi-value" id="kpiTotal">18</div>
+          <div class="kpi-sub">80% Welfare Subsidized</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">Awaiting Check-In</div>
+          <div class="kpi-value" id="kpiScheduled">7</div>
+          <div class="kpi-sub">Scheduled Slots</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">Samples Collected</div>
+          <div class="kpi-value" id="kpiCollected">6</div>
+          <div class="kpi-sub">In Lab Processing</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">Subsidy Claimable</div>
+          <div class="kpi-value">Rs. 24,800</div>
+          <div class="kpi-sub">NGO Sponsored Pool</div>
+        </div>
+      </section>
+
+      <!-- DIGITAL ID COUNTER VERIFICATION -->
+      <section class="verify-box">
+        <div class="verify-info">
+          <h2>Verify Beneficiary Digital ID at Reception</h2>
+          <p>Enter or scan the patient's CareGrid Digital ID before collecting samples to apply the 80% welfare subsidy.</p>
+        </div>
+        <div class="verify-controls">
+          <input
+            type="text"
+            id="digitalIdInput"
+            class="verify-input"
+            value="CG-BEN-2026-009481"
+            placeholder="e.g., CG-BEN-2026-009481"
+          />
+          <button class="btn-primary" onclick="verifyDigitalId()">Verify Eligibility</button>
+        </div>
+        <div id="verifyResultBanner" class="verify-result-banner"></div>
+      </section>
+
+      <!-- APPOINTMENTS TABLE -->
+      <div class="section-header">
+        <h2>Subsidized Diagnostic Appointments</h2>
+        <div class="filter-group">
+          <button class="filter-tab active" onclick="filterBookings('All', this)">All</button>
+          <button class="filter-tab" onclick="filterBookings('Scheduled', this)">Scheduled</button>
+          <button class="filter-tab" onclick="filterBookings('Sample Collected', this)">Sample Collected</button>
+          <button class="filter-tab" onclick="filterBookings('Report Uploaded', this)">Report Uploaded</button>
+        </div>
+      </div>
+
+      <div class="table-card">
+        <table>
+          <thead>
+            <tr>
+              <th>Booking Ref</th>
+              <th>Beneficiary & Digital ID</th>
+              <th>Diagnostic Test</th>
+              <th>Time Slot</th>
+              <th>Patient Fee (20%)</th>
+              <th>Status</th>
+              <th>Counter Action</th>
+            </tr>
+          </thead>
+          <tbody id="appointmentsBody"></tbody>
+        </table>
+      </div>
+    </main>
+  </div>
+
+  <div id="toast" class="toast"></div>
+
+  <script>
+    const bookings = [
+      {
+        ref: 'BKG-2026-4912',
+        name: 'Ayesha Bibi',
+        digitalId: 'CG-BEN-2026-009481',
+        test: 'Complete Blood Count (CBC)',
+        slot: '10:15 AM',
+        payable: 'Rs. 300',
+        status: 'Scheduled'
+      },
+      {
+        ref: 'BKG-2026-4915',
+        name: 'Muhammad Boota',
+        digitalId: 'CG-BEN-2026-008742',
+        test: 'HbA1c (Glycated Hemoglobin)',
+        slot: '11:00 AM',
+        payable: 'Rs. 440',
+        status: 'Scheduled'
+      },
+      {
+        ref: 'BKG-2026-4904',
+        name: 'Zainab Bibi',
+        digitalId: 'CG-BEN-2026-009110',
+        test: 'Liver Function Tests (LFTs)',
+        slot: '09:30 AM',
+        payable: 'Rs. 500',
+        status: 'Sample Collected'
+      },
+      {
+        ref: 'BKG-2026-4898',
+        name: 'Ruqayya Parveen',
+        digitalId: 'CG-BEN-2026-008305',
+        test: 'Lipid Profile Complete',
+        slot: '08:45 AM',
+        payable: 'Rs. 480',
+        status: 'Report Uploaded'
+      }
+    ];
+
+    let currentFilter = 'All';
+
+    function showToast(msg) {
+      const toast = document.getElementById('toast');
+      toast.textContent = msg;
+      toast.style.display = 'block';
+      setTimeout(() => {
+        toast.style.display = 'none';
+      }, 2400);
+    }
+
+    function verifyDigitalId() {
+      const val = document.getElementById('digitalIdInput').value.trim();
+      const banner = document.getElementById('verifyResultBanner');
+      if (!val) {
+        showToast('Please enter a CareGrid Digital ID');
+        return;
+      }
+      banner.style.display = 'block';
+      banner.innerHTML =
+        'VERIFIED ACTIVE BENEFICIARY: <strong>Ayesha Bibi (' +
+        val +
+        ')</strong> • Sponsored by Al-Khidmat Foundation Lahore • Eligible for <strong>80% Diagnostic Subsidy</strong> (Remaining Cap: Rs. 8,500).';
+      showToast('Digital ID verified successfully');
+    }
+
+    function filterBookings(status, btn) {
+      currentFilter = status;
+      document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+      btn.classList.add('active');
+      renderTable();
+    }
+
+    function markSampleCollected(ref) {
+      const item = bookings.find(b => b.ref === ref);
+      if (item) {
+        item.status = 'Sample Collected';
+        renderTable();
+        showToast('Sample logged for ' + ref);
+      }
+    }
+
+    function renderTable() {
+      const tbody = document.getElementById('appointmentsBody');
+      tbody.innerHTML = '';
+
+      const filtered = currentFilter === 'All'
+        ? bookings
+        : bookings.filter(b => b.status === currentFilter);
+
+      filtered.forEach(b => {
+        let badgeClass = 'badge-amber';
+        if (b.status === 'Sample Collected') badgeClass = 'badge-mint';
+        if (b.status === 'Report Uploaded') badgeClass = 'badge-green';
+
+        let actionHtml = '';
+        if (b.status === 'Scheduled') {
+          actionHtml = `<button class="btn-outline" onclick="markSampleCollected('${b.ref}')">Collect Sample</button>`;
+        } else if (b.status === 'Sample Collected') {
+          actionHtml = `<a href="lab_report_upload.html" class="btn-outline" style="text-decoration:none;">Upload Report</a>`;
+        } else {
+          actionHtml = `<span style="color:var(--primary-green);font-weight:700;font-size:12.5px;">Completed</span>`;
+        }
+
+        const row = `
+          <tr>
+            <td><strong>${b.ref}</strong></td>
+            <td>
+              <strong>${b.name}</strong><br/>
+              <span style="font-size:12px;color:var(--primary-green);font-weight:700;">${b.digitalId}</span>
+            </td>
+            <td>${b.test}</td>
+            <td><strong>${b.slot}</strong></td>
+            <td><strong>${b.payable}</strong></td>
+            <td><span class="badge ${badgeClass}">${b.status.toUpperCase()}</span></td>
+            <td>${actionHtml}</td>
+          </tr>
+        `;
+        tbody.insertAdjacentHTML('beforeend', row);
+      });
+    }
+
+    renderTable();
+  </script>
+</body>
+</html>

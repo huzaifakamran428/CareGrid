@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CareGrid | Upload Digital Lab Reports</title>
+  <style>
+    :root {
+      --primary-green: #14634B;
+      --primary-green-dark: #0F4E3B;
+      --header-badge-bg: #1E755B;
+      --header-badge-border: #3E8E75;
+      --amber-badge: #F4A623;
+      --mint-card-bg: #DDF2EA;
+      --mint-card-border: #2B7A62;
+      --dark-forest-text: #1B4332;
+      --muted-text: #4A635A;
+      --canvas-bg: #F8FAFC;
+      --neutral-btn-bg: #F1F5F4;
+      --neutral-btn-border: #D5DFDC;
+      --soft-red-bg: #FBE9EC;
+      --soft-red-border: #D6455D;
+      --crimson-badge: #D92D4B;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Inter, -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+    }
+
+    body {
+      background-color: var(--canvas-bg);
+      color: var(--dark-forest-text);
+      min-height: 100vh;
+      display: flex;
+    }
+
+    /* SIDEBAR NAVIGATION */
+    .sidebar {
+      width: 265px;
+      background-color: var(--primary-green);
+      color: #FFFFFF;
+      display: flex;
+      flex-direction: column;
+      padding: 24px 18px;
+      position: fixed;
+      top: 0;
+      bottom: 0;
+      left: 0;
+    }
+
+    .brand-box {
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--header-badge-border);
+      margin-bottom: 20px;
+    }
+
+    .brand-pill {
+      display: inline-block;
+      background-color: var(--amber-badge);
+      color: var(--dark-forest-text);
+      font-size: 11px;
+      font-weight: 800;
+      padding: 4px 10px;
+      border-radius: 6px;
+      letter-spacing: 0.4px;
+      margin-bottom: 10px;
+    }
+
+    .brand-title {
+      font-size: 21px;
+      font-weight: 800;
+      letter-spacing: -0.2px;
+    }
+
+    .brand-sub {
+      font-size: 12.5px;
+      color: rgba(255, 255, 255, 0.85);
+      margin-top: 3px;
+    }
+
+    .nav-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      flex: 1;
+    }
+
+    .nav-item a {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: rgba(255, 255, 255, 0.88);
+      font-size: 14px;
+      font-weight: 600;
+      padding: 11px 14px;
+      border-radius: 12px;
+      transition: background 0.15s ease;
+    }
+
+    .nav-item a:hover {
+      background-color: var(--header-badge-bg);
+    }
+
+    .nav-item a.active {
+      background-color: var(--mint-card-bg);
+      color: var(--dark-forest-text);
+      font-weight: 800;
+    }
+
+    .lab-profile-footer {
+      background-color: var(--header-badge-bg);
+      border: 1px solid var(--header-badge-border);
+      border-radius: 12px;
+      padding: 13px;
+      font-size: 12px;
+    }
+
+    .lab-profile-footer strong {
+      display: block;
+      font-size: 13px;
+      margin-bottom: 3px;
+    }
+
+    /* MAIN CONTENT WORKSPACE */
+    .main-wrapper {
+      margin-left: 265px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .top-banner {
+      background-color: var(--primary-green);
+      color: #FFFFFF;
+      padding: 24px 32px 36px 32px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .top-banner h1 {
+      font-size: 24px;
+      font-weight: 800;
+      letter-spacing: -0.2px;
+    }
+
+    .top-banner p {
+      font-size: 13.5px;
+      color: rgba(255, 255, 255, 0.88);
+      margin-top: 4px;
+    }
+
+    .status-chip {
+      background-color: var(--header-badge-bg);
+      border: 1px solid var(--header-badge-border);
+      padding: 8px 14px;
+      border-radius: 10px;
+      font-size: 12.5px;
+      font-weight: 700;
+    }
+
+    .content-sheet {
+      background-color: var(--canvas-bg);
+      border-top-left-radius: 28px;
+      border-top-right-radius: 28px;
+      margin-top: -18px;
+      padding: 26px 32px 48px 32px;
+      flex: 1;
+    }
+
+    /* UPLOAD CARD */
+    .upload-panel {
+      background-color: var(--mint-card-bg);
+      border: 1.5px solid var(--mint-card-border);
+      border-radius: 18px;
+      padding: 22px 24px;
+      margin-bottom: 28px;
+    }
+
+    .panel-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .panel-header h2 {
+      font-size: 18px;
+      font-weight: 800;
+      color: var(--dark-forest-text);
+    }
+
+    .panel-header p {
+      font-size: 13px;
+      color: var(--muted-text);
+      margin-top: 2px;
+    }
+
+    .badge-amber {
+      background-color: var(--amber-badge);
+      color: var(--dark-forest-text);
+      padding: 5px 11px;
+      border-radius: 8px;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.3px;
+    }
+
+    .upload-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      background-color: #FFFFFF;
+      border: 1.2px solid var(--mint-card-border);
+      border-radius: 14px;
+      padding: 18px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .form-group.full {
+      grid-column: span 2;
+    }
+
+    .form-group label {
+      font-size: 12.5px;
+      font-weight: 700;
+      color: var(--dark-forest-text);
+    }
+
+    .form-control {
+      padding: 11px 13px;
+      border-radius: 10px;
+      border: 1.3px solid var(--neutral-btn-border);
+      background-color: var(--neutral-btn-bg);
+      font-size: 13.5px;
+      font-weight: 600;
+      color: var(--dark-forest-text);
+      outline: none;
+    }
+
+    .form-control:focus {
+      border-color: var(--primary-green);
+      background-color: #FFFFFF;
+    }
+
+    .dropzone-box {
+      border: 2px dashed var(--mint-card-border);
+      background-color: var(--neutral-btn-bg);
+      border-radius: 12px;
+      padding: 18px;
+      text-align: center;
+      cursor: pointer;
+      transition: background 0.15s ease;
+    }
+
+    .dropzone-box:hover {
+      background-color: var(--mint-card-bg);
+    }
+
+    .dropzone-title {
+      font-size: 13.5px;
+      font-weight: 800;
+      color: var(--primary-green);
+    }
+
+    .dropzone-sub {
+      font-size: 12px;
+      color: var(--muted-text);
+      margin-top: 3px;
+    }
+
+    .btn-primary {
+      background-color: var(--primary-green);
+      color: #FFFFFF;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 11px;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.15s ease;
+    }
+
+    .btn-primary:hover {
+      background-color: var(--primary-green-dark);
+    }
+
+    /* REPORTS LEDGER TABLE */
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 14px;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .section-header h2 {
+      font-size: 18px;
+      font-weight: 800;
+    }
+
+    .badge-mint {
+      background-color: var(--mint-card-bg);
+      color: var(--primary-green);
+      border: 1px solid var(--mint-card-border);
+      padding: 4px 10px;
+      border-radius: 7px;
+      font-size: 11px;
+      font-weight: 800;
+    }
+
+    .badge-green {
+      background-color: var(--primary-green);
+      color: #FFFFFF;
+      padding: 4px 10px;
+      border-radius: 7px;
+      font-size: 11px;
+      font-weight: 800;
+    }
+
+    .table-card {
+      background-color: #FFFFFF;
+      border: 1.5px solid var(--neutral-btn-border);
+      border-radius: 18px;
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 840px;
+    }
+
+    thead {
+      background-color: var(--neutral-btn-bg);
+      border-bottom: 1.5px solid var(--neutral-btn-border);
+    }
+
+    th {
+      text-align: left;
+      padding: 14px 16px;
+      font-size: 11.5px;
+      font-weight: 800;
+      color: var(--muted-text);
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+    }
+
+    td {
+      padding: 15px 16px;
+      font-size: 13.5px;
+      border-bottom: 1px solid var(--neutral-btn-border);
+      vertical-align: middle;
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    .btn-outline {
+      background-color: var(--neutral-btn-bg);
+      color: var(--dark-forest-text);
+      border: 1.2px solid var(--neutral-btn-border);
+      padding: 7px 12px;
+      border-radius: 9px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .btn-outline:hover {
+      background-color: var(--mint-card-bg);
+      border-color: var(--mint-card-border);
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background-color: var(--primary-green);
+      color: #FFFFFF;
+      padding: 13px 20px;
+      border-radius: 12px;
+      font-size: 13.5px;
+      font-weight: 700;
+      box-shadow: 0 8px 20px rgba(20, 99, 75, 0.25);
+      display: none;
+      z-index: 1000;
+    }
+
+    @media (max-width: 960px) {
+      .sidebar {
+        display: none;
+      }
+      .main-wrapper {
+        margin-left: 0;
+      }
+      .upload-grid {
+        grid-template-columns: 1fr;
+      }
+      .form-group.full {
+        grid-column: span 1;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="brand-box">
+      <span class="brand-pill">DIAGNOSTIC PARTNER</span>
+      <div class="brand-title">CareGrid Labs</div>
+      <div class="brand-sub">Welfare Diagnostic Portal</div>
+    </div>
+
+    <ul class="nav-list">
+      <li class="nav-item">
+        <a href="lab_dashboard.html">Appointment Queue</a>
+      </li>
+      <li class="nav-item">
+        <a href="lab_test_catalog.html">Tests & Time Slots</a>
+      </li>
+      <li class="nav-item">
+        <a href="lab_report_upload.html" class="active">Upload Digital Reports</a>
+      </li>
+    </ul>
+
+    <div class="lab-profile-footer">
+      <strong>Chughtai Lab - Johar Town</strong>
+      <span>Reg ID: CG-LAB-0042 • Lahore</span>
+    </div>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <div class="main-wrapper">
+    <header class="top-banner">
+      <div>
+        <h1>Digital Diagnostic Reports & Delivery</h1>
+        <p>Upload verified PDF lab reports for instant patient access on the CareGrid mobile app.</p>
+      </div>
+      <div class="status-chip">Instant Beneficiary Sync: Active</div>
+    </header>
+
+    <main class="content-sheet">
+      <!-- REPORT UPLOAD PANEL -->
+      <section class="upload-panel">
+        <div class="panel-header">
+          <div>
+            <h2>Publish Patient Diagnostic Report</h2>
+            <p>Select a sample-collected booking and attach the signed PDF report.</p>
+          </div>
+          <span class="badge-amber">3 SAMPLES READY FOR UPLOAD</span>
+        </div>
+
+        <div class="upload-grid">
+          <div class="form-group">
+            <label for="bookingSelect">Select Collected Booking Reference</label>
+            <select id="bookingSelect" class="form-control">
+              <option value="BKG-2026-4904|Zainab Bibi|CG-BEN-2026-009110|Liver Function Tests (LFTs)">
+                BKG-2026-4904 — Zainab Bibi (Liver Function Tests)
+              </option>
+              <option value="BKG-2026-4912|Ayesha Bibi|CG-BEN-2026-009481|Complete Blood Count (CBC)">
+                BKG-2026-4912 — Ayesha Bibi (Complete Blood Count)
+              </option>
+              <option value="BKG-2026-4915|Muhammad Boota|CG-BEN-2026-008742|HbA1c (Glycated Hemoglobin)">
+                BKG-2026-4915 — Muhammad Boota (HbA1c Test)
+              </option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="pathologistNotes">Pathologist Summary / Clinical Note</label>
+            <input
+              type="text"
+              id="pathologistNotes"
+              class="form-control"
+              value="Verified by Consultant Pathologist • Within Normal Reference Range"
+            />
+          </div>
+
+          <div class="form-group full">
+            <label>Diagnostic Report Document (PDF)</label>
+            <div class="dropzone-box" onclick="document.getElementById('pdfFileInput').click()">
+              <div class="dropzone-title" id="selectedFileLabel">Click to Select Verified Lab Report PDF (Max 15 MB)</div>
+              <div class="dropzone-sub">Digitally signed PDF will be encrypted and pushed to the beneficiary's account</div>
+              <input
+                type="file"
+                id="pdfFileInput"
+                accept=".pdf"
+                style="display:none;"
+                onchange="handleFileSelect(this)"
+              />
+            </div>
+          </div>
+
+          <div class="form-group full">
+            <button class="btn-primary" onclick="publishReport()">Upload & Notify Beneficiary</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- UPLOADED REPORTS LEDGER -->
+      <div class="section-header">
+        <h2>Uploaded Digital Reports Ledger</h2>
+        <span class="badge-mint" id="reportsCountBadge">3 Reports Published</span>
+      </div>
+
+      <div class="table-card">
+        <table>
+          <thead>
+            <tr>
+              <th>Booking Ref</th>
+              <th>Beneficiary & Digital ID</th>
+              <th>Diagnostic Test</th>
+              <th>Report PDF File</th>
+              <th>Uploaded On</th>
+              <th>Subsidy Settlement</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="reportsBody"></tbody>
+        </table>
+      </div>
+    </main>
+  </div>
+
+  <div id="toast" class="toast"></div>
+
+  <script>
+    let chosenFileName = 'LFT_Verified_Report_ZainabBibi.pdf';
+
+    const publishedReports = [
+      {
+        ref: 'BKG-2026-4898',
+        name: 'Ruqayya Parveen',
+        digitalId: 'CG-BEN-2026-008305',
+        test: 'Lipid Profile Complete',
+        file: 'LipidProfile_Ruqayya_22Nov.pdf',
+        uploadedAt: '22 Nov 2026 • 11:20 AM',
+        settlement: 'Claim Verified'
+      },
+      {
+        ref: 'BKG-2026-4780',
+        name: 'Ayesha Bibi',
+        digitalId: 'CG-BEN-2026-009481',
+        test: 'HbA1c (Glycated Hemoglobin)',
+        file: 'HbA1c_AyeshaBibi_16Nov.pdf',
+        uploadedAt: '16 Nov 2026 • 03:45 PM',
+        settlement: 'Settled by NGO'
+      },
+      {
+        ref: 'BKG-2026-4615',
+        name: 'Ayesha Bibi',
+        digitalId: 'CG-BEN-2026-009481',
+        test: 'Liver Function Tests (LFTs)',
+        file: 'LFT_Report_AyeshaBibi_08Nov.pdf',
+        uploadedAt: '08 Nov 2026 • 04:10 PM',
+        settlement: 'Settled by NGO'
+      }
+    ];
+
+    function showToast(msg) {
+      const toast = document.getElementById('toast');
+      toast.textContent = msg;
+      toast.style.display = 'block';
+      setTimeout(() => {
+        toast.style.display = 'none';
+      }, 2400);
+    }
+
+    function handleFileSelect(input) {
+      if (input.files && input.files.length > 0) {
+        chosenFileName = input.files[0].name;
+        document.getElementById('selectedFileLabel').textContent =
+          'Selected File: ' + chosenFileName;
+      }
+    }
+
+    function publishReport() {
+      const raw = document.getElementById('bookingSelect').value;
+      const parts = raw.split('|');
+      const ref = parts[0];
+      const name = parts[1];
+      const digitalId = parts[2];
+      const test = parts[3];
+
+      publishedReports.unshift({
+        ref: ref,
+        name: name,
+        digitalId: digitalId,
+        test: test,
+        file: chosenFileName,
+        uploadedAt: '22 Nov 2026 • Just Now',
+        settlement: 'Claim Verified'
+      });
+
+      renderReports();
+      showToast('Report published for ' + name + ' (' + ref + ')');
+    }
+
+    function renderReports() {
+      const tbody = document.getElementById('reportsBody');
+      tbody.innerHTML = '';
+
+      publishedReports.forEach(item => {
+        const row = `
+          <tr>
+            <td><strong>${item.ref}</strong></td>
+            <td>
+              <strong>${item.name}</strong><br/>
+              <span style="font-size:12px;color:var(--primary-green);font-weight:700;">${item.digitalId}</span>
+            </td>
+            <td>${item.test}</td>
+            <td><strong>${item.file}</strong></td>
+            <td>${item.uploadedAt}</td>
+            <td><span class="badge-green">${item.settlement.toUpperCase()}</span></td>
+            <td>
+              <button class="btn-outline" onclick="showToast('Previewing ${item.file}')">View PDF</button>
+            </td>
+          </tr>
+        `;
+        tbody.insertAdjacentHTML('beforeend', row);
+      });
+
+      document.getElementById('reportsCountBadge').textContent =
+        publishedReports.length + ' Reports Published';
+    }
+
+    renderReports();
+  </script>
+</body>
+</html>
