@@ -1,16 +1,16 @@
 // ignore_for_file: deprecated_member_use
 import 'package:flutter/material.dart';
 
-class CareGridChatbotScreen extends StatefulWidget {
-  const CareGridChatbotScreen({super.key});
+class CaregridChatbotScreen extends StatefulWidget {
+  const CaregridChatbotScreen({super.key});
 
   @override
-  State<CareGridChatbotScreen> createState() => _CareGridChatbotScreenState();
+  State<CaregridChatbotScreen> createState() => _CaregridChatbotScreenState();
 }
 
-class _CareGridChatbotScreenState extends State<CareGridChatbotScreen> {
+class _CaregridChatbotScreenState extends State<CaregridChatbotScreen> {
   // ---------------------------------------------------------------------------
-  // DESIGN SYSTEM COLORS (100% Consistent across CareGrid Screens)
+  // CAREGRID DESIGN SYSTEM COLORS
   // ---------------------------------------------------------------------------
   static const Color _primaryGreen = Color(0xFF14634B);
   static const Color _headerBadgeBg = Color(0xFF1E755B);
@@ -26,26 +26,46 @@ class _CareGridChatbotScreenState extends State<CareGridChatbotScreen> {
   static const Color _neutralBtnBg = Color(0xFFF1F5F4);
   static const Color _neutralBtnBorder = Color(0xFFD5DFDC);
 
-  // ---------------------------------------------------------------------------
-  // CHAT STATE & DUMMY CONVERSATION DATA
-  // ---------------------------------------------------------------------------
   final TextEditingController _messageController = TextEditingController();
   final ScrollController _scrollController = ScrollController();
 
-  final List _quickPrompts = [
-    'How do I use my Digital ID?',
-    'What is my pharmacy subsidy?',
-    'How to book a subsidized lab?',
-    'Can you prescribe medicine?',
+  bool _isUrduMode = false;
+  bool _isTyping = false;
+
+  final List _quickPromptsEn = [
+    'Check my remaining medical subsidy',
+    'How do I book an 80% subsidized lab test?',
+    'Nearest CareGrid partner pharmacy',
+    'Documents needed for ration renewal',
+  ];
+
+  final List _quickPromptsUr = [
+    'Meri baaqi medical subsidy kitni hai?',
+    'Subsidized lab test kaise book karein?',
+    'Qareebi partner pharmacy kahan hai?',
+    'Ration renewal ke liye kaunse documents chahiye?',
   ];
 
   final List _messages = [
     {
-      'sender': 'bot',
+      'sender': 'ai',
       'text':
-          'Assalam-o-Alaikum Ayesha! I am the CareGrid Welfare Assistant. Ask me anything about your Digital ID, medicine & lab subsidies, prescription uploads, or submitting a complaint.',
-      'time': '09:20 PM',
-      'source': 'CareGrid Platform Guide',
+          'Assalam-o-Alaikum Ayesha! I am your CareGrid Welfare Assistant. Ask me in English or Roman Urdu about your 80% lab subsidy, medicine caps, ration schedules, or nearby partner centers.',
+      'source': 'CareGrid Welfare Guide • Verified',
+      'time': '09:45 AM',
+    },
+    {
+      'sender': 'user',
+      'text': 'How much diagnostic lab subsidy do I have left this month?',
+      'source': '',
+      'time': '09:46 AM',
+    },
+    {
+      'sender': 'ai',
+      'text':
+          'Under your active Al-Khidmat Foundation sponsorship (ID: CG-BEN-2026-009481), you have Rs. 8,500 remaining in your monthly diagnostic pool. All partner labs cover 80% of approved tests upon uploading a doctor prescription.',
+      'source': 'Beneficiary Policy Ledger • Live Sync',
+      'time': '09:46 AM',
     },
   ];
 
@@ -56,20 +76,68 @@ class _CareGridChatbotScreenState extends State<CareGridChatbotScreen> {
     super.dispose();
   }
 
-  void _sendMessage(String rawText) {
-    final String text = rawText.trim();
-    if (text.isEmpty) return;
+  void _sendMessage([String? presetText]) {
+    final String query = (presetText ?? _messageController.text).trim();
+    if (query.isEmpty) return;
 
     setState(() {
       _messages.add({
         'sender': 'user',
-        'text': text,
-        'time': 'Now',
+        'text': query,
+        'source': '',
+        'time': 'Just now',
       });
-      _messages.add(_generateGroundedReply(text));
+      _messageController.clear();
+      _isTyping = true;
     });
 
-    _messageController.clear();
+    _scrollToBottom();
+
+    Future.delayed(const Duration(milliseconds: 650), () {
+      if (!mounted) return;
+      final Map reply = _generateGroundedReply(query);
+      setState(() {
+        _isTyping = false;
+        _messages.add({
+          'sender': 'ai',
+          'text': reply['text'],
+          'source': reply['source'],
+          'time': 'Just now',
+        });
+      });
+      _scrollToBottom();
+    });
+  }
+
+  Map _generateGroundedReply(String query) {
+    final String q = query.toLowerCase();
+    if (q.contains('lab') || q.contains('test') || q.contains('book')) {
+      return {
+        'text':
+            'To book an 80% subsidized test: 1) Upload your doctor prescription in the app, 2) Pick a partner branch (e.g., Chughtai Lab Johar Town), and 3) Present your Digital ID pass at reception to pay only the 20% co-share.',
+        'source': 'Diagnostic SOP • Section 3.2',
+      };
+    } else if (q.contains('pharmacy') || q.contains('medicine') || q.contains('qareebi')) {
+      return {
+        'text':
+            'Your nearest verified partner is Clinix Pharmacy (Johar Town Block G1, 1.2 km away). Show your Digital ID QR pass with an OCR-verified prescription to receive a 70% medicine subsidy.',
+        'source': 'Partner Directory • Lahore Zone',
+      };
+    } else if (q.contains('ration') || q.contains('document') || q.contains('renewal')) {
+      return {
+        'text':
+            'For monthly ration & tier renewal, keep your valid CNIC copy and latest utility bill ready. Your current tier is valid until 31 Dec 2026 with no pending verification alerts.',
+        'source': 'Welfare Eligibility Manual',
+      };
+    }
+    return {
+      'text':
+          'Your CareGrid Digital ID (CG-BEN-2026-009481) is Active. Current entitlements: 80% Lab Subsidy (Rs. 8,500 left), 70% Pharmacy Subsidy (Rs. 4,200 left), and Daily Meal Pass.',
+      'source': 'CareGrid RAG Assistant • Verified',
+    };
+  }
+
+  void _scrollToBottom() {
     Future.delayed(const Duration(milliseconds: 100), () {
       if (_scrollController.hasClients) {
         _scrollController.animateTo(
@@ -81,63 +149,10 @@ class _CareGridChatbotScreenState extends State<CareGridChatbotScreen> {
     });
   }
 
-  Map _generateGroundedReply(String query) {
-    final String q = query.toLowerCase();
-
-    if (q.contains('prescribe') ||
-        q.contains('diagnos') ||
-        q.contains('fever') ||
-        q.contains('medicine for')) {
-      return {
-        'sender': 'bot',
-        'text':
-            'I cannot provide medical diagnoses or recommend specific medicines. Please consult a licensed doctor and upload your signed prescription on the Upload Prescription screen to claim your 70% pharmacy subsidy.',
-        'time': 'Now',
-        'source': 'Platform Safety Policy',
-      };
-    }
-
-    if (q.contains('digital id') || q.contains('pass')) {
-      return {
-        'sender': 'bot',
-        'text':
-            'Show your CareGrid Digital ID (CG-BEN-2026-009481) from your Home or Profile screen at any partner pharmacy or diagnostic lab. Staff will verify your active status before applying your welfare discount.',
-        'time': 'Now',
-        'source': 'Beneficiary Verification Rules',
-      };
-    }
-
-    if (q.contains('pharmacy') || q.contains('subsidy') || q.contains('med')) {
-      return {
-        'sender': 'bot',
-        'text':
-            'Your active welfare profile covers 70% of eligible prescription medicines and 80% of partner laboratory tests, up to your monthly cap of Rs. 12,000 (Rs. 8,500 remaining).',
-        'time': 'Now',
-        'source': 'Subsidy Entitlement Policy',
-      };
-    }
-
-    if (q.contains('lab') || q.contains('book') || q.contains('test')) {
-      return {
-        'sender': 'bot',
-        'text':
-            'Open Subsidized Labs from your Home screen, search for your required test (e.g., CBC or HbA1c), compare partner lab prices, and select an available appointment slot. Your digital report will appear in My Bookings once ready.',
-        'time': 'Now',
-        'source': 'Diagnostic Booking Guide',
-      };
-    }
-
-    return {
-      'sender': 'bot',
-      'text':
-          'You can manage your profile documents, upload prescriptions for AI scanning, book subsidized lab tests, or submit a support complaint directly from your Home dashboard.',
-      'time': 'Now',
-      'source': 'CareGrid Help Center',
-    };
-  }
-
   @override
   Widget build(BuildContext context) {
+    final List activePrompts = _isUrduMode ? _quickPromptsUr : _quickPromptsEn;
+
     return Scaffold(
       backgroundColor: _primaryGreen,
       body: SafeArea(
@@ -147,7 +162,7 @@ class _CareGridChatbotScreenState extends State<CareGridChatbotScreen> {
             // 1. TOP FOREST GREEN HEADER
             _buildTopHeader(),
 
-            // 2. MAIN ROUNDED SHEET CONTAINER
+            // 2. MAIN ROUNDED CHAT SHEET
             Expanded(
               child: Container(
                 width: double.infinity,
@@ -165,13 +180,16 @@ class _CareGridChatbotScreenState extends State<CareGridChatbotScreen> {
                   ),
                   child: Column(
                     children: [
-                      // Chat Messages List
+                      // Chat Messages Stream
                       Expanded(
                         child: ListView.builder(
                           controller: _scrollController,
                           padding: const EdgeInsets.fromLTRB(16, 18, 16, 12),
-                          itemCount: _messages.length,
+                          itemCount: _messages.length + (_isTyping ? 1 : 0),
                           itemBuilder: (context, index) {
+                            if (_isTyping && index == _messages.length) {
+                              return _buildTypingIndicator();
+                            }
                             final Map msg = _messages[index] as Map;
                             return _buildMessageBubble(msg);
                           },
@@ -179,9 +197,9 @@ class _CareGridChatbotScreenState extends State<CareGridChatbotScreen> {
                       ),
 
                       // Quick Prompt Suggestion Chips
-                      _buildQuickPromptsBar(),
+                      _buildQuickPromptStrip(activePrompts),
 
-                      // Bottom Message Input Bar
+                      // Bottom Message Composer
                       _buildInputBar(),
                     ],
                   ),
@@ -194,78 +212,92 @@ class _CareGridChatbotScreenState extends State<CareGridChatbotScreen> {
     );
   }
 
-  // ---------------------------------------------------------------------------
-  // TOP HEADER
-  // ---------------------------------------------------------------------------
   Widget _buildTopHeader() {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(18, 10, 18, 18),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+      padding: const EdgeInsets.fromLTRB(16, 10, 16, 16),
+      child: Row(
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
-                decoration: BoxDecoration(
-                  color: _amberBadge,
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: const Text(
-                  'CAREGRID AI ASSISTANT',
-                  style: TextStyle(
-                    color: _darkForestText,
-                    fontSize: 11,
-                    fontWeight: FontWeight.w800,
-                    letterSpacing: 0.4,
-                  ),
-                ),
+          InkWell(
+            onTap: () => Navigator.maybePop(context),
+            borderRadius: BorderRadius.circular(10),
+            child: Container(
+              padding: const EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                color: _headerBadgeBg,
+                borderRadius: BorderRadius.circular(10),
+                border: Border.all(color: _headerBadgeBorder),
               ),
-              Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                decoration: BoxDecoration(
-                  color: _headerBadgeBg,
-                  borderRadius: BorderRadius.circular(8),
-                  border: Border.all(color: _headerBadgeBorder, width: 1),
-                ),
-                child: const Row(
-                  mainAxisSize: MainAxisSize.min,
+              child: const Icon(Icons.arrow_back_ios_new_rounded,
+                  color: Colors.white, size: 16),
+            ),
+          ),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
                   children: [
-                    Icon(Icons.circle, color: _amberBadge, size: 8),
-                    SizedBox(width: 5),
-                    Text(
-                      'PLATFORM GUIDE',
+                    const Text(
+                      'CareGrid AI Assistant',
                       style: TextStyle(
                         color: Colors.white,
-                        fontSize: 11,
-                        fontWeight: FontWeight.w700,
+                        fontSize: 18,
+                        fontWeight: FontWeight.w800,
+                      ),
+                    ),
+                    const SizedBox(width: 8),
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 7, vertical: 2),
+                      decoration: BoxDecoration(
+                        color: _amberBadge,
+                        borderRadius: BorderRadius.circular(6),
+                      ),
+                      child: const Text(
+                        'RAG LIVE',
+                        style: TextStyle(
+                          color: _darkForestText,
+                          fontSize: 9.5,
+                          fontWeight: FontWeight.w800,
+                        ),
                       ),
                     ),
                   ],
                 ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 12),
-          const Text(
-            'Welfare Help & Support Chat',
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 21,
-              fontWeight: FontWeight.w800,
-              letterSpacing: -0.2,
+                const SizedBox(height: 2),
+                Text(
+                  'Bilingual Welfare & Subsidy Guidance',
+                  style: TextStyle(
+                    color: Colors.white.withValues(alpha: 0.88),
+                    fontSize: 12,
+                  ),
+                ),
+              ],
             ),
           ),
-          const SizedBox(height: 4),
-          Text(
-            'Instant answers on subsidies, Digital ID verification, prescriptions & lab bookings.',
-            style: TextStyle(
-              color: Colors.white.withValues(alpha: 0.88),
-              fontSize: 12.5,
-              height: 1.35,
+          InkWell(
+            onTap: () {
+              setState(() {
+                _isUrduMode = !_isUrduMode;
+              });
+            },
+            borderRadius: BorderRadius.circular(9),
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+              decoration: BoxDecoration(
+                color: _headerBadgeBg,
+                borderRadius: BorderRadius.circular(9),
+                border: Border.all(color: _headerBadgeBorder),
+              ),
+              child: Text(
+                _isUrduMode ? 'EN / اردو' : 'اردو / EN',
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 11.5,
+                  fontWeight: FontWeight.w800,
+                ),
+              ),
             ),
           ),
         ],
@@ -273,14 +305,12 @@ class _CareGridChatbotScreenState extends State<CareGridChatbotScreen> {
     );
   }
 
-  // ---------------------------------------------------------------------------
-  // CHAT BUBBLE WIDGET
-  // ---------------------------------------------------------------------------
   Widget _buildMessageBubble(Map msg) {
-    final bool isBot = msg['sender'] == 'bot';
+    final bool isAi = msg['sender'] == 'ai';
+    final String source = msg['source'].toString();
 
     return Align(
-      alignment: isBot ? Alignment.centerLeft : Alignment.centerRight,
+      alignment: isAi ? Alignment.centerLeft : Alignment.centerRight,
       child: Container(
         margin: const EdgeInsets.only(bottom: 12),
         constraints: BoxConstraints(
@@ -288,60 +318,84 @@ class _CareGridChatbotScreenState extends State<CareGridChatbotScreen> {
         ),
         padding: const EdgeInsets.all(14),
         decoration: BoxDecoration(
-          color: isBot ? _mintCardBg : _primaryGreen,
+          color: isAi ? Colors.white : _primaryGreen,
           borderRadius: BorderRadius.only(
-            topLeft: const Radius.circular(16),
-            topRight: const Radius.circular(16),
-            bottomLeft: Radius.circular(isBot ? 4 : 16),
-            bottomRight: Radius.circular(isBot ? 16 : 4),
+            topLeft: const Radius.circular(18),
+            topRight: const Radius.circular(18),
+            bottomLeft: Radius.circular(isAi ? 4 : 18),
+            bottomRight: Radius.circular(isAi ? 18 : 4),
           ),
-          border: isBot
-              ? Border.all(color: _mintCardBorder, width: 1.1)
+          border: isAi
+              ? Border.all(color: _mintCardBorder.withValues(alpha: 0.45), width: 1.2)
               : null,
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            if (isBot) ...[
-              Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  const Icon(Icons.smart_toy_outlined,
-                      color: _primaryGreen, size: 14),
-                  const SizedBox(width: 5),
-                  Text(
-                    msg['source']?.toString() ?? 'CareGrid AI',
-                    style: const TextStyle(
-                      color: _primaryGreen,
-                      fontSize: 10.5,
-                      fontWeight: FontWeight.w800,
+            if (isAi)
+              Padding(
+                padding: const EdgeInsets.only(bottom: 6),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.all(4),
+                      decoration: BoxDecoration(
+                        color: _mintCardBg,
+                        borderRadius: BorderRadius.circular(6),
+                      ),
+                      child: const Icon(Icons.auto_awesome_rounded,
+                          color: _primaryGreen, size: 12),
                     ),
-                  ),
-                ],
+                    const SizedBox(width: 6),
+                    const Text(
+                      'CAREGRID GUIDE',
+                      style: TextStyle(
+                        color: _primaryGreen,
+                        fontSize: 10,
+                        fontWeight: FontWeight.w800,
+                        letterSpacing: 0.4,
+                      ),
+                    ),
+                  ],
+                ),
               ),
-              const SizedBox(height: 6),
-            ],
             Text(
               msg['text'].toString(),
               style: TextStyle(
-                color: isBot ? _darkForestText : Colors.white,
-                fontSize: 13,
-                fontWeight: isBot ? FontWeight.w600 : FontWeight.w500,
-                height: 1.4,
+                color: isAi ? _darkForestText : Colors.white,
+                fontSize: 13.5,
+                height: 1.42,
+                fontWeight: isAi ? FontWeight.w500 : FontWeight.w600,
               ),
             ),
-            const SizedBox(height: 5),
-            Align(
-              alignment: Alignment.bottomRight,
-              child: Text(
-                msg['time'].toString(),
-                style: TextStyle(
-                  color: isBot
-                      ? _mutedText
-                      : Colors.white.withValues(alpha: 0.78),
-                  fontSize: 10,
-                  fontWeight: FontWeight.w600,
+            if (isAi && source.isNotEmpty) ...[
+              const SizedBox(height: 9),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 4),
+                decoration: BoxDecoration(
+                  color: _mintCardBg,
+                  borderRadius: BorderRadius.circular(7),
                 ),
+                child: Text(
+                  source,
+                  style: const TextStyle(
+                    color: _primaryGreen,
+                    fontSize: 10.5,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+              ),
+            ],
+            const SizedBox(height: 5),
+            Text(
+              msg['time'].toString(),
+              style: TextStyle(
+                color: isAi
+                    ? _mutedText
+                    : Colors.white.withValues(alpha: 0.78),
+                fontSize: 10,
+                fontWeight: FontWeight.w600,
               ),
             ),
           ],
@@ -350,35 +404,56 @@ class _CareGridChatbotScreenState extends State<CareGridChatbotScreen> {
     );
   }
 
-  // ---------------------------------------------------------------------------
-  // QUICK PROMPTS ROW
-  // ---------------------------------------------------------------------------
-  Widget _buildQuickPromptsBar() {
+  Widget _buildTypingIndicator() {
+    return Align(
+      alignment: Alignment.centerLeft,
+      child: Container(
+        margin: const EdgeInsets.only(bottom: 12),
+        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+        decoration: BoxDecoration(
+          color: _mintCardBg,
+          borderRadius: BorderRadius.circular(14),
+          border: Border.all(color: _mintCardBorder, width: 1),
+        ),
+        child: const Text(
+          'Searching CareGrid welfare policies...',
+          style: TextStyle(
+            color: _primaryGreen,
+            fontSize: 12,
+            fontWeight: FontWeight.w700,
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildQuickPromptStrip(List prompts) {
     return Container(
       height: 44,
       padding: const EdgeInsets.symmetric(vertical: 4),
       child: ListView.separated(
         scrollDirection: Axis.horizontal,
         padding: const EdgeInsets.symmetric(horizontal: 16),
-        itemCount: _quickPrompts.length,
+        itemCount: prompts.length,
         separatorBuilder: (_, __) => const SizedBox(width: 8),
         itemBuilder: (context, index) {
-          final String prompt = _quickPrompts[index].toString();
-          return GestureDetector(
-            onTap: () => _sendMessage(prompt),
+          final String text = prompts[index].toString();
+          return InkWell(
+            onTap: () => _sendMessage(text),
+            borderRadius: BorderRadius.circular(20),
             child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 7),
+              padding: const EdgeInsets.symmetric(horizontal: 13, vertical: 7),
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: _mintCardBg,
                 borderRadius: BorderRadius.circular(20),
-                border: Border.all(color: _mintCardBorder, width: 1.1),
+                border: Border.all(color: _mintCardBorder, width: 1),
               ),
               child: Center(
                 child: Text(
-                  prompt,
+                  text,
                   style: const TextStyle(
-                    color: _primaryGreen,
-                    fontSize: 11.5,
+                    color: _darkForestText,
+                    fontSize: 12,
                     fontWeight: FontWeight.w700,
                   ),
                 ),
@@ -390,64 +465,61 @@ class _CareGridChatbotScreenState extends State<CareGridChatbotScreen> {
     );
   }
 
-  // ---------------------------------------------------------------------------
-  // BOTTOM MESSAGE INPUT BAR
-  // ---------------------------------------------------------------------------
   Widget _buildInputBar() {
     return Container(
-      padding: const EdgeInsets.fromLTRB(16, 8, 16, 20),
+      padding: const EdgeInsets.fromLTRB(16, 10, 16, 20),
       decoration: const BoxDecoration(
         color: Colors.white,
-        border: Border(
-          top: BorderSide(color: _neutralBtnBorder, width: 1),
-        ),
+        border: Border(top: BorderSide(color: _neutralBtnBorder, width: 1.2)),
       ),
       child: Row(
         children: [
           Expanded(
-            child: Container(
-              decoration: BoxDecoration(
-                color: _neutralBtnBg,
-                borderRadius: BorderRadius.circular(14),
-                border: Border.all(color: _neutralBtnBorder),
+            child: TextField(
+              controller: _messageController,
+              onSubmitted: (_) => _sendMessage(),
+              style: const TextStyle(
+                color: _darkForestText,
+                fontSize: 13.5,
+                fontWeight: FontWeight.w600,
               ),
-              child: TextField(
-                controller: _messageController,
-                onSubmitted: _sendMessage,
-                style: const TextStyle(
-                  color: _darkForestText,
-                  fontSize: 13.5,
-                  fontWeight: FontWeight.w600,
+              decoration: InputDecoration(
+                hintText: _isUrduMode
+                    ? 'Roman Urdu ya English mein sawal likhein...'
+                    : 'Ask about subsidies, lab tests, or clinics...',
+                hintStyle: const TextStyle(color: _mutedText, fontSize: 13),
+                filled: true,
+                fillColor: _neutralBtnBg,
+                contentPadding:
+                    const EdgeInsets.symmetric(horizontal: 14, vertical: 11),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(14),
+                  borderSide: const BorderSide(color: _neutralBtnBorder),
                 ),
-                decoration: const InputDecoration(
-                  hintText: 'Ask about subsidies, Digital ID, labs...',
-                  hintStyle: TextStyle(
-                    color: _mutedText,
-                    fontSize: 13,
-                    fontWeight: FontWeight.w400,
-                  ),
-                  border: InputBorder.none,
-                  contentPadding:
-                      EdgeInsets.symmetric(horizontal: 14, vertical: 11),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(14),
+                  borderSide: const BorderSide(color: _neutralBtnBorder),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(14),
+                  borderSide:
+                      const BorderSide(color: _primaryGreen, width: 1.5),
                 ),
               ),
             ),
           ),
           const SizedBox(width: 10),
           InkWell(
-            onTap: () => _sendMessage(_messageController.text),
+            onTap: () => _sendMessage(),
             borderRadius: BorderRadius.circular(14),
             child: Container(
-              padding: const EdgeInsets.all(12),
+              padding: const EdgeInsets.all(13),
               decoration: BoxDecoration(
                 color: _primaryGreen,
                 borderRadius: BorderRadius.circular(14),
               ),
-              child: const Icon(
-                Icons.send_rounded,
-                color: Colors.white,
-                size: 20,
-              ),
+              child: const Icon(Icons.send_rounded,
+                  color: Colors.white, size: 20),
             ),
           ),
         ],

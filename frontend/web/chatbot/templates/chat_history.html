@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CareGrid | AI Assistant Chat History</title>
+  <style>
+    :root {
+      --primary-green: #14634B;
+      --primary-green-dark: #0F4E3B;
+      --header-badge-bg: #1E755B;
+      --header-badge-border: #3E8E75;
+      --amber-badge: #F4A623;
+      --mint-card-bg: #DDF2EA;
+      --mint-card-border: #2B7A62;
+      --dark-forest-text: #1B4332;
+      --muted-text: #4A635A;
+      --canvas-bg: #F8FAFC;
+      --neutral-btn-bg: #F1F5F4;
+      --neutral-btn-border: #D5DFDC;
+      --soft-red-bg: #FBE9EC;
+      --soft-red-border: #D6455D;
+      --crimson-badge: #D92D4B;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Inter, -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+    }
+
+    body {
+      background-color: var(--canvas-bg);
+      color: var(--dark-forest-text);
+      min-height: 100vh;
+      display: flex;
+    }
+
+    /* LEFT SIDEBAR */
+    .sidebar {
+      width: 285px;
+      background-color: var(--primary-green);
+      color: #FFFFFF;
+      display: flex;
+      flex-direction: column;
+      padding: 24px 18px;
+      position: fixed;
+      top: 0;
+      bottom: 0;
+      left: 0;
+    }
+
+    .brand-box {
+      padding-bottom: 18px;
+      border-bottom: 1px solid var(--header-badge-border);
+      margin-bottom: 18px;
+    }
+
+    .brand-pill {
+      display: inline-block;
+      background-color: var(--amber-badge);
+      color: var(--dark-forest-text);
+      font-size: 11px;
+      font-weight: 800;
+      padding: 4px 10px;
+      border-radius: 6px;
+      letter-spacing: 0.4px;
+      margin-bottom: 10px;
+    }
+
+    .brand-title {
+      font-size: 21px;
+      font-weight: 800;
+      letter-spacing: -0.2px;
+    }
+
+    .brand-sub {
+      font-size: 12.5px;
+      color: rgba(255, 255, 255, 0.85);
+      margin-top: 3px;
+    }
+
+    .nav-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      flex: 1;
+    }
+
+    .nav-item a {
+      display: flex;
+      align-items: center;
+      text-decoration: none;
+      color: rgba(255, 255, 255, 0.88);
+      font-size: 14px;
+      font-weight: 600;
+      padding: 11px 14px;
+      border-radius: 12px;
+      transition: background 0.15s ease;
+    }
+
+    .nav-item a:hover {
+      background-color: var(--header-badge-bg);
+    }
+
+    .nav-item a.active {
+      background-color: var(--mint-card-bg);
+      color: var(--dark-forest-text);
+      font-weight: 800;
+    }
+
+    .context-footer {
+      background-color: var(--mint-card-bg);
+      color: var(--dark-forest-text);
+      border: 1.5px solid var(--mint-card-border);
+      border-radius: 13px;
+      padding: 13px;
+      font-size: 12px;
+    }
+
+    .context-footer strong {
+      display: block;
+      font-size: 13px;
+      color: var(--primary-green);
+      margin-bottom: 3px;
+    }
+
+    /* MAIN WORKSPACE */
+    .main-wrapper {
+      margin-left: 285px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .top-banner {
+      background-color: var(--primary-green);
+      color: #FFFFFF;
+      padding: 24px 32px 36px 32px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .top-banner h1 {
+      font-size: 24px;
+      font-weight: 800;
+      letter-spacing: -0.2px;
+    }
+
+    .top-banner p {
+      font-size: 13.5px;
+      color: rgba(255, 255, 255, 0.88);
+      margin-top: 4px;
+    }
+
+    .btn-header-cta {
+      display: inline-block;
+      background-color: var(--amber-badge);
+      color: var(--dark-forest-text);
+      text-decoration: none;
+      padding: 10px 16px;
+      border-radius: 11px;
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .content-sheet {
+      background-color: var(--canvas-bg);
+      border-top-left-radius: 28px;
+      border-top-right-radius: 28px;
+      margin-top: -18px;
+      padding: 26px 32px 48px 32px;
+      flex: 1;
+    }
+
+    /* FILTER TOOLBAR */
+    .toolbar-card {
+      background-color: var(--mint-card-bg);
+      border: 1.5px solid var(--mint-card-border);
+      border-radius: 16px;
+      padding: 15px 20px;
+      margin-bottom: 22px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 14px;
+    }
+
+    .search-input {
+      padding: 10px 14px;
+      border-radius: 10px;
+      border: 1.4px solid var(--mint-card-border);
+      background-color: #FFFFFF;
+      font-size: 13.5px;
+      font-weight: 600;
+      color: var(--dark-forest-text);
+      width: 300px;
+      outline: none;
+    }
+
+    .filter-group {
+      display: flex;
+      background-color: #FFFFFF;
+      border: 1.2px solid var(--mint-card-border);
+      border-radius: 11px;
+      padding: 4px;
+      gap: 4px;
+      flex-wrap: wrap;
+    }
+
+    .filter-tab {
+      border: none;
+      background: transparent;
+      padding: 7px 13px;
+      border-radius: 8px;
+      font-size: 12.5px;
+      font-weight: 700;
+      color: var(--muted-text);
+      cursor: pointer;
+    }
+
+    .filter-tab.active {
+      background-color: var(--primary-green);
+      color: #FFFFFF;
+    }
+
+    /* TWO-COLUMN HISTORY & TRANSCRIPT VIEWER */
+    .history-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.45fr;
+      gap: 20px;
+      align-items: start;
+    }
+
+    .session-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .session-card {
+      background-color: #FFFFFF;
+      border: 1.5px solid var(--neutral-btn-border);
+      border-radius: 16px;
+      padding: 16px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .session-card:hover {
+      border-color: var(--mint-card-border);
+    }
+
+    .session-card.selected {
+      background-color: var(--mint-card-bg);
+      border-color: var(--mint-card-border);
+    }
+
+    .session-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 6px;
+      gap: 8px;
+    }
+
+    .cat-pill {
+      background-color: var(--primary-green);
+      color: #FFFFFF;
+      font-size: 10.5px;
+      font-weight: 800;
+      padding: 3px 9px;
+      border-radius: 6px;
+    }
+
+    .session-date {
+      font-size: 11.5px;
+      font-weight: 700;
+      color: var(--muted-text);
+    }
+
+    .session-title {
+      font-size: 15px;
+      font-weight: 800;
+      color: var(--dark-forest-text);
+      margin-bottom: 4px;
+    }
+
+    .session-preview {
+      font-size: 12.5px;
+      color: var(--muted-text);
+      line-height: 1.4;
+    }
+
+    /* TRANSCRIPT PANEL */
+    .transcript-panel {
+      background-color: #FFFFFF;
+      border: 1.5px solid var(--neutral-btn-border);
+      border-radius: 18px;
+      padding: 22px;
+    }
+
+    .transcript-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      padding-bottom: 16px;
+      border-bottom: 1.5px solid var(--neutral-btn-border);
+      margin-bottom: 18px;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .transcript-header h2 {
+      font-size: 18px;
+      font-weight: 800;
+      color: var(--dark-forest-text);
+    }
+
+    .transcript-meta {
+      font-size: 12.5px;
+      color: var(--muted-text);
+      margin-top: 3px;
+      font-weight: 600;
+    }
+
+    .transcript-actions {
+      display: flex;
+      gap: 8px;
+    }
+
+    .btn-outline {
+      background-color: var(--neutral-btn-bg);
+      color: var(--dark-forest-text);
+      border: 1.2px solid var(--neutral-btn-border);
+      padding: 8px 13px;
+      border-radius: 9px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      text-decoration: none;
+    }
+
+    .btn-outline:hover {
+      background-color: var(--mint-card-bg);
+      border-color: var(--mint-card-border);
+    }
+
+    .btn-danger {
+      background-color: var(--soft-red-bg);
+      color: var(--crimson-badge);
+      border: 1.2px solid var(--soft-red-border);
+      padding: 8px 13px;
+      border-radius: 9px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .thread-stream {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .bubble {
+      padding: 14px 16px;
+      border-radius: 16px;
+      font-size: 13.5px;
+      line-height: 1.5;
+      max-width: 86%;
+    }
+
+    .bubble.user {
+      align-self: flex-end;
+      background-color: var(--primary-green);
+      color: #FFFFFF;
+      border-bottom-right-radius: 4px;
+      font-weight: 600;
+    }
+
+    .bubble.ai {
+      align-self: flex-start;
+      background-color: var(--neutral-btn-bg);
+      border: 1.2px solid var(--neutral-btn-border);
+      color: var(--dark-forest-text);
+      border-bottom-left-radius: 4px;
+    }
+
+    .bubble-role {
+      display: block;
+      font-size: 10.5px;
+      font-weight: 800;
+      color: var(--primary-green);
+      margin-bottom: 5px;
+      letter-spacing: 0.3px;
+    }
+
+    .source-tag {
+      display: inline-block;
+      margin-top: 8px;
+      background-color: var(--mint-card-bg);
+      color: var(--primary-green);
+      border: 1px solid var(--mint-card-border);
+      padding: 3px 9px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background-color: var(--primary-green);
+      color: #FFFFFF;
+      padding: 13px 20px;
+      border-radius: 12px;
+      font-size: 13.5px;
+      font-weight: 700;
+      box-shadow: 0 8px 20px rgba(20, 99, 75, 0.25);
+      display: none;
+      z-index: 1000;
+    }
+
+    @media (max-width: 960px) {
+      .sidebar {
+        display: none;
+      }
+      .main-wrapper {
+        margin-left: 0;
+      }
+      .history-grid {
+        grid-template-columns: 1fr;
+      }
+      .search-input {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="brand-box">
+      <span class="brand-pill">AI WELFARE GUIDE</span>
+      <div class="brand-title">CareGrid Assistant</div>
+      <div class="brand-sub">Bilingual RAG Support Portal</div>
+    </div>
+
+    <ul class="nav-list">
+      <li class="nav-item">
+        <a href="caregrid_ai_assistant.html">Live AI Assistant</a>
+      </li>
+      <li class="nav-item">
+        <a href="chathistory.html" class="active">Chat History Archive</a>
+      </li>
+    </ul>
+
+    <div class="context-footer">
+      <strong>Beneficiary Profile</strong>
+      <span>Ayesha Bibi • CG-BEN-2026-009481</span>
+    </div>
+  </aside>
+
+  <!-- MAIN WORKSPACE -->
+  <div class="main-wrapper">
+    <header class="top-banner">
+      <div>
+        <h1>Saved AI Assistant Conversations</h1>
+        <p>Review previous welfare policy answers, lab subsidy checks, and bilingual Roman Urdu guidance.</p>
+      </div>
+      <a href="caregrid_ai_assistant.html" class="btn-header-cta">+ Start New Chat</a>
+    </header>
+
+    <main class="content-sheet">
+      <!-- SEARCH & CATEGORY FILTER -->
+      <section class="toolbar-card">
+        <input
+          type="text"
+          id="searchInput"
+          class="search-input"
+          placeholder="Search saved questions or policy topics..."
+          oninput="renderSessionList()"
+        />
+
+        <div class="filter-group">
+          <button class="filter-tab active" onclick="setCategory('All', this)">All Sessions</button>
+          <button class="filter-tab" onclick="setCategory('Lab & Diagnostics', this)">Lab & Diagnostics</button>
+          <button class="filter-tab" onclick="setCategory('Subsidy & Ration', this)">Subsidy & Ration</button>
+          <button class="filter-tab" onclick="setCategory('Prescriptions & OCR', this)">Prescriptions & OCR</button>
+        </div>
+      </section>
+
+      <!-- TWO-COLUMN ARCHIVE -->
+      <div class="history-grid">
+        <!-- LEFT: SESSION LIST -->
+        <div class="session-list" id="sessionList"></div>
+
+        <!-- RIGHT: SELECTED TRANSCRIPT -->
+        <div class="transcript-panel" id="transcriptPanel"></div>
+      </div>
+    </main>
+  </div>
+
+  <div id="toast" class="toast"></div>
+
+  <script>
+    const chatSessions = [
+      {
+        id: 'CHAT-2026-904',
+        title: 'Monthly Diagnostic Lab Subsidy Balance',
+        category: 'Lab & Diagnostics',
+        date: '22 Nov 2026 • 09:46 AM',
+        language: 'English',
+        preview: 'Checked remaining Rs. 8,500 diagnostic lab pool and 80% subsidy eligibility at Chughtai Lab.',
+        messages: [
+          {
+            sender: 'user',
+            text: 'How much diagnostic lab subsidy do I have left this month?'
+          },
+          {
+            sender: 'ai',
+            text: 'Under your active Al-Khidmat Foundation sponsorship (ID: CG-BEN-2026-009481), you have Rs. 8,500 remaining in your monthly diagnostic pool. All partner labs cover 80% of approved tests upon uploading a doctor prescription.',
+            source: 'Beneficiary Policy Ledger • Live Sync'
+          },
+          {
+            sender: 'user',
+            text: 'Which branch near Johar Town accepts my Digital ID pass?'
+          },
+          {
+            sender: 'ai',
+            text: 'Chughtai Lab - Johar Town Branch (Reg ID: CG-LAB-0042) is active and verified. Present your Digital ID QR pass at reception to pay only the 20% patient co-share.',
+            source: 'Partner Directory • Lahore Zone'
+          }
+        ]
+      },
+      {
+        id: 'CHAT-2026-891',
+        title: 'Ration & Pharmacy Cap Inquiry (Roman Urdu)',
+        category: 'Subsidy & Ration',
+        date: '19 Nov 2026 • 04:15 PM',
+        language: 'Roman Urdu',
+        preview: 'Meri monthly medicine subsidy limit aur ration renewal documents ki maloomat.',
+        messages: [
+          {
+            sender: 'user',
+            text: 'Meri baaqi medicine subsidy kitni hai aur ration renewal ke liye kaunse documents chahiye?'
+          },
+          {
+            sender: 'ai',
+            text: 'Aap ke CareGrid account mein Rs. 4,200 ki monthly pharmacy medicine subsidy (70% coverage) baaqi hai. Ration renewal ke liye apna valid CNIC aur taza bijli ka bill upload karein. Aapka current tier 31 Dec 2026 tak active hai.',
+            source: 'Welfare Eligibility Manual • Bilingual RAG'
+          }
+        ]
+      },
+      {
+        id: 'CHAT-2026-874',
+        title: 'Prescription OCR Verification Guidelines',
+        category: 'Prescriptions & OCR',
+        date: '14 Nov 2026 • 11:20 AM',
+        language: 'English',
+        preview: 'Verified rules for uploading doctor prescriptions for CBC and HbA1c test approval.',
+        messages: [
+          {
+            sender: 'user',
+            text: 'Why do I need to upload a prescription before booking an HbA1c lab test?'
+          },
+          {
+            sender: 'ai',
+            text: 'CareGrid requires a signed physician prescription dated within the last 30 days so our AI OCR verifier can validate the clinical indication and unlock your 80% NGO diagnostic subsidy.',
+            source: 'Diagnostic SOP • Section 3.2'
+          }
+        ]
+      }
+    ];
+
+    let currentCategory = 'All';
+    let selectedId = chatSessions[0].id;
+
+    function showToast(msg) {
+      const toast = document.getElementById('toast');
+      toast.textContent = msg;
+      toast.style.display = 'block';
+      setTimeout(() => {
+        toast.style.display = 'none';
+      }, 2200);
+    }
+
+    function setCategory(cat, btn) {
+      currentCategory = cat;
+      document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+      btn.classList.add('active');
+      renderSessionList();
+    }
+
+    function selectSession(id) {
+      selectedId = id;
+      renderSessionList();
+      renderTranscript();
+    }
+
+    function deleteSession(id) {
+      const idx = chatSessions.findIndex(s => s.id === id);
+      if (idx !== -1) {
+        chatSessions.splice(idx, 1);
+        selectedId = chatSessions.length > 0 ? chatSessions[0].id : null;
+        renderSessionList();
+        renderTranscript();
+        showToast('Chat session deleted from archive');
+      }
+    }
+
+    function copyTranscript() {
+      const session = chatSessions.find(s => s.id === selectedId);
+      if (!session) return;
+      const summary = session.messages.map(m => `${m.sender.toUpperCase()}: ${m.text}`).join('\n');
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(summary);
+      }
+      showToast('Transcript copied to clipboard');
+    }
+
+    function renderSessionList() {
+      const query = document.getElementById('searchInput').value.trim().toLowerCase();
+      const listEl = document.getElementById('sessionList');
+      listEl.innerHTML = '';
+
+      const filtered = chatSessions.filter(s => {
+        const matchCat = currentCategory === 'All' || s.category === currentCategory;
+        const matchQuery =
+          s.title.toLowerCase().includes(query) ||
+          s.preview.toLowerCase().includes(query) ||
+          s.category.toLowerCase().includes(query);
+        return matchCat && matchQuery;
+      });
+
+      if (filtered.length === 0) {
+        listEl.innerHTML = `
+          <div class="session-card">
+            <div class="session-preview">No saved conversations match your filter.</div>
+          </div>
+        `;
+        return;
+      }
+
+      filtered.forEach(s => {
+        const isSelected = s.id === selectedId;
+        const html = `
+          <div class="session-card ${isSelected ? 'selected' : ''}" onclick="selectSession('${s.id}')">
+            <div class="session-top">
+              <span class="cat-pill">${s.category.toUpperCase()}</span>
+              <span class="session-date">${s.date}</span>
+            </div>
+            <div class="session-title">${s.title}</div>
+            <div class="session-preview">${s.preview}</div>
+          </div>
+        `;
+        listEl.insertAdjacentHTML('beforeend', html);
+      });
+    }
+
+    function renderTranscript() {
+      const panel = document.getElementById('transcriptPanel');
+      const session = chatSessions.find(s => s.id === selectedId);
+
+      if (!session) {
+        panel.innerHTML = `<p style="color:var(--muted-text);font-size:13.5px;">Select a conversation from the left to view its transcript.</p>`;
+        return;
+      }
+
+      const bubblesHtml = session.messages
+        .map(m => {
+          const isAi = m.sender === 'ai';
+          return `
+            <div class="bubble ${isAi ? 'ai' : 'user'}">
+              ${isAi ? '<span class="bubble-role">CAREGRID RAG ASSISTANT</span>' : ''}
+              <div>${m.text}</div>
+              ${isAi && m.source ? `<div class="source-tag">${m.source}</div>` : ''}
+            </div>
+          `;
+        })
+        .join('');
+
+      panel.innerHTML = `
+        <div class="transcript-header">
+          <div>
+            <h2>${session.title}</h2>
+            <div class="transcript-meta">${session.id} • ${session.date} • Language: ${session.language}</div>
+          </div>
+          <div class="transcript-actions">
+            <button class="btn-outline" onclick="copyTranscript()">Copy Transcript</button>
+            <a href="caregrid_ai_assistant.html" class="btn-outline">Continue Chat</a>
+            <button class="btn-danger" onclick="deleteSession('${session.id}')">Delete</button>
+          </div>
+        </div>
+        <div class="thread-stream">
+          ${bubblesHtml}
+        </div>
+      `;
+    }
+
+    renderSessionList();
+    renderTranscript();
+  </script>
+</body>
+</html>
