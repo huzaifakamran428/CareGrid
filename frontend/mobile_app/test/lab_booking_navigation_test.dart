@@ -20,6 +20,10 @@ void main() {
 
     final bookAction = find.text('View & Book').first;
     await tester.ensureVisible(bookAction);
+    await tester.pumpAndSettle();
+    // Avoid the fixed bottom nav overlay when a list item sits at the edge.
+    await tester.drag(find.byType(ListView).last, const Offset(0, -220));
+    await tester.pumpAndSettle();
     await tester.tap(bookAction);
     await tester.pumpAndSettle();
     expect(find.text('Select Time Slot & Book Appointment'), findsOneWidget);
