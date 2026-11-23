@@ -53,7 +53,7 @@ class _ChatHistoryScreenState extends State<ChatHistoryScreen> {
   @override
   Widget build(BuildContext context) => Scaffold(
     appBar: AppBar(
-      title: const Text('Chat history'),
+      title: const CareGridPageTitle('Chat history'),
       actions: [
         TextButton.icon(
           onPressed: () => _openChat(),
@@ -66,7 +66,7 @@ class _ChatHistoryScreenState extends State<ChatHistoryScreen> {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Container(
-          color: const CareGridPalette.paleMint,
+          color: CareGridPalette.paleMint,
           padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 13),
           child: const Row(children: [
             Icon(Icons.info_outline, color: CareGridPalette.primary, size: 19),

@@ -29,7 +29,7 @@ class DigitalIdScreen extends StatelessWidget {
             Container(
               decoration: BoxDecoration(
                 color: Colors.white,
-                border: Border.all(color: const CareGridPalette.mintBorder),
+                border: Border.all(color: CareGridPalette.mintBorder),
                 borderRadius: BorderRadius.circular(20),
                 boxShadow: const [BoxShadow(color: Color(0x0D075A50), blurRadius: 20, offset: Offset(0, 10))],
               ),
@@ -67,7 +67,7 @@ class DigitalIdScreen extends StatelessWidget {
                   ]),
                 ),
                 Container(
-                  color: const CareGridPalette.paleMint,
+                  color: CareGridPalette.paleMint,
                   padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 13),
                   child: Wrap(spacing: 10, runSpacing: 5, alignment: WrapAlignment.spaceBetween, children: [
                     Text('Issued: ${beneficiary.issuedAt}', style: const TextStyle(color: CareGridPalette.secondaryText, fontSize: 10)),
@@ -78,7 +78,7 @@ class DigitalIdScreen extends StatelessWidget {
             ),
             const SizedBox(height: 22),
             Container(
-              decoration: BoxDecoration(color: const CareGridPalette.paleMint, borderRadius: BorderRadius.circular(14)),
+              decoration: BoxDecoration(color: CareGridPalette.paleMint, borderRadius: BorderRadius.circular(14)),
               padding: const EdgeInsets.all(15),
               child: const Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
                 Icon(Icons.verified_user_outlined, size: 21, color: _green),
@@ -105,7 +105,7 @@ class DigitalIdScreen extends StatelessWidget {
     return Container(
       width: 92,
       height: 116,
-      decoration: BoxDecoration(color: const CareGridPalette.paleNeutral, borderRadius: BorderRadius.circular(13)),
+      decoration: BoxDecoration(color: CareGridPalette.paleNeutral, borderRadius: BorderRadius.circular(13)),
       clipBehavior: Clip.antiAlias,
       child: file == null
           ? const Column(mainAxisAlignment: MainAxisAlignment.center, children: [

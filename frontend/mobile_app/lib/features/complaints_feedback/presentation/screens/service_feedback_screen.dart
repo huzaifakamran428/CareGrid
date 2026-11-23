@@ -85,7 +85,7 @@ class _ServiceFeedbackScreenState extends State<ServiceFeedbackScreen> {
               tooltip: '${index + 1} stars',
               onPressed: () => setState(() => _rating = index + 1),
               icon: Icon(index < _rating ? Icons.star_rounded : Icons.star_outline_rounded,
-                size: 30, color: const CareGridPalette.goldDeep),
+                size: 30, color: CareGridPalette.goldDeep),
             ))),
             const SizedBox(height: 12),
             TextField(

@@ -88,7 +88,7 @@ class _ComplaintsHomeScreenState extends State<ComplaintsHomeScreen> {
                         onSelected: (_) => setState(() => _filter = filter),
                         selectedColor: CgColors.paleMint,
                         backgroundColor: Colors.white,
-                        side: BorderSide(color: _filter == filter ? const CareGridPalette.mintBorder : CgColors.line),
+                        side: BorderSide(color: _filter == filter ? CareGridPalette.mintBorder : CgColors.line),
                         labelStyle: TextStyle(fontSize: 12, fontWeight: FontWeight.w700, color: _filter == filter ? CgColors.primary : CgColors.secondary),
                         showCheckmark: false,
                       ),
@@ -156,7 +156,7 @@ class _ComplaintsHomeScreenState extends State<ComplaintsHomeScreen> {
     padding: const EdgeInsets.all(13),
     decoration: BoxDecoration(color: Colors.white.withOpacity(.10), borderRadius: BorderRadius.circular(14), border: Border.all(color: Colors.white.withOpacity(.12))),
     child: Row(children: [
-      Icon(icon, color: const CareGridPalette.gold, size: 20),
+      Icon(icon, color: CareGridPalette.gold, size: 20),
       const SizedBox(width: 7),
       Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         Text(value, style: const TextStyle(fontSize: 19, color: Colors.white, fontWeight: FontWeight.w900)),

@@ -12,7 +12,7 @@ class ComplaintSubmittedScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-    appBar: AppBar(title: const Text('Complaint submitted'), automaticallyImplyLeading: false),
+    appBar: AppBar(title: const CareGridPageTitle('Complaint saved'), automaticallyImplyLeading: false),
     body: SafeArea(child: Padding(
       padding: const EdgeInsets.fromLTRB(20, 24, 20, 25),
       child: Column(children: [
