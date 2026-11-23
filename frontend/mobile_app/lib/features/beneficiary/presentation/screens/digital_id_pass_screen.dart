@@ -1,0 +1,592 @@
+// ignore_for_file: deprecated_member_use
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+
+class DigitalIdPassScreen extends StatefulWidget {
+  const DigitalIdPassScreen({super.key});
+
+  @override
+  State<DigitalIdPassScreen> createState() => _DigitalIdPassScreenState();
+}
+
+class _DigitalIdPassScreenState extends State<DigitalIdPassScreen> {
+  // ---------------------------------------------------------------------------
+  // DESIGN SYSTEM COLORS (100% Consistent across CareGrid Screens)
+  // ---------------------------------------------------------------------------
+  static const Color _primaryGreen = Color(0xFF14634B);
+  static const Color _headerBadgeBg = Color(0xFF1E755B);
+  static const Color _headerBadgeBorder = Color(0xFF3E8E75);
+  static const Color _amberBadge = Color(0xFFF4A623);
+
+  static const Color _mintCardBg = Color(0xFFDDF2EA);
+  static const Color _mintCardBorder = Color(0xFF2B7A62);
+  static const Color _darkForestText = Color(0xFF1B4332);
+  static const Color _mutedText = Color(0xFF4A635A);
+
+  static const Color _canvasBg = Color(0xFFF8FAFC);
+  static const Color _neutralBtnBg = Color(0xFFF1F5F4);
+  static const Color _neutralBtnBorder = Color(0xFFD5DFDC);
+
+  // ---------------------------------------------------------------------------
+  // DUMMY BENEFICIARY DIGITAL ID DATA
+  // ---------------------------------------------------------------------------
+  final Map _digitalPassData = {
+    'fullName': 'Ayesha Bibi',
+    'digitalId': 'CG-BEN-2026-009481',
+    'cnic': '35202-4819204-2',
+    'ngoName': 'Al-Khidmat Foundation Lahore',
+    'validUntil': '31 Dec 2026',
+    'monthlyCap': 'Rs. 12,000',
+    'remainingBalance': 'Rs. 8,500',
+    'medSubsidy': '70% Covered',
+    'labSubsidy': '80% Covered',
+    'foodTier': 'Active Daily Ration',
+  };
+
+  final List _recentScans = [
+    {
+      'provider': 'Sehat Welfare Pharmacy - Johar Town',
+      'type': 'Medicine Dispensing (70% Subsidy)',
+      'date': '18 Nov 2026 • 04:15 PM',
+      'savedAmount': 'Rs. 1,400',
+    },
+    {
+      'provider': 'Shaukat Khanum Diagnostic Centre',
+      'type': 'HbA1c Lab Test (80% Subsidy)',
+      'date': '16 Nov 2026 • 09:30 AM',
+      'savedAmount': 'Rs. 1,760',
+    },
+    {
+      'provider': 'Lahore Community Kitchen #04',
+      'type': 'Family Food Pack Pickup',
+      'date': '12 Nov 2026 • 01:10 PM',
+      'savedAmount': 'Verified',
+    },
+  ];
+
+  void _copyDigitalId() {
+    Clipboard.setData(
+      ClipboardData(text: _digitalPassData['digitalId'].toString()),
+    );
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('Digital ID copied to clipboard'),
+        backgroundColor: _primaryGreen,
+        behavior: SnackBarBehavior.floating,
+        duration: Duration(seconds: 1),
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: _primaryGreen,
+      body: SafeArea(
+        bottom: false,
+        child: Column(
+          children: [
+            // 1. TOP FOREST GREEN HEADER
+            _buildTopHeader(),
+
+            // 2. MAIN ROUNDED SHEET CONTAINER
+            Expanded(
+              child: Container(
+                width: double.infinity,
+                decoration: const BoxDecoration(
+                  color: _canvasBg,
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(28),
+                    topRight: Radius.circular(28),
+                  ),
+                ),
+                child: ClipRRect(
+                  borderRadius: const BorderRadius.only(
+                    topLeft: Radius.circular(28),
+                    topRight: Radius.circular(28),
+                  ),
+                  child: SingleChildScrollView(
+                    padding: const EdgeInsets.fromLTRB(16, 18, 16, 32),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // Official Digital ID & QR Verification Card
+                        _buildOfficialDigitalPassCard(),
+                        const SizedBox(height: 18),
+
+                        // Active Subsidy Entitlements Summary Card
+                        _buildEntitlementsCard(),
+                        const SizedBox(height: 18),
+
+                        // Recent Provider Scan History
+                        const Text(
+                          'Recent Counter Verifications',
+                          style: TextStyle(
+                            color: _darkForestText,
+                            fontSize: 15,
+                            fontWeight: FontWeight.w800,
+                          ),
+                        ),
+                        const SizedBox(height: 10),
+                        _buildRecentScansList(),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  // ---------------------------------------------------------------------------
+  // TOP HEADER
+  // ---------------------------------------------------------------------------
+  Widget _buildTopHeader() {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(18, 10, 18, 18),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              InkWell(
+                onTap: () => Navigator.maybePop(context),
+                borderRadius: BorderRadius.circular(8),
+                child: Container(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                  decoration: BoxDecoration(
+                    color: _headerBadgeBg,
+                    borderRadius: BorderRadius.circular(8),
+                    border: Border.all(color: _headerBadgeBorder, width: 1),
+                  ),
+                  child: const Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(Icons.arrow_back_ios_new_rounded,
+                          color: Colors.white, size: 12),
+                      SizedBox(width: 5),
+                      Text(
+                        'BACK',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 11,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              Container(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
+                decoration: BoxDecoration(
+                  color: _amberBadge,
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: const Text(
+                  'VERIFIED PASS',
+                  style: TextStyle(
+                    color: _darkForestText,
+                    fontSize: 11,
+                    fontWeight: FontWeight.w800,
+                    letterSpacing: 0.4,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 14),
+          const Text(
+            'CareGrid Digital Welfare ID',
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 21,
+              fontWeight: FontWeight.w800,
+              letterSpacing: -0.2,
+            ),
+          ),
+          const SizedBox(height: 4),
+          Text(
+            'Present this pass at partner pharmacies, diagnostic labs, or food kitchens for instant verification.',
+            style: TextStyle(
+              color: Colors.white.withValues(alpha: 0.88),
+              fontSize: 12.5,
+              height: 1.35,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  // ---------------------------------------------------------------------------
+  // OFFICIAL DIGITAL ID & QR PASS CARD
+  // ---------------------------------------------------------------------------
+  Widget _buildOfficialDigitalPassCard() {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(18),
+      decoration: BoxDecoration(
+        color: _mintCardBg,
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: _mintCardBorder, width: 1.4),
+      ),
+      child: Column(
+        children: [
+          // Top Status Pill & Validity
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Container(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                decoration: BoxDecoration(
+                  color: _primaryGreen,
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: const Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(Icons.verified_user_rounded,
+                        color: Colors.white, size: 13),
+                    SizedBox(width: 5),
+                    Text(
+                      'ACTIVE BENEFICIARY',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 10.5,
+                        fontWeight: FontWeight.w800,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Text(
+                'Valid Thru: ${_digitalPassData['validUntil']}',
+                style: const TextStyle(
+                  color: _darkForestText,
+                  fontSize: 11.5,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 16),
+
+          // Beneficiary Name & NGO Sponsor
+          Row(
+            children: [
+              Container(
+                width: 52,
+                height: 52,
+                decoration: BoxDecoration(
+                  color: _primaryGreen,
+                  borderRadius: BorderRadius.circular(14),
+                ),
+                child: const Center(
+                  child: Text(
+                    'AB',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 18,
+                      fontWeight: FontWeight.w800,
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      _digitalPassData['fullName'].toString(),
+                      style: const TextStyle(
+                        color: _darkForestText,
+                        fontSize: 18,
+                        fontWeight: FontWeight.w800,
+                      ),
+                    ),
+                    const SizedBox(height: 2),
+                    Text(
+                      'CNIC: ${_digitalPassData['cnic']}',
+                      style: const TextStyle(
+                        color: _mutedText,
+                        fontSize: 12,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                    const SizedBox(height: 2),
+                    Text(
+                      'Sponsor: ${_digitalPassData['ngoName']}',
+                      style: const TextStyle(
+                        color: _primaryGreen,
+                        fontSize: 12,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 16),
+
+          // White Scannable QR Code & Digital ID Box
+          Container(
+            width: double.infinity,
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(14),
+              border: Border.all(color: _mintCardBorder, width: 1.2),
+            ),
+            child: Column(
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    color: _neutralBtnBg,
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(color: _neutralBtnBorder),
+                  ),
+                  child: const Icon(
+                    Icons.qr_code_2_rounded,
+                    size: 132,
+                    color: _darkForestText,
+                  ),
+                ),
+                const SizedBox(height: 12),
+                const Text(
+                  'UNIQUE CAREGRID DIGITAL ID',
+                  style: TextStyle(
+                    color: _mutedText,
+                    fontSize: 10.5,
+                    fontWeight: FontWeight.w700,
+                    letterSpacing: 0.5,
+                  ),
+                ),
+                const SizedBox(height: 4),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      _digitalPassData['digitalId'].toString(),
+                      style: const TextStyle(
+                        color: _primaryGreen,
+                        fontSize: 16.5,
+                        fontWeight: FontWeight.w800,
+                        letterSpacing: 0.4,
+                      ),
+                    ),
+                    const SizedBox(width: 6),
+                    InkWell(
+                      onTap: _copyDigitalId,
+                      borderRadius: BorderRadius.circular(6),
+                      child: Container(
+                        padding: const EdgeInsets.all(5),
+                        decoration: BoxDecoration(
+                          color: _mintCardBg,
+                          borderRadius: BorderRadius.circular(6),
+                        ),
+                        child: const Icon(
+                          Icons.copy_rounded,
+                          size: 15,
+                          color: _primaryGreen,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  // ---------------------------------------------------------------------------
+  // ACTIVE ENTITLEMENTS & SUBSIDY QUOTA CARD
+  // ---------------------------------------------------------------------------
+  Widget _buildEntitlementsCard() {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: _neutralBtnBorder, width: 1.2),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Text(
+                'Active Welfare Entitlements',
+                style: TextStyle(
+                  color: _darkForestText,
+                  fontSize: 15,
+                  fontWeight: FontWeight.w800,
+                ),
+              ),
+              Text(
+                '${_digitalPassData['remainingBalance']} Left',
+                style: const TextStyle(
+                  color: _primaryGreen,
+                  fontSize: 12.5,
+                  fontWeight: FontWeight.w800,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 12),
+          _buildEntitlementRow(
+            Icons.medication_outlined,
+            'Pharmacy Medicines',
+            _digitalPassData['medSubsidy'].toString(),
+          ),
+          const SizedBox(height: 9),
+          _buildEntitlementRow(
+            Icons.biotech_outlined,
+            'Diagnostic Lab Tests',
+            _digitalPassData['labSubsidy'].toString(),
+          ),
+          const SizedBox(height: 9),
+          _buildEntitlementRow(
+            Icons.volunteer_activism_outlined,
+            'Food & Ration Support',
+            _digitalPassData['foodTier'].toString(),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildEntitlementRow(IconData icon, String label, String badgeText) {
+    return Row(
+      children: [
+        Icon(icon, color: _primaryGreen, size: 18),
+        const SizedBox(width: 9),
+        Expanded(
+          child: Text(
+            label,
+            style: const TextStyle(
+              color: _darkForestText,
+              fontSize: 13,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+        ),
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 4),
+          decoration: BoxDecoration(
+            color: _mintCardBg,
+            borderRadius: BorderRadius.circular(7),
+          ),
+          child: Text(
+            badgeText,
+            style: const TextStyle(
+              color: _primaryGreen,
+              fontSize: 11,
+              fontWeight: FontWeight.w800,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  // ---------------------------------------------------------------------------
+  // RECENT COUNTER SCANS LIST
+  // ---------------------------------------------------------------------------
+  Widget _buildRecentScansList() {
+    return Column(
+      children: List.generate(_recentScans.length, (index) {
+        final Map scan = _recentScans[index] as Map;
+        return Container(
+          margin: const EdgeInsets.only(bottom: 10),
+          padding: const EdgeInsets.all(14),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(color: _neutralBtnBorder, width: 1.2),
+          ),
+          child: Row(
+            children: [
+              Container(
+                padding: const EdgeInsets.all(9),
+                decoration: BoxDecoration(
+                  color: _mintCardBg,
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: const Icon(
+                  Icons.qr_code_scanner_rounded,
+                  color: _primaryGreen,
+                  size: 19,
+                ),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      scan['provider'].toString(),
+                      style: const TextStyle(
+                        color: _darkForestText,
+                        fontSize: 13,
+                        fontWeight: FontWeight.w800,
+                      ),
+                    ),
+                    const SizedBox(height: 2),
+                    Text(
+                      scan['type'].toString(),
+                      style: const TextStyle(
+                        color: _primaryGreen,
+                        fontSize: 11.5,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    const SizedBox(height: 2),
+                    Text(
+                      scan['date'].toString(),
+                      style: const TextStyle(
+                        color: _mutedText,
+                        fontSize: 11,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                decoration: BoxDecoration(
+                  color: _neutralBtnBg,
+                  borderRadius: BorderRadius.circular(7),
+                  border: Border.all(color: _neutralBtnBorder),
+                ),
+                child: Text(
+                  scan['savedAmount'].toString(),
+                  style: const TextStyle(
+                    color: _darkForestText,
+                    fontSize: 11,
+                    fontWeight: FontWeight.w800,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        );
+      }),
+    );
+  }
+}
