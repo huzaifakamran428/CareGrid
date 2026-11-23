@@ -278,7 +278,7 @@ class _CaregridChatbotScreenState extends State<CaregridChatbotScreen> {
           ),
           IconButton(
             tooltip: 'Chat history',
-            onPressed: () => Navigator.of(context).push(
+            onPressed: () => Navigator.of(context).pushReplacement(
               MaterialPageRoute<void>(
                 builder: (_) => const ChatHistoryScreen(),
               ),
