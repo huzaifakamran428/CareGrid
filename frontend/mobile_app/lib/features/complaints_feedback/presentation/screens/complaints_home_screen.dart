@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
+import '../../../../app/theme/brand_tokens.dart';
+import '../../../../core/widgets/caregrid_brand.dart';
 import '../state/complaint_demo_store.dart';
 import '../widgets/complaint_components.dart';
 import 'complaint_detail_screen.dart';
 import 'submit_complaint_screen.dart';
 import 'service_feedback_screen.dart';
 
-/// Beneficiary complaints landing and tracking screen (UI-only).
+/// Single beneficiary support hub. Uses the same shell as Home/Labs/Profile.
 class ComplaintsHomeScreen extends StatefulWidget {
   const ComplaintsHomeScreen({super.key});
-
   @override
   State<ComplaintsHomeScreen> createState() => _ComplaintsHomeScreenState();
 }
@@ -22,145 +23,222 @@ class _ComplaintsHomeScreenState extends State<ComplaintsHomeScreen> {
     ));
   }
 
+  void _startFeedback() {
+    Navigator.of(context).push(MaterialPageRoute<void>(
+      builder: (_) => const ServiceFeedbackScreen(),
+    ));
+  }
+
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: AnimatedBuilder(
-          animation: complaintDemoStore,
-          builder: (context, _) {
-            final all = complaintDemoStore.complaints;
-            final visible = all.where((complaint) {
-              if (_filter == 'Active') return complaint.status != ComplaintStatus.resolved;
-              if (_filter == 'Resolved') return complaint.status == ComplaintStatus.resolved;
-              return true;
-            }).toList();
-            final active = all.where((item) => item.status != ComplaintStatus.resolved).length;
-            return Column(children: [
-              Expanded(child: ListView(padding: EdgeInsets.zero, children: [
-                _hero(context, active, all.length),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(19, 22, 19, 25),
-                  child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+  Widget build(BuildContext context) => Scaffold(
+    backgroundColor: CareGridPalette.primary,
+    body: SafeArea(
+      bottom: false,
+      child: AnimatedBuilder(
+        animation: complaintDemoStore,
+        builder: (context, _) {
+          final complaints = complaintDemoStore.complaints;
+          final visible = complaints.where((item) {
+            if (_filter == 'Active') return item.status != ComplaintStatus.resolved;
+            if (_filter == 'Resolved') return item.status == ComplaintStatus.resolved;
+            return true;
+          }).toList();
+          final active = complaints.where(
+            (item) => item.status != ComplaintStatus.resolved,
+          ).length;
+
+          return Column(children: [
+            CareGridBrandedHeader(
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(18, 12, 18, 16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Row(children: [
+                      CareGridSectionTag('Beneficiary Support', icon: Icons.support_agent_outlined),
+                      Spacer(),
+                      Icon(Icons.favorite_border_rounded, color: CareGridPalette.gold, size: 22),
+                    ]),
+                    const SizedBox(height: 13),
+                    const Text(
+                      "We're here to help.",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 23,
+                        fontWeight: FontWeight.w900,
+                        letterSpacing: -.4,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      'Raise a concern and track each update in one place.',
+                      style: TextStyle(
+                        color: Colors.white.withValues(alpha: .87),
+                        fontSize: 12.5,
+                        height: 1.4,
+                      ),
+                    ),
+                    const SizedBox(height: 15),
+                    Row(children: [
+                      _metric('${complaints.length}', 'Total requests', Icons.assignment_outlined),
+                      const SizedBox(width: 10),
+                      _metric('$active', 'Active cases', Icons.schedule_outlined),
+                    ]),
+                  ],
+                ),
+              ),
+            ),
+            Expanded(
+              child: Container(
+                clipBehavior: Clip.antiAlias,
+                decoration: const BoxDecoration(
+                  color: CareGridPalette.canvas,
+                  borderRadius: BorderRadius.vertical(
+                    top: Radius.circular(CareGridLayout.sheetRadius),
+                  ),
+                ),
+                child: ListView(
+                  padding: const EdgeInsets.fromLTRB(18, 20, 18, 30),
+                  children: [
                     CgCard(child: Row(children: [
                       Container(
-                        width: 48, height: 48,
-                        decoration: BoxDecoration(color: CgColors.paleMint, borderRadius: BorderRadius.circular(15)),
-                        child: const Icon(Icons.edit_note_rounded, color: CgColors.primary, size: 25),
+                        width: 49,
+                        height: 49,
+                        decoration: BoxDecoration(
+                          color: CareGridPalette.paleMint,
+                          borderRadius: BorderRadius.circular(15),
+                        ),
+                        child: const Icon(Icons.edit_note_rounded,
+                            color: CareGridPalette.primary, size: 26),
                       ),
-                      const SizedBox(width: 14),
-                      const Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                        Text('Tell us what happened', style: TextStyle(color: CgColors.ink, fontSize: 15, fontWeight: FontWeight.w800)),
-                        SizedBox(height: 5),
-                        Text('Submit a new complaint in a few simple steps.', style: TextStyle(color: CgColors.secondary, fontSize: 12, height: 1.5)),
-                      ])),
-                      const SizedBox(width: 6),
+                      const SizedBox(width: 13),
+                      const Expanded(child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text('Tell us what happened', style: TextStyle(
+                            color: CareGridPalette.ink, fontSize: 15,
+                            fontWeight: FontWeight.w800,
+                          )),
+                          SizedBox(height: 4),
+                          Text('Submit a concern and follow its demo reference.',
+                            style: TextStyle(
+                              color: CareGridPalette.secondaryText,
+                              fontSize: 12, height: 1.45,
+                            ),
+                          ),
+                        ],
+                      )),
                       IconButton(
-                        onPressed: _startComplaint,
                         tooltip: 'Submit a complaint',
-                        icon: const Icon(Icons.arrow_forward_rounded, color: CgColors.primary),
+                        onPressed: _startComplaint,
+                        icon: const Icon(Icons.arrow_forward_rounded,
+                            color: CareGridPalette.primary),
                       ),
                     ])),
-                    const SizedBox(height: 9),
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: TextButton.icon(
-                        onPressed: () => Navigator.of(context).push(
-                          MaterialPageRoute<void>(
-                            builder: (_) => const ServiceFeedbackScreen(),
-                          ),
-                        ),
+                    const SizedBox(height: 13),
+                    SizedBox(
+                      width: double.infinity,
+                      child: OutlinedButton.icon(
+                        onPressed: _startFeedback,
                         icon: const Icon(Icons.star_outline_rounded),
                         label: const Text('Rate a service & share feedback'),
                       ),
                     ),
-                    const SizedBox(height: 20),
+                    const SizedBox(height: 23),
                     Row(children: [
-                      const Expanded(child: Text('My complaints', style: TextStyle(fontSize: 19, fontWeight: FontWeight.w900, color: CgColors.ink))),
-                      Text('${all.length} total', style: const TextStyle(color: CgColors.secondary, fontSize: 12)),
+                      const Expanded(child: Text(
+                        'My complaints',
+                        style: TextStyle(
+                          fontSize: 19, fontWeight: FontWeight.w900,
+                          color: CareGridPalette.ink,
+                        ),
+                      )),
+                      Text('${complaints.length} total', style: const TextStyle(
+                        color: CareGridPalette.secondaryText, fontSize: 12,
+                      )),
                     ]),
                     const SizedBox(height: 13),
-                    Row(children: ['All', 'Active', 'Resolved'].map((filter) => Padding(
-                      padding: const EdgeInsets.only(right: 9),
-                      child: ChoiceChip(
-                        label: Text(filter), selected: _filter == filter,
-                        onSelected: (_) => setState(() => _filter = filter),
-                        selectedColor: CgColors.paleMint,
-                        backgroundColor: Colors.white,
-                        side: BorderSide(color: _filter == filter ? const Color(0xFFA8DDD0) : CgColors.line),
-                        labelStyle: TextStyle(fontSize: 12, fontWeight: FontWeight.w700, color: _filter == filter ? CgColors.primary : CgColors.secondary),
-                        showCheckmark: false,
-                      ),
-                    )).toList()),
-                    const SizedBox(height: 13),
+                    Wrap(
+                      spacing: 9,
+                      runSpacing: 8,
+                      children: ['All', 'Active', 'Resolved'].map((filter) =>
+                        ChoiceChip(
+                          label: Text(filter),
+                          selected: _filter == filter,
+                          onSelected: (_) => setState(() => _filter = filter),
+                          selectedColor: CareGridPalette.paleMint,
+                          backgroundColor: Colors.white,
+                          side: BorderSide(
+                            color: _filter == filter
+                                ? CareGridPalette.mintBorder : CareGridPalette.line,
+                          ),
+                          labelStyle: TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w700,
+                            color: _filter == filter
+                                ? CareGridPalette.primaryDeep : CareGridPalette.secondaryText,
+                          ),
+                          showCheckmark: false,
+                        ),
+                      ).toList(),
+                    ),
+                    const SizedBox(height: 14),
                     if (visible.isEmpty)
                       const CgCard(child: Padding(
-                        padding: EdgeInsets.symmetric(vertical: 25),
-                        child: Center(child: Column(children: [
-                          Icon(Icons.inbox_outlined, size: 35, color: CgColors.secondary),
+                        padding: EdgeInsets.symmetric(vertical: 24),
+                        child: Column(children: [
+                          Icon(Icons.inbox_outlined, size: 34,
+                              color: CareGridPalette.secondaryText),
                           SizedBox(height: 10),
-                          Text('No complaints in this category', style: TextStyle(color: CgColors.secondary)),
-                        ])),
+                          Text('No complaints in this category',
+                            style: TextStyle(color: CareGridPalette.secondaryText)),
+                        ]),
                       ))
                     else ...visible.map((record) => ComplaintCaseCard(
                       record: record,
-                      onTap: () => Navigator.push(context, MaterialPageRoute<void>(
-                        builder: (_) => ComplaintDetailScreen(reference: record.reference),
-                      )),
+                      onTap: () => Navigator.of(context).push(
+                        MaterialPageRoute<void>(
+                          builder: (_) => ComplaintDetailScreen(reference: record.reference),
+                        ),
+                      ),
                     )),
-                    const SizedBox(height: 13),
+                    const SizedBox(height: 10),
                     const DemoNotice(),
-                  ]),
+                  ],
                 ),
-              ])),
-            ]);
-          },
-        ),
+              ),
+            ),
+          ]);
+        },
       ),
-    );
-  }
-
-  Widget _hero(BuildContext context, int active, int total) => Container(
-    decoration: const BoxDecoration(
-      gradient: LinearGradient(colors: [CgColors.navy, CgColors.primaryDeep], begin: Alignment.topLeft, end: Alignment.bottomRight),
-      borderRadius: BorderRadius.vertical(bottom: Radius.circular(30)),
     ),
-    padding: const EdgeInsets.fromLTRB(22, 21, 22, 27),
-    child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-      Row(children: [
-        const CareGridWordmark(inverse: true),
-        const Spacer(),
-        Container(
-          width: 38, height: 38,
-          decoration: BoxDecoration(color: Colors.white.withOpacity(.14), borderRadius: BorderRadius.circular(12)),
-          child: const Icon(Icons.support_agent_rounded, color: Colors.white, size: 21),
-        ),
-      ]),
-      const SizedBox(height: 27),
-      const Text('BENEFICIARY SUPPORT', style: TextStyle(color: Color(0xFF8EE0CC), fontWeight: FontWeight.w800, fontSize: 10, letterSpacing: 1.7)),
-      const SizedBox(height: 9),
-      const Text("We're here to help.", style: TextStyle(color: Colors.white, fontSize: 27, fontWeight: FontWeight.w900, letterSpacing: -.65)),
-      const SizedBox(height: 7),
-      const Text('Raise a concern and follow every update in one place.', style: TextStyle(color: Color(0xFFCEEBE7), height: 1.5, fontSize: 13)),
-      const SizedBox(height: 24),
-      Row(children: [
-        _heroStat('$total', 'Total requests', Icons.confirmation_number_outlined),
-        const SizedBox(width: 12),
-        _heroStat('$active', 'Active cases', Icons.schedule_outlined),
-      ]),
-    ]),
   );
 
-  Widget _heroStat(String value, String label, IconData icon) => Expanded(child: Container(
-    padding: const EdgeInsets.all(13),
-    decoration: BoxDecoration(color: Colors.white.withOpacity(.10), borderRadius: BorderRadius.circular(14), border: Border.all(color: Colors.white.withOpacity(.12))),
-    child: Row(children: [
-      Icon(icon, color: const Color(0xFFA4E5D7), size: 20),
-      const SizedBox(width: 7),
-      Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        Text(value, style: const TextStyle(fontSize: 19, color: Colors.white, fontWeight: FontWeight.w900)),
-        Text(label, maxLines: 2, overflow: TextOverflow.ellipsis, style: const TextStyle(fontSize: 10, color: Color(0xFFC8E5E0))),
-      ])),
-    ]),
-  ));
+  Widget _metric(String value, String label, IconData icon) => Expanded(
+    child: Container(
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 11),
+      decoration: BoxDecoration(
+        color: Colors.white.withValues(alpha: .11),
+        borderRadius: BorderRadius.circular(13),
+        border: Border.all(color: Colors.white.withValues(alpha: .17)),
+      ),
+      child: Row(children: [
+        Icon(icon, color: CareGridPalette.gold, size: 21),
+        const SizedBox(width: 8),
+        Expanded(child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(value, style: const TextStyle(
+              color: Colors.white, fontSize: 17, fontWeight: FontWeight.w900,
+            )),
+            Text(label, maxLines: 2, overflow: TextOverflow.ellipsis,
+              style: const TextStyle(
+                color: CareGridPalette.paleMint, fontSize: 10,
+              ),
+            ),
+          ],
+        )),
+      ]),
+    ),
+  );
 }

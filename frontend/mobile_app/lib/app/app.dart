@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'theme/caregrid_theme.dart';
 
 import '../features/beneficiary/presentation/screens/beneficiary_home_screen.dart';
 import '../features/beneficiary/presentation/screens/beneficiary_profile_screen.dart';
@@ -12,34 +13,17 @@ import '../features/chatbot/presentation/screens/chat_history_screen.dart';
 import '../features/complaints_feedback/presentation/screens/complaints_home_screen.dart';
 import '../features/complaints_feedback/presentation/screens/submit_complaint_screen.dart';
 import '../features/complaints_feedback/presentation/screens/service_feedback_screen.dart';
-import '../features/complaints_feedback/presentation/widgets/complaint_components.dart';
+import 'theme/brand_tokens.dart';
 
 class CareGridApp extends StatelessWidget {
   const CareGridApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final colors = ColorScheme.fromSeed(
-      seedColor: CgColors.primary,
-      primary: CgColors.primary,
-      surface: Colors.white,
-      brightness: Brightness.light,
-    );
     return MaterialApp(
-      title: 'CareGrid · Beneficiary',
+      title: 'CareGrid · Compassion Connected',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        useMaterial3: true,
-        colorScheme: colors,
-        scaffoldBackgroundColor: CgColors.canvas,
-        fontFamily: 'Roboto',
-        appBarTheme: const AppBarTheme(
-          backgroundColor: CgColors.canvas,
-          foregroundColor: CgColors.ink,
-          elevation: 0,
-          centerTitle: false,
-        ),
-      ),
+      theme: CareGridTheme.light,
       home: const BeneficiaryShell(),
     );
   }
@@ -108,6 +92,10 @@ class _BeneficiaryShellState extends State<BeneficiaryShell> {
       bottomNavigationBar: NavigationBar(
         selectedIndex: _tab,
         onDestinationSelected: _switchTab,
+        animationDuration: const Duration(milliseconds: 250),
+        indicatorColor: CareGridPalette.paleMint,
+        backgroundColor: Colors.white,
+        elevation: 7,
         labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
         destinations: const [
           NavigationDestination(icon: Icon(Icons.home_outlined),

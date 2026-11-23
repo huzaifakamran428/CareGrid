@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import '../../../../app/theme/brand_tokens.dart';
+import '../../../../core/widgets/caregrid_brand.dart';
 import '../state/feedback_demo_store.dart';
 import '../widgets/complaint_components.dart';
 
@@ -47,7 +49,7 @@ class _ServiceFeedbackScreenState extends State<ServiceFeedbackScreen> {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-    appBar: AppBar(title: const Text('Rate a welfare service')),
+    appBar: AppBar(title: const CareGridPageTitle('Rate a welfare service')),
     body: SafeArea(child: ListView(
       padding: const EdgeInsets.all(18),
       children: [
@@ -83,7 +85,7 @@ class _ServiceFeedbackScreenState extends State<ServiceFeedbackScreen> {
               tooltip: '${index + 1} stars',
               onPressed: () => setState(() => _rating = index + 1),
               icon: Icon(index < _rating ? Icons.star_rounded : Icons.star_outline_rounded,
-                size: 30, color: const Color(0xFFD89622)),
+                size: 30, color: CareGridPalette.goldDeep),
             ))),
             const SizedBox(height: 12),
             TextField(
@@ -130,7 +132,7 @@ class _ServiceFeedbackScreenState extends State<ServiceFeedbackScreen> {
                   )),
                   const SizedBox(height: 6),
                   Text('${List.filled(review.stars, '★').join()}${List.filled(5 - review.stars, '☆').join()}',
-                      style: const TextStyle(fontSize: 22, color: Color(0xFFD89622))),
+                      style: const TextStyle(fontSize: 22, color: CareGridPalette.goldDeep)),
                   if (review.comment.isNotEmpty) ...[
                     const SizedBox(height: 5),
                     Text(review.comment),

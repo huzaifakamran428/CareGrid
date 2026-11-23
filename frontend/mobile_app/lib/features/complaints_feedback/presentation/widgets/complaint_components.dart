@@ -1,19 +1,22 @@
 import 'package:flutter/material.dart';
 import '../state/complaint_demo_store.dart';
+import '../../../../app/theme/brand_tokens.dart';
+import '../../../../core/widgets/caregrid_brand.dart';
 
+/// Compatibility aliases: complaints share the SAME palette as every module.
 abstract final class CgColors {
-  static const primary = Color(0xFF098979);
-  static const primaryDeep = Color(0xFF0C5A57);
-  static const navy = Color(0xFF14364A);
-  static const ink = Color(0xFF203748);
-  static const secondary = Color(0xFF758995);
-  static const canvas = Color(0xFFF6F8FA);
-  static const line = Color(0xFFE4ECEF);
-  static const paleMint = Color(0xFFE7F7F0);
-  static const amber = Color(0xFFB98132);
-  static const paleAmber = Color(0xFFFFF3E2);
-  static const paleBlue = Color(0xFFE8F1FD);
-  static const error = Color(0xFFD85E61);
+  static const primary = CareGridPalette.primary;
+  static const primaryDeep = CareGridPalette.primaryDeep;
+  static const navy = CareGridPalette.primaryDeep;
+  static const ink = CareGridPalette.ink;
+  static const secondary = CareGridPalette.secondaryText;
+  static const canvas = CareGridPalette.canvas;
+  static const line = CareGridPalette.line;
+  static const paleMint = CareGridPalette.paleMint;
+  static const amber = CareGridPalette.goldDeep;
+  static const paleAmber = CareGridPalette.goldTint;
+  static const paleBlue = CareGridPalette.infoTint;
+  static const error = CareGridPalette.danger;
 }
 
 String complaintDate(DateTime value) {
@@ -56,23 +59,13 @@ class ComplaintStatusBadge extends StatelessWidget {
   }
 }
 
+/// Legacy component now delegates to the app-wide genuine logo wordmark.
 class CareGridWordmark extends StatelessWidget {
   final bool inverse;
   const CareGridWordmark({super.key, this.inverse = false});
 
   @override
-  Widget build(BuildContext context) => Row(mainAxisSize: MainAxisSize.min, children: [
-    Container(
-      height: 30, width: 30,
-      decoration: BoxDecoration(color: inverse ? Colors.white.withOpacity(.15) : CgColors.paleMint, borderRadius: BorderRadius.circular(10)),
-      child: Icon(Icons.spa_rounded, color: inverse ? Colors.white : CgColors.primary, size: 18),
-    ),
-    const SizedBox(width: 9),
-    Text.rich(TextSpan(children: [
-      TextSpan(text: 'Care', style: TextStyle(color: inverse ? Colors.white : CgColors.ink)),
-      TextSpan(text: 'Grid', style: TextStyle(color: inverse ? const Color(0xFF84E0CA) : CgColors.primary)),
-    ]), style: const TextStyle(fontSize: 21, fontWeight: FontWeight.w900, letterSpacing: -.7)),
-  ]);
+  Widget build(BuildContext context) => CareGridBrandStrip(inverse: inverse);
 }
 
 class CgCard extends StatelessWidget {
@@ -86,9 +79,9 @@ class CgCard extends StatelessWidget {
     padding: padding,
     decoration: BoxDecoration(
       color: color,
-      borderRadius: BorderRadius.circular(19),
+      borderRadius: BorderRadius.circular(CareGridLayout.cardRadius),
       border: Border.all(color: CgColors.line),
-      boxShadow: const [BoxShadow(color: Color(0x0A193D4E), blurRadius: 18, offset: Offset(0, 6))],
+      boxShadow: const [CareGridLayout.cardShadow],
     ),
     child: child,
   );
@@ -127,7 +120,7 @@ class ComplaintCaseCard extends StatelessWidget {
     padding: const EdgeInsets.only(bottom: 12),
     child: Material(
       color: Colors.white,
-      borderRadius: BorderRadius.circular(18),
+      borderRadius: BorderRadius.circular(CareGridLayout.cardRadius),
       child: InkWell(
         onTap: onTap,
         borderRadius: BorderRadius.circular(18),
