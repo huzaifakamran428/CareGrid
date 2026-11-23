@@ -1,5 +1,7 @@
 // ignore_for_file: deprecated_member_use
 import 'package:flutter/material.dart';
+import '../state/booking_demo_store.dart';
+import 'booking_screen.dart';
 
 class BookingHistoryScreen extends StatefulWidget {
   const BookingHistoryScreen({super.key});
@@ -36,58 +38,24 @@ class _BookingHistoryScreenState extends State<BookingHistoryScreen> {
   String _selectedTab = 'All';
   final List _tabs = ['All', 'Upcoming', 'Completed', 'Cancelled'];
 
-  final List _bookings = [
-    {
-      'bookingRef': 'BKG-2026-4912',
-      'testName': 'Complete Blood Count (CBC)',
-      'labName': 'Chughtai Lab - Johar Town',
-      'date': '23 Nov 2026',
-      'timeSlot': '10:15 AM',
-      'status': 'Upcoming',
-      'originalPrice': 1500,
-      'payableAmount': 300,
-      'subsidyPercent': 80,
-      'reportReady': false,
-    },
-    {
-      'bookingRef': 'BKG-2026-4780',
-      'testName': 'HbA1c (Glycated Hemoglobin)',
-      'labName': 'Shaukat Khanum Diagnostic Centre',
-      'date': '16 Nov 2026',
-      'timeSlot': '09:30 AM',
-      'status': 'Completed',
-      'originalPrice': 2200,
-      'payableAmount': 440,
-      'subsidyPercent': 80,
-      'reportReady': true,
-      'reportFile': 'CBC_Report_AyeshaBibi_16Nov.pdf',
-    },
-    {
-      'bookingRef': 'BKG-2026-4615',
-      'testName': 'Liver Function Tests (LFTs)',
-      'labName': 'IDC - Islamabad Diagnostic Centre',
-      'date': '08 Nov 2026',
-      'timeSlot': '11:00 AM',
-      'status': 'Completed',
-      'originalPrice': 2500,
-      'payableAmount': 500,
-      'subsidyPercent': 80,
-      'reportReady': true,
-      'reportFile': 'LFT_Report_AyeshaBibi_08Nov.pdf',
-    },
-    {
-      'bookingRef': 'BKG-2026-4402',
-      'testName': 'Chest X-Ray (PA View)',
-      'labName': 'Chughtai Lab - Township',
-      'date': '02 Nov 2026',
-      'timeSlot': '04:00 PM',
-      'status': 'Cancelled',
-      'originalPrice': 1800,
-      'payableAmount': 360,
-      'subsidyPercent': 80,
-      'reportReady': false,
-    },
-  ];
+  // Shared with the booking form so newly added entries appear here.
+  List<Map<String, dynamic>> get _bookings => bookingDemoStore.bookings;
+
+  @override
+  void initState() {
+    super.initState();
+    bookingDemoStore.addListener(_refresh);
+  }
+
+  @override
+  void dispose() {
+    bookingDemoStore.removeListener(_refresh);
+    super.dispose();
+  }
+
+  void _refresh() {
+    if (mounted) setState(() {});
+  }
 
   List get _filteredBookings {
     if (_selectedTab == 'All') return _bookings;
@@ -108,11 +76,30 @@ class _BookingHistoryScreenState extends State<BookingHistoryScreen> {
     );
   }
 
-  void _cancelBooking(Map booking) {
-    setState(() {
-      booking['status'] = 'Cancelled';
-    });
-    _showSnack('Appointment ${booking['bookingRef']} cancelled');
+  Future<void> _cancelBooking(Map booking) async {
+    final reference = booking['bookingRef'].toString();
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (dialogContext) => AlertDialog(
+        title: const Text('Cancel demo appointment?'),
+        content: Text('Cancel $reference? You can create a new booking later.'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(dialogContext, false),
+            child: const Text('Keep booking'),
+          ),
+          FilledButton(
+            onPressed: () => Navigator.pop(dialogContext, true),
+            child: const Text('Cancel appointment'),
+          ),
+        ],
+      ),
+    );
+    if (!mounted || confirmed != true) return;
+    final cancelled = bookingDemoStore.cancel(reference);
+    _showSnack(cancelled
+        ? 'Demo appointment $reference cancelled'
+        : 'This appointment can no longer be cancelled');
   }
 
   @override
@@ -238,7 +225,7 @@ class _BookingHistoryScreenState extends State<BookingHistoryScreen> {
           ),
           const SizedBox(height: 4),
           Text(
-            'Manage scheduled appointments, reschedule visits, or download your digital lab reports.',
+            'Manage your demo appointments here. Laboratory reports need a backend connection.',
             style: TextStyle(
               color: Colors.white.withValues(alpha: 0.88),
               fontSize: 12.5,
@@ -426,8 +413,14 @@ class _BookingHistoryScreenState extends State<BookingHistoryScreen> {
               children: [
                 Expanded(
                   child: OutlinedButton.icon(
-                    onPressed: () => _showSnack(
-                        'Rescheduling ${booking['bookingRef']}...'),
+                    onPressed: () => Navigator.of(context).push(
+                      MaterialPageRoute<void>(
+                        builder: (_) => BookingScreen(
+                          test: Map<String, dynamic>.from(booking),
+                          rescheduleReference: booking['bookingRef'].toString(),
+                        ),
+                      ),
+                    ),
                     icon: const Icon(Icons.edit_calendar_outlined, size: 15),
                     label: const Text('Reschedule'),
                     style: OutlinedButton.styleFrom(
@@ -466,10 +459,10 @@ class _BookingHistoryScreenState extends State<BookingHistoryScreen> {
               width: double.infinity,
               child: ElevatedButton.icon(
                 onPressed: () => _showSnack(
-                    'Downloading ${booking['reportFile']}'),
+                    'PDF report download requires backend integration'),
                 icon: const Icon(Icons.download_rounded, size: 16),
                 label: const Text(
-                  'Download Digital Lab Report (PDF)',
+                  'View Lab Report (demo unavailable)',
                   style: TextStyle(fontSize: 12.5, fontWeight: FontWeight.w700),
                 ),
                 style: ElevatedButton.styleFrom(

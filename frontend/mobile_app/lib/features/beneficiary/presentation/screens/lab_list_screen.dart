@@ -1,5 +1,6 @@
 // ignore_for_file: deprecated_member_use
 import 'package:flutter/material.dart';
+import 'lab_details_screen.dart';
 
 class LabListScreen extends StatefulWidget {
   const LabListScreen({super.key});
@@ -178,8 +179,10 @@ class _LabListScreenState extends State<LabListScreen> {
                             const SizedBox(height: 12),
                             _buildCategoryFilterRow(),
                             const SizedBox(height: 12),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            Wrap(
+                              alignment: WrapAlignment.spaceBetween,
+                              spacing: 8,
+                              runSpacing: 8,
                               children: [
                                 Text(
                                   'Available Subsidized Tests (${visibleTests.length})',
@@ -237,8 +240,10 @@ class _LabListScreenState extends State<LabListScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          Wrap(
+            alignment: WrapAlignment.spaceBetween,
+            spacing: 8,
+            runSpacing: 8,
             children: [
               Container(
                 padding:
@@ -402,8 +407,10 @@ class _LabListScreenState extends State<LabListScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // Top Badges: Category + Subsidy Percentage
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          Wrap(
+            alignment: WrapAlignment.spaceBetween,
+            spacing: 8,
+            runSpacing: 8,
             children: [
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 4),
@@ -481,8 +488,10 @@ class _LabListScreenState extends State<LabListScreen> {
               borderRadius: BorderRadius.circular(12),
               border: Border.all(color: _mintCardBorder.withValues(alpha: 0.5)),
             ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            child: Wrap(
+              alignment: WrapAlignment.spaceBetween,
+              spacing: 8,
+              runSpacing: 8,
               children: [
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -562,7 +571,11 @@ class _LabListScreenState extends State<LabListScreen> {
               ),
               ElevatedButton(
                 onPressed: () =>
-                    _showSnack('Selecting ${test['testName']} at ${test['labName']}'),
+                    Navigator.of(context).push(
+                      MaterialPageRoute<void>(
+                        builder: (_) => LabDetailsScreen(test: Map<String, dynamic>.from(test)),
+                      ),
+                    ),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: _primaryGreen,
                   foregroundColor: Colors.white,

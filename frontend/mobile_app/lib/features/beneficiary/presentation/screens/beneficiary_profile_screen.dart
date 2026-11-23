@@ -1,9 +1,11 @@
 // ignore_for_file: deprecated_member_use
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import '../../../complaints_feedback/presentation/state/complaint_demo_store.dart';
 
 class BeneficiaryProfileScreen extends StatefulWidget {
-  const BeneficiaryProfileScreen({super.key});
+  final ValueChanged<String> onOpen;
+  const BeneficiaryProfileScreen({super.key, required this.onOpen});
 
   @override
   State<BeneficiaryProfileScreen> createState() =>
@@ -88,17 +90,6 @@ class _BeneficiaryProfileScreenState extends State<BeneficiaryProfileScreen> {
       'fileName': 'Not Provided (Optional)',
       'status': 'Optional',
       'required': false,
-    },
-  ];
-
-  final List _complaintsHistory = [
-    {
-      'refNo': 'CMP-2026-019',
-      'subject': 'Pharmacy Subsidy Delay at Main Branch',
-      'date': '17 Nov 2026',
-      'status': 'Resolved',
-      'adminReply':
-          'Your Digital ID quota has been synced with the pharmacy counter.',
     },
   ];
 
@@ -187,20 +178,20 @@ class _BeneficiaryProfileScreenState extends State<BeneficiaryProfileScreen> {
                           label: 'Submit a New Complaint',
                           icon: Icons.report_problem_outlined,
                           onTap: () =>
-                              _showSnack('Opening Complaint Submission Form'),
+                              widget.onOpen('new-complaint'),
                         ),
                         const SizedBox(height: 10),
                         _buildSecondaryButton(
                           label: 'Rate Welfare Services & Share Feedback',
                           icon: Icons.star_outline_rounded,
                           onTap: () =>
-                              _showSnack('Opening Service Feedback Form'),
+                              widget.onOpen('feedback'),
                         ),
                         const SizedBox(height: 10),
                         _buildDangerOutlineButton(
-                          label: 'Sign Out',
-                          icon: Icons.logout_rounded,
-                          onTap: () => _showSnack('Signed out securely'),
+                          label: 'Sign-in requires backend integration',
+                          icon: Icons.info_outline,
+                          onTap: () => _showSnack('Authentication is not enabled in this demo'),
                         ),
                       ],
                     ),
@@ -245,7 +236,7 @@ class _BeneficiaryProfileScreenState extends State<BeneficiaryProfileScreen> {
                 ),
               ),
               InkWell(
-                onTap: () => _showSnack('Editing Profile Details'),
+                onTap: () => _showSnack('Editing requires the beneficiary API'),
                 borderRadius: BorderRadius.circular(8),
                 child: Container(
                   padding:
@@ -885,7 +876,7 @@ class _BeneficiaryProfileScreenState extends State<BeneficiaryProfileScreen> {
                 ),
               ),
               InkWell(
-                onTap: () => _showSnack('Opening Document Upload'),
+                onTap: () => _showSnack('Verification document upload requires the backend'),
                 child: const Text(
                   '+ Upload',
                   style: TextStyle(
@@ -973,74 +964,56 @@ class _BeneficiaryProfileScreenState extends State<BeneficiaryProfileScreen> {
   // COMPLAINTS & ADMIN RESPONSES CARD
   // ---------------------------------------------------------------------------
   Widget _buildComplaintsCard() {
-    final Map complaint = _complaintsHistory.first as Map;
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: _neutralBtnBorder, width: 1.2),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return AnimatedBuilder(
+      animation: complaintDemoStore,
+      builder: (context, _) {
+        final complaints = complaintDemoStore.complaints;
+        final latest = complaints.isEmpty ? null : complaints.first;
+        final status = latest == null
+            ? 'No complaints'
+            : switch (latest.status) {
+                ComplaintStatus.submitted => 'Submitted',
+                ComplaintStatus.inProgress => 'In review',
+                ComplaintStatus.resolved => 'Resolved',
+              };
+        return Container(
+          width: double.infinity,
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(color: _neutralBtnBorder, width: 1.2),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
-                'My Complaints & Support',
-                style: TextStyle(
-                  color: _darkForestText,
-                  fontSize: 15,
-                  fontWeight: FontWeight.w800,
-                ),
-              ),
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
-                decoration: BoxDecoration(
-                  color: _primaryGreen,
-                  borderRadius: BorderRadius.circular(6),
-                ),
-                child: Text(
-                  complaint['status'].toString(),
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 10.5,
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
+              const Text('My Complaints & Support',
+                  style: TextStyle(color: _darkForestText,
+                      fontSize: 15, fontWeight: FontWeight.w800)),
+              const SizedBox(height: 8),
+              Text(status,
+                  style: const TextStyle(color: _primaryGreen,
+                      fontSize: 12, fontWeight: FontWeight.w700)),
+              const SizedBox(height: 6),
+              Text(latest == null ? 'No complaints submitted yet.'
+                  : '${latest.reference} • ${latest.subject}',
+                  style: const TextStyle(color: _darkForestText,
+                      fontSize: 13, fontWeight: FontWeight.w600)),
+              if (latest?.adminResponse != null) ...[
+                const SizedBox(height: 9),
+                Text('Response: ${latest!.adminResponse}',
+                    style: const TextStyle(color: _mutedText, fontSize: 12)),
+              ],
+              const SizedBox(height: 9),
+              TextButton.icon(
+                onPressed: () => widget.onOpen('support'),
+                icon: const Icon(Icons.arrow_forward, size: 17),
+                label: const Text('View & track all complaints'),
               ),
             ],
           ),
-          const SizedBox(height: 8),
-          Text(
-            '${complaint['refNo']} • ${complaint['subject']}',
-            style: const TextStyle(
-              color: _darkForestText,
-              fontSize: 13,
-              fontWeight: FontWeight.w700,
-            ),
-          ),
-          const SizedBox(height: 6),
-          Container(
-            width: double.infinity,
-            padding: const EdgeInsets.all(10),
-            decoration: BoxDecoration(
-              color: _mintCardBg,
-              borderRadius: BorderRadius.circular(10),
-            ),
-            child: Text(
-              'Admin Response: ${complaint['adminReply']}',
-              style: const TextStyle(
-                color: _darkForestText,
-                fontSize: 12,
-                height: 1.35,
-              ),
-            ),
-          ),
-        ],
-      ),
+        );
+      },
     );
   }
 

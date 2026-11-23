@@ -1,8 +1,11 @@
 // ignore_for_file: deprecated_member_use
 import 'package:flutter/material.dart';
+import '../state/chat_demo_store.dart';
+import 'chat_history_screen.dart';
 
 class CaregridChatbotScreen extends StatefulWidget {
-  const CaregridChatbotScreen({super.key});
+  final String? sessionId;
+  const CaregridChatbotScreen({super.key, this.sessionId});
 
   @override
   State<CaregridChatbotScreen> createState() => _CaregridChatbotScreenState();
@@ -46,28 +49,33 @@ class _CaregridChatbotScreenState extends State<CaregridChatbotScreen> {
     'Ration renewal ke liye kaunse documents chahiye?',
   ];
 
-  final List _messages = [
-    {
-      'sender': 'ai',
-      'text':
-          'Assalam-o-Alaikum Ayesha! I am your CareGrid Welfare Assistant. Ask me in English or Roman Urdu about your 80% lab subsidy, medicine caps, ration schedules, or nearby partner centers.',
-      'source': 'CareGrid Welfare Guide • Verified',
-      'time': '09:45 AM',
-    },
-    {
-      'sender': 'user',
-      'text': 'How much diagnostic lab subsidy do I have left this month?',
-      'source': '',
-      'time': '09:46 AM',
-    },
-    {
-      'sender': 'ai',
-      'text':
-          'Under your active Al-Khidmat Foundation sponsorship (ID: CG-BEN-2026-009481), you have Rs. 8,500 remaining in your monthly diagnostic pool. All partner labs cover 80% of approved tests upon uploading a doctor prescription.',
-      'source': 'Beneficiary Policy Ledger • Live Sync',
-      'time': '09:46 AM',
-    },
-  ];
+  late final List<Map<String, dynamic>> _messages;
+  String? _sessionId;
+
+  @override
+  void initState() {
+    super.initState();
+    final session = widget.sessionId == null
+        ? null : chatDemoStore.find(widget.sessionId!);
+    if (session == null) {
+      _messages = [
+        {
+          'sender': 'ai',
+          'text': 'Assalam-o-Alaikum! This CareGrid help preview can explain how to browse labs, use your Digital ID and send complaints. I cannot access a real beneficiary account.',
+          'source': 'Demo guidance • Not live data',
+          'time': 'Now',
+        },
+      ];
+    } else {
+      _sessionId = session.id;
+      _messages = session.messages.map((message) => <String, dynamic>{
+        'sender': message.sender,
+        'text': message.text,
+        'source': message.sender == 'ai' ? 'Demo answer • Not live data' : '',
+        'time': 'Saved in session',
+      }).toList();
+    }
+  }
 
   @override
   void dispose() {
@@ -79,6 +87,8 @@ class _CaregridChatbotScreenState extends State<CaregridChatbotScreen> {
   void _sendMessage([String? presetText]) {
     final String query = (presetText ?? _messageController.text).trim();
     if (query.isEmpty) return;
+    _sessionId ??= chatDemoStore.startSession();
+    chatDemoStore.addMessage(_sessionId!, sender: 'user', text: query);
 
     setState(() {
       _messages.add({
@@ -95,7 +105,8 @@ class _CaregridChatbotScreenState extends State<CaregridChatbotScreen> {
 
     Future.delayed(const Duration(milliseconds: 650), () {
       if (!mounted) return;
-      final Map reply = _generateGroundedReply(query);
+      final Map reply = _generateDemoReply(query);
+      chatDemoStore.addMessage(_sessionId!, sender: 'ai', text: reply['text'].toString());
       setState(() {
         _isTyping = false;
         _messages.add({
@@ -109,32 +120,21 @@ class _CaregridChatbotScreenState extends State<CaregridChatbotScreen> {
     });
   }
 
-  Map _generateGroundedReply(String query) {
-    final String q = query.toLowerCase();
+  Map _generateDemoReply(String query) {
+    final q = query.toLowerCase();
+    String answer;
     if (q.contains('lab') || q.contains('test') || q.contains('book')) {
-      return {
-        'text':
-            'To book an 80% subsidized test: 1) Upload your doctor prescription in the app, 2) Pick a partner branch (e.g., Chughtai Lab Johar Town), and 3) Present your Digital ID pass at reception to pay only the 20% co-share.',
-        'source': 'Diagnostic SOP • Section 3.2',
-      };
-    } else if (q.contains('pharmacy') || q.contains('medicine') || q.contains('qareebi')) {
-      return {
-        'text':
-            'Your nearest verified partner is Clinix Pharmacy (Johar Town Block G1, 1.2 km away). Show your Digital ID QR pass with an OCR-verified prescription to receive a 70% medicine subsidy.',
-        'source': 'Partner Directory • Lahore Zone',
-      };
+      answer = 'Open the Labs tab to browse sample partner tests, compare the example prices, choose a lab and save a demo appointment. Real availability needs a laboratory API.';
+    } else if (q.contains('pharmacy') || q.contains('medicine')) {
+      answer = 'The Profile tab displays example subsidy information. Actual medicine limits and partner pharmacy access require beneficiary verification and an active backend.';
     } else if (q.contains('ration') || q.contains('document') || q.contains('renewal')) {
-      return {
-        'text':
-            'For monthly ration & tier renewal, keep your valid CNIC copy and latest utility bill ready. Your current tier is valid until 31 Dec 2026 with no pending verification alerts.',
-        'source': 'Welfare Eligibility Manual',
-      };
+      answer = 'For welfare support, keep your identity and eligibility documents ready. Your NGO can confirm the specific application and renewal requirements. This preview cannot verify your case.';
+    } else if (q.contains('complaint') || q.contains('help')) {
+      answer = 'Use the Support tab to submit a complaint and track its demo reference number, or rate a welfare service.';
+    } else {
+      answer = 'I can explain CareGrid screens and workflows, but I cannot check live eligibility, account balances or records. For assistance, open Support.';
     }
-    return {
-      'text':
-          'Your CareGrid Digital ID (CG-BEN-2026-009481) is Active. Current entitlements: 80% Lab Subsidy (Rs. 8,500 left), 70% Pharmacy Subsidy (Rs. 4,200 left), and Daily Meal Pass.',
-      'source': 'CareGrid RAG Assistant • Verified',
-    };
+    return {'text': answer, 'source': 'Demo guidance • No live data'};
   }
 
   void _scrollToBottom() {
@@ -239,7 +239,7 @@ class _CaregridChatbotScreenState extends State<CaregridChatbotScreen> {
                 Row(
                   children: [
                     const Text(
-                      'CareGrid AI Assistant',
+                      'CareGrid Help',
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 18,
@@ -255,7 +255,7 @@ class _CaregridChatbotScreenState extends State<CaregridChatbotScreen> {
                         borderRadius: BorderRadius.circular(6),
                       ),
                       child: const Text(
-                        'RAG LIVE',
+                        'DEMO',
                         style: TextStyle(
                           color: _darkForestText,
                           fontSize: 9.5,
@@ -267,7 +267,7 @@ class _CaregridChatbotScreenState extends State<CaregridChatbotScreen> {
                 ),
                 const SizedBox(height: 2),
                 Text(
-                  'Bilingual Welfare & Subsidy Guidance',
+                  'Sample responses · offline preview',
                   style: TextStyle(
                     color: Colors.white.withValues(alpha: 0.88),
                     fontSize: 12,
@@ -275,6 +275,15 @@ class _CaregridChatbotScreenState extends State<CaregridChatbotScreen> {
                 ),
               ],
             ),
+          ),
+          IconButton(
+            tooltip: 'Chat history',
+            onPressed: () => Navigator.of(context).pushReplacement(
+              MaterialPageRoute<void>(
+                builder: (_) => const ChatHistoryScreen(),
+              ),
+            ),
+            icon: const Icon(Icons.history, color: Colors.white),
           ),
           InkWell(
             onTap: () {
