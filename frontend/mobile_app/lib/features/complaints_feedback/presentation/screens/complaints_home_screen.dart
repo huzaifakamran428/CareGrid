@@ -155,12 +155,12 @@ class _ComplaintsHomeScreenState extends State<ComplaintsHomeScreen> {
     padding: const EdgeInsets.all(13),
     decoration: BoxDecoration(color: Colors.white.withOpacity(.10), borderRadius: BorderRadius.circular(14), border: Border.all(color: Colors.white.withOpacity(.12))),
     child: Row(children: [
-      Icon(icon, color: const Color(0xFFA4E5D7), size: 22),
-      const SizedBox(width: 10),
-      Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+      Icon(icon, color: const Color(0xFFA4E5D7), size: 20),
+      const SizedBox(width: 7),
+      Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         Text(value, style: const TextStyle(fontSize: 19, color: Colors.white, fontWeight: FontWeight.w900)),
-        Text(label, style: const TextStyle(fontSize: 10, color: Color(0xFFC8E5E0))),
-      ]),
+        Text(label, maxLines: 2, overflow: TextOverflow.ellipsis, style: const TextStyle(fontSize: 10, color: Color(0xFFC8E5E0))),
+      ])),
     ]),
   ));
 }

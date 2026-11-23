@@ -193,8 +193,10 @@ class _BeneficiaryHomeScreenState extends State<BeneficiaryHomeScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // Top Status Pill Row + Notification Bell
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          Wrap(
+            alignment: WrapAlignment.spaceBetween,
+            spacing: 8,
+            runSpacing: 8,
             children: [
               // Left Amber Status Pill
               Container(
@@ -334,8 +336,10 @@ class _BeneficiaryHomeScreenState extends State<BeneficiaryHomeScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // Top Row: Approved Pill + Date
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          Wrap(
+            alignment: WrapAlignment.spaceBetween,
+            spacing: 8,
+            runSpacing: 8,
             children: [
               Container(
                 padding:
@@ -405,16 +409,20 @@ class _BeneficiaryHomeScreenState extends State<BeneficiaryHomeScreen> {
                 border: Border.all(color: _mintCardBorder, width: 1.2),
               ),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    'Digital ID: ${_beneficiaryData['digitalId']}',
-                    style: const TextStyle(
-                      color: _darkForestText,
-                      fontSize: 14,
-                      fontWeight: FontWeight.w800,
+                  Expanded(
+                    child: Text(
+                      'Digital ID: ${_beneficiaryData['digitalId']}',
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(
+                        color: _darkForestText,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w800,
+                      ),
                     ),
                   ),
+                  const SizedBox(width: 8),
                   const Icon(
                     Icons.copy_rounded,
                     size: 16,
@@ -594,8 +602,10 @@ class _BeneficiaryHomeScreenState extends State<BeneficiaryHomeScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          Wrap(
+            alignment: WrapAlignment.spaceBetween,
+            spacing: 8,
+            runSpacing: 8,
             children: [
               const Text(
                 'My Uploaded Prescription',
@@ -699,8 +709,10 @@ class _BeneficiaryHomeScreenState extends State<BeneficiaryHomeScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          Wrap(
+            alignment: WrapAlignment.spaceBetween,
+            spacing: 8,
+            runSpacing: 8,
             children: [
               const Text(
                 'Recent Lab Report',
@@ -792,11 +804,16 @@ class _BeneficiaryHomeScreenState extends State<BeneficiaryHomeScreen> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(
-              label,
-              style: const TextStyle(
-                fontSize: 15,
-                fontWeight: FontWeight.w700,
+            Expanded(
+              child: Text(
+                label,
+                textAlign: TextAlign.center,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+                style: const TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w700,
+                ),
               ),
             ),
             const SizedBox(width: 8),
