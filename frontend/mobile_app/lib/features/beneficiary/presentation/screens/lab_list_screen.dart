@@ -179,8 +179,10 @@ class _LabListScreenState extends State<LabListScreen> {
                             const SizedBox(height: 12),
                             _buildCategoryFilterRow(),
                             const SizedBox(height: 12),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            Wrap(
+                              alignment: WrapAlignment.spaceBetween,
+                              spacing: 8,
+                              runSpacing: 8,
                               children: [
                                 Text(
                                   'Available Subsidized Tests (${visibleTests.length})',
@@ -238,8 +240,10 @@ class _LabListScreenState extends State<LabListScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          Wrap(
+            alignment: WrapAlignment.spaceBetween,
+            spacing: 8,
+            runSpacing: 8,
             children: [
               Container(
                 padding:
@@ -403,8 +407,10 @@ class _LabListScreenState extends State<LabListScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // Top Badges: Category + Subsidy Percentage
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          Wrap(
+            alignment: WrapAlignment.spaceBetween,
+            spacing: 8,
+            runSpacing: 8,
             children: [
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 4),
@@ -482,8 +488,10 @@ class _LabListScreenState extends State<LabListScreen> {
               borderRadius: BorderRadius.circular(12),
               border: Border.all(color: _mintCardBorder.withValues(alpha: 0.5)),
             ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            child: Wrap(
+              alignment: WrapAlignment.spaceBetween,
+              spacing: 8,
+              runSpacing: 8,
               children: [
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,

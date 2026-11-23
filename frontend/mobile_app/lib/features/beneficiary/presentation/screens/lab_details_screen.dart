@@ -177,8 +177,10 @@ class _LabDetailsScreenState extends State<LabDetailsScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // Top Navigation & Status Badges
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          Wrap(
+            alignment: WrapAlignment.spaceBetween,
+            spacing: 8,
+            runSpacing: 8,
             children: [
               InkWell(
                 onTap: () => Navigator.maybePop(context),
@@ -280,8 +282,10 @@ class _LabDetailsScreenState extends State<LabDetailsScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          Wrap(
+            alignment: WrapAlignment.spaceBetween,
+            spacing: 8,
+            runSpacing: 8,
             children: [
               Container(
                 padding:
@@ -344,8 +348,10 @@ class _LabDetailsScreenState extends State<LabDetailsScreen> {
               borderRadius: BorderRadius.circular(10),
               border: Border.all(color: _mintCardBorder, width: 1.2),
             ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            child: Wrap(
+              alignment: WrapAlignment.spaceBetween,
+              spacing: 8,
+              runSpacing: 8,
               children: [
                 const Text(
                   'Net Payable at Lab:',
@@ -386,8 +392,10 @@ class _LabDetailsScreenState extends State<LabDetailsScreen> {
     bool isStrikethrough = false,
     Color valueColor = _darkForestText,
   }) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return Wrap(
+      alignment: WrapAlignment.spaceBetween,
+      spacing: 8,
+      runSpacing: 8,
       children: [
         Text(
           label,
@@ -425,8 +433,10 @@ class _LabDetailsScreenState extends State<LabDetailsScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          Wrap(
+            alignment: WrapAlignment.spaceBetween,
+            spacing: 8,
+            runSpacing: 8,
             children: [
               const Text(
                 'Diagnostic Center Details',
@@ -569,8 +579,10 @@ class _LabDetailsScreenState extends State<LabDetailsScreen> {
   }
 
   Widget _buildSpecLine(String label, String value) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return Wrap(
+      alignment: WrapAlignment.spaceBetween,
+      spacing: 8,
+      runSpacing: 8,
       children: [
         Text(
           label,
@@ -607,8 +619,10 @@ class _LabDetailsScreenState extends State<LabDetailsScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          Wrap(
+            alignment: WrapAlignment.spaceBetween,
+            spacing: 8,
+            runSpacing: 8,
             children: [
               const Text(
                 'Sample appointment slots (demo)',
@@ -681,11 +695,16 @@ class _LabDetailsScreenState extends State<LabDetailsScreen> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(
-              label,
-              style: const TextStyle(
-                fontSize: 14.5,
-                fontWeight: FontWeight.w700,
+            Expanded(
+              child: Text(
+                label,
+                maxLines: 2,
+                textAlign: TextAlign.center,
+                overflow: TextOverflow.ellipsis,
+                style: const TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w700,
+                ),
               ),
             ),
             const SizedBox(width: 8),
