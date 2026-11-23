@@ -97,6 +97,29 @@ class CareGridPageTitle extends StatelessWidget {
   );
 }
 
+/// Shared emerald header chrome for the beneficiary dashboard and every
+/// full-screen module; the existing per-page heading lives below the wordmark.
+class CareGridBrandedHeader extends StatelessWidget {
+  const CareGridBrandedHeader({super.key, required this.child});
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) => Column(
+    mainAxisSize: MainAxisSize.min,
+    crossAxisAlignment: CrossAxisAlignment.stretch,
+    children: [
+      const Padding(
+        padding: EdgeInsets.fromLTRB(18, 10, 18, 0),
+        child: Align(
+          alignment: Alignment.centerLeft,
+          child: CareGridBrandStrip(),
+        ),
+      ),
+      child,
+    ],
+  );
+}
+
 class CareGridSectionTag extends StatelessWidget {
   const CareGridSectionTag(this.label, {super.key, this.icon});
   final String label;
