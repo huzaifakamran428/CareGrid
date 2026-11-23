@@ -129,7 +129,7 @@ class _ServiceFeedbackScreenState extends State<ServiceFeedbackScreen> {
                     fontWeight: FontWeight.w700, color: CgColors.ink,
                   )),
                   const SizedBox(height: 6),
-                  Text('${'★' * review.stars}${'☆' * (5 - review.stars)}',
+                  Text('${List.filled(review.stars, '★').join()}${List.filled(5 - review.stars, '☆').join()}',
                       style: const TextStyle(fontSize: 22, color: Color(0xFFD89622))),
                   if (review.comment.isNotEmpty) ...[
                     const SizedBox(height: 5),

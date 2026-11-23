@@ -43,7 +43,7 @@ class _PrescriptionUploadScreenState extends State<PrescriptionUploadScreen> {
     'clinicName': 'Al-Shifa Welfare Clinic, Lahore',
     'issueDate': '21 Nov 2026',
     'fileName': 'prescription_nov21_scan.jpg',
-    'confidence': '96% OCR Accuracy',
+    'confidence': 'Example OCR preview (not scanned)',
   };
 
   final List _extractedMedicines = [
@@ -73,14 +73,14 @@ class _PrescriptionUploadScreenState extends State<PrescriptionUploadScreen> {
       'doctor': 'Dr. Sadia Anwar (General Physician)',
       'date': '14 Nov 2026',
       'itemsCount': 2,
-      'status': 'Verified & Used',
+      'status': 'Demo record',
     },
     {
       'rxId': 'RX-2026-098',
       'doctor': 'Dr. Kamran Malik (Medical Specialist)',
       'date': '02 Nov 2026',
       'itemsCount': 4,
-      'status': 'Verified',
+      'status': 'Demo record',
     },
   ];
 
@@ -97,7 +97,7 @@ class _PrescriptionUploadScreenState extends State<PrescriptionUploadScreen> {
             ? 'camera_rx_capture_2026.jpg'
             : 'gallery_rx_document_2026.pdf';
       });
-      _showSnack('Prescription uploaded & digitized via AI OCR');
+      _showSnack('Demo scan shown: no file was uploaded or processed');
     });
   }
 
@@ -291,7 +291,7 @@ class _PrescriptionUploadScreenState extends State<PrescriptionUploadScreen> {
           ),
           const SizedBox(height: 4),
           const Text(
-            'Supported formats: JPG, PNG, or PDF (Max 10 MB). Ensure doctor signature and medicine names are clearly visible.',
+            'Demo only: these buttons show sample data. File picking, upload and AI OCR will work after backend integration.',
             style: TextStyle(
               color: _mutedText,
               fontSize: 12,

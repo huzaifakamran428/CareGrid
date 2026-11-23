@@ -75,15 +75,6 @@ class _BookingScreenState extends State<BookingScreen> {
     };
   });
 
-  /* Legacy hard-coded date list removed.
-  final List _availableDates = [
-    {'day': 'Mon', 'date': '23 Nov', 'fullDate': 'Monday, 23 Nov 2026'},
-    {'day': 'Tue', 'date': '24 Nov', 'fullDate': 'Tuesday, 24 Nov 2026'},
-    {'day': 'Wed', 'date': '25 Nov', 'fullDate': 'Wednesday, 25 Nov 2026'},
-    {'day': 'Thu', 'date': '26 Nov', 'fullDate': 'Thursday, 26 Nov 2026'},
-  ];
-  */
-
   final List _timeSlots = [
     {'time': '09:30 AM', 'available': true},
     {'time': '10:15 AM', 'available': true},
