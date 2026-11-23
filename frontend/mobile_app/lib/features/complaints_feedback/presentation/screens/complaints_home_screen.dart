@@ -3,6 +3,7 @@ import '../state/complaint_demo_store.dart';
 import '../widgets/complaint_components.dart';
 import 'complaint_detail_screen.dart';
 import 'submit_complaint_screen.dart';
+import 'service_feedback_screen.dart';
 
 /// Beneficiary complaints landing and tracking screen (UI-only).
 class ComplaintsHomeScreen extends StatefulWidget {
@@ -60,7 +61,20 @@ class _ComplaintsHomeScreenState extends State<ComplaintsHomeScreen> {
                         icon: const Icon(Icons.arrow_forward_rounded, color: CgColors.primary),
                       ),
                     ])),
-                    const SizedBox(height: 26),
+                    const SizedBox(height: 9),
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: TextButton.icon(
+                        onPressed: () => Navigator.of(context).push(
+                          MaterialPageRoute<void>(
+                            builder: (_) => const ServiceFeedbackScreen(),
+                          ),
+                        ),
+                        icon: const Icon(Icons.star_outline_rounded),
+                        label: const Text('Rate a service & share feedback'),
+                      ),
+                    ),
+                    const SizedBox(height: 20),
                     Row(children: [
                       const Expanded(child: Text('My complaints', style: TextStyle(fontSize: 19, fontWeight: FontWeight.w900, color: CgColors.ink))),
                       Text('${all.length} total', style: const TextStyle(color: CgColors.secondary, fontSize: 12)),
@@ -99,29 +113,6 @@ class _ComplaintsHomeScreenState extends State<ComplaintsHomeScreen> {
                   ]),
                 ),
               ])),
-              Container(
-                padding: const EdgeInsets.fromLTRB(20, 11, 20, 13),
-                decoration: const BoxDecoration(color: Colors.white, border: Border(top: BorderSide(color: CgColors.line))),
-                child: Row(children: [
-                  Expanded(child: Column(mainAxisSize: MainAxisSize.min, children: [
-                    Icon(Icons.view_list_rounded, color: CgColors.primary, size: 22),
-                    const SizedBox(height: 3),
-                    const Text('My complaints', style: TextStyle(color: CgColors.primary, fontSize: 10, fontWeight: FontWeight.w800)),
-                  ])),
-                  Expanded(child: InkWell(
-                    onTap: _startComplaint,
-                    borderRadius: BorderRadius.circular(12),
-                    child: const Padding(
-                      padding: EdgeInsets.symmetric(vertical: 3),
-                      child: Column(mainAxisSize: MainAxisSize.min, children: [
-                        Icon(Icons.add_circle_outline_rounded, color: CgColors.secondary, size: 22),
-                        SizedBox(height: 3),
-                        Text('New complaint', style: TextStyle(color: CgColors.secondary, fontSize: 10, fontWeight: FontWeight.w700)),
-                      ]),
-                    ),
-                  )),
-                ]),
-              ),
             ]);
           },
         ),
