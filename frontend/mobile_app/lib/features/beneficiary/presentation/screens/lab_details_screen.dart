@@ -1,8 +1,10 @@
 // ignore_for_file: deprecated_member_use
 import 'package:flutter/material.dart';
+import 'booking_screen.dart';
 
 class LabDetailsScreen extends StatefulWidget {
-  const LabDetailsScreen({super.key});
+  final Map<String, dynamic>? test;
+  const LabDetailsScreen({super.key, this.test});
 
   @override
   State<LabDetailsScreen> createState() => _LabDetailsScreenState();
@@ -29,7 +31,8 @@ class _LabDetailsScreenState extends State<LabDetailsScreen> {
   // ---------------------------------------------------------------------------
   // DUMMY DATA
   // ---------------------------------------------------------------------------
-  final Map _labTestDetails = {
+  Map<String, dynamic> get _labTestDetails {
+    const base = <String, dynamic>{
     'testName': 'Complete Blood Count (CBC)',
     'testCode': 'LAB-CBC-104',
     'category': 'Hematology & Blood Tests',
@@ -50,7 +53,28 @@ class _LabDetailsScreenState extends State<LabDetailsScreen> {
     'subsidyAmount': 1200,
     'payableAmount': 300,
     'beneficiaryDigitalId': 'CG-BEN-2026-009481',
-  };
+    };
+    final chosen = widget.test;
+    if (chosen == null) return base;
+    final original = (chosen['originalPrice'] as num?)?.toInt() ?? 1500;
+    final payable = (chosen['subsidizedPrice'] as num?)?.toInt() ??
+        (chosen['payableAmount'] as num?)?.toInt() ?? 300;
+    return {
+      ...base,
+      ...chosen,
+      'testCode': 'LAB-DEMO',
+      'labRegId': 'CG-LAB-DEMO',
+      'address': 'Confirm branch address with the laboratory',
+      'phone': 'Contact the laboratory directly',
+      'sampleType': 'Confirm test sample requirements with the provider',
+      'preparation': 'Ask the laboratory about fasting or preparation before visiting. Bring your Digital ID.',
+      'description': 'This diagnostic test is listed in the CareGrid demonstration. Please confirm instructions with the laboratory.',
+      'originalPrice': original,
+      'payableAmount': payable,
+      'subsidyAmount': original - payable,
+      'turnaroundTime': chosen['turnaroundTime'] ?? 'Ask the laboratory',
+    };
+  }
 
   final List _todayAvailableSlots = [
     '09:30 AM',
@@ -113,7 +137,11 @@ class _LabDetailsScreenState extends State<LabDetailsScreen> {
                           label: 'Select Time Slot & Book Appointment',
                           icon: Icons.calendar_month_rounded,
                           onTap: () =>
-                              _showSnack('Proceeding to Appointment Slot Booking'),
+                              Navigator.of(context).push(
+                                MaterialPageRoute<void>(
+                                  builder: (_) => BookingScreen(test: _labTestDetails),
+                                ),
+                              ),
                         ),
                         const SizedBox(height: 18),
 
@@ -583,7 +611,7 @@ class _LabDetailsScreenState extends State<LabDetailsScreen> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               const Text(
-                'Open Appointment Slots Today',
+                'Sample appointment slots (demo)',
                 style: TextStyle(
                   color: _darkForestText,
                   fontSize: 15,

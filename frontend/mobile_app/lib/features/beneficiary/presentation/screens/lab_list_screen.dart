@@ -1,5 +1,6 @@
 // ignore_for_file: deprecated_member_use
 import 'package:flutter/material.dart';
+import 'lab_details_screen.dart';
 
 class LabListScreen extends StatefulWidget {
   const LabListScreen({super.key});
@@ -562,7 +563,11 @@ class _LabListScreenState extends State<LabListScreen> {
               ),
               ElevatedButton(
                 onPressed: () =>
-                    _showSnack('Selecting ${test['testName']} at ${test['labName']}'),
+                    Navigator.of(context).push(
+                      MaterialPageRoute<void>(
+                        builder: (_) => LabDetailsScreen(test: Map<String, dynamic>.from(test)),
+                      ),
+                    ),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: _primaryGreen,
                   foregroundColor: Colors.white,
