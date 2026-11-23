@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class BeneficiaryHomeScreen extends StatefulWidget {
-  const BeneficiaryHomeScreen({super.key});
+  final ValueChanged<String> onOpen;
+  const BeneficiaryHomeScreen({super.key, required this.onOpen});
 
   @override
   State<BeneficiaryHomeScreen> createState() => _BeneficiaryHomeScreenState();
@@ -66,8 +67,6 @@ class _BeneficiaryHomeScreenState extends State<BeneficiaryHomeScreen> {
     },
   ];
 
-  int _selectedNavIndex = 0;
-
   void _copyDigitalId() {
     Clipboard.setData(
       ClipboardData(text: _beneficiaryData['digitalId'].toString()),
@@ -84,7 +83,7 @@ class _BeneficiaryHomeScreenState extends State<BeneficiaryHomeScreen> {
   void _showPlaceholderAction(String title) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text('Opening $title'),
+        content: Text('$title is not connected in this demo.'),
         backgroundColor: _primaryGreen,
         behavior: SnackBarBehavior.floating,
         duration: const Duration(seconds: 1),
@@ -133,7 +132,7 @@ class _BeneficiaryHomeScreenState extends State<BeneficiaryHomeScreen> {
                           label: 'Open Digital ID Pass',
                           icon: Icons.arrow_forward,
                           onTap: () =>
-                              _showPlaceholderAction('Digital ID Pass'),
+                              widget.onOpen('digital-id'),
                         ),
                         const SizedBox(height: 20),
 
@@ -162,13 +161,13 @@ class _BeneficiaryHomeScreenState extends State<BeneficiaryHomeScreen> {
                         _buildSecondaryButton(
                           label: 'Need Help? Submit a Complaint',
                           onTap: () =>
-                              _showPlaceholderAction('Submit a Complaint'),
+                              widget.onOpen('new-complaint'),
                         ),
                         const SizedBox(height: 10),
                         _buildSecondaryButton(
                           label: 'Rate Services & Share Feedback',
                           onTap: () =>
-                              _showPlaceholderAction('Service Feedback'),
+                              widget.onOpen('feedback'),
                         ),
                       ],
                     ),
@@ -179,7 +178,6 @@ class _BeneficiaryHomeScreenState extends State<BeneficiaryHomeScreen> {
           ],
         ),
       ),
-      bottomNavigationBar: _buildBottomNavBar(),
     );
   }
 
@@ -511,7 +509,18 @@ class _BeneficiaryHomeScreenState extends State<BeneficiaryHomeScreen> {
       itemBuilder: (context, index) {
         final Map item = services[index] as Map;
         return InkWell(
-          onTap: () => _showPlaceholderAction(item['title'].toString()),
+          onTap: () {
+            const routes = <String, String>{
+              'Upload Prescription': 'prescription',
+              'Subsidized Labs': 'labs',
+              'Subsidy & Meds': 'profile',
+              'CareGrid AI Chat': 'chatbot',
+              'Medical Reports': 'bookings',
+              'Application Status': 'profile',
+            };
+            final route = routes[item['title'].toString()];
+            if (route != null) widget.onOpen(route);
+          },
           borderRadius: BorderRadius.circular(14),
           child: Container(
             padding: const EdgeInsets.all(12),
@@ -637,7 +646,7 @@ class _BeneficiaryHomeScreenState extends State<BeneficiaryHomeScreen> {
               Expanded(
                 child: OutlinedButton.icon(
                   onPressed: () =>
-                      _showPlaceholderAction('View / Replace Prescription'),
+                      widget.onOpen('prescription'),
                   icon: const Icon(Icons.visibility_outlined, size: 15),
                   label: const Text('View / Update'),
                   style: OutlinedButton.styleFrom(
@@ -653,7 +662,7 @@ class _BeneficiaryHomeScreenState extends State<BeneficiaryHomeScreen> {
               const SizedBox(width: 8),
               OutlinedButton.icon(
                 onPressed: () =>
-                    _showPlaceholderAction('Delete Prescription'),
+                    _showPlaceholderAction('prescription deletion'),
                 icon: const Icon(Icons.delete_outline, size: 15),
                 label: const Text('Delete'),
                 style: OutlinedButton.styleFrom(
@@ -740,9 +749,9 @@ class _BeneficiaryHomeScreenState extends State<BeneficiaryHomeScreen> {
             width: double.infinity,
             child: OutlinedButton.icon(
               onPressed: () =>
-                  _showPlaceholderAction('Download Digital Report'),
-              icon: const Icon(Icons.download_rounded, size: 16),
-              label: const Text('Download Digital Report'),
+                  widget.onOpen('bookings'),
+              icon: const Icon(Icons.receipt_long_outlined, size: 16),
+              label: const Text('View My Lab Bookings'),
               style: OutlinedButton.styleFrom(
                 foregroundColor: _darkForestText,
                 backgroundColor: _neutralBtnBg,
@@ -826,58 +835,4 @@ class _BeneficiaryHomeScreenState extends State<BeneficiaryHomeScreen> {
     );
   }
 
-  // ---------------------------------------------------------------------------
-  // BOTTOM NAVIGATION BAR
-  // ---------------------------------------------------------------------------
-  Widget _buildBottomNavBar() {
-    return Container(
-      decoration: const BoxDecoration(
-        color: Colors.white,
-        border: Border(
-          top: BorderSide(color: _neutralBtnBorder, width: 1),
-        ),
-      ),
-      child: BottomNavigationBar(
-        currentIndex: _selectedNavIndex,
-        onTap: (index) {
-          setState(() => _selectedNavIndex = index);
-        },
-        type: BottomNavigationBarType.fixed,
-        backgroundColor: Colors.white,
-        selectedItemColor: _primaryGreen,
-        unselectedItemColor: _mutedText,
-        selectedFontSize: 11,
-        unselectedFontSize: 11,
-        selectedLabelStyle: const TextStyle(fontWeight: FontWeight.w700),
-        elevation: 0,
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home_outlined),
-            activeIcon: Icon(Icons.home_rounded),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.biotech_outlined),
-            activeIcon: Icon(Icons.biotech),
-            label: 'Labs',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.calendar_today_outlined),
-            activeIcon: Icon(Icons.calendar_today),
-            label: 'Bookings',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.chat_bubble_outline),
-            activeIcon: Icon(Icons.chat_bubble),
-            label: 'AI Help',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person_outline),
-            activeIcon: Icon(Icons.person),
-            label: 'Profile',
-          ),
-        ],
-      ),
-    );
-  }
 }
