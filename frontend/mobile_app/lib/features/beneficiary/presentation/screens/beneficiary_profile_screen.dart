@@ -217,8 +217,10 @@ class _BeneficiaryProfileScreenState extends State<BeneficiaryProfileScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // Top Pill Row
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          Wrap(
+            alignment: WrapAlignment.spaceBetween,
+            spacing: 8,
+            runSpacing: 8,
             children: [
               Container(
                 padding:
@@ -585,8 +587,10 @@ class _BeneficiaryProfileScreenState extends State<BeneficiaryProfileScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          Wrap(
+            alignment: WrapAlignment.spaceBetween,
+            spacing: 8,
+            runSpacing: 8,
             children: [
               Container(
                 padding:
@@ -653,14 +657,17 @@ class _BeneficiaryProfileScreenState extends State<BeneficiaryProfileScreen> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
+                  Expanded(child: Text(
                     'Digital ID: ${_profileData['digitalId']}',
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
                     style: const TextStyle(
                       color: _darkForestText,
                       fontSize: 14,
                       fontWeight: FontWeight.w800,
                     ),
-                  ),
+                  )),
+                  const SizedBox(width: 8),
                   const Icon(
                     Icons.copy_rounded,
                     size: 16,
@@ -791,8 +798,10 @@ class _BeneficiaryProfileScreenState extends State<BeneficiaryProfileScreen> {
               color: _neutralBtnBg,
               borderRadius: BorderRadius.circular(10),
             ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            child: Wrap(
+              alignment: WrapAlignment.spaceBetween,
+              spacing: 8,
+              runSpacing: 8,
               children: [
                 const Text(
                   'Remaining Monthly Limit',
@@ -866,8 +875,10 @@ class _BeneficiaryProfileScreenState extends State<BeneficiaryProfileScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          Wrap(
+            alignment: WrapAlignment.spaceBetween,
+            spacing: 8,
+            runSpacing: 8,
             children: [
               const Text(
                 'Verification Documents',
