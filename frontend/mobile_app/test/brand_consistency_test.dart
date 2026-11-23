@@ -28,6 +28,9 @@ void main() {
       expect(find.byType(NavigationBar), findsOneWidget);
     }
 
+    // Return to Support: the loop intentionally ends on the Profile tab.
+    await tester.tap(find.text('Support').last);
+    await tester.pumpAndSettle();
     await tester.tap(find.byTooltip('Submit a complaint'));
     await tester.pumpAndSettle();
     expect(find.byType(CareGridPageTitle), findsOneWidget);
