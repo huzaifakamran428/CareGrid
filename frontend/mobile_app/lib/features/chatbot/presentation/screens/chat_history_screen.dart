@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../state/chat_demo_store.dart';
+import '../state/chat_demo_store.dart';
 import 'chatbot_screen.dart';
 
 /// Search and reopen conversations from this app session; no server sync.

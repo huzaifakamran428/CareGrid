@@ -1,6 +1,6 @@
 // ignore_for_file: deprecated_member_use
 import 'package:flutter/material.dart';
-import '../../state/chat_demo_store.dart';
+import '../state/chat_demo_store.dart';
 import 'chat_history_screen.dart';
 
 class CaregridChatbotScreen extends StatefulWidget {
