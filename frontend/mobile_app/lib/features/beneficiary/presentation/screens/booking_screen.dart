@@ -1,8 +1,12 @@
 // ignore_for_file: deprecated_member_use
 import 'package:flutter/material.dart';
+import '../state/booking_demo_store.dart';
+import 'booking_history_screen.dart';
 
 class BookingScreen extends StatefulWidget {
-  const BookingScreen({super.key});
+  final Map<String, dynamic>? test;
+  final String? rescheduleReference;
+  const BookingScreen({super.key, this.test, this.rescheduleReference});
 
   @override
   State<BookingScreen> createState() => _BookingScreenState();
@@ -29,7 +33,8 @@ class _BookingScreenState extends State<BookingScreen> {
   // ---------------------------------------------------------------------------
   // DUMMY DATA & SELECTION STATE
   // ---------------------------------------------------------------------------
-  final Map _bookingContext = {
+  Map<String, dynamic> get _bookingContext {
+    const base = <String, dynamic>{
     'testName': 'Complete Blood Count (CBC)',
     'testCode': 'LAB-CBC-104',
     'labName': 'Chughtai Lab - Johar Town',
@@ -40,15 +45,44 @@ class _BookingScreenState extends State<BookingScreen> {
     'subsidyPercent': 80,
     'subsidyAmount': 1200,
     'payableAmount': 300,
-    'linkedPrescription': 'RX-2026-114 (Dr. Tariq Mahmood)',
-  };
+    'linkedPrescription': 'RX-2026-114 (Demo)',
+    };
+    final chosen = widget.test;
+    if (chosen == null) return base;
+    final original = (chosen['originalPrice'] as num?)?.toInt() ?? 1500;
+    final payable = (chosen['payableAmount'] as num?)?.toInt() ??
+        (chosen['subsidizedPrice'] as num?)?.toInt() ?? 300;
+    return {
+      ...base,
+      ...chosen,
+      'originalPrice': original,
+      'payableAmount': payable,
+      'subsidyAmount': original - payable,
+      'digitalId': chosen['digitalId'] ?? chosen['beneficiaryDigitalId'] ?? base['digitalId'],
+    };
+  }
 
+  final List<Map<String, String>> _availableDates = List.generate(4, (offset) {
+    final d = DateTime.now().add(Duration(days: offset));
+    const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+      'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    final shortDate = '${d.day} ${months[d.month - 1]}';
+    return {
+      'day': days[d.weekday - 1],
+      'date': shortDate,
+      'fullDate': '${days[d.weekday - 1]}, $shortDate ${d.year}',
+    };
+  });
+
+  /* Legacy hard-coded date list removed.
   final List _availableDates = [
     {'day': 'Mon', 'date': '23 Nov', 'fullDate': 'Monday, 23 Nov 2026'},
     {'day': 'Tue', 'date': '24 Nov', 'fullDate': 'Tuesday, 24 Nov 2026'},
     {'day': 'Wed', 'date': '25 Nov', 'fullDate': 'Wednesday, 25 Nov 2026'},
     {'day': 'Thu', 'date': '26 Nov', 'fullDate': 'Thursday, 26 Nov 2026'},
   ];
+  */
 
   final List _timeSlots = [
     {'time': '09:30 AM', 'available': true},
@@ -65,12 +99,29 @@ class _BookingScreenState extends State<BookingScreen> {
   String _selectedSlot = '10:15 AM';
   bool _attachPrescription = true;
   bool _isBookingConfirmed = false;
-  final String _generatedBookingRef = 'BKG-2026-4912';
+  String _generatedBookingRef = '';
 
   void _confirmBooking() {
-    setState(() {
-      _isBookingConfirmed = true;
-    });
+    final date = DateTime.now().add(Duration(days: _selectedDateIndex));
+    if (widget.rescheduleReference != null) {
+      final ref = widget.rescheduleReference!;
+      if (!bookingDemoStore.reschedule(ref, date: date, timeSlot: _selectedSlot)) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Booking is no longer available to reschedule.')),
+        );
+        return;
+      }
+      _generatedBookingRef = ref;
+    } else {
+      final booking = bookingDemoStore.add(
+        test: _bookingContext,
+        date: date,
+        timeSlot: _selectedSlot,
+        attachPrescription: _attachPrescription,
+      );
+      _generatedBookingRef = booking['bookingRef'].toString();
+    }
+    setState(() => _isBookingConfirmed = true);
   }
 
   @override
@@ -232,7 +283,7 @@ class _BookingScreenState extends State<BookingScreen> {
 
         // Confirm Booking Primary Button
         _buildPrimaryButton(
-          label: 'Confirm Subsidized Appointment',
+          label: widget.rescheduleReference == null ? 'Save Demo Appointment' : 'Save New Date & Time',
           icon: Icons.check_circle_outline_rounded,
           onTap: _confirmBooking,
         ),
@@ -665,7 +716,7 @@ class _BookingScreenState extends State<BookingScreen> {
                         Icon(Icons.check, color: Colors.white, size: 13),
                         SizedBox(width: 4),
                         Text(
-                          'CONFIRMED',
+                          'DEMO SAVED',
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 11,
@@ -738,7 +789,7 @@ class _BookingScreenState extends State<BookingScreen> {
               ),
               const SizedBox(height: 12),
               const Text(
-                'Present this booking reference and your CareGrid Digital ID at the laboratory reception desk.',
+                'This is a demonstration booking only. No appointment has been sent to a laboratory.',
                 style: TextStyle(
                   color: _darkForestText,
                   fontSize: 12,
@@ -755,10 +806,14 @@ class _BookingScreenState extends State<BookingScreen> {
           width: double.infinity,
           height: 48,
           child: OutlinedButton.icon(
-            onPressed: () => setState(() => _isBookingConfirmed = false),
+            onPressed: () => Navigator.of(context).pushReplacement(
+              MaterialPageRoute<void>(
+                builder: (_) => const BookingHistoryScreen(),
+              ),
+            ),
             icon: const Icon(Icons.edit_calendar_outlined, size: 17),
             label: const Text(
-              'Change Date or Time Slot',
+              'View My Demo Bookings',
               style: TextStyle(fontSize: 13.5, fontWeight: FontWeight.w700),
             ),
             style: OutlinedButton.styleFrom(
