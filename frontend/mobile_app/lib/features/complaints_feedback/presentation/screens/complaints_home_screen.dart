@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../../app/theme/brand_tokens.dart';
 import '../state/complaint_demo_store.dart';
 import '../widgets/complaint_components.dart';
 import 'complaint_detail_screen.dart';
@@ -87,7 +88,7 @@ class _ComplaintsHomeScreenState extends State<ComplaintsHomeScreen> {
                         onSelected: (_) => setState(() => _filter = filter),
                         selectedColor: CgColors.paleMint,
                         backgroundColor: Colors.white,
-                        side: BorderSide(color: _filter == filter ? const Color(0xFFA8DDD0) : CgColors.line),
+                        side: BorderSide(color: _filter == filter ? const CareGridPalette.mintBorder : CgColors.line),
                         labelStyle: TextStyle(fontSize: 12, fontWeight: FontWeight.w700, color: _filter == filter ? CgColors.primary : CgColors.secondary),
                         showCheckmark: false,
                       ),
@@ -137,11 +138,11 @@ class _ComplaintsHomeScreenState extends State<ComplaintsHomeScreen> {
         ),
       ]),
       const SizedBox(height: 27),
-      const Text('BENEFICIARY SUPPORT', style: TextStyle(color: Color(0xFF8EE0CC), fontWeight: FontWeight.w800, fontSize: 10, letterSpacing: 1.7)),
+      const Text('BENEFICIARY SUPPORT', style: TextStyle(color: CareGridPalette.mintBorder, fontWeight: FontWeight.w800, fontSize: 10, letterSpacing: 1.7)),
       const SizedBox(height: 9),
       const Text("We're here to help.", style: TextStyle(color: Colors.white, fontSize: 27, fontWeight: FontWeight.w900, letterSpacing: -.65)),
       const SizedBox(height: 7),
-      const Text('Raise a concern and follow every update in one place.', style: TextStyle(color: Color(0xFFCEEBE7), height: 1.5, fontSize: 13)),
+      const Text('Raise a concern and follow every update in one place.', style: TextStyle(color: CareGridPalette.paleMint, height: 1.5, fontSize: 13)),
       const SizedBox(height: 24),
       Row(children: [
         _heroStat('$total', 'Total requests', Icons.confirmation_number_outlined),
@@ -155,11 +156,11 @@ class _ComplaintsHomeScreenState extends State<ComplaintsHomeScreen> {
     padding: const EdgeInsets.all(13),
     decoration: BoxDecoration(color: Colors.white.withOpacity(.10), borderRadius: BorderRadius.circular(14), border: Border.all(color: Colors.white.withOpacity(.12))),
     child: Row(children: [
-      Icon(icon, color: const Color(0xFFA4E5D7), size: 20),
+      Icon(icon, color: const CareGridPalette.gold, size: 20),
       const SizedBox(width: 7),
       Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         Text(value, style: const TextStyle(fontSize: 19, color: Colors.white, fontWeight: FontWeight.w900)),
-        Text(label, maxLines: 2, overflow: TextOverflow.ellipsis, style: const TextStyle(fontSize: 10, color: Color(0xFFC8E5E0))),
+        Text(label, maxLines: 2, overflow: TextOverflow.ellipsis, style: const TextStyle(fontSize: 10, color: CareGridPalette.paleMint)),
       ])),
     ]),
   ));

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import '../../../../app/theme/brand_tokens.dart';
+import '../../../../core/widgets/caregrid_brand.dart';
 import '../state/complaint_demo_store.dart';
 import '../widgets/complaint_components.dart';
 
@@ -9,7 +11,7 @@ class ComplaintDetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-    appBar: AppBar(title: const Text('Complaint details')),
+    appBar: AppBar(title: const CareGridPageTitle('Complaint details')),
     body: SafeArea(child: AnimatedBuilder(
       animation: complaintDemoStore,
       builder: (context, _) {

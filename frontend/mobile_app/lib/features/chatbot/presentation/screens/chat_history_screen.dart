@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import '../../../../app/theme/brand_tokens.dart';
+import '../../../../core/widgets/caregrid_brand.dart';
 import '../state/chat_demo_store.dart';
 import 'chatbot_screen.dart';
 
@@ -64,14 +66,14 @@ class _ChatHistoryScreenState extends State<ChatHistoryScreen> {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Container(
-          color: const Color(0xFFDDF2EA),
+          color: const CareGridPalette.paleMint,
           padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 13),
           child: const Row(children: [
-            Icon(Icons.info_outline, color: Color(0xFF14634B), size: 19),
+            Icon(Icons.info_outline, color: CareGridPalette.primary, size: 19),
             SizedBox(width: 9),
             Expanded(child: Text(
               'Demo history only. Chats are not saved to the cloud.',
-              style: TextStyle(color: Color(0xFF1B4332), fontSize: 12),
+              style: TextStyle(color: CareGridPalette.ink, fontSize: 12),
             )),
           ]),
         ),
@@ -113,7 +115,7 @@ class _ChatHistoryScreenState extends State<ChatHistoryScreen> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     const Icon(Icons.forum_outlined,
-                        size: 48, color: Color(0xFF14634B)),
+                        size: 48, color: CareGridPalette.primary),
                     const SizedBox(height: 12),
                     Text(query.isEmpty
                         ? 'No conversations yet'
@@ -145,14 +147,14 @@ class _ChatHistoryScreenState extends State<ChatHistoryScreen> {
                   color: Colors.white,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(14),
-                    side: const BorderSide(color: Color(0xFFD5DFDC)),
+                    side: const BorderSide(color: CareGridPalette.line),
                   ),
                   child: ListTile(
                     contentPadding: const EdgeInsets.fromLTRB(14, 10, 3, 10),
                     leading: const CircleAvatar(
-                      backgroundColor: Color(0xFFDDF2EA),
+                      backgroundColor: CareGridPalette.paleMint,
                       child: Icon(Icons.chat_bubble_outline,
-                          color: Color(0xFF14634B)),
+                          color: CareGridPalette.primary),
                     ),
                     title: Text(session.title,
                         maxLines: 2, overflow: TextOverflow.ellipsis,
