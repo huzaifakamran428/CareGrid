@@ -1,5 +1,7 @@
 // ignore_for_file: deprecated_member_use
 import 'package:flutter/material.dart';
+import '../../../../app/theme/brand_tokens.dart';
+import '../../../../core/widgets/caregrid_brand.dart';
 import 'package:flutter/services.dart';
 
 class DigitalIdPassScreen extends StatefulWidget {
@@ -13,19 +15,19 @@ class _DigitalIdPassScreenState extends State<DigitalIdPassScreen> {
   // ---------------------------------------------------------------------------
   // DESIGN SYSTEM COLORS (100% Consistent across CareGrid Screens)
   // ---------------------------------------------------------------------------
-  static const Color _primaryGreen = Color(0xFF14634B);
-  static const Color _headerBadgeBg = Color(0xFF1E755B);
-  static const Color _headerBadgeBorder = Color(0xFF3E8E75);
-  static const Color _amberBadge = Color(0xFFF4A623);
+  static const Color _primaryGreen = CareGridPalette.primary;
+  static const Color _headerBadgeBg = CareGridPalette.primaryDeep;
+  static const Color _headerBadgeBorder = CareGridPalette.primaryBorder;
+  static const Color _amberBadge = CareGridPalette.gold;
 
-  static const Color _mintCardBg = Color(0xFFDDF2EA);
-  static const Color _mintCardBorder = Color(0xFF2B7A62);
-  static const Color _darkForestText = Color(0xFF1B4332);
-  static const Color _mutedText = Color(0xFF4A635A);
+  static const Color _mintCardBg = CareGridPalette.paleMint;
+  static const Color _mintCardBorder = CareGridPalette.mintBorder;
+  static const Color _darkForestText = CareGridPalette.ink;
+  static const Color _mutedText = CareGridPalette.secondaryText;
 
-  static const Color _canvasBg = Color(0xFFF8FAFC);
-  static const Color _neutralBtnBg = Color(0xFFF1F5F4);
-  static const Color _neutralBtnBorder = Color(0xFFD5DFDC);
+  static const Color _canvasBg = CareGridPalette.canvas;
+  static const Color _neutralBtnBg = CareGridPalette.paleNeutral;
+  static const Color _neutralBtnBorder = CareGridPalette.line;
 
   // ---------------------------------------------------------------------------
   // DUMMY BENEFICIARY DIGITAL ID DATA
@@ -87,7 +89,7 @@ class _DigitalIdPassScreenState extends State<DigitalIdPassScreen> {
         child: Column(
           children: [
             // 1. TOP FOREST GREEN HEADER
-            _buildTopHeader(),
+            CareGridBrandedHeader(child: _buildTopHeader()),
 
             // 2. MAIN ROUNDED SHEET CONTAINER
             Expanded(
