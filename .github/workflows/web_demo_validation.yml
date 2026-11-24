@@ -1,0 +1,28 @@
+name: CareGrid web demo validation
+on:
+  pull_request:
+    paths:
+      - 'frontend/web/**'
+      - '.github/workflows/web_demo_validation.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'frontend/web/**'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: JavaScript syntax
+        run: |
+          node --check frontend/web/shared/assistant.js
+          node --check frontend/web/admin_portal/assets/assistant_admin.js
+          node --check frontend/web/admin_portal/assets/app.js
+          node --check frontend/web/ngo_portal/assets/app.js
+      - name: Assistant behavior and role checks
+        run: node frontend/web/tests/assistant_demo.test.js
+      - name: Shared portal links
+        run: python3 -m unittest discover -s frontend/web/tests -p 'test_*.py' -v
+      - name: Server module syntax
+        run: python3 -m py_compile frontend/web/run_local_demo.py
