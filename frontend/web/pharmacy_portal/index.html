@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#075A50">
+<title>CareGrid · Pharmacy Partner Preview</title>
+<link rel="stylesheet" href="../shared/portal-theme.css">
+<style>
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:#f7faf8;color:#173d37;font:14px/1.5 Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+.layout{display:grid;grid-template-columns:255px minmax(0,1fr);min-height:100vh}
+aside{background:linear-gradient(165deg,#075a50,#087c69);color:white;padding:26px 20px;display:flex;flex-direction:column;gap:25px}
+.logo{display:flex;align-items:center;gap:12px}.logo img{width:52px;height:52px;padding:3px;background:white;border-radius:12px}.logo strong{font-size:21px}.logo strong span{color:#e3a33b}.logo small{display:block;font-size:11px;color:#d4efdf}
+.tag{background:#e3a33b;color:#173d37;display:inline-block;font-size:10px;font-weight:900;padding:5px 10px;border-radius:7px;width:max-content}
+nav{display:grid;gap:8px}nav a{padding:11px 13px;text-decoration:none;color:white;border-radius:12px;font-weight:700;font-size:13px}nav a:hover,nav a.active{background:#e5f5ee;color:#075a50}
+.sidebar-end{margin-top:auto;background:#ffffff18;border:1px solid #ffffff30;border-radius:13px;padding:15px;font-size:12px}
+main{min-width:0}header{background:linear-gradient(115deg,#075a50,#087c69);color:white;padding:32px clamp(18px,3vw,36px) 52px}header h1{font-size:26px;margin:9px 0 4px}header p{font-size:13px;color:#daefe7;max-width:740px}
+.content{background:#f7faf8;margin-top:-24px;border-radius:27px 27px 0 0;position:relative;padding:28px clamp(18px,3vw,36px)}
+.cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}.card{background:white;border:1px solid #dae8e1;border-radius:17px;padding:20px;box-shadow:0 8px 25px #075a500b}.card small{font-size:12px;color:#58746d;display:block}.card strong{font-size:27px;font-weight:900;color:#075a50}.card p{font-size:11px;color:#58746d}
+.section{margin-top:24px}.section h2{font-size:18px;margin:0 0 10px}.section>p{color:#58746d;margin:0 0 14px;font-size:12px}
+.toolbar{display:flex;align-items:center;gap:12px;justify-content:space-between;padding:14px;border-bottom:1px solid #dae8e1;flex-wrap:wrap}.toolbar input{border:1px solid #b2dfce;border-radius:10px;padding:11px;width:min(320px,100%)}
+.table-wrap{overflow-x:auto}.table-wrap table{border-collapse:collapse;width:100%;min-width:720px}.table-wrap td,.table-wrap th{text-align:left;padding:15px 17px;border-bottom:1px solid #e2eee7;font-size:12px}.table-wrap th{background:#f0f6f2;color:#58746d;font-weight:800;font-size:11px}.table-wrap td strong{color:#173d37}
+.badge{display:inline-block;background:#e5f5ee;color:#075a50;padding:5px 10px;border-radius:8px;font-size:10px;font-weight:800}.badge.warn{background:#fff4e2;color:#9c6614}
+.note{padding:15px 18px;background:#fff4e2;border:1px solid #ebcf9f;border-radius:13px;color:#83591b;line-height:1.65;font-size:12px}
+.steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}.step{padding:18px;border:1px solid #dae8e1;border-radius:15px;background:white}.step b{color:#087c69}.step h3{font-size:14px;margin:9px 0 6px}.step p{font-size:12px;color:#58746d}
+footer{padding:24px;color:#738b80;font-size:11px}
+@media(max-width:850px){.layout{grid-template-columns:1fr}aside{position:static;gap:14px;padding:16px}nav{display:flex;flex-wrap:wrap}nav a{font-size:11px}.sidebar-end{display:none}.cards,.steps{grid-template-columns:1fr}header{padding-bottom:40px}}
+</style>
+<script src="../shared/assistant.js" defer></script>
+</head>
+<body data-caregrid-role="pharmacy">
+<div class="layout"><aside>
+  <div class="logo"><img src="../admin_portal/assets/caregrid-logo.jpg" alt="CareGrid mark"><div><strong>Care<span>Grid</span></strong><small>Pharmacy Partner Portal</small></div></div>
+  <span class="tag">PHARMACY · FRONTEND DEMO</span>
+  <nav aria-label="Pharmacy navigation"><a class="active" href="#overview">Overview</a><a href="#prescriptions">Prescription previews</a><a href="#guide">Dispensing guide</a></nav>
+  <div class="sidebar-end"><b>CareGrid Partner Workspace</b><p>All records shown are fictional examples. There is no live verification or payment.</p></div>
+</aside>
+<main id="overview"><header><span class="tag">CAREGRID HEALTH SERVICES</span><h1>Pharmacy partner dashboard</h1><p>Review demonstration prescription requests, understand subsidy rules, and get role-specific guidance from the CareGrid assistant.</p></header>
+<div class="content">
+  <div class="note" role="note"><strong>Prototype only.</strong> The balances, patients, prescriptions and subsidies below are fictional. A real pharmacy must verify eligibility, prescription validity and stock through authenticated services before dispensing any medicine.</div>
+  <div class="cards section"><div class="card"><small>Example prescriptions</small><strong>4</strong><p>Not linked to the mobile app</p></div><div class="card"><small>Pending review</small><strong>2</strong><p>Sample workflow state only</p></div><div class="card"><small>Typical demo subsidy</small><strong>70%</strong><p>Policy example · not guaranteed</p></div></div>
+  <section class="section" id="prescriptions"><h2>Prescription previews</h2><p>Use these fictional records to test filters and the assistant. No live dispensing actions are available.</p>
+    <div class="card" style="padding:0"><div class="toolbar"><label for="pharmacy-search">Find a sample prescription</label><input id="pharmacy-search" type="search" placeholder="Search ID, name, or medicine"></div>
+    <div class="table-wrap"><table><thead><tr><th>Request</th><th>Beneficiary</th><th>Example medication</th><th>Estimated co-pay</th><th>Status</th></tr></thead><tbody id="rx-rows">
+      <tr><td>RX-DEMO-101</td><td>Ayesha Bibi</td><td>Routine medicines · example</td><td>Rs. 450</td><td><span class="badge warn">Review</span></td></tr>
+      <tr><td>RX-DEMO-102</td><td>Bilal (sample)</td><td>Prescription assessment</td><td>Not calculated</td><td><span class="badge warn">Review</span></td></tr>
+      <tr><td>RX-DEMO-103</td><td>Sana (sample)</td><td>General wellness medication</td><td>Rs. 320</td><td><span class="badge">Demo cleared</span></td></tr>
+      <tr><td>RX-DEMO-104</td><td>Hamza (sample)</td><td>Non-specific prescribed item</td><td>Rs. 180</td><td><span class="badge">Demo cleared</span></td></tr>
+    </tbody></table></div></div></section>
+  <section class="section" id="guide"><h2>How the pharmacy process should work</h2><div class="steps">
+    <div class="step"><b>01</b><h3>Verify credentials</h3><p>Confirm identity and beneficiary status through a secure verification service.</p></div>
+    <div class="step"><b>02</b><h3>Review prescription</h3><p>Check professional prescription requirements, stock and contraindications.</p></div>
+    <div class="step"><b>03</b><h3>Record transaction</h3><p>Apply backend-approved subsidy rules and save an auditable dispensing record.</p></div>
+  </div></section>
+  <footer>CareGrid pharmacy partner · Local frontend demo · Ask CareGrid is available at the bottom right.</footer>
+</div></main></div>
+<script>
+  document.getElementById('pharmacy-search').addEventListener('input',event=>{
+    const q=event.target.value.toLowerCase().trim();
+    document.querySelectorAll('#rx-rows tr').forEach(row=>{
+      row.hidden=!row.textContent.toLowerCase().includes(q);
+    });
+  });
+</script>
+</body></html>

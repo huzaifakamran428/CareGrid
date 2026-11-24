@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#075A50">
+<title>CareGrid · Assistant Control · Admin Demo</title>
+<link rel="stylesheet" href="assets/ui.css">
+<link rel="stylesheet" href="assets/assistant_admin.css">
+<script src="../shared/assistant.js" defer></script>
+<script src="assets/assistant_admin.js" defer></script>
+</head>
+<body data-caregrid-role="admin">
+<div class="cg-admin-setup">
+<header class="cg-control-header">
+  <a href="index.html#overview" class="cg-control-back">← Back to Admin</a>
+  <div class="cg-admin-brand"><img src="assets/caregrid-logo.jpg" alt="CareGrid mark"><div><strong>Care<span>Grid</span> · Assistant Control</strong><small>Admin preview · FAQ governance & conversation review</small></div></div>
+  <span class="cg-demo-chip">LOCAL DEMO ONLY</span>
+</header>
+<main class="cg-control-main">
+<section class="cg-control-intro">
+  <div><span class="cg-eyebrow">ADMIN WORKSPACE</span><h1>Assistant governance</h1>
+  <p>Manage the questions, matching criteria, role visibility, and demo conversation history shared across the local CareGrid web previews.</p></div>
+  <div class="cg-intro-stats"><div><strong id="faq-count">0</strong><span>Approved FAQs</span></div><div><strong id="chat-count">0</strong><span>Logged turns</span></div></div>
+</section>
+<div class="cg-admin-warning" role="note"><strong>Security limitation:</strong> This prototype uses browser localStorage. It is not authenticated; anyone who can load the local admin URL can change demo settings. History covers only this browser profile and origin, not other users or devices. Do not enter real beneficiary or patient information.</div>
+<div class="cg-control-grid">
+<section class="cg-control-panel" aria-labelledby="rules-heading">
+  <div class="cg-section-heading"><div><h2 id="rules-heading">Approved questions & answers</h2><p>Create or update the demo assistant's knowledge entries.</p></div><button type="button" id="new-faq" class="cg-primary">+ Add question</button></div>
+  <div id="faq-list" class="cg-faq-list"></div>
+</section>
+<section class="cg-control-panel" aria-labelledby="criteria-heading">
+  <div class="cg-section-heading"><div><h2 id="criteria-heading">Response criteria</h2><p>Define matching, fallback and data handling rules.</p></div></div>
+  <form id="criteria-form" class="cg-form">
+    <label>Minimum matching keywords <input type="number" name="minimumMatches" min="1" max="5" required></label>
+    <label>Maximum question length <input type="number" name="maxQuestionLength" min="100" max="1000" step="10" required></label>
+    <label>Prohibited trigger words (comma-separated) <textarea rows="2" name="prohibited" maxlength="400"></textarea></label>
+    <label>Fallback response <textarea rows="4" name="fallback" maxlength="900" required></textarea></label>
+    <label class="cg-check"><input type="checkbox" name="retainHistory"> Save sanitized demo conversation history locally</label>
+    <button class="cg-primary" type="submit">Save criteria</button>
+  </form>
+</section>
+</div>
+<section class="cg-control-panel" aria-labelledby="history-heading">
+  <div class="cg-section-heading cg-wrap"><div><h2 id="history-heading">Conversation history</h2><p>All four demo roles in this browser/origin, latest first. Sensitive-looking values are redacted.</p></div>
+    <div class="cg-inline"><label class="cg-sr" for="history-role">Filter role</label><select id="history-role"><option value="all">All roles</option><option value="ngo">NGO</option><option value="admin">Admin</option><option value="lab">Labs</option><option value="pharmacy">Pharmacies</option></select>
+    <button type="button" id="export-history" class="cg-outline">Export JSON</button><button type="button" id="clear-history" class="cg-danger">Clear history</button></div></div>
+  <div class="cg-history-scroll"><table><thead><tr><th>Time</th><th>Portal role</th><th>Question</th><th>Answer & basis</th></tr></thead><tbody id="history-body"></tbody></table></div>
+</section>
+</main>
+</div>
+<dialog id="faq-dialog" aria-labelledby="dialog-heading">
+  <form id="faq-form" class="cg-form">
+    <div class="cg-section-heading"><h2 id="dialog-heading">Add question</h2><button type="button" id="close-faq" aria-label="Close">×</button></div>
+    <input type="hidden" name="id">
+    <label>Question <input name="question" required maxlength="180" placeholder="How do I…?"></label>
+    <label>Approved demo response <textarea name="answer" required rows="5" maxlength="1500"></textarea></label>
+    <label>Keywords, comma separated <input name="keywords" required maxlength="500" placeholder="digital id, card, verify"></label>
+    <label>Category <input name="category" maxlength="65" value="General"></label>
+    <fieldset><legend>Which roles can see this answer?</legend>
+      <div class="cg-role-options"><label><input type="checkbox" name="roles" value="ngo"> NGO</label><label><input type="checkbox" name="roles" value="admin"> Admin</label><label><input type="checkbox" name="roles" value="lab"> Labs</label><label><input type="checkbox" name="roles" value="pharmacy"> Pharmacy</label></div>
+    </fieldset>
+    <label class="cg-check"><input type="checkbox" name="enabled" checked> Enabled</label>
+    <button type="submit" class="cg-primary">Save question</button>
+  </form>
+</dialog>
+<div id="admin-notice" role="status" aria-live="polite"></div>
+</body></html>
