@@ -1,0 +1,29 @@
+/* Same CareGrid logo palette as Flutter: emerald #087C69, gold #E3A33B. */
+.cg-assistant{--cg-deep:#075a50;--cg-green:#087c69;--cg-gold:#e3a33b;--cg-canvas:#f7faf8;--cg-mint:#e5f5ee;--cg-ink:#173d37;font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;z-index:5000}
+.cg-chat-launcher{position:fixed;bottom:23px;right:23px;z-index:5001;background:linear-gradient(125deg,var(--cg-deep),var(--cg-green));border:2px solid #d9f1e8;color:white;border-radius:40px;padding:14px 20px;font-size:14px;font-weight:800;box-shadow:0 10px 35px #075a5060;cursor:pointer}
+.cg-chat-launcher span{color:var(--cg-gold);font-size:19px;margin-right:6px}
+.cg-chat-window{position:fixed;bottom:87px;right:22px;width:min(420px,calc(100vw - 24px));height:min(660px,calc(100dvh - 108px));background:#fff;border:1px solid #b2dfce;border-radius:20px;box-shadow:0 25px 90px #0d433c50;display:flex;flex-direction:column;overflow:hidden;z-index:5002}
+.cg-chat-window[hidden]{display:none!important}
+.cg-chat-head{background:linear-gradient(115deg,var(--cg-deep),var(--cg-green));color:white;padding:16px 18px;display:flex;justify-content:space-between;gap:12px;align-items:center}
+.cg-chat-head .cg-chat-name{font-size:17px;font-weight:900}.cg-chat-head small{display:block;margin-top:4px;font-size:11px;color:#d3f6e9}
+.cg-chat-close{background:#ffffff20;border:1px solid #ffffff30;border-radius:10px;color:white;font-size:23px;width:32px;height:32px;cursor:pointer}
+.cg-chat-notice{font-size:11px;color:#476c61;background:var(--cg-mint);padding:11px 15px;line-height:1.5}
+.cg-chat-messages{flex:1;min-height:100px;overflow-y:auto;padding:15px;display:flex;flex-direction:column;gap:12px;background:var(--cg-canvas)}
+.cg-msg{max-width:92%;display:flex;flex-direction:column;gap:4px;align-self:flex-start}
+.cg-msg.user{align-self:flex-end}.cg-msg-bubble{border:1px solid #b2dfce;border-radius:15px 15px 15px 4px;padding:11px 13px;background:white;color:var(--cg-ink);font-size:13px;line-height:1.6;white-space:pre-wrap;overflow-wrap:anywhere}
+.cg-msg.user .cg-msg-bubble{background:var(--cg-green);border-color:var(--cg-green);border-radius:15px 15px 4px 15px;color:white}
+.cg-msg small{font-size:10px;color:#668478;font-weight:700}
+.cg-chat-suggestions{padding:10px 12px;display:flex;gap:7px;overflow-x:auto;flex-shrink:0}
+.cg-chat-suggestions button{border:1px solid #9bcebd;border-radius:16px;background:var(--cg-mint);color:var(--cg-deep);font-size:11px;font-weight:700;padding:7px 11px;white-space:nowrap;cursor:pointer}
+.cg-chat-form{display:flex;gap:7px;padding:10px 12px;background:white;border-top:1px solid #d9e9e0;flex-shrink:0}
+.cg-chat-form input{flex:1;min-width:0;border:1px solid #bfded0;border-radius:11px;padding:11px 12px;font-size:13px;color:var(--cg-ink)}
+.cg-chat-form button{border:0;border-radius:11px;color:#fff;background:var(--cg-green);padding:0 14px;font-weight:800;cursor:pointer}
+.cg-chat-footer{display:flex;justify-content:space-between;align-items:center;gap:6px;padding:7px 12px 12px;color:#728b80;font-size:10px}
+.cg-chat-footer button{border:0;background:transparent;color:var(--cg-green);font-size:11px;font-weight:800;cursor:pointer}
+.cg-sr{position:absolute;clip:rect(0,0,0,0);width:1px;height:1px;overflow:hidden}
+.cg-assistant button:focus-visible,.cg-assistant input:focus-visible{outline:3px solid var(--cg-gold);outline-offset:2px}
+.cg-full-assistant-page{background:var(--cg-canvas,#f7faf8)}
+.cg-full-assistant-page .cg-chat-launcher{display:none}
+.cg-full-assistant-page .cg-chat-window{position:relative;bottom:auto;right:auto;min-height:600px;height:min(82dvh,900px);width:min(100%,1060px);margin:20px auto;border-radius:22px;box-shadow:0 15px 45px #075a5020}
+.cg-full-assistant-page .cg-chat-messages{padding:26px}
+@media(max-width:600px){.cg-chat-launcher{bottom:14px;right:14px}.cg-chat-window{right:7px;bottom:75px;width:calc(100vw - 14px);height:calc(100dvh - 95px)}.cg-chat-head .cg-chat-name{font-size:15px}}
