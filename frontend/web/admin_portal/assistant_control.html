@@ -21,7 +21,15 @@
   <p>Manage the questions, matching criteria, role visibility, and demo conversation history shared across the local CareGrid web previews.</p></div>
   <div class="cg-intro-stats"><div><strong id="faq-count">0</strong><span>Approved FAQs</span></div><div><strong id="chat-count">0</strong><span>Logged turns</span></div></div>
 </section>
-<div class="cg-admin-warning" role="note"><strong>Security limitation:</strong> This prototype uses browser localStorage. It is not authenticated; anyone who can load the local admin URL can change demo settings. History covers only this browser profile and origin, not other users or devices. Do not enter real beneficiary or patient information.</div>
+<div class="cg-admin-warning" role="note"><strong>Local prototype warning:</strong> The role portals do not authenticate real users. The shared localhost server keeps fictional FAQs and redacted demo messages in SQLite, with a simple admin key for editing. This is not a production permission system. Never enter real beneficiary or patient information.</div>
+<section class="cg-control-panel cg-access-panel">
+  <div class="cg-section-heading"><div><h2>Shared assistant connection</h2><p id="server-mode" role="status">Checking the localhost API…</p></div>
+    <button type="button" id="refresh-server" class="cg-outline" hidden>Refresh server data</button></div>
+  <form id="server-unlock" class="cg-form" hidden>
+    <label>Local demo admin key <input type="password" id="server-key" autocomplete="off" minlength="16" required placeholder="Enter CAREGRID_DEMO_ADMIN_KEY"></label>
+    <button type="submit" class="cg-primary">Unlock assistant controls</button>
+  </form>
+</section>
 <div class="cg-control-grid">
 <section class="cg-control-panel" aria-labelledby="rules-heading">
   <div class="cg-section-heading"><div><h2 id="rules-heading">Approved questions & answers</h2><p>Create or update the demo assistant's knowledge entries.</p></div><button type="button" id="new-faq" class="cg-primary">+ Add question</button></div>
@@ -34,13 +42,13 @@
     <label>Maximum question length <input type="number" name="maxQuestionLength" min="100" max="1000" step="10" required></label>
     <label>Prohibited trigger words (comma-separated) <textarea rows="2" name="prohibited" maxlength="400"></textarea></label>
     <label>Fallback response <textarea rows="4" name="fallback" maxlength="900" required></textarea></label>
-    <label class="cg-check"><input type="checkbox" name="retainHistory"> Save sanitized demo conversation history locally</label>
+    <label class="cg-check"><input type="checkbox" name="retainHistory"> Save sanitized demo conversation history on this local server</label>
     <button class="cg-primary" type="submit">Save criteria</button>
   </form>
 </section>
 </div>
 <section class="cg-control-panel" aria-labelledby="history-heading">
-  <div class="cg-section-heading cg-wrap"><div><h2 id="history-heading">Conversation history</h2><p>All four demo roles in this browser/origin, latest first. Sensitive-looking values are redacted.</p></div>
+  <div class="cg-section-heading cg-wrap"><div><h2 id="history-heading">Conversation history</h2><p>Shared localhost demo history across browser profiles, latest first. Common sensitive-looking patterns are redacted. Roles are not verified.</p></div>
     <div class="cg-inline"><label class="cg-sr" for="history-role">Filter role</label><select id="history-role"><option value="all">All roles</option><option value="ngo">NGO</option><option value="admin">Admin</option><option value="lab">Labs</option><option value="pharmacy">Pharmacies</option></select>
     <button type="button" id="export-history" class="cg-outline">Export JSON</button><button type="button" id="clear-history" class="cg-danger">Clear history</button></div></div>
   <div class="cg-history-scroll"><table><thead><tr><th>Time</th><th>Portal role</th><th>Question</th><th>Answer & basis</th></tr></thead><tbody id="history-body"></tbody></table></div>

@@ -21,3 +21,7 @@
 #faq-dialog{width:min(580px,calc(100% - 20px));max-height:88dvh;border:1px solid var(--line);border-radius:18px;padding:0;box-shadow:0 30px 80px #0e463f4d}#faq-dialog::backdrop{background:#062c2780}#faq-dialog .cg-section-heading{padding:5px 0 14px}#faq-dialog .cg-section-heading button{border:0;background:#eaf4ee;border-radius:8px;font-size:23px;cursor:pointer;width:32px}
 #admin-notice:not(:empty){position:fixed;bottom:20px;left:20px;z-index:10000;background:var(--cg-deep);color:white;border-radius:10px;padding:12px 18px;font-size:12px}
 @media(max-width:850px){.cg-control-grid{grid-template-columns:1fr}.cg-admin-brand strong{font-size:18px}.cg-control-main{padding-top:22px}}
+
+/* Protected controls remain hidden until a local admin key is checked. */
+.cg-admin-setup [hidden]{display:none!important}
+.cg-access-panel{border-color:#b2dfce}
