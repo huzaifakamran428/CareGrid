@@ -56,7 +56,8 @@ def make_handler(store: DemoAssistantStore, admin_key: str, root=ROOT):
         def _valid_local_request(self):
             # Mitigate DNS rebinding / cross-origin requests in this local-only demo.
             host = self.headers.get("Host", "").lower()
-            if host not in (f"127.0.0.1:{PORT}", f"localhost:{PORT}"):
+            actual_port = self.server.server_address[1]
+            if host not in (f"127.0.0.1:{actual_port}", f"localhost:{actual_port}"):
                 self._json(403, {"error": "Use the documented loopback host"})
                 return False
             if self.command in ("POST", "PUT", "DELETE"):
@@ -106,6 +107,8 @@ def make_handler(store: DemoAssistantStore, admin_key: str, root=ROOT):
                     return
                 if self.command == "GET" and path == "/api/assistant/faqs":
                     role = parse_qs(parsed.query).get("role", [""])[0]
+                    if role not in ("ngo", "admin", "lab", "pharmacy"):
+                        raise InvalidRequest("A valid role query parameter is required")
                     self._json(200, {"faqs": store.get_faqs(role)})
                     return
                 if self.command == "POST" and path == "/api/assistant/reply":

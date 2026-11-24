@@ -136,9 +136,11 @@ class DemoAssistantStore:
               answer TEXT NOT NULL,
               source TEXT NOT NULL
             )""")
-            if db.execute("SELECT COUNT(*) FROM faqs").fetchone()[0] == 0:
-                db.executemany("INSERT INTO faqs(id,json_value) VALUES (?,?)",
+            seeded = db.execute("SELECT json_value FROM settings WHERE name='faq_seeded'").fetchone()
+            if seeded is None:
+                db.executemany("INSERT OR IGNORE INTO faqs(id,json_value) VALUES (?,?)",
                                [(f["id"], json.dumps(f)) for f in DEFAULT_FAQS])
+                db.execute("INSERT INTO settings(name,json_value) VALUES('faq_seeded','true')")
             db.execute("INSERT OR IGNORE INTO settings(name,json_value) VALUES (?,?)",
                        ("criteria", json.dumps(DEFAULT_CRITERIA)))
             db.commit()
