@@ -1,0 +1,39 @@
+/* CareGrid cross-platform design tokens: match Flutter CareGridPalette. */
+:root {
+  --navy:#075A50; --navy2:#064D45; --teal:#087C69; --teal-deep:#075A50;
+  --mint:#E5F5EE; --bg:#F7FAF8; --ink:#173D37; --muted:#58746D;
+  --line:#DAE8E1; --orange:#E3A33B; --shadow:0 8px 27px #075A5012;
+  --primary-green:#087C69; --primary-green-dark:#075A50;
+  --header-badge-bg:#096B5B; --header-badge-border:#70BFAF;
+  --amber-badge:#E3A33B; --mint-card-bg:#E5F5EE; --mint-card-border:#B2DFCE;
+  --dark-forest-text:#173D37; --muted-text:#58746D; --canvas-bg:#F7FAF8;
+  --neutral-btn-bg:#F0F6F2; --neutral-btn-border:#DAE8E1;
+}
+html{scrollbar-color:#87bbac #edf6f0}
+body{background:var(--bg);color:var(--ink)}
+.sidebar{background:linear-gradient(180deg,#075a50,#06483f)!important}
+.sidebar .brand-pill,.brand-pill,.cg-gold{background:#e3a33b;color:#173d37}
+.sidebar .nav-item a:hover,.side-nav a:hover{background:#126d5c}
+.sidebar .nav-item a.active,.side-nav a.active{background:#e5f5ee!important;color:#075a50!important}
+.side-nav a.active .ic{color:#087c69}
+.workspace-tag{background:#12685b;border-color:#288776}.workspace-tag .ic{color:#e3a33b}
+.sidebar-card{background:linear-gradient(135deg,#087c69,#075a50);color:white}
+.sidebar-card p{color:#d4f3e8}.nav-head{color:#bddad0}
+.top-banner{background:linear-gradient(113deg,#075a50,#087c69)!important}
+.topbar{border-color:#dae8e1}.breadcrumb strong,.account strong{color:#173d37}
+.banner{background:linear-gradient(115deg,#075a50,#087c69 65%,#31ad96)}
+.banner .eyebrow{color:#f5d398}
+.card,.table-card,.content-sheet,.chat-sheet{border-color:#dae8e1}
+.btn-primary,.btn-primary-sm,.filter-tab.active,.cg-filled{background:#087c69;color:white}
+.btn-primary:hover,.btn-primary-sm:hover{background:#075a50}
+.btn:focus-visible,button:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid #e3a33b;outline-offset:2px}
+.stat-value,.page-heading h1{color:#173d37}
+.stat-icon.blue,.stat-icon.purple,.stat-icon.green{background:#e5f5ee;color:#087c69}
+.stat-icon.amber{background:#fff4e2;color:#ad751d}
+.pill.in-progress,.pill.review{color:#39798c;background:#eaf3fc}
+.id-card-top{background:linear-gradient(115deg,#075a50,#087c69)!important}
+.id-card-footer,.identity-card{border-color:#b2dfce}
+.id-card-footer{background:#e5f5ee}
+.logo .brand-accent,.brand-accent{color:#e3a33b}
+.top-banner .status-chip,.status-chip{background:#ffffff1c;border:1px solid #ffffff30}
+@media(max-width:760px){.top-banner{padding:20px 18px 32px}.content-sheet{padding:22px 16px}.main-wrapper{min-width:0}}
