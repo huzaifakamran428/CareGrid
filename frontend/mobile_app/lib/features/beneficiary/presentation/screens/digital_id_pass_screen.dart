@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import '../../../../app/theme/brand_tokens.dart';
 import '../../../../core/widgets/caregrid_brand.dart';
+import '../../../../core/widgets/caregrid_identity_card.dart';
 import 'package:flutter/services.dart';
 
 class DigitalIdPassScreen extends StatefulWidget {
@@ -231,186 +232,23 @@ class _DigitalIdPassScreenState extends State<DigitalIdPassScreen> {
   // OFFICIAL DIGITAL ID & QR PASS CARD
   // ---------------------------------------------------------------------------
   Widget _buildOfficialDigitalPassCard() {
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.all(18),
-      decoration: BoxDecoration(
-        color: _mintCardBg,
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: _mintCardBorder, width: 1.4),
-      ),
-      child: Column(
-        children: [
-          // Top Status Pill & Validity
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                decoration: BoxDecoration(
-                  color: _primaryGreen,
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: const Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Icon(Icons.verified_user_rounded,
-                        color: Colors.white, size: 13),
-                    SizedBox(width: 5),
-                    Text(
-                      'ACTIVE BENEFICIARY',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 10.5,
-                        fontWeight: FontWeight.w800,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Text(
-                'Valid Thru: ${_digitalPassData['validUntil']}',
-                style: const TextStyle(
-                  color: _darkForestText,
-                  fontSize: 11.5,
-                  fontWeight: FontWeight.w700,
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 16),
-
-          // Beneficiary Name & NGO Sponsor
-          Row(
-            children: [
-              Container(
-                width: 52,
-                height: 52,
-                decoration: BoxDecoration(
-                  color: _primaryGreen,
-                  borderRadius: BorderRadius.circular(14),
-                ),
-                child: const Center(
-                  child: Text(
-                    'AB',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 18,
-                      fontWeight: FontWeight.w800,
-                    ),
-                  ),
-                ),
-              ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      _digitalPassData['fullName'].toString(),
-                      style: const TextStyle(
-                        color: _darkForestText,
-                        fontSize: 18,
-                        fontWeight: FontWeight.w800,
-                      ),
-                    ),
-                    const SizedBox(height: 2),
-                    Text(
-                      'CNIC: ${_digitalPassData['cnic']}',
-                      style: const TextStyle(
-                        color: _mutedText,
-                        fontSize: 12,
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-                    const SizedBox(height: 2),
-                    Text(
-                      'Sponsor: ${_digitalPassData['ngoName']}',
-                      style: const TextStyle(
-                        color: _primaryGreen,
-                        fontSize: 12,
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 16),
-
-          // White Scannable QR Code & Digital ID Box
-          Container(
-            width: double.infinity,
-            padding: const EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(14),
-              border: Border.all(color: _mintCardBorder, width: 1.2),
-            ),
-            child: Column(
-              children: [
-                Container(
-                  padding: const EdgeInsets.all(12),
-                  decoration: BoxDecoration(
-                    color: _neutralBtnBg,
-                    borderRadius: BorderRadius.circular(12),
-                    border: Border.all(color: _neutralBtnBorder),
-                  ),
-                  child: const Icon(
-                    Icons.qr_code_2_rounded,
-                    size: 132,
-                    color: _darkForestText,
-                  ),
-                ),
-                const SizedBox(height: 12),
-                const Text(
-                  'UNIQUE CAREGRID DIGITAL ID',
-                  style: TextStyle(
-                    color: _mutedText,
-                    fontSize: 10.5,
-                    fontWeight: FontWeight.w700,
-                    letterSpacing: 0.5,
-                  ),
-                ),
-                const SizedBox(height: 4),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      _digitalPassData['digitalId'].toString(),
-                      style: const TextStyle(
-                        color: _primaryGreen,
-                        fontSize: 16.5,
-                        fontWeight: FontWeight.w800,
-                        letterSpacing: 0.4,
-                      ),
-                    ),
-                    const SizedBox(width: 6),
-                    InkWell(
-                      onTap: _copyDigitalId,
-                      borderRadius: BorderRadius.circular(6),
-                      child: Container(
-                        padding: const EdgeInsets.all(5),
-                        decoration: BoxDecoration(
-                          color: _mintCardBg,
-                          borderRadius: BorderRadius.circular(6),
-                        ),
-                        child: const Icon(
-                          Icons.copy_rounded,
-                          size: 15,
-                          color: _primaryGreen,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        CareGridIdentityCard(
+          name: _digitalPassData['fullName'].toString(),
+          digitalId: _digitalPassData['digitalId'].toString(),
+          issuedAt: '14 Nov 2026',
+          cnic: 'Not recorded',
+          address: 'Lahore',
+        ),
+        const SizedBox(height: 10),
+        OutlinedButton.icon(
+          onPressed: _copyDigitalId,
+          icon: const Icon(Icons.copy_rounded, size: 17),
+          label: const Text('Copy demonstration Digital ID'),
+        ),
+      ],
     );
   }
 

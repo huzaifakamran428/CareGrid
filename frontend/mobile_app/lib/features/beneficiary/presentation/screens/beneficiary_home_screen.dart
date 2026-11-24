@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import '../../../../app/theme/brand_tokens.dart';
 import '../../../../core/widgets/caregrid_brand.dart';
+import '../../../../core/widgets/caregrid_identity_card.dart';
 import 'package:flutter/services.dart';
 
 class BeneficiaryHomeScreen extends StatefulWidget {
@@ -137,6 +138,10 @@ class _BeneficiaryHomeScreenState extends State<BeneficiaryHomeScreen> {
                               widget.onOpen('digital-id'),
                         ),
                         const SizedBox(height: 20),
+
+                        // A concise dashboard summary, consistent with the card.
+                        _buildWelfareSnapshot(),
+                        const SizedBox(height: 19),
 
                         // Welfare Services Grid
                         const Text(
@@ -326,145 +331,16 @@ class _BeneficiaryHomeScreenState extends State<BeneficiaryHomeScreen> {
   // MINT APPROVED DIGITAL ID CARD
   // ---------------------------------------------------------------------------
   Widget _buildDigitalIdCard() {
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: _mintCardBg,
-        borderRadius: BorderRadius.circular(18),
-        border: Border.all(color: _mintCardBorder, width: 1.3),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Top Row: Approved Pill + Date
-          Wrap(
-            alignment: WrapAlignment.spaceBetween,
-            spacing: 8,
-            runSpacing: 8,
-            children: [
-              Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                decoration: BoxDecoration(
-                  color: _primaryGreen,
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    const Icon(Icons.check, color: Colors.white, size: 13),
-                    const SizedBox(width: 4),
-                    Text(
-                      'STATUS: ${_beneficiaryData['applicationStatus']}',
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 11,
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Text(
-                _beneficiaryData['approvedDate'].toString(),
-                style: const TextStyle(
-                  color: _darkForestText,
-                  fontSize: 12,
-                  fontWeight: FontWeight.w700,
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 12),
-
-          // Card Heading
-          const Text(
-            'Active CareGrid Welfare Pass',
-            style: TextStyle(
-              color: _darkForestText,
-              fontSize: 16,
-              fontWeight: FontWeight.w800,
-            ),
-          ),
-          const SizedBox(height: 4),
-          Text(
-            'Show this Digital ID at registered Pharmacies & Laboratories for instant eligibility check.',
-            style: TextStyle(
-              color: _darkForestText.withValues(alpha: 0.85),
-              fontSize: 12.5,
-              height: 1.35,
-            ),
-          ),
-          const SizedBox(height: 12),
-
-          // White Digital ID Box
-          InkWell(
-            onTap: _copyDigitalId,
-            borderRadius: BorderRadius.circular(10),
-            child: Container(
-              width: double.infinity,
-              padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 11),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(10),
-                border: Border.all(color: _mintCardBorder, width: 1.2),
-              ),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Text(
-                      'Digital ID: ${_beneficiaryData['digitalId']}',
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(
-                        color: _darkForestText,
-                        fontSize: 14,
-                        fontWeight: FontWeight.w800,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(width: 8),
-                  const Icon(
-                    Icons.copy_rounded,
-                    size: 16,
-                    color: _primaryGreen,
-                  ),
-                ],
-              ),
-            ),
-          ),
-          const SizedBox(height: 12),
-
-          // Eligibility Checkmark Line
-          Row(
-            children: [
-              const Icon(Icons.check, color: _primaryGreen, size: 15),
-              const SizedBox(width: 6),
-              Expanded(
-                child: Text(
-                  _beneficiaryData['eligibilitySummary'].toString(),
-                  style: const TextStyle(
-                    color: _primaryGreen,
-                    fontSize: 12.5,
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 3),
-
-          // Application Ref Line
-          Text(
-            'Application Ref: ${_beneficiaryData['applicationRef']}',
-            style: const TextStyle(
-              color: _mutedText,
-              fontSize: 11.5,
-              fontWeight: FontWeight.w500,
-            ),
-          ),
-        ],
+    return InkWell(
+      onTap: () => widget.onOpen('digital-id'),
+      borderRadius: BorderRadius.circular(19),
+      child: CareGridIdentityCard(
+        name: _beneficiaryData['name'].toString(),
+        digitalId: _beneficiaryData['digitalId'].toString(),
+        issuedAt: '14 Nov 2026',
+        cnic: 'Not recorded',
+        address: 'Lahore',
+        compact: true,
       ),
     );
   }
@@ -472,6 +348,58 @@ class _BeneficiaryHomeScreenState extends State<BeneficiaryHomeScreen> {
   // ---------------------------------------------------------------------------
   // WELFARE SERVICES GRID
   // ---------------------------------------------------------------------------
+  Widget _buildWelfareSnapshot() {
+    final metrics = <(String, String, IconData)>[
+      ('70%', 'Medicine support', Icons.medication_outlined),
+      ('80%', 'Lab support', Icons.science_outlined),
+      ('Rs. 8,500', 'Example balance', Icons.account_balance_wallet_outlined),
+    ];
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Text('Welfare overview', style: TextStyle(
+          color: CareGridPalette.ink, fontSize: 16,
+          fontWeight: FontWeight.w900)),
+        const SizedBox(height: 10),
+        Row(
+          children: metrics.map((metric) => Expanded(
+            child: Padding(
+              padding: const EdgeInsets.only(right: 6),
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 12),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(14),
+                  border: Border.all(color: CareGridPalette.line),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Icon(metric.$3, size: 20, color: CareGridPalette.primary),
+                    const SizedBox(height: 8),
+                    Text(metric.$1,
+                      maxLines: 1, overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(fontSize: 17,
+                        color: CareGridPalette.primaryDeep,
+                        fontWeight: FontWeight.w900)),
+                    const SizedBox(height: 3),
+                    Text(metric.$2, maxLines: 2,
+                      style: const TextStyle(fontSize: 10.5,
+                        color: CareGridPalette.secondaryText)),
+                  ],
+                ),
+              ),
+            ),
+          )).toList(),
+        ),
+        const SizedBox(height: 7),
+        const Text('Example entitlements only · Not synced to NGO records',
+          style: TextStyle(fontSize: 10.5,
+            color: CareGridPalette.secondaryText)),
+      ],
+    );
+  }
+
   Widget _buildServicesGrid() {
     final List services = [
       {
