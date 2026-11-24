@@ -132,14 +132,53 @@
   const form=box.querySelector('.cg-chat-form');
   const input=form.elements.question;
   let sessionId='session-'+Date.now().toString(36);
+  let serverAvailable = false;
+  let serverFaqs = null;
+  let checkingServer = null;
+  const notice = box.querySelector('.cg-chat-notice');
+  const modeLabel = box.querySelector('.cg-chat-footer span');
+
+  async function checkServer() {
+    if (checkingServer) return checkingServer;
+    checkingServer = (async () => {
+      try {
+        const response = await fetch('/api/assistant/status', {
+          cache: 'no-store', credentials: 'same-origin'
+        });
+        const data = response.ok ? await response.json() : {};
+        serverAvailable = data.online === true && data.mode === 'local-sqlite-demo';
+        if (serverAvailable) {
+          const result = await fetch('/api/assistant/faqs?role=' + encodeURIComponent(role),
+            {cache: 'no-store', credentials: 'same-origin'});
+          if (!result.ok) throw new Error('Unable to read server questions');
+          serverFaqs = (await result.json()).faqs;
+        }
+      } catch (_) {
+        serverAvailable = false;
+        serverFaqs = null;
+      }
+      if (serverAvailable) {
+        notice.textContent = 'Shared localhost FAQ server (SQLite demo). No live AI or real accounts. Avoid patient, identity and payment details.';
+        modeLabel.textContent = 'Admin-configured · Shared local server';
+      } else {
+        notice.textContent = 'Offline browser-only FAQ demo. Other browser profiles cannot see these chats. No live AI or private data.';
+        modeLabel.textContent = 'Browser-only demo · No server connection';
+      }
+      return serverAvailable;
+    })();
+    try { return await checkingServer; }
+    finally { checkingServer = null; }
+  }
   function append(sender,text,source){
     const row=document.createElement('div');row.className='cg-msg '+sender;
     const msg=document.createElement('div');msg.className='cg-msg-bubble';msg.textContent=text;row.appendChild(msg);
     if(source){const small=document.createElement('small');small.textContent=source;row.appendChild(small);}
     messages.appendChild(row);messages.scrollTop=messages.scrollHeight;
   }
-  function prompts(){
-    const relevant=API.getFaqs().filter(x=>x.enabled&&x.roles.includes(role)).slice(0,4);
+  async function prompts(){
+    await checkServer();
+    const relevant = (serverAvailable && Array.isArray(serverFaqs) ? serverFaqs :
+      API.getFaqs().filter(x=>x.enabled&&x.roles.includes(role))).slice(0,4);
     suggestions.replaceChildren();
     for(const faq of relevant){
       const b=document.createElement('button');b.type='button';b.textContent=faq.question;
@@ -152,18 +191,37 @@
     append('assistant','Assalam-o-Alaikum! Ask about CareGrid workflows. My responses are admin-managed demo FAQs, not live account data.','CareGrid demo help');
     prompts();
   }
-  function send(text) {
+  async function send(text) {
     const question=String(text).trim();if(!question)return;
-    const limited=question.slice(0,API.getCriteria().maxQuestionLength);
+    const limited=question.slice(0,1000);
     append('user',API.sanitize(limited));
-    const response=API.answer(limited,role);
+    input.value='';
+    await checkServer();
+    if (serverAvailable) {
+      try {
+        const reply=await fetch('/api/assistant/reply', {
+          method:'POST',
+          headers:{'Content-Type':'application/json'},
+          credentials:'same-origin',
+          body:JSON.stringify({role,sessionId,question:limited})
+        });
+        const response=await reply.json();
+        if (!reply.ok) throw new Error(response.error||'Unable to answer');
+        append('assistant',response.text,response.source);
+      } catch (error) {
+        append('assistant','The shared demo service could not answer: '+String(error.message||error),
+          'Local server error · No browser fallback used');
+      }
+      return;
+    }
+    const response=API.answer(limited.slice(0,API.getCriteria().maxQuestionLength),role);
     append('assistant',response.text,response.source);
     API.storeTurn({role,sessionId,question:limited,response});
-    input.value='';
   }
   function open(){
     windowEl.hidden=false;launcher.setAttribute('aria-expanded','true');
     input.focus();messages.scrollTop=messages.scrollHeight;
+    void prompts();
   }
   function close(){windowEl.hidden=true;launcher.setAttribute('aria-expanded','false');launcher.focus();}
   launcher.addEventListener('click',()=>windowEl.hidden?open():close());

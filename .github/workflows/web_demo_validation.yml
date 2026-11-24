@@ -25,4 +25,6 @@ jobs:
       - name: Shared portal links
         run: python3 -m unittest discover -s frontend/web/tests -p 'test_*.py' -v
       - name: Server module syntax
-        run: python3 -m py_compile frontend/web/run_local_demo.py
+        run: |
+          python3 -m py_compile frontend/web/run_local_demo.py
+          python3 -m py_compile frontend/web/demo_assistant_backend.py

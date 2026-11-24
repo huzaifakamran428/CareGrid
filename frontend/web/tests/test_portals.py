@@ -32,7 +32,8 @@ class WebPortalSmokeTests(unittest.TestCase):
         self.assertIn("assistant_control.html",(ROOT/"admin_portal/assets/app.js").read_text())
     def test_single_origin_runner(self):
         text=(ROOT/"run_local_demo.py").read_text()
-        self.assertIn('HOST = "127.0.0.1"',text)
+        self.assertIn('"127.0.0.1"',text)
+        self.assertIn('ThreadingHTTPServer((HOST, PORT)',text)
 
 if __name__ == "__main__":
     unittest.main()
