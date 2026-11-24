@@ -15,8 +15,17 @@ main{max-width:1100px;margin:auto;padding:30px 18px 100px}article{padding:17px 2
 <script>
 window.addEventListener('DOMContentLoaded',()=>{
   const container=document.getElementById('lab-history');
-  function render(){
+  async function render(){
     const api=window.CareGridDemoChat;container.replaceChildren();
+    try {
+      const response=await fetch('/api/assistant/status',{cache:'no-store'});
+      const status=response.ok?await response.json():{};
+      if(status.online && status.mode==='local-sqlite-demo') {
+        const p=document.createElement('p');
+        p.textContent='Shared SQLite history is available to the local Admin key holder in Admin → Assistant Control. This Lab view does not expose other users’ conversations.';
+        container.appendChild(p);return;
+      }
+    } catch (_) { /* Offline browser demo below */ }
     if(!api)return;
     const logs=api.getHistory().filter(h=>h.role==='lab').reverse();
     if(!logs.length){const p=document.createElement('p');p.textContent='No lab chat history in this demo browser yet.';container.appendChild(p);return;}
