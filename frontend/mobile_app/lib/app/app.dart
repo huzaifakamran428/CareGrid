@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'theme/caregrid_theme.dart';
+import '../features/auth/presentation/screens/demo_role_workspaces.dart';
+import '../features/chatbot/presentation/screens/chatbot_screen.dart';
+import '../features/chatbot/presentation/screens/chat_history_screen.dart';
 import '../features/auth/domain/entities/portal_user.dart';
 import '../features/auth/presentation/screens/unified_auth_screen.dart';
 import '../features/beneficiary/presentation/screens/beneficiary_home_screen.dart';
@@ -52,6 +55,8 @@ class _CareGridAppState extends State<CareGridApp> {
       CareGridPortalRole.lab => LabMobileScreen(user: user, onSignOut: signOut),
       CareGridPortalRole.ngo => NgoMobileScreen(user: user, onSignOut: signOut),
       CareGridPortalRole.admin => AdminMobileScreen(user: user, onSignOut: signOut),
+      CareGridPortalRole.membershipAdmin => MembershipWorkspace(user: user, onSignOut: signOut),
+      CareGridPortalRole.sponsor => SponsorWorkspace(user: user, onSignOut: signOut),
     };
   }
 
@@ -94,6 +99,8 @@ class _BeneficiaryShellState extends State<BeneficiaryShell> {
     final Widget? screen = switch (destination) {
       'digital-id' => const DigitalIdPassScreen(),
       'prescription' => const PrescriptionUploadScreen(),
+      'chatbot' => const CaregridChatbotScreen(),
+      'chat-history' => const ChatHistoryScreen(),
       'feedback' => const ServiceFeedbackScreen(),
       'new-complaint' => const SubmitComplaintScreen(),
       'book-test' => const BookingScreen(),

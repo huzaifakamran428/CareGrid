@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block title %}CareGrid — Feature screens{% endblock %}
+{% block content %}
+<main class="container py-5">
+  <div class="cg-card p-4 mb-4"><h1 class="h3 fw-bold">Feature screens</h1><p class="text-muted">Existing team UI prototypes, organized by your signed-in role. These are local previews with separate fictional state.</p><a href="{% url 'web_login' %}" class="btn btn-cg-outline">Back to dashboard</a></div>
+  <div class="row g-3">
+  {% for label, path in previews %}<div class="col-md-6 col-lg-4"><a class="cg-card p-4 d-block text-decoration-none text-success fw-bold" href="{% url 'preview_show' path %}">{{ label }} &rarr;</a></div>{% empty %}<p>All features for this role are available from its dashboard.</p>{% endfor %}
+  </div>
+</main>
+{% endblock %}

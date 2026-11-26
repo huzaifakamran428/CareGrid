@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../../../app/theme/brand_tokens.dart';
 import '../../../auth/domain/entities/portal_user.dart';
+import '../../../auth/data/repositories/auth_repository.dart';
 
 class AdminMobileScreen extends StatelessWidget {
   final PortalUser user;
@@ -40,6 +41,10 @@ class AdminMobileScreen extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 16),
+          const Text('System-wide demo registry', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w800)),
+          for (final account in CareGridAuthRepository.users.where((a) => a.role != CareGridPortalRole.membershipAdmin && a.role != CareGridPortalRole.admin))
+            Card(child: ListTile(title: Text(account.name), subtitle: Text('${account.role.name} - ${account.id}\n${account.email}'))),
+
           Card(
             child: ListTile(
               leading: const CircleAvatar(backgroundColor: CareGridPalette.paleMint, child: Icon(Icons.analytics_outlined, color: CareGridPalette.primary)),

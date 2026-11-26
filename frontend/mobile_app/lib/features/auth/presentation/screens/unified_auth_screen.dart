@@ -13,7 +13,7 @@ class UnifiedAuthScreen extends StatefulWidget {
 }
 
 class _UnifiedAuthScreenState extends State<UnifiedAuthScreen> {
-  bool _isSignup = true;
+  bool _isSignup = false;
   int _signupStep = 0; // 0: Account, 1: Welfare Form, 2: Eligibility Documents
   bool _obscure = true;
   bool _obscureConfirm = true;
@@ -86,7 +86,7 @@ class _UnifiedAuthScreenState extends State<UnifiedAuthScreen> {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           backgroundColor: CareGridPalette.danger,
-          content: Text('Invalid email or password. Please verify your credentials.'),
+          content: Text('Invalid credentials or expired NGO membership.'),
         ),
       );
       return;
@@ -96,6 +96,10 @@ class _UnifiedAuthScreenState extends State<UnifiedAuthScreen> {
 
   void _completeStep1() {
     if (!(_signupFormKey.currentState?.validate() ?? false)) return;
+    if (_repo.emailExists(_signupEmailCtrl.text)) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('This email is already registered.')));
+      return;
+    }
     final user = _repo.registerBeneficiary(
       fullName: _nameCtrl.text,
       cnic: _cnicCtrl.text,
@@ -143,7 +147,7 @@ class _UnifiedAuthScreenState extends State<UnifiedAuthScreen> {
           };
 
     final headerSubtitle = !_isSignup
-        ? 'Enter your assigned email and password to access your portal'
+        ? 'Demo only - enter your assigned email and password'
         : switch (_signupStep) {
             0 => 'Sign up with personal details to apply for welfare services',
             1 => 'Step 1 of 2: Household, Income & Assistance Details',

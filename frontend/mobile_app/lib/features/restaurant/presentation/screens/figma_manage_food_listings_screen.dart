@@ -14,7 +14,7 @@ class CareGridApp extends StatelessWidget {
       title: 'CareGrid - Manage Food Listings',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF155E42)),
+        colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF087C69)),
         useMaterial3: true,
         fontFamily: 'Roboto',
       ),
@@ -93,7 +93,7 @@ class _ManageFoodListingsScreenState extends State<ManageFoodListingsScreen> {
             ),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFF155E42),
+                backgroundColor: const Color(0xFF087C69),
                 foregroundColor: Colors.white,
               ),
               onPressed: () {
@@ -185,7 +185,7 @@ class _ManageFoodListingsScreenState extends State<ManageFoodListingsScreen> {
                               _formatTime(tempTime),
                               style: const TextStyle(
                                 fontWeight: FontWeight.bold,
-                                color: Color(0xFF155E42),
+                                color: Color(0xFF087C69),
                               ),
                             ),
                           ],
@@ -202,7 +202,7 @@ class _ManageFoodListingsScreenState extends State<ManageFoodListingsScreen> {
                 ),
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF155E42),
+                    backgroundColor: const Color(0xFF087C69),
                     foregroundColor: Colors.white,
                   ),
                   onPressed: () {
@@ -320,7 +320,7 @@ class _ManageFoodListingsScreenState extends State<ManageFoodListingsScreen> {
               const SizedBox(height: 14),
               ListTile(
                 contentPadding: EdgeInsets.zero,
-                leading: const Icon(Icons.check_circle, color: Color(0xFF155E42)),
+                leading: const Icon(Icons.check_circle, color: Color(0xFF087C69)),
                 title: Text('Batch #FD-209 — $batch209Title'),
                 subtitle: Text(isBatch209Cancelled
                     ? 'Status: CANCELLED • $batch209CancelReason'
@@ -344,7 +344,7 @@ class _ManageFoodListingsScreenState extends State<ManageFoodListingsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF155E42),
+      backgroundColor: const Color(0xFF087C69),
       body: SafeArea(
         child: Column(
           children: [
@@ -407,9 +407,9 @@ class _ManageFoodListingsScreenState extends State<ManageFoodListingsScreen> {
                         Container(
                           padding: const EdgeInsets.all(16),
                           decoration: BoxDecoration(
-                            color: const Color(0xFFECFDF5),
+                            color: const Color(0xFFE5F5EE),
                             border: Border.all(
-                              color: const Color(0xFF155E42),
+                              color: const Color(0xFF087C69),
                               width: 1.3,
                             ),
                             borderRadius: BorderRadius.circular(16),
@@ -425,7 +425,7 @@ class _ManageFoodListingsScreenState extends State<ManageFoodListingsScreen> {
                                     padding: const EdgeInsets.symmetric(
                                         horizontal: 10, vertical: 5),
                                     decoration: BoxDecoration(
-                                      color: const Color(0xFF155E42),
+                                      color: const Color(0xFF087C69),
                                       borderRadius: BorderRadius.circular(8),
                                     ),
                                     child: Row(
@@ -449,7 +449,7 @@ class _ManageFoodListingsScreenState extends State<ManageFoodListingsScreen> {
                                   const Text(
                                     'Batch #FD-209',
                                     style: TextStyle(
-                                      color: Color(0xFF155E42),
+                                      color: Color(0xFF087C69),
                                       fontWeight: FontWeight.bold,
                                       fontSize: 12.5,
                                     ),
@@ -483,7 +483,7 @@ class _ManageFoodListingsScreenState extends State<ManageFoodListingsScreen> {
                                       child: ElevatedButton.icon(
                                         style: ElevatedButton.styleFrom(
                                           backgroundColor:
-                                          const Color(0xFF155E42),
+                                          const Color(0xFF087C69),
                                           foregroundColor: Colors.white,
                                           elevation: 0,
                                           shape: RoundedRectangleBorder(
@@ -540,13 +540,13 @@ class _ManageFoodListingsScreenState extends State<ManageFoodListingsScreen> {
                               Row(
                                 children: [
                                   const Icon(Icons.check,
-                                      color: Color(0xFF155E42), size: 15),
+                                      color: Color(0xFF087C69), size: 15),
                                   const SizedBox(width: 6),
                                   Expanded(
                                     child: Text(
                                       lastEditedText,
                                       style: const TextStyle(
-                                        color: Color(0xFF155E42),
+                                        color: Color(0xFF087C69),
                                         fontWeight: FontWeight.bold,
                                         fontSize: 12,
                                       ),
@@ -586,7 +586,7 @@ class _ManageFoodListingsScreenState extends State<ManageFoodListingsScreen> {
                         decoration: BoxDecoration(
                           color: const Color(0xFFFEF3C7).withOpacity(0.65),
                           border: Border.all(
-                            color: const Color(0xFFF59E0B),
+                            color: const Color(0xFFE3A33B),
                             width: 1.1,
                           ),
                           borderRadius: BorderRadius.circular(16),
@@ -598,7 +598,7 @@ class _ManageFoodListingsScreenState extends State<ManageFoodListingsScreen> {
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 4),
                               decoration: BoxDecoration(
-                                color: const Color(0xFFF59E0B),
+                                color: const Color(0xFFE3A33B),
                                 borderRadius: BorderRadius.circular(6),
                               ),
                               child: const Text(
@@ -711,7 +711,7 @@ class _ManageFoodListingsScreenState extends State<ManageFoodListingsScreen> {
                         height: 50,
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color(0xFF155E42),
+                            backgroundColor: const Color(0xFF087C69),
                             foregroundColor: Colors.white,
                             elevation: 0,
                             shape: RoundedRectangleBorder(
@@ -723,7 +723,7 @@ class _ManageFoodListingsScreenState extends State<ManageFoodListingsScreen> {
                               const SnackBar(
                                 content: Text(
                                     'All listing status updates saved and synced with NGOs!'),
-                                backgroundColor: Color(0xFF155E42),
+                                backgroundColor: Color(0xFF087C69),
                               ),
                             );
                           },
@@ -746,7 +746,7 @@ class _ManageFoodListingsScreenState extends State<ManageFoodListingsScreen> {
                         child: OutlinedButton(
                           style: OutlinedButton.styleFrom(
                             backgroundColor: const Color(0xFFF3F4F6),
-                            foregroundColor: const Color(0xFF155E42),
+                            foregroundColor: const Color(0xFF087C69),
                             side: const BorderSide(
                               color: Color(0xFFD1D5DB),
                               width: 1.1,
@@ -839,7 +839,7 @@ class _ManageFoodListingsScreenState extends State<ManageFoodListingsScreen> {
                       child: const Text(
                         'Restore',
                         style: TextStyle(
-                          color: Color(0xFF155E42),
+                          color: Color(0xFF087C69),
                           fontWeight: FontWeight.bold,
                           fontSize: 12,
                           decoration: TextDecoration.underline,

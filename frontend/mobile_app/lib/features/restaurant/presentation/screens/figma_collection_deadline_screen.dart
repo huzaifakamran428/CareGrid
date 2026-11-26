@@ -14,7 +14,7 @@ class CareGridApp extends StatelessWidget {
       title: 'CareGrid - Collection Deadline',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF0F5132)),
+        colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF087C69)),
         useMaterial3: true,
         fontFamily: 'Roboto',
       ),
@@ -260,7 +260,7 @@ class _CollectionDeadlineScreenState extends State<CollectionDeadlineScreen> {
                                     padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
                                     decoration: BoxDecoration(
                                       color: const Color(0xFFFEF3C7),
-                                      border: Border.all(color: const Color(0xFFF59E0B), width: 1.5),
+                                      border: Border.all(color: const Color(0xFFE3A33B), width: 1.5),
                                       borderRadius: BorderRadius.circular(12),
                                     ),
                                     child: Row(
@@ -415,7 +415,7 @@ class _CollectionDeadlineScreenState extends State<CollectionDeadlineScreen> {
                         height: 52,
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color(0xFF0F5132),
+                            backgroundColor: const Color(0xFF087C69),
                             foregroundColor: Colors.white,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(14),
@@ -426,7 +426,7 @@ class _CollectionDeadlineScreenState extends State<CollectionDeadlineScreen> {
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
                                 content: Text('Deadline saved successfully for ${_formatTime(collectionDeadline)}!'),
-                                backgroundColor: const Color(0xFF0F5132),
+                                backgroundColor: const Color(0xFF087C69),
                               ),
                             );
                           },
@@ -509,10 +509,10 @@ class _CollectionDeadlineScreenState extends State<CollectionDeadlineScreen> {
         padding: const EdgeInsets.symmetric(vertical: 12),
         alignment: Alignment.center,
         decoration: BoxDecoration(
-          color: isSelected ? const Color(0xFF0F5132) : const Color(0xFFF3F4F6),
+          color: isSelected ? const Color(0xFF087C69) : const Color(0xFFF3F4F6),
           borderRadius: BorderRadius.circular(10),
           border: Border.all(
-            color: isSelected ? const Color(0xFF0F5132) : const Color(0xFFE5E7EB),
+            color: isSelected ? const Color(0xFF087C69) : const Color(0xFFE5E7EB),
           ),
         ),
         child: Text(

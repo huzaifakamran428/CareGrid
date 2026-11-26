@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block title %}CareGrid — NGO Memberships{% endblock %}
+{% block content %}
+<main class="container py-4 py-lg-5">
+  <div class="cg-card p-4 mb-4" style="background:linear-gradient(125deg,#075A50,#087C69);color:white">
+    <div class="small text-uppercase fw-bold">Licensing administrator · Demo</div>
+    <h1 class="h3 fw-bold mt-2">NGO memberships &amp; credentials</h1>
+    <p class="mb-0">Register NGOs, issue credentials, manage one-month trials and renew yearly licenses.</p>
+  </div>
+  {% for message in messages %}<div class="alert alert-info">{{ message }}</div>{% endfor %}
+  <div class="row g-4">
+    <section class="col-lg-4"><div class="cg-card p-4">
+      <h2 class="h5 fw-bold">Register NGO</h2>
+      <p class="small text-muted">Fictional data only. The trial begins immediately. Share the assigned password with your demo user.</p>
+      <form method="post" action="{% url 'membership_register' %}">
+        {% csrf_token %}
+        <label class="cg-label" for="ngo-name">Organization</label><input class="form-control form-control-cg mb-3" id="ngo-name" name="name" maxlength="160" required>
+        <label class="cg-label" for="ngo-email">Demo email</label><input class="form-control form-control-cg mb-3" id="ngo-email" type="email" name="email" required>
+        <label class="cg-label" for="ngo-pass">Temporary password</label><input class="form-control form-control-cg mb-3" id="ngo-pass" type="password" name="password" minlength="8" maxlength="128" required>
+        <button class="btn btn-cg-primary w-100">Start free trial</button>
+      </form>
+    </div></section>
+    <section class="col-lg-8"><div class="cg-card p-4">
+      <h2 class="h5 fw-bold">License registry</h2>
+      <p class="small text-muted">One calendar month free; annual access adds 12 calendar months. Expired accounts cannot sign in. Renewals preserve unused time. No real payment is processed.</p>
+      <div class="table-responsive"><table class="table align-middle"><thead><tr><th>NGO / login</th><th>Status</th><th>Expires</th><th>Action</th></tr></thead><tbody>
+      {% for item in memberships %}
+        <tr><td><strong>{{ item.name }}</strong><br><small>{{ item.email }}</small></td><td><span class="badge {% if item.active %}badge-active{% else %}badge-suspended{% endif %}">{{ item.status }}</span></td><td>{{ item.expires_on|date:"d M Y" }}</td><td>
+        <form method="post" action="{% url 'membership_renew' item.pk %}">{% csrf_token %}<button class="btn btn-cg-outline btn-sm">{% if item.plan == "Trial" %}Activate annual{% else %}Renew annual{% endif %}</button></form>
+        </td></tr>
+      {% endfor %}
+      </tbody></table></div>
+    </div></section>
+  </div>
+</main>
+{% endblock %}

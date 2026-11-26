@@ -13,7 +13,7 @@ class CareGridSurplusApp extends StatelessWidget {
       title: 'CareGrid - List Surplus Food',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF155E42)),
+        colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF087C69)),
         useMaterial3: true,
         fontFamily: 'Roboto',
       ),
@@ -96,7 +96,7 @@ class _ListSurplusFoodScreenState extends State<ListSurplusFoodScreen> {
               ? 'Published "${_foodNameController.text.trim()}" & notified 6 nearby NGOs!'
               : 'Published "${_foodNameController.text.trim()}" to listings.',
         ),
-        backgroundColor: const Color(0xFF155E42),
+        backgroundColor: const Color(0xFF087C69),
       ),
     );
   }
@@ -104,7 +104,7 @@ class _ListSurplusFoodScreenState extends State<ListSurplusFoodScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF155E42),
+      backgroundColor: const Color(0xFF087C69),
       body: SafeArea(
         child: Column(
           children: [
@@ -179,7 +179,7 @@ class _ListSurplusFoodScreenState extends State<ListSurplusFoodScreen> {
                           children: const [
                             Icon(
                               Icons.restaurant_menu,
-                              color: Color(0xFF155E42),
+                              color: Color(0xFF087C69),
                               size: 18,
                             ),
                             SizedBox(width: 10),
@@ -226,7 +226,7 @@ class _ListSurplusFoodScreenState extends State<ListSurplusFoodScreen> {
                           enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(12),
                             borderSide: const BorderSide(
-                              color: Color(0xFF155E42),
+                              color: Color(0xFF087C69),
                               width: 1.3,
                             ),
                           ),
@@ -260,14 +260,14 @@ class _ListSurplusFoodScreenState extends State<ListSurplusFoodScreen> {
                             child: Container(
                               padding: const EdgeInsets.symmetric(horizontal: 12),
                               decoration: BoxDecoration(
-                                color: const Color(0xFF155E42),
+                                color: const Color(0xFF087C69),
                                 borderRadius: BorderRadius.circular(12),
                               ),
                               child: DropdownButtonHideUnderline(
                                 child: DropdownButton<String>(
                                   value: _selectedFoodType,
                                   isExpanded: true,
-                                  dropdownColor: const Color(0xFF155E42),
+                                  dropdownColor: const Color(0xFF087C69),
                                   icon: const Icon(
                                     Icons.keyboard_arrow_down,
                                     color: Colors.white,
@@ -331,7 +331,7 @@ class _ListSurplusFoodScreenState extends State<ListSurplusFoodScreen> {
                                   dropdownColor: Colors.white,
                                   icon: const Icon(
                                     Icons.keyboard_arrow_down,
-                                    color: Color(0xFF155E42),
+                                    color: Color(0xFF087C69),
                                     size: 20,
                                   ),
                                   style: const TextStyle(
@@ -346,7 +346,7 @@ class _ListSurplusFoodScreenState extends State<ListSurplusFoodScreen> {
                                         children: [
                                           const Icon(
                                             Icons.check,
-                                            color: Color(0xFF155E42),
+                                            color: Color(0xFF087C69),
                                             size: 16,
                                           ),
                                           const SizedBox(width: 6),
@@ -411,7 +411,7 @@ class _ListSurplusFoodScreenState extends State<ListSurplusFoodScreen> {
                           focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(12),
                             borderSide: const BorderSide(
-                              color: Color(0xFF155E42),
+                              color: Color(0xFF087C69),
                               width: 1.6,
                             ),
                           ),
@@ -461,7 +461,7 @@ class _ListSurplusFoodScreenState extends State<ListSurplusFoodScreen> {
                           focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(12),
                             borderSide: const BorderSide(
-                              color: Color(0xFF155E42),
+                              color: Color(0xFF087C69),
                               width: 1.6,
                             ),
                           ),
@@ -477,7 +477,7 @@ class _ListSurplusFoodScreenState extends State<ListSurplusFoodScreen> {
                           vertical: 12,
                         ),
                         decoration: BoxDecoration(
-                          color: const Color(0xFFECFDF5),
+                          color: const Color(0xFFE5F5EE),
                           border: Border.all(
                             color: const Color(0xFFA7F3D0),
                             width: 1.2,
@@ -488,7 +488,7 @@ class _ListSurplusFoodScreenState extends State<ListSurplusFoodScreen> {
                           children: [
                             const Icon(
                               Icons.notifications_active,
-                              color: Color(0xFFF59E0B),
+                              color: Color(0xFFE3A33B),
                               size: 20,
                             ),
                             const SizedBox(width: 10),
@@ -520,7 +520,7 @@ class _ListSurplusFoodScreenState extends State<ListSurplusFoodScreen> {
                             Switch(
                               value: _notifyEligibleNgos,
                               activeColor: Colors.white,
-                              activeTrackColor: const Color(0xFF155E42),
+                              activeTrackColor: const Color(0xFF087C69),
                               onChanged: (value) {
                                 setState(() {
                                   _notifyEligibleNgos = value;
@@ -553,7 +553,7 @@ class _ListSurplusFoodScreenState extends State<ListSurplusFoodScreen> {
                                 Icon(
                                   Icons.check,
                                   color: _isFormValid
-                                      ? const Color(0xFF155E42)
+                                      ? const Color(0xFF087C69)
                                       : const Color(0xFF9CA3AF),
                                   size: 16,
                                 ),
@@ -565,7 +565,7 @@ class _ListSurplusFoodScreenState extends State<ListSurplusFoodScreen> {
                                         : 'Complete required fields to validate',
                                     style: TextStyle(
                                       color: _isFormValid
-                                          ? const Color(0xFF155E42)
+                                          ? const Color(0xFF087C69)
                                           : const Color(0xFF6B7280),
                                       fontWeight: FontWeight.bold,
                                       fontSize: 12.5,
@@ -579,7 +579,7 @@ class _ListSurplusFoodScreenState extends State<ListSurplusFoodScreen> {
                               children: const [
                                 Icon(
                                   Icons.check,
-                                  color: Color(0xFF155E42),
+                                  color: Color(0xFF087C69),
                                   size: 16,
                                 ),
                                 SizedBox(width: 8),
@@ -587,7 +587,7 @@ class _ListSurplusFoodScreenState extends State<ListSurplusFoodScreen> {
                                   child: Text(
                                     'Listing saved & broadcast to NGOs',
                                     style: TextStyle(
-                                      color: Color(0xFF155E42),
+                                      color: Color(0xFF087C69),
                                       fontWeight: FontWeight.bold,
                                       fontSize: 12.5,
                                     ),
@@ -607,7 +607,7 @@ class _ListSurplusFoodScreenState extends State<ListSurplusFoodScreen> {
                         height: 52,
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color(0xFF155E42),
+                            backgroundColor: const Color(0xFF087C69),
                             foregroundColor: Colors.white,
                             elevation: 0,
                             shape: RoundedRectangleBorder(
@@ -647,7 +647,7 @@ class _ListSurplusFoodScreenState extends State<ListSurplusFoodScreen> {
                           children: [
                             const Icon(
                               Icons.circle,
-                              color: Color(0xFF155E42),
+                              color: Color(0xFF087C69),
                               size: 10,
                             ),
                             const SizedBox(width: 8),
@@ -656,7 +656,7 @@ class _ListSurplusFoodScreenState extends State<ListSurplusFoodScreen> {
                                   ? 'Status: Published & Live'
                                   : 'Status: Ready to Broadcast',
                               style: const TextStyle(
-                                color: Color(0xFF155E42),
+                                color: Color(0xFF087C69),
                                 fontWeight: FontWeight.bold,
                                 fontSize: 13.5,
                               ),

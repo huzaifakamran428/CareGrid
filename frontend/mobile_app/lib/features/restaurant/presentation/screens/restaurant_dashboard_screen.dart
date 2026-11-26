@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'figma_list_surplus_food_screen.dart' as list;
+import 'figma_manage_food_listings_screen.dart' as manage;
+import 'figma_surplus_food_quantity_screen.dart' as quantity;
+import 'figma_collection_deadline_screen.dart' as deadline;
 import '../../../../app/theme/brand_tokens.dart';
 import '../../../auth/domain/entities/portal_user.dart';
 
@@ -40,6 +44,14 @@ class RestaurantDashboardScreen extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 16),
+          for (final item in <(String, IconData, Widget)>[
+            ('List surplus food', Icons.add_circle_outline, const list.ListSurplusFoodScreen()),
+            ('Manage food listings', Icons.list_alt, const manage.ManageFoodListingsScreen()),
+            ('Food quantity', Icons.scale_outlined, const quantity.SurplusFoodQuantityScreen()),
+            ('Collection deadline', Icons.schedule, const deadline.CollectionDeadlineScreen()),
+          ])
+            Card(child: ListTile(leading: Icon(item.$2, color: CareGridPalette.primary), title: Text(item.$1), trailing: const Icon(Icons.chevron_right), onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => item.$3)))),
+
           Card(
             child: ListTile(
               leading: const CircleAvatar(backgroundColor: CareGridPalette.paleMint, child: Icon(Icons.analytics_outlined, color: CareGridPalette.primary)),

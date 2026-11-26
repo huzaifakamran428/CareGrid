@@ -1019,6 +1019,11 @@ class _BeneficiaryProfileScreenState extends State<BeneficiaryProfileScreen> {
               ],
               const SizedBox(height: 9),
               TextButton.icon(
+                onPressed: () => widget.onOpen('logout'),
+                icon: const Icon(Icons.logout),
+                label: const Text('Sign Out'),
+              ),
+              TextButton.icon(
                 onPressed: () => widget.onOpen('support'),
                 icon: const Icon(Icons.arrow_forward, size: 17),
                 label: const Text('View & track all complaints'),

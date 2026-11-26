@@ -5,6 +5,8 @@ enum CareGridPortalRole {
   lab,
   ngo,
   admin,
+  membershipAdmin,
+  sponsor,
 }
 
 class PortalUser {

@@ -1,6 +1,8 @@
 from datetime import datetime
 from django.shortcuts import render, redirect
 from django.contrib import messages
+from modules.auth_module.demo_memberships import seed_demo_memberships
+from modules.auth_module.models import DemoNgoMembership
 
 DEFAULT_USERS = [
     {"id": 1, "name": "Dr. Kamran Siddiqui", "email": "kamran@alkhidmat-lhr.org", "code": "#USR-104", "role": "NGO Admin", "status": "ACTIVE"},
@@ -29,11 +31,15 @@ FOOD_BATCHES = [
 ]
 
 def _get_session_users(request):
+    seed_demo_memberships()
     if "cg_users" not in request.session:
         request.session["cg_users"] = DEFAULT_USERS
     if "cg_logs" not in request.session:
         request.session["cg_logs"] = DEFAULT_LOGS
-    return request.session["cg_users"], request.session["cg_logs"]
+    users = [u for u in request.session["cg_users"] if not u.get("membership_record") and u.get("role") != "NGO Admin"]
+    for item in DemoNgoMembership.objects.order_by("name"):
+        users.append({"id": 100000 + item.pk, "name": item.name, "email": item.email, "code": "NGO-" + str(item.pk), "role": "NGO Admin", "status": item.status.upper(), "membership_record": True})
+    return users, request.session["cg_logs"]
 
 def admin_dashboard_view(request):
     users_list, audit_logs = _get_session_users(request)
@@ -82,6 +88,9 @@ def toggle_user_status(request, user_id):
         now_str = datetime.now().strftime("%d %b %Y %H:%M")
         for u in users_list:
             if u["id"] == user_id:
+                if u.get("membership_record") or u.get("role") == "NGO Admin":
+                    messages.error(request, "NGO license controls belong to the membership administrator.")
+                    return redirect("user_management")
                 if action == "suspend":
                     u["status"] = "SUSPENDED"
                     audit_logs.insert(0, {"timestamp": now_str, "message": f"Root Admin suspended account: {u['name']} ({u['code']})"})
@@ -99,6 +108,9 @@ def authorize_new_user(request):
         name = request.POST.get("name", "").strip()
         email = request.POST.get("email", "").strip()
         role = request.POST.get("role", "NGO Admin")
+        if role == "NGO Admin":
+            messages.error(request, "Only the membership administrator can issue NGO credentials.")
+            return redirect("user_management")
         if name and email:
             new_id = max([u["id"] for u in users_list], default=0) + 1
             code = f"#USR-{500 + new_id}"

@@ -7,6 +7,7 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import '../../../../app/theme/brand_tokens.dart';
 
 void main() {
   runApp(const CareGridDonationApp());
@@ -15,18 +16,18 @@ void main() {
 // ============================================================================
 // THEME COLORS
 // ============================================================================
-const Color kGreen = Color(0xFF155E42);
-const Color kDarkGreen = Color(0xFF0E4D37);
-const Color kMint = Color(0xFFECFDF5);
-const Color kAmber = Color(0xFFF59E0B);
-const Color kAmberBg = Color(0xFFFFFBEB);
-const Color kAmberText = Color(0xFF92400E);
-const Color kRed = Color(0xFFDC2626);
-const Color kInk = Color(0xFF111827);
-const Color kText = Color(0xFF1F2937);
-const Color kMuted = Color(0xFF4B5563);
-const Color kBorder = Color(0xFFD1DDD6);
-const Color kSurface = Color(0xFFF8FAFC);
+const Color kGreen = CareGridPalette.primary;
+const Color kDarkGreen = CareGridPalette.primaryDeep;
+const Color kMint = CareGridPalette.paleMint;
+const Color kAmber = CareGridPalette.gold;
+const Color kAmberBg = CareGridPalette.goldTint;
+const Color kAmberText = CareGridPalette.goldDeep;
+const Color kRed = CareGridPalette.danger;
+const Color kInk = CareGridPalette.ink;
+const Color kText = CareGridPalette.ink;
+const Color kMuted = CareGridPalette.secondaryText;
+const Color kBorder = CareGridPalette.line;
+const Color kSurface = CareGridPalette.canvas;
 
 // ============================================================================
 // APP
