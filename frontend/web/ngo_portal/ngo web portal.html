@@ -1,0 +1,828 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CareGrid — NGO Web Portal</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+          },
+          colors: {
+            emeraldDeep: '#0F4D36',
+            emeraldDark: '#0A3A28',
+            emeraldAccent: '#136345',
+            mintSurface: '#ECFDF5',
+            mintBorder: '#A7F3D0',
+          }
+        }
+      }
+    };
+  </script>
+  <style>
+    /* Custom subtle scrollbar & select styling */
+    body {
+      background-color: #F4F7F5;
+      color: #111827;
+    }
+    select {
+      appearance: none;
+      -webkit-appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23111827'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 0.75rem center;
+      background-size: 0.9rem;
+    }
+    select.select-emerald {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23ffffff'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col antialiased selection:bg-emerald-200 selection:text-emerald-950">
+
+  <!-- Top Dark Emerald Header -->
+  <header class="bg-[#0F4D36] text-white shadow-sm">
+    <div class="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="w-9 h-9 rounded-lg bg-white/10 border border-white/20 flex items-center justify-center">
+          <svg class="w-5 h-5 text-emerald-200" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+          </svg>
+        </div>
+        <h1 class="text-base sm:text-lg md:text-xl font-bold tracking-tight">
+          NGO Web Portal — Browse, Search &amp; Filter Surplus Food Donations
+        </h1>
+      </div>
+      <div class="hidden md:flex items-center gap-2 text-xs font-medium text-emerald-100 bg-white/10 px-3 py-1.5 rounded-full border border-white/15">
+        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+        <span>Al-Khidmat NGO Hub • Lahore</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content Container -->
+  <main class="flex-1 max-w-[1440px] w-full mx-auto px-4 sm:px-6 lg:px-8 py-5 space-y-5">
+
+    <!-- Search & Filter Control Bar -->
+    <section class="bg-white border border-gray-200 rounded-xl p-3.5 shadow-sm flex flex-col lg:flex-row lg:items-center lg:justify-between gap-3">
+      <!-- Left: Search Input & Filter Dropdowns -->
+      <div class="flex flex-wrap items-center gap-2.5 flex-1">
+        <!-- Search Input -->
+        <div class="relative flex-1 min-w-[260px] max-w-md">
+          <span class="absolute inset-y-0 left-3.5 flex items-center pointer-events-none text-gray-400">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35m0 0A7.5 7.5 0 104.5 4.5a7.5 7.5 0 0012.15 12.15z" />
+            </svg>
+          </span>
+          <input
+            id="searchInput"
+            type="text"
+            placeholder="Search food item, restaurant or area (e.g., Pulao, Gulberg)..."
+            class="w-full pl-9 pr-8 py-2 text-xs sm:text-sm bg-white border border-[#0F4D36] rounded-lg text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#0F4D36]/25 transition"
+          />
+          <button
+            id="clearSearchBtn"
+            title="Clear search"
+            class="hidden absolute inset-y-0 right-2.5 flex items-center text-gray-400 hover:text-gray-700 text-xs font-bold"
+          >
+            ✕
+          </button>
+        </div>
+
+        <!-- Food Type Filter -->
+        <select
+          id="foodTypeFilter"
+          class="select-emerald bg-[#0F4D36] text-white font-semibold text-xs sm:text-sm pl-3.5 pr-8 py-2 rounded-lg border border-[#0F4D36] cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#0F4D36]/30 transition"
+        >
+          <option value="all" class="bg-white text-gray-900">Food Type: All Types</option>
+          <option value="Cooked" selected class="bg-white text-gray-900">Food Type: Cooked</option>
+          <option value="Bakery & Packaged" class="bg-white text-gray-900">Food Type: Bakery &amp; Packaged</option>
+        </select>
+
+        <!-- Min Qty Filter -->
+        <select
+          id="minQtyFilter"
+          class="bg-white text-gray-800 font-semibold text-xs sm:text-sm pl-3.5 pr-8 py-2 rounded-lg border border-gray-300 hover:border-gray-400 cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#0F4D36]/20 transition"
+        >
+          <option value="0">Min Qty: Any Qty</option>
+          <option value="25" selected>Min Qty: 25+ Boxes</option>
+          <option value="50">Min Qty: 50+ Boxes</option>
+          <option value="75">Min Qty: 75+ Boxes</option>
+        </select>
+
+        <!-- Deadline Filter -->
+        <select
+          id="deadlineFilter"
+          class="bg-white text-gray-800 font-semibold text-xs sm:text-sm pl-3.5 pr-8 py-2 rounded-lg border border-gray-300 hover:border-gray-400 cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#0F4D36]/20 transition"
+        >
+          <option value="active" selected>Deadline: Active Only ✓</option>
+          <option value="all">Deadline: All Deadlines</option>
+        </select>
+      </div>
+
+      <!-- Right: Status Summary Pills -->
+      <div class="flex flex-wrap items-center gap-2.5 shrink-0">
+        <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-lg bg-[#DCFCE7] border border-[#86EFAC] text-[#0F4D36] text-xs font-bold">
+          <span class="w-2 h-2 rounded-full bg-[#0F4D36]"></span>
+          <span id="activeCountLabel">14 Active Donations</span>
+        </div>
+        <div class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-[#FEF3C7] border border-[#FCD34D] text-[#92400E] text-xs font-bold">
+          <span>⏳</span>
+          <span>3 Expiring Soon</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Surplus Donations Data Table Section -->
+    <section class="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden">
+      <!-- Table Column Headers (Desktop) -->
+      <div class="hidden lg:grid lg:grid-cols-12 gap-4 px-5 py-3 bg-[#F1F5F3] border-b border-gray-200 text-[11px] font-bold uppercase tracking-wider text-gray-600">
+        <div class="col-span-3">Batch ID &amp; Restaurant</div>
+        <div class="col-span-3">Food Item &amp; Type</div>
+        <div class="col-span-1 text-center">Quantity</div>
+        <div class="col-span-2 text-center">Collection Deadline</div>
+        <div class="col-span-1 text-center">Status</div>
+        <div class="col-span-2 text-center">NGO Action</div>
+      </div>
+
+      <!-- Dynamic Donation Rows Container -->
+      <div id="donationRowsContainer" class="p-3.5 space-y-3">
+        <!-- Populated by JavaScript -->
+      </div>
+    </section>
+
+    <!-- Bottom Two-Column Split Section -->
+    <section class="grid grid-cols-1 lg:grid-cols-12 gap-5 items-stretch">
+
+      <!-- Left Card: NGO Donation Detail Inspector -->
+      <div class="lg:col-span-6 bg-white border border-[#0F4D36]/40 rounded-xl shadow-sm flex flex-col overflow-hidden">
+        <!-- Inspector Header -->
+        <div class="bg-[#EBF7F1] border-b border-[#BCE3CE] px-5 py-3.5 flex items-center justify-between">
+          <h2 id="inspectorTitle" class="text-sm sm:text-base font-bold text-[#0F4D36]">
+            NGO Donation Detail Inspector — Batch #FD-209
+          </h2>
+          <span id="inspectorBadge" class="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-[#0F4D36] text-white">
+            Selected Record
+          </span>
+        </div>
+
+        <!-- Inspector Body -->
+        <div class="p-4 sm:p-5 flex-1 flex flex-col justify-between space-y-4">
+          <!-- Two Side-by-Side Detail Boxes -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+            <!-- Left Box: Donating Restaurant Details -->
+            <div class="bg-[#F8FAFC] border border-gray-200 rounded-xl p-3.5 space-y-1.5">
+              <p class="text-[10.5px] font-bold uppercase tracking-wider text-[#0F4D36]">
+                Donating Restaurant Details
+              </p>
+              <p id="detailRestaurant" class="text-sm font-bold text-gray-900">
+                Bundoo Khan Kitchens (Gulberg III)
+              </p>
+              <p id="detailLicense" class="text-xs text-gray-600">
+                PFA License: PFA-FOOD-88412 (Verified)
+              </p>
+              <p id="detailContact" class="text-xs text-gray-600">
+                Contact Desk: +92 42-3575-8810
+              </p>
+              <p id="detailDistance" class="text-xs font-bold text-[#0F4D36] pt-0.5">
+                Distance from Al-Khidmat Hub: 3.4 km
+              </p>
+            </div>
+
+            <!-- Right Box: Food Item, Quantity & Deadline -->
+            <div class="bg-[#F8FAFC] border border-gray-200 rounded-xl p-3.5 space-y-1.5">
+              <p class="text-[10.5px] font-bold uppercase tracking-wider text-[#0F4D36]">
+                Food Item, Quantity &amp; Deadline
+              </p>
+              <p id="detailFoodName" class="text-sm font-bold text-gray-900">
+                Chicken Pulao &amp; Roasted Naan
+              </p>
+              <p id="detailQuantity" class="text-xs text-gray-600">
+                Available Quantity: 50 Sealed Meal Boxes
+              </p>
+              <p id="detailDeadline" class="text-xs font-bold text-[#B45309]">
+                Collection Deadline: Today, 11:45 PM
+              </p>
+              <p id="detailStorage" class="text-xs font-bold text-[#0F4D36] pt-0.5">
+                Storage: Hot-held at 68°C • Ready Now
+              </p>
+            </div>
+          </div>
+
+          <!-- Audit Trail Card -->
+          <div class="bg-[#F2FBF6] border border-[#B7E4C7] rounded-xl p-4 space-y-2">
+            <h3 class="text-xs sm:text-sm font-bold text-[#0F4D36]">
+              System Donation Record &amp; Status Lifecycle Audit Trail
+            </h3>
+            <ul id="auditTrailList" class="space-y-1.5 text-xs text-gray-800">
+              <!-- Populated dynamically -->
+            </ul>
+            <p class="text-[11.5px] text-gray-500 pt-1">
+              System maintains immutable timestamps for listing creation, quantity edits, expiry &amp; cancellations.
+            </p>
+          </div>
+
+          <!-- Bottom Action Buttons -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
+            <button
+              id="reserveBtn"
+              type="button"
+              class="w-full py-2.5 px-4 rounded-xl bg-[#0F4D36] hover:bg-[#0A3A28] text-white font-bold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-sm transition cursor-pointer"
+            >
+              <span>✓</span>
+              <span id="reserveBtnText">Reserve Donation for NGO Pickup</span>
+            </button>
+
+            <button
+              id="contactBtn"
+              type="button"
+              class="w-full py-2.5 px-4 rounded-xl bg-white hover:bg-emerald-50 text-[#0F4D36] border border-[#0F4D36] font-bold text-xs sm:text-sm flex items-center justify-center gap-2 transition cursor-pointer"
+            >
+              <span>📞</span>
+              <span>Contact Restaurant Dispatch</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Card: Platform Workflow Coverage & Admin Oversight -->
+      <div class="lg:col-span-6 bg-white border border-gray-200 rounded-xl shadow-sm flex flex-col overflow-hidden">
+        <!-- Dark Emerald Header -->
+        <div class="bg-[#0F4D36] px-5 py-3.5 flex items-center justify-between">
+          <h2 class="text-sm sm:text-base font-bold text-white">
+            Surplus Food Lifecycle Coverage &amp; Admin Oversight
+          </h2>
+          <span class="text-[11px] font-semibold text-emerald-100 bg-white/10 px-2.5 py-0.5 rounded-full">
+            Live Sync
+          </span>
+        </div>
+
+        <!-- Workflow Modules List -->
+        <div class="p-4 sm:p-5 flex-1 flex flex-col justify-between space-y-2.5">
+          <!-- Module 1 -->
+          <div class="bg-[#F8FAFC] border border-gray-200 rounded-xl p-3 flex items-start gap-3">
+            <span class="shrink-0 mt-0.5 px-2.5 py-1 rounded-md bg-[#0F4D36] text-white text-[11px] font-bold">
+              Step 1
+            </span>
+            <div>
+              <p class="text-xs sm:text-sm font-bold text-gray-900">
+                Develop Surplus Food List (Restaurant Mobile App)
+              </p>
+              <p class="text-xs text-gray-500 mt-0.5">
+                Add food name, type &amp; description; save listing and communicate to eligible NGOs.
+              </p>
+            </div>
+          </div>
+
+          <!-- Module 2 -->
+          <div class="bg-[#F8FAFC] border border-gray-200 rounded-xl p-3 flex items-start gap-3">
+            <span class="shrink-0 mt-0.5 px-2.5 py-1 rounded-md bg-[#0F4D36] text-white text-[11px] font-bold">
+              Step 2
+            </span>
+            <div>
+              <p class="text-xs sm:text-sm font-bold text-gray-900">
+                State Amount of Extra Food Available (Restaurant Mobile App)
+              </p>
+              <p class="text-xs text-gray-500 mt-0.5">
+                Enter portion/weight quantity so NGOs know exact food volume listed with item.
+              </p>
+            </div>
+          </div>
+
+          <!-- Module 3 -->
+          <div class="bg-[#F8FAFC] border border-gray-200 rounded-xl p-3 flex items-start gap-3">
+            <span class="shrink-0 mt-0.5 px-2.5 py-1 rounded-md bg-[#0F4D36] text-white text-[11px] font-bold">
+              Step 3
+            </span>
+            <div>
+              <p class="text-xs sm:text-sm font-bold text-gray-900">
+                Set Food Collection Deadline (Restaurant Mobile App)
+              </p>
+              <p class="text-xs text-gray-500 mt-0.5">
+                Establish availability date &amp; cutoff time; expired listings automatically hidden.
+              </p>
+            </div>
+          </div>
+
+          <!-- Module 4 (Active Highlighted) -->
+          <div class="bg-[#FFFBEB] border-2 border-[#F59E0B] rounded-xl p-3 flex items-start gap-3 shadow-xs">
+            <span class="shrink-0 mt-0.5 px-2.5 py-1 rounded-md bg-[#F59E0B] text-gray-900 text-[11px] font-bold">
+              Active
+            </span>
+            <div>
+              <p class="text-xs sm:text-sm font-bold text-gray-900">
+                Search &amp; Browse Available Food Donations (NGO Web Portal)
+              </p>
+              <p class="text-xs text-gray-600 mt-0.5">
+                NGO views active food listings and searches/filters by food type, quantity &amp; deadline.
+              </p>
+            </div>
+          </div>
+
+          <!-- Module 5 -->
+          <div class="bg-[#F8FAFC] border border-gray-200 rounded-xl p-3 flex items-start gap-3">
+            <span class="shrink-0 mt-0.5 px-2.5 py-1 rounded-md bg-[#0F4D36] text-white text-[11px] font-bold">
+              Step 5
+            </span>
+            <div>
+              <p class="text-xs sm:text-sm font-bold text-gray-900">
+                Update or Delete Unavailable Food Listing (Restaurant Mobile App)
+              </p>
+              <p class="text-xs text-gray-500 mt-0.5">
+                Edit listing details or cancel unavailable food; status updates immediately across system.
+              </p>
+            </div>
+          </div>
+
+          <!-- Bottom Amber Oversight Banner -->
+          <div class="bg-[#FEF3C7] border border-[#FCD34D] rounded-xl px-4 py-3 flex items-center gap-2.5 text-xs font-bold text-[#92400E]">
+            <span class="text-base">🛡️</span>
+            <span>
+              System Administrator Oversight: Monitors donation records, expiry compliance &amp; verified restaurant activity.
+            </span>
+          </div>
+        </div>
+      </div>
+
+    </section>
+  </main>
+
+  <!-- Contact Restaurant Dispatch Modal -->
+  <div id="contactModal" class="hidden fixed inset-0 z-50 bg-black/45 backdrop-blur-xs flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl max-w-md w-full border border-gray-200 shadow-xl overflow-hidden">
+      <div class="bg-[#0F4D36] px-5 py-4 flex items-center justify-between text-white">
+        <h3 class="font-bold text-base">Contact Restaurant Dispatch</h3>
+        <button id="closeContactModal" class="text-white/80 hover:text-white font-bold text-lg cursor-pointer">✕</button>
+      </div>
+      <div class="p-5 space-y-4">
+        <div class="bg-[#F3F6F4] border border-gray-200 rounded-xl p-3.5 space-y-1">
+          <p id="modalRestaurantName" class="font-bold text-sm text-gray-900">Bundoo Khan Kitchens (Gulberg III)</p>
+          <p id="modalBatchInfo" class="text-xs text-gray-600">Batch #FD-209 • Chicken Pulao &amp; Roasted Naan</p>
+          <p id="modalLicenseInfo" class="text-xs text-[#0F4D36] font-semibold">PFA License: PFA-FOOD-88412 (Verified)</p>
+        </div>
+
+        <div class="flex items-center justify-between bg-emerald-50 border border-emerald-200 rounded-xl px-4 py-3">
+          <div>
+            <p class="text-[11px] font-bold uppercase text-emerald-800">Dispatch Desk Hotline</p>
+            <p id="modalPhoneNumber" class="text-base font-extrabold text-gray-900">+92 42-3575-8810</p>
+          </div>
+          <button
+            id="copyPhoneBtn"
+            type="button"
+            class="px-3.5 py-2 rounded-lg bg-[#0F4D36] hover:bg-[#0A3A28] text-white text-xs font-bold transition cursor-pointer"
+          >
+            Copy Number
+          </button>
+        </div>
+
+        <p class="text-xs text-gray-500">
+          Please quote the Batch ID upon arrival at the restaurant loading bay for rapid cold/hot-chain handover.
+        </p>
+
+        <div class="flex justify-end">
+          <button
+            id="doneModalBtn"
+            type="button"
+            class="px-5 py-2 rounded-xl bg-gray-100 hover:bg-gray-200 text-gray-800 font-bold text-xs sm:text-sm cursor-pointer"
+          >
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Banner -->
+  <div id="toastBanner" class="fixed bottom-5 right-5 z-50 hidden transform transition-all duration-300">
+    <div class="bg-[#0F4D36] text-white px-4 py-3 rounded-xl shadow-lg border border-emerald-400/30 flex items-center gap-2.5 text-xs sm:text-sm font-semibold">
+      <span id="toastIcon">✓</span>
+      <span id="toastMessage">Action completed</span>
+    </div>
+  </div>
+
+  <script>
+    // Dataset matching the Figma screen + rich inspection details
+    const donationsData = [
+      {
+        id: 'FD-209',
+        restaurant: 'Bundoo Khan Kitchens',
+        area: 'Gulberg III, Lahore',
+        verifiedText: 'Verified Restaurant',
+        foodName: 'Chicken Pulao & Roasted Naan',
+        foodSub: 'Cooked Meal • Halal • Sealed Foil Trays',
+        category: 'Cooked',
+        qtyNumber: 50,
+        qtyBadge: '50 Meal Boxes',
+        qtyDetail: '50 Sealed Meal Boxes',
+        deadlineBadge: 'Today, 11:45 PM (02h left)',
+        deadlineDetail: 'Today, 11:45 PM',
+        expiringSoon: true,
+        status: 'Available',
+        reserved: false,
+        license: 'PFA-FOOD-88412 (Verified)',
+        contact: '+92 42-3575-8810',
+        distance: '3.4 km',
+        storage: 'Hot-held at 68°C • Ready Now',
+        auditTrail: [
+          { time: '09:41 PM', text: 'Restaurant listed "Chicken Pulao & Roasted Naan" via Mobile App.', highlight: false },
+          { time: '09:42 PM', text: 'Quantity recorded as 65 meal boxes and broadcast to NGOs.', highlight: false },
+          { time: '09:43 PM', text: 'Collection deadline set to 14 Nov 2026, 11:45 PM (Auto-expiry armed).', highlight: false },
+          { time: '09:45 PM', text: 'Restaurant updated available quantity to 50 meal boxes; status synced.', highlight: false },
+          { time: '09:47 PM', text: 'Al-Khidmat NGO viewing full donation record on Web Portal.', highlight: true }
+        ]
+      },
+      {
+        id: 'FD-208',
+        restaurant: 'Spice Bazaar Restaurant',
+        area: 'DHA Phase 5, Lahore',
+        verifiedText: 'Verified Restaurant',
+        foodName: 'Lentil Curry, Steamed Rice & Salad',
+        foodSub: 'Cooked Vegetarian Meal • Bulk Catering Pans',
+        category: 'Cooked',
+        qtyNumber: 80,
+        qtyBadge: '80 Portions',
+        qtyDetail: '80 Portions (4 Insulated Catering Pans)',
+        deadlineBadge: 'Tomorrow, 01:00 AM',
+        deadlineDetail: 'Tomorrow, 01:00 AM',
+        expiringSoon: false,
+        status: 'Available',
+        reserved: false,
+        license: 'PFA-FOOD-77194 (Verified)',
+        contact: '+92 42-3718-4420',
+        distance: '6.1 km',
+        storage: 'Thermal-sealed at 65°C • Ready for Dispatch',
+        auditTrail: [
+          { time: '08:50 PM', text: 'Restaurant listed "Lentil Curry, Steamed Rice & Salad" via Mobile App.', highlight: false },
+          { time: '08:52 PM', text: 'Quantity recorded as 80 portions and broadcast to nearby NGOs.', highlight: false },
+          { time: '08:55 PM', text: 'Collection deadline set to Tomorrow, 01:00 AM (Auto-expiry armed).', highlight: false },
+          { time: '09:40 PM', text: 'Quality & thermal compliance check verified by kitchen supervisor.', highlight: true }
+        ]
+      },
+      {
+        id: 'FD-206',
+        restaurant: 'Gourmet Bakers & Sweets',
+        area: 'Model Town, Lahore',
+        verifiedText: 'Verified Restaurant',
+        foodName: 'Fresh Whole Wheat Bread & Sandwiches',
+        foodSub: 'Bakery & Packaged Goods • Sealed Packs',
+        category: 'Bakery & Packaged',
+        qtyNumber: 40,
+        qtyBadge: '40 Food Packs',
+        qtyDetail: '40 Sealed Bakery & Sandwich Packs',
+        deadlineBadge: 'Tomorrow, 11:00 AM',
+        deadlineDetail: 'Tomorrow, 11:00 AM',
+        expiringSoon: false,
+        status: 'Available',
+        reserved: false,
+        license: 'PFA-BKR-55209 (Verified)',
+        contact: '+92 42-3586-9915',
+        distance: '4.8 km',
+        storage: 'Ambient Dry Crates (21°C) • Sealed Packs',
+        auditTrail: [
+          { time: '07:30 PM', text: 'Bakery listed "Fresh Whole Wheat Bread & Sandwiches" via Mobile App.', highlight: false },
+          { time: '07:31 PM', text: 'Quantity recorded as 40 food packs and broadcast to NGOs.', highlight: false },
+          { time: '07:33 PM', text: 'Collection deadline set to Tomorrow, 11:00 AM (Auto-expiry armed).', highlight: false },
+          { time: '09:15 PM', text: 'Batch verified and eligible for morning NGO distribution route.', highlight: true }
+        ]
+      }
+    ];
+
+    let selectedId = 'FD-209';
+
+    // DOM Elements
+    const searchInput = document.getElementById('searchInput');
+    const clearSearchBtn = document.getElementById('clearSearchBtn');
+    const foodTypeFilter = document.getElementById('foodTypeFilter');
+    const minQtyFilter = document.getElementById('minQtyFilter');
+    const deadlineFilter = document.getElementById('deadlineFilter');
+    const donationRowsContainer = document.getElementById('donationRowsContainer');
+    const activeCountLabel = document.getElementById('activeCountLabel');
+
+    // Inspector DOM Elements
+    const inspectorTitle = document.getElementById('inspectorTitle');
+    const inspectorBadge = document.getElementById('inspectorBadge');
+    const detailRestaurant = document.getElementById('detailRestaurant');
+    const detailLicense = document.getElementById('detailLicense');
+    const detailContact = document.getElementById('detailContact');
+    const detailDistance = document.getElementById('detailDistance');
+    const detailFoodName = document.getElementById('detailFoodName');
+    const detailQuantity = document.getElementById('detailQuantity');
+    const detailDeadline = document.getElementById('detailDeadline');
+    const detailStorage = document.getElementById('detailStorage');
+    const auditTrailList = document.getElementById('auditTrailList');
+    const reserveBtn = document.getElementById('reserveBtn');
+    const reserveBtnText = document.getElementById('reserveBtnText');
+    const contactBtn = document.getElementById('contactBtn');
+
+    // Modal & Toast Elements
+    const contactModal = document.getElementById('contactModal');
+    const closeContactModal = document.getElementById('closeContactModal');
+    const doneModalBtn = document.getElementById('doneModalBtn');
+    const copyPhoneBtn = document.getElementById('copyPhoneBtn');
+    const modalRestaurantName = document.getElementById('modalRestaurantName');
+    const modalBatchInfo = document.getElementById('modalBatchInfo');
+    const modalLicenseInfo = document.getElementById('modalLicenseInfo');
+    const modalPhoneNumber = document.getElementById('modalPhoneNumber');
+    const toastBanner = document.getElementById('toastBanner');
+    const toastMessage = document.getElementById('toastMessage');
+
+    let toastTimer = null;
+    function showToast(msg) {
+      toastMessage.textContent = msg;
+      toastBanner.classList.remove('hidden');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => {
+        toastBanner.classList.add('hidden');
+      }, 3200);
+    }
+
+    function getFilteredDonations() {
+      const query = searchInput.value.trim().toLowerCase();
+      const foodType = foodTypeFilter.value;
+      const minQty = parseInt(minQtyFilter.value, 10) || 0;
+      const deadlineMode = deadlineFilter.value;
+
+      return donationsData.filter((item) => {
+        const matchesQuery =
+          !query ||
+          item.id.toLowerCase().includes(query) ||
+          item.restaurant.toLowerCase().includes(query) ||
+          item.area.toLowerCase().includes(query) ||
+          item.foodName.toLowerCase().includes(query) ||
+          item.foodSub.toLowerCase().includes(query);
+
+        const matchesType =
+          foodType === 'all' || item.category.toLowerCase() === foodType.toLowerCase();
+
+        const matchesQty = item.qtyNumber >= minQty;
+
+        const matchesDeadline =
+          deadlineMode === 'all' || item.status === 'Available' || item.reserved;
+
+        return matchesQuery && matchesType && matchesQty && matchesDeadline;
+      });
+    }
+
+    function renderTable() {
+      const filtered = getFilteredDonations();
+
+      // Update active counter pill
+      const reservedCount = donationsData.filter(d => d.reserved).length;
+      const totalDisplayed = filtered.length === donationsData.length ? 14 : filtered.length;
+      activeCountLabel.textContent = reservedCount > 0
+        ? `${totalDisplayed} Active Donations (${reservedCount} Reserved)`
+        : `${totalDisplayed} Active Donations`;
+
+      if (filtered.length === 0) {
+        donationRowsContainer.innerHTML = `
+          <div class="py-10 px-4 text-center border border-dashed border-gray-300 rounded-xl bg-gray-50">
+            <p class="text-sm font-bold text-gray-700">No surplus food donations match your active filters.</p>
+            <p class="text-xs text-gray-500 mt-1">Try changing Food Type to "All Types" or clearing your search query.</p>
+            <button
+              type="button"
+              onclick="resetFilters()"
+              class="mt-3 px-4 py-2 rounded-lg bg-[#0F4D36] text-white text-xs font-bold hover:bg-[#0A3A28] transition cursor-pointer"
+            >
+              Reset All Filters
+            </button>
+          </div>
+        `;
+        return;
+      }
+
+      // Ensure selectedId stays valid if filtered out
+      if (!filtered.some(item => item.id === selectedId)) {
+        selectedId = filtered[0].id;
+        renderInspector();
+      }
+
+      donationRowsContainer.innerHTML = filtered.map((item) => {
+        const isSelected = item.id === selectedId;
+
+        const rowBorderClass = isSelected
+          ? 'border-[#0F4D36] ring-1 ring-[#0F4D36]/20 bg-[#FAFFFC]'
+          : 'border-gray-200 hover:border-gray-300 bg-white';
+
+        const qtyPillClass = isSelected
+          ? 'bg-[#E6F4EC] border-[#A7D7BE] text-[#0F4D36]'
+          : 'bg-[#F3F4F6] border-gray-200 text-gray-800';
+
+        const deadlinePillClass = item.expiringSoon
+          ? 'bg-[#FEF3C7] border-[#FCD34D] text-[#B45309]'
+          : 'bg-[#F3F4F6] border-gray-200 text-gray-700';
+
+        const deadlineIcon = item.expiringSoon ? '⏰' : '📅';
+
+        const statusBadge = item.reserved
+          ? `<span class="inline-flex items-center px-3 py-1 rounded-md bg-[#DBEAFE] text-[#1E40AF] text-xs font-bold">Reserved</span>`
+          : `<span class="inline-flex items-center px-3 py-1 rounded-md bg-[#DCFCE7] text-[#0F4D36] text-xs font-bold">Available</span>`;
+
+        const actionBtn = isSelected
+          ? `<button type="button" onclick="selectDonation('${item.id}', event)" class="w-full py-2 px-3 rounded-lg bg-[#0F4D36] hover:bg-[#0A3A28] text-white text-xs font-bold transition cursor-pointer shadow-xs">
+              ${item.reserved ? 'Viewing Reserved ✓' : 'View Details & Claim →'}
+            </button>`
+          : `<button type="button" onclick="selectDonation('${item.id}', event)" class="w-full py-2 px-3 rounded-lg bg-[#F8FAFC] hover:bg-emerald-50 text-[#0F4D36] border border-gray-300 hover:border-[#0F4D36] text-xs font-bold transition cursor-pointer">
+              View Donation Details
+            </button>`;
+
+        return `
+          <div
+            onclick="selectDonation('${item.id}')"
+            class="grid grid-cols-1 lg:grid-cols-12 gap-3 lg:gap-4 items-center px-4 py-3.5 rounded-xl border ${rowBorderClass} transition cursor-pointer"
+          >
+            <!-- Batch ID & Restaurant -->
+            <div class="lg:col-span-3">
+              <p class="text-xs sm:text-sm font-bold text-gray-900">
+                #${item.id} • ${item.restaurant}
+              </p>
+              <p class="text-xs text-gray-500 mt-0.5">
+                ${item.area} • ${item.verifiedText}
+              </p>
+            </div>
+
+            <!-- Food Item & Type -->
+            <div class="lg:col-span-3">
+              <p class="text-xs sm:text-sm font-bold text-gray-900">
+                ${item.foodName}
+              </p>
+              <p class="text-xs text-gray-500 mt-0.5">
+                ${item.foodSub}
+              </p>
+            </div>
+
+            <!-- Quantity -->
+            <div class="lg:col-span-1 flex lg:justify-center">
+              <span class="inline-flex items-center justify-center px-3 py-1.5 rounded-lg border text-xs font-bold whitespace-nowrap ${qtyPillClass}">
+                ${item.qtyBadge}
+              </span>
+            </div>
+
+            <!-- Collection Deadline -->
+            <div class="lg:col-span-2 flex lg:justify-center">
+              <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border text-xs font-bold whitespace-nowrap ${deadlinePillClass}">
+                <span>${deadlineIcon}</span>
+                <span>${item.deadlineBadge}</span>
+              </span>
+            </div>
+
+            <!-- Status -->
+            <div class="lg:col-span-1 flex lg:justify-center">
+              ${statusBadge}
+            </div>
+
+            <!-- NGO Action -->
+            <div class="lg:col-span-2">
+              ${actionBtn}
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function renderInspector() {
+      const item = donationsData.find(d => d.id === selectedId) || donationsData[0];
+      const shortArea = item.area.split(',')[0];
+
+      inspectorTitle.textContent = `NGO Donation Detail Inspector — Batch #${item.id}`;
+      inspectorBadge.textContent = item.reserved ? 'Reserved by Al-Khidmat NGO' : 'Selected Record';
+      inspectorBadge.className = item.reserved
+        ? 'text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-blue-700 text-white'
+        : 'text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-[#0F4D36] text-white';
+
+      detailRestaurant.textContent = `${item.restaurant} (${shortArea})`;
+      detailLicense.textContent = `PFA License: ${item.license}`;
+      detailContact.textContent = `Contact Desk: ${item.contact}`;
+      detailDistance.textContent = `Distance from Al-Khidmat Hub: ${item.distance}`;
+
+      detailFoodName.textContent = item.foodName;
+      detailQuantity.textContent = `Available Quantity: ${item.qtyDetail}`;
+      detailDeadline.textContent = `Collection Deadline: ${item.deadlineDetail}`;
+      detailStorage.textContent = `Storage: ${item.storage}`;
+
+      auditTrailList.innerHTML = item.auditTrail.map(entry => {
+        const textClass = entry.highlight ? 'font-bold text-[#0F4D36]' : 'font-semibold text-gray-800';
+        return `
+          <li class="flex items-start gap-2">
+            <span class="text-[#0F4D36] font-bold">•</span>
+            <span class="${textClass}">${entry.time} — ${entry.text}</span>
+          </li>
+        `;
+      }).join('');
+
+      if (item.reserved) {
+        reserveBtn.className = 'w-full py-2.5 px-4 rounded-xl bg-blue-700 hover:bg-blue-800 text-white font-bold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-sm transition cursor-pointer';
+        reserveBtnText.textContent = 'Reserved for Pickup (Click to Release)';
+      } else {
+        reserveBtn.className = 'w-full py-2.5 px-4 rounded-xl bg-[#0F4D36] hover:bg-[#0A3A28] text-white font-bold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-sm transition cursor-pointer';
+        reserveBtnText.textContent = 'Reserve Donation for NGO Pickup';
+      }
+    }
+
+    function selectDonation(id, event) {
+      if (event) event.stopPropagation();
+      selectedId = id;
+      renderTable();
+      renderInspector();
+    }
+
+    function resetFilters() {
+      searchInput.value = '';
+      clearSearchBtn.classList.add('hidden');
+      foodTypeFilter.value = 'all';
+      minQtyFilter.value = '0';
+      deadlineFilter.value = 'all';
+      renderTable();
+    }
+
+    // Reserve Toggle Handler
+    reserveBtn.addEventListener('click', () => {
+      const item = donationsData.find(d => d.id === selectedId);
+      if (!item) return;
+
+      const now = new Date();
+      const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+      item.reserved = !item.reserved;
+      item.auditTrail.forEach(a => a.highlight = false);
+
+      if (item.reserved) {
+        item.auditTrail.push({
+          time: timeStr,
+          text: `Al-Khidmat NGO claimed & reserved Batch #${item.id} for pickup.`,
+          highlight: true
+        });
+        showToast(`Batch #${item.id} reserved for Al-Khidmat NGO pickup!`);
+      } else {
+        item.auditTrail.push({
+          time: timeStr,
+          text: `Al-Khidmat NGO released reservation on Batch #${item.id}; returned to Available.`,
+          highlight: true
+        });
+        showToast(`Reservation released for Batch #${item.id}.`);
+      }
+
+      renderTable();
+      renderInspector();
+    });
+
+    // Contact Modal Handlers
+    contactBtn.addEventListener('click', () => {
+      const item = donationsData.find(d => d.id === selectedId) || donationsData[0];
+      const shortArea = item.area.split(',')[0];
+      modalRestaurantName.textContent = `${item.restaurant} (${shortArea})`;
+      modalBatchInfo.textContent = `Batch #${item.id} • ${item.foodName}`;
+      modalLicenseInfo.textContent = `PFA License: ${item.license}`;
+      modalPhoneNumber.textContent = item.contact;
+      contactModal.classList.remove('hidden');
+    });
+
+    function closeModal() {
+      contactModal.classList.add('hidden');
+    }
+
+    closeContactModal.addEventListener('click', closeModal);
+    doneModalBtn.addEventListener('click', closeModal);
+    contactModal.addEventListener('click', (e) => {
+      if (e.target === contactModal) closeModal();
+    });
+
+    copyPhoneBtn.addEventListener('click', () => {
+      const phone = modalPhoneNumber.textContent;
+      const tempInput = document.createElement('input');
+      tempInput.value = phone;
+      document.body.appendChild(tempInput);
+      tempInput.select();
+      document.execCommand('copy');
+      document.body.removeChild(tempInput);
+      showToast(`Copied dispatch number: ${phone}`);
+    });
+
+    // Filter & Search Listeners
+    searchInput.addEventListener('input', () => {
+      clearSearchBtn.classList.toggle('hidden', searchInput.value.length === 0);
+      renderTable();
+    });
+
+    clearSearchBtn.addEventListener('click', () => {
+      searchInput.value = '';
+      clearSearchBtn.classList.add('hidden');
+      renderTable();
+    });
+
+    foodTypeFilter.addEventListener('change', renderTable);
+    minQtyFilter.addEventListener('change', renderTable);
+    deadlineFilter.addEventListener('change', renderTable);
+
+    // Initial Render
+    renderTable();
+    renderInspector();
+  </script>
+</body>
+</html>
