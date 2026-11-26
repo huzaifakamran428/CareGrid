@@ -156,7 +156,9 @@ class _UnifiedAuthScreenState extends State<UnifiedAuthScreen> {
 
     return Scaffold(
       backgroundColor: CareGridPalette.canvas,
-      body: SafeArea(
+      body: DecoratedBox(
+        decoration: const BoxDecoration(gradient: CareGridPalette.canvasGradient),
+        child: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(18),
           child: Column(
@@ -299,6 +301,7 @@ class _UnifiedAuthScreenState extends State<UnifiedAuthScreen> {
             ],
           ),
         ),
+      ),
       ),
     );
   }

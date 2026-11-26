@@ -3,14 +3,13 @@
 {% block title %}CareGrid — Sign In{% endblock %}
 
 {% block content %}
-<div class="min-vh-100 d-flex align-items-center py-4" style="background: radial-gradient(circle at top right, #E5F5EE 0%, #F4F8F6 55%, #FFF9EE 100%);">
+<div class="min-vh-100 d-flex align-items-center py-4 cg-login-shell">
   <div class="container">
     <div class="row justify-content-center">
       <div class="col-lg-10 col-xl-9">
-        <div class="cg-card overflow-hidden border-0" style="box-shadow: 0 24px 60px rgba(7, 90, 80, 0.12);">
+        <div class="cg-card cg-login-card overflow-hidden">
           <div class="row g-0">
-            <div class="col-md-5 p-4 p-lg-5 text-white d-flex flex-column justify-content-between"
-                 style="background: linear-gradient(155deg, #075A50 0%, #087C69 65%, #12947E 100%);">
+            <div class="col-md-5 p-4 p-lg-5 text-white d-flex flex-column justify-content-between cg-login-hero">
               <div>
                 <div class="d-inline-flex align-items-center gap-3 bg-white rounded-4 p-2 pe-3 mb-4 shadow-sm">
                   <img src="{% static 'img/caregrid_logo.png' %}" alt="CareGrid Logo" height="46" class="rounded-3">
@@ -42,7 +41,7 @@
               </div>
             </div>
 
-            <div class="col-md-7 p-4 p-lg-5 bg-white">
+            <div class="col-md-7 p-4 p-lg-5 cg-login-form">
               <div class="mb-4">
                 <span class="badge rounded-pill px-3 py-2 mb-2" style="background: #E5F5EE; color: #075A50; font-weight: 700;">
                   SINGLE SIGN-ON PORTAL
@@ -63,12 +62,12 @@
                 {% csrf_token %}
 
                 <div class="mb-3">
-                  <label class="cg-label">Email Address *</label>
+                  <label class="cg-label" for="loginEmailInput">Email Address *</label>
                   <div class="input-group">
                     <span class="input-group-text bg-white border-end-0" style="border-color: #D3E4DC; border-radius: 12px 0 0 12px;">
                       <i class="bi bi-envelope text-muted"></i>
                     </span>
-                    <input type="email" name="username" id="loginEmailInput"
+                    <input type="email" name="username" id="loginEmailInput" autocomplete="username"
                            class="form-control form-control-cg border-start-0"
                            placeholder="name@organization.org" required>
                   </div>
@@ -76,14 +75,14 @@
 
                 <div class="mb-3">
                   <div class="d-flex justify-content-between">
-                    <label class="cg-label">Password *</label>
+                    <label class="cg-label" for="loginPassInput">Password *</label>
                     <a href="#" class="small text-decoration-none fw-semibold" style="color: var(--cg-primary);">Forgot password?</a>
                   </div>
                   <div class="input-group">
                     <span class="input-group-text bg-white border-end-0" style="border-color: #D3E4DC; border-radius: 12px 0 0 12px;">
                       <i class="bi bi-key text-muted"></i>
                     </span>
-                    <input type="password" name="password" id="loginPassInput"
+                    <input type="password" name="password" id="loginPassInput" autocomplete="current-password"
                            class="form-control form-control-cg border-start-0"
                            placeholder="••••••••••••" required>
                   </div>

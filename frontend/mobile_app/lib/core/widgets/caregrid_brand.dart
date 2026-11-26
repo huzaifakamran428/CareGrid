@@ -1,3 +1,4 @@
+import 'dart:ui' show ImageFilter;
 import 'package:flutter/material.dart';
 import '../../app/theme/brand_tokens.dart';
 
@@ -28,7 +29,7 @@ class CareGridBrandStrip extends StatelessWidget {
             borderRadius: BorderRadius.circular(compact ? 8 : 10),
             child: Image.asset(
               'assets/images/caregrid_logo.jpg',
-              fit: BoxFit.cover,
+              fit: BoxFit.contain,
               errorBuilder: (context, _, __) => const Icon(
                 Icons.favorite_outline_rounded, color: CareGridPalette.primary),
             ),
@@ -152,14 +153,25 @@ class CareGridPanel extends StatelessWidget {
   final Widget child;
   final EdgeInsetsGeometry padding;
   @override
-  Widget build(BuildContext context) => Container(
-    padding: padding,
+  Widget build(BuildContext context) => DecoratedBox(
     decoration: BoxDecoration(
-      color: CareGridPalette.surface,
       borderRadius: BorderRadius.circular(CareGridLayout.cardRadius),
-      border: Border.all(color: CareGridPalette.line),
       boxShadow: const [CareGridLayout.cardShadow],
     ),
-    child: child,
+    child: ClipRRect(
+      borderRadius: BorderRadius.circular(CareGridLayout.cardRadius),
+      child: BackdropFilter(
+        filter: ImageFilter.blur(sigmaX: 8, sigmaY: 8),
+        child: Container(
+          padding: padding,
+          decoration: BoxDecoration(
+            gradient: CareGridPalette.glassGradient,
+            borderRadius: BorderRadius.circular(CareGridLayout.cardRadius),
+            border: Border.all(color: CareGridPalette.glassBorder),
+          ),
+          child: child,
+        ),
+      ),
+    ),
   );
 }

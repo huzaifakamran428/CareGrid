@@ -107,6 +107,43 @@
     .badge-active { background-color: #D1E7DD; color: #0F5132; font-weight: 700; }
     .badge-authorized { background-color: #FEF3C7; color: #92400E; font-weight: 700; }
     .badge-suspended { background-color: var(--cg-danger-bg); color: var(--cg-danger); font-weight: 700; }
+
+    /* Shared glass treatment for every authenticated Django workspace. */
+    :root {
+      --cg-bg:#F1F8F5; --cg-text-muted:#49665F;
+      --cg-glass:rgba(255,255,255,.90); --cg-glass-border:#D5E8E1;
+    }
+    body {
+      min-height:100vh;
+      background:radial-gradient(ellipse at 8% 4%,#DFF2EA 0%,transparent 46%),
+        radial-gradient(ellipse at 95% 95%,#FFF4E2 0%,transparent 40%),var(--cg-bg);
+      background-attachment:fixed;
+    }
+    .cg-card {
+      background:var(--cg-glass);border:1px solid var(--cg-glass-border);
+      border-radius:22px;box-shadow:0 12px 32px rgba(7,90,80,.09);
+    }
+    .cg-navbar {box-shadow:0 8px 24px rgba(7,90,80,.13)}
+    .cg-navbar .btn-outline-light {background:rgba(255,255,255,.09)}
+    .btn-cg-primary,.btn-cg-outline {border-radius:14px;min-height:42px}
+    .btn-cg-primary {box-shadow:0 5px 14px rgba(7,90,80,.15)}
+    .form-control-cg,.form-select-cg {background:rgba(255,255,255,.94);border-color:var(--cg-glass-border);border-radius:14px}
+    .table {--bs-table-bg:transparent;--bs-table-color:var(--cg-text-main)}
+    .cg-login-shell {background:transparent}
+    .cg-login-card {border:1px solid rgba(255,255,255,.92)!important;box-shadow:0 24px 70px rgba(7,90,80,.14);border-radius:28px}
+    .cg-login-form {background:rgba(255,255,255,.91)}
+    .cg-login-hero {background:linear-gradient(145deg,#075A50,#087C69 70%,#0D8975)}
+    .cg-login-hero .bg-opacity-10 {border:1px solid rgba(255,255,255,.18)}
+    @supports (backdrop-filter:blur(12px)) {
+      .cg-card,.cg-login-form {backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
+    }
+    :focus-visible {outline:3px solid #E3A33B;outline-offset:2px}
+    @media(max-width:575px) {
+      .cg-navbar .container-fluid {gap:10px}
+      .cg-navbar .ms-auto {flex-wrap:wrap;justify-content:flex-end;gap:6px!important}
+      .cg-navbar .badge {white-space:normal;text-align:right}
+    }
+    @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;transition-duration:.01ms!important}}
   </style>
   {% block extra_css %}{% endblock %}
 </head>

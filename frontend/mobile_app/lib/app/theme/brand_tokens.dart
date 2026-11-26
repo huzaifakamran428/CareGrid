@@ -10,11 +10,23 @@ abstract final class CareGridPalette {
   static const primaryBright = Color(0xFF31AD96);
   static const primaryBorder = Color(0xFF70BFAF);
   static const gold = Color(0xFFE3A33B);
-  static const goldDeep = Color(0xFFAD751D);
+  static const goldDeep = Color(0xFF85570F);
   static const goldTint = Color(0xFFFFF4E2);
   static const ink = Color(0xFF173D37);
-  static const secondaryText = Color(0xFF58746D);
-  static const canvas = Color(0xFFF7FAF8);
+  static const secondaryText = Color(0xFF49665F);
+  static const canvas = Color(0xFFF1F8F5);
+  static const glassSurface = Color(0xF5FFFFFF);
+  static const glassBorder = Color(0xFFD5E8E1);
+  static const glassHighlight = Color(0xFFFFFFFF);
+  static const canvasGradient = LinearGradient(
+    begin: Alignment.topLeft, end: Alignment.bottomRight,
+    colors: [Color(0xFFE1F3EC), Color(0xFFF7FAF8), Color(0xFFFFF4E2)],
+    stops: [0, .62, 1],
+  );
+  static const glassGradient = LinearGradient(
+    begin: Alignment.topLeft, end: Alignment.bottomRight,
+    colors: [Color(0xFAFFFFFF), Color(0xE8F4FAF7)],
+  );
   static const surface = Colors.white;
   static const paleMint = Color(0xFFE5F5EE);
   static const mintBorder = Color(0xFFB2DFCE);
@@ -29,20 +41,20 @@ abstract final class CareGridPalette {
   static const headerGradient = LinearGradient(
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
-    colors: [primaryDeep, primary, Color(0xFF168D78)],
+    colors: [primaryDeep, primary, Color(0xFF0D8975)],
   );
 }
 
 /// Brand-level metrics shared by all the beneficiary feature modules.
 abstract final class CareGridLayout {
-  static const double cardRadius = 18;
+  static const double cardRadius = 22;
   static const double sheetRadius = 28;
-  static const double buttonRadius = 14;
+  static const double buttonRadius = 16;
   static const double horizontalPadding = 18;
 
   static const cardShadow = BoxShadow(
-    color: Color(0x0D075A50),
-    blurRadius: 18,
-    offset: Offset(0, 7),
+    color: Color(0x16075A50),
+    blurRadius: 26,
+    offset: Offset(0, 9),
   );
 }

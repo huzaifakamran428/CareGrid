@@ -34,7 +34,7 @@ abstract final class CareGridTheme {
       splashColor: CareGridPalette.paleMint,
       highlightColor: CareGridPalette.paleMint,
       textTheme: const TextTheme(
-        headlineLarge: TextStyle(color: CareGridPalette.ink, fontSize: 27, fontWeight: FontWeight.w900),
+        headlineLarge: TextStyle(color: CareGridPalette.ink, fontSize: 27, fontWeight: FontWeight.w800),
         headlineMedium: TextStyle(color: CareGridPalette.ink, fontSize: 23, fontWeight: FontWeight.w800),
         titleLarge: TextStyle(color: CareGridPalette.ink, fontSize: 20, fontWeight: FontWeight.w800),
         titleMedium: TextStyle(color: CareGridPalette.ink, fontSize: 16, fontWeight: FontWeight.w700),
@@ -43,7 +43,7 @@ abstract final class CareGridTheme {
         labelLarge: TextStyle(fontWeight: FontWeight.w800),
       ),
       appBarTheme: const AppBarTheme(
-        backgroundColor: CareGridPalette.canvas,
+        backgroundColor: CareGridPalette.glassSurface,
         foregroundColor: CareGridPalette.ink,
         surfaceTintColor: Colors.transparent,
         elevation: 0,
@@ -58,7 +58,7 @@ abstract final class CareGridTheme {
       navigationBarTheme: NavigationBarThemeData(
         height: 72,
         elevation: 8,
-        backgroundColor: Colors.white,
+        backgroundColor: CareGridPalette.glassSurface,
         indicatorColor: CareGridPalette.paleMint,
         shadowColor: CareGridPalette.primaryDeep.withValues(alpha: .08),
         iconTheme: WidgetStateProperty.resolveWith((states) => IconThemeData(
@@ -75,12 +75,14 @@ abstract final class CareGridTheme {
         )),
       ),
       cardTheme: CardThemeData(
-        color: Colors.white,
-        elevation: 0,
+        color: CareGridPalette.glassSurface,
+        surfaceTintColor: Colors.transparent,
+        shadowColor: const Color(0x18075A50),
+        elevation: 2,
         margin: const EdgeInsets.all(0),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(CareGridLayout.cardRadius),
-          side: const BorderSide(color: CareGridPalette.line),
+          side: const BorderSide(color: CareGridPalette.glassBorder),
         ),
       ),
       filledButtonTheme: FilledButtonThemeData(
@@ -119,7 +121,7 @@ abstract final class CareGridTheme {
       ),
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
-        fillColor: CareGridPalette.surface,
+        fillColor: CareGridPalette.glassSurface,
         isDense: true,
         contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 17),
         hintStyle: const TextStyle(color: CareGridPalette.secondaryText),
