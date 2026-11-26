@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}CareGrid — NGO Operations Workspace{% endblock %}
+{% block content %}
+<div class="container-fluid py-4 px-lg-4">
+  <div class="d-flex flex-wrap justify-content-between align-items-center mb-4">
+    <div>
+      <h3 class="fw-bold mb-1">NGO Welfare &amp; Subsidy Pool Console</h3>
+      <p class="text-muted small mb-0">Al-Khidmat Foundation • Beneficiary verification, pool allocation &amp; partner settlements</p>
+    </div>
+    <span class="badge badge-active px-3 py-2 rounded-pill"><i class="bi bi-check-circle-fill me-1"></i>Verified NGO Partner</span>
+  </div>
+  <div class="row g-3 mb-4">
+    <div class="col-md-3"><div class="cg-card p-3"><div class="cg-label">Active Beneficiaries</div><h3 class="fw-bold mb-0">1,428</h3></div></div>
+    <div class="col-md-3"><div class="cg-card p-3"><div class="cg-label">Available Subsidy Pool</div><h3 class="fw-bold text-success mb-0">PKR 2.45M</h3></div></div>
+    <div class="col-md-3"><div class="cg-card p-3"><div class="cg-label">Pending KYC Reviews</div><h3 class="fw-bold text-warning mb-0">19</h3></div></div>
+    <div class="col-md-3"><div class="cg-card p-3"><div class="cg-label">Partner Clinics &amp; Kitchens</div><h3 class="fw-bold mb-0">34</h3></div></div>
+  </div>
+  <div class="cg-card p-4">
+    <h5 class="fw-bold mb-3">Recent Beneficiary Applications &amp; Disbursements</h5>
+    <div class="table-responsive">
+      <table class="table align-middle mb-0">
+        <thead class="table-light"><tr><th>Digital ID</th><th>Beneficiary</th><th>Category</th><th>Subsidy Tier</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr><td class="fw-semibold">CG-BEN-2026-009481</td><td>Ayesha Bibi</td><td>Chronic Medicine + Lab</td><td>80% Covered</td><td><span class="badge badge-active">APPROVED</span></td></tr>
+          <tr><td class="fw-semibold">CG-DID-7840-1928</td><td>Fatima Bibi</td><td>Maternal Care &amp; Food</td><td>80% Covered</td><td><span class="badge badge-active">APPROVED</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}

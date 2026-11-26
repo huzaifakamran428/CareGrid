@@ -13,7 +13,7 @@ void main() {
       tester.view.resetDevicePixelRatio();
     });
 
-    await tester.pumpWidget(const CareGridApp());
+    await tester.pumpWidget(const CareGridApp(startAuthenticated: true));
     await tester.pumpAndSettle();
     final app = tester.widget<MaterialApp>(find.byType(MaterialApp));
     expect(app.theme!.colorScheme.primary, CareGridPalette.primary);
@@ -44,7 +44,7 @@ void main() {
       tester.view.resetDevicePixelRatio();
     });
 
-    await tester.pumpWidget(const CareGridApp());
+    await tester.pumpWidget(const CareGridApp(startAuthenticated: true));
     await tester.pumpAndSettle();
     expect(find.byType(CareGridBrandStrip), findsWidgets);
     for (final tab in ['Labs', 'Bookings', 'Support', 'Profile']) {

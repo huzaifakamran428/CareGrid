@@ -1,0 +1,161 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Admin Console — User Account & Role Control {% endblock %}
+
+{% block content %}
+<div class="container-fluid py-3 px-lg-4">
+  {% if messages %}
+    {% for message in messages %}
+      <div class="alert alert-success alert-dismissible fade show rounded-3 mb-3">
+        {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+      </div>
+    {% endfor %}
+  {% endif %}
+
+  <div class="cg-card overflow-hidden">
+    
+
+        <div class="col-md-3">
+          <select id="roleFilterSelect" class="form-select form-select-cg" onchange="filterUsersTable()">
+            <option value="">Role: All Roles</option>
+            <option value="NGO Admin">NGO Admin</option>
+            <option value="Pharmacy">Pharmacy</option>
+            <option value="Lab">Diagnostic Lab</option>
+            <option value="Volunteer">Volunteer</option>
+            <option value="Restaurant">Restaurant</option>
+            <option value="Beneficiary">Beneficiary</option>
+          </select>
+        </div>
+
+        <div class="col-md-2">
+          <button type="button" class="btn btn-cg-primary w-100" data-bs-toggle="modal" data-bs-target="#authorizeUserModal">
+            <i class="bi bi-plus-lg me-1"></i> Authorize User
+          </button>
+        </div>
+      </div>
+
+      <div class="table-responsive rounded-3 border mb-4" style="border-color: var(--cg-mint-border) !important;">
+        <table class="table align-middle mb-0" id="usersAccessTable">
+          <thead style="background-color: var(--cg-primary); color: #FFFFFF;">
+            <tr>
+              <th class="py-3 ps-4">User / Organization</th>
+              <th class="py-3">Role</th>
+              <th class="py-3">Account Status</th>
+              <th class="py-3 text-end pe-4">Access Control Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for u in users_list %}
+            <tr data-role="{{ u.role }}">
+              <td class="ps-4 py-3">
+                <div class="fw-bold">{{ u.name }}</div>
+                <small class="text-muted">{{ u.email }} • ID: {{ u.code }}</small>
+              </td>
+              <td class="text-muted fw-medium">{{ u.role }}</td>
+              <td>
+                {% if u.status == 'ACTIVE' %}
+                  <span class="badge badge-active px-3 py-2 rounded-2">ACTIVE ✓</span>
+                {% elif u.status == 'AUTHORIZED' %}
+                  <span class="badge badge-authorized px-3 py-2 rounded-2">AUTHORIZED</span>
+                {% else %}
+                  <span class="badge badge-suspended px-3 py-2 rounded-2">SUSPENDED</span>
+                {% endif %}
+              </td>
+              <td class="text-end pe-4">
+                <form method="POST" action="{% url 'toggle_user_status' u.id %}" class="d-inline">
+                  {% csrf_token %}
+                  {% if u.status == 'ACTIVE' %}
+                    <button type="submit" name="action" value="suspend" class="btn btn-sm px-3 fw-semibold"
+                            style="background: var(--cg-danger-bg); color: var(--cg-danger); border: 1px solid var(--cg-danger-border); border-radius: 8px;">
+                      Suspend Account
+                    </button>
+                  {% elif u.status == 'AUTHORIZED' %}
+                    <button type="submit" name="action" value="activate" class="btn btn-sm btn-cg-primary px-3">
+                      Activate Account ✓
+                    </button>
+                  {% else %}
+                    <button type="submit" name="action" value="reactivate" class="btn btn-sm px-3 fw-semibold text-white"
+                            style="background: #132A1E; border-radius: 8px;">
+                      Re-Activate Access
+                    </button>
+                  {% endif %}
+                </form>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+
+      <div class="cg-mint-box p-3">
+        <div class="fw-bold small mb-2" style="color: var(--cg-primary);">
+          <i class="bi bi-check-lg me-1"></i> Immutable Account Change Log (Accountability &amp; Traceability)
+        </div>
+        <ul class="list-unstyled small mb-0 text-muted d-grid gap-1">
+          {% for log in audit_logs %}
+            <li>• [{{ log.timestamp }}] {{ log.message }}</li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- + Authorize User Modal -->
+<div class="modal fade" id="authorizeUserModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content cg-card">
+      <div class="modal-header border-0 pb-0">
+        <h5 class="modal-title fw-bold" style="color: var(--cg-primary);">+ Authorize New Organization / User</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <form method="POST" action="{% url 'authorize_new_user' %}">
+        {% csrf_token %}
+        <div class="modal-body">
+          <div class="mb-3">
+            <label class="cg-label">Full Name or Organization Title *</label>
+            <input type="text" name="name" class="form-control form-control-cg" placeholder="e.g., Shifa Diagnostic Lab" required>
+          </div>
+          <div class="mb-3">
+            <label class="cg-label">Official Email *</label>
+            <input type="email" name="email" class="form-control form-control-cg" placeholder="admin@shifalab.pk" required>
+          </div>
+          <div class="mb-3">
+            <label class="cg-label">Assigned System Role *</label>
+            <select name="role" class="form-select form-select-cg" required>
+              <option value="NGO Admin">NGO Admin</option>
+              <option value="Pharmacy">Partner Pharmacy</option>
+              <option value="Lab">Diagnostic Lab</option>
+              <option value="Restaurant">Restaurant Partner</option>
+              <option value="Volunteer">Volunteer</option>
+            </select>
+          </div>
+        </div>
+        <div class="modal-footer border-0 pt-0">
+          <button type="button" class="btn btn-cg-outline" data-bs-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-cg-primary">Authorize &amp; Log Action</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  function filterUsersTable() {
+    const query = document.getElementById('userSearchInput').value.toLowerCase();
+    const role = document.getElementById('roleFilterSelect').value;
+    const rows = document.querySelectorAll('#usersAccessTable tbody tr');
+
+    rows.forEach(row => {
+      const text = row.innerText.toLowerCase();
+      const rowRole = row.getAttribute('data-role') || '';
+      const matchesQuery = text.includes(query);
+      const matchesRole = !role || rowRole === role;
+      row.style.display = (matchesQuery && matchesRole) ? '' : 'none';
+    });
+  }
+</script>
+{% endblock %}

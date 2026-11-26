@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}CareGrid — Diagnostic Laboratory Portal{% endblock %}
+{% block content %}
+<div class="container-fluid py-4 px-lg-4">
+  <div class="d-flex flex-wrap justify-content-between align-items-center mb-4">
+    <div>
+      <h3 class="fw-bold mb-1">Diagnostic Laboratory Portal</h3>
+      <p class="text-muted small mb-0">Chughtai Diagnostic Lab (#LAB-204) • Subsidized pathology bookings &amp; verified report uploads</p>
+    </div>
+    <span class="badge badge-active px-3 py-2 rounded-pill"><i class="bi bi-clipboard2-pulse me-1"></i>Lab Partner Active</span>
+  </div>
+  <div class="row g-3 mb-4">
+    <div class="col-md-4"><div class="cg-card p-3"><div class="cg-label">Today's Sample Collections</div><h3 class="fw-bold mb-0">28</h3></div></div>
+    <div class="col-md-4"><div class="cg-card p-3"><div class="cg-label">Pending Report Uploads</div><h3 class="fw-bold text-warning mb-0">6</h3></div></div>
+    <div class="col-md-4"><div class="cg-card p-3"><div class="cg-label">NGO Settled Claims</div><h3 class="fw-bold text-success mb-0">PKR 184,500</h3></div></div>
+  </div>
+  <div class="cg-card p-4">
+    <h5 class="fw-bold mb-3">Active Diagnostic Bookings</h5>
+    <div class="table-responsive">
+      <table class="table align-middle mb-0">
+        <thead class="table-light"><tr><th>Booking ID</th><th>Beneficiary Digital ID</th><th>Test Panel</th><th>NGO Subsidy</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr><td class="fw-semibold">#LAB-BK-901</td><td>CG-BEN-2026-009481 (Ayesha Bibi)</td><td>Complete Blood Count (CBC) + HbA1c</td><td>80% NGO</td><td><span class="badge badge-active">REPORT READY</span></td></tr>
+          <tr><td class="fw-semibold">#LAB-BK-904</td><td>CG-DID-7840-1928 (Fatima Bibi)</td><td>Lipid Profile + Liver Function</td><td>80% NGO</td><td><span class="badge badge-authorized">SAMPLE COLLECTED</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}
