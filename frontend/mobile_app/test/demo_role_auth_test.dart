@@ -1,3 +1,4 @@
+import 'dart:typed_data';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:caregrid_mobile/features/auth/data/repositories/auth_repository.dart';
 import 'package:caregrid_mobile/features/auth/domain/entities/portal_user.dart';
@@ -10,6 +11,20 @@ void main() {
         .map((entry) => repo.signIn(entry.user.email, entry.password)?.role).toSet();
     expect(roles, CareGridPortalRole.values.toSet());
     expect(repo.signIn('admin@caregrid.org', 'incorrect'), isNull);
+  });
+
+  test('registration stores valid demo documents and countdown', () {
+    final repo = CareGridAuthRepository();
+    final valid = DemoNgoDocument('Certificate', 'demo.pdf', Uint8List.fromList([37, 80, 68, 70, 45, 49]));
+    final invalid = DemoNgoDocument('Certificate', 'bad.pdf', Uint8List.fromList([1, 2]));
+    expect(repo.registerNgo('Bad NGO', 'badfile@caregrid.example', 'Demo1234', documents: [invalid]), isFalse);
+    expect(repo.registerNgo('File NGO', 'file@caregrid.example', 'Demo1234', documents: [valid]), isTrue);
+    final membership = CareGridAuthRepository.memberships['file@caregrid.example']!;
+    expect(membership.documents.single.name, 'demo.pdf');
+    expect(membership.daysLeft, greaterThan(0));
+    expect(membership.planLabel, 'One-month free trial');
+    repo.renew(membership.email);
+    expect(membership.planLabel, 'Yearly license');
   });
 
   test('trial registration, expiry and renewal', () {

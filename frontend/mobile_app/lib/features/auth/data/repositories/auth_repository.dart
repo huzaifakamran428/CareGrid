@@ -1,3 +1,4 @@
+import 'dart:typed_data';
 import '../../domain/entities/portal_user.dart';
 
 class CareGridAuthRepository {
@@ -22,11 +23,12 @@ class CareGridAuthRepository {
 
   static List<PortalUser> get users => _accounts.values.map((r) => r.user).toList(growable: false);
 
-  bool registerNgo(String name, String email, String password) {
+  bool registerNgo(String name, String email, String password, {List<DemoNgoDocument> documents = const []}) {
     email = email.trim().toLowerCase();
     if (name.trim().isEmpty || !email.contains('@') || password.length < 8 || _accounts.containsKey(email)) return false;
+    if (documents.length > 3 || documents.any((doc) => !doc.valid)) return false;
     _accounts[email] = (password: password, user: PortalUser(id: 'NGO-${_accounts.length + 100}', name: name.trim(), email: email, role: CareGridPortalRole.ngo, subtitle: 'NGO membership - demo'));
-    memberships[email] = DemoMembership(name.trim(), email, 'Trial', addMonths(DateTime.now(), 1));
+    memberships[email] = DemoMembership(name.trim(), email, 'Trial', addMonths(DateTime.now(), 1), documents: documents);
     return true;
   }
 
@@ -150,7 +152,25 @@ class DemoMembership {
   final String email;
   String plan;
   DateTime expires;
-  DemoMembership(this.name, this.email, this.plan, this.expires);
+  final List<DemoNgoDocument> documents;
+  DemoMembership(this.name, this.email, this.plan, this.expires, {List<DemoNgoDocument> documents = const []}) : documents = List.unmodifiable(documents);
+  int get daysLeft { final minutes = expires.difference(DateTime.now()).inSeconds; return minutes <= 0 ? 0 : (minutes / 86400).ceil(); }
+  String get planLabel => plan == 'Trial' ? 'One-month free trial' : 'Yearly license';
   bool get active => expires.isAfter(DateTime.now());
   String get status => active ? plan : 'Expired';
+}
+
+class DemoNgoDocument {
+  final String category;
+  final String name;
+  final Uint8List bytes;
+  DemoNgoDocument(this.category, this.name, Uint8List bytes) : bytes = Uint8List.fromList(bytes);
+  bool get valid {
+    if (bytes.isEmpty || bytes.length > 5 * 1024 * 1024) return false;
+    final lower = name.toLowerCase();
+    bool starts(List<int> signature) => bytes.length >= signature.length && List.generate(signature.length, (i) => bytes[i] == signature[i]).every((v) => v);
+    return (lower.endsWith('.pdf') && starts([37, 80, 68, 70, 45])) ||
+      (lower.endsWith('.png') && starts([137, 80, 78, 71, 13, 10, 26, 10])) ||
+      ((lower.endsWith('.jpg') || lower.endsWith('.jpeg')) && starts([255, 216, 255]));
+  }
 }

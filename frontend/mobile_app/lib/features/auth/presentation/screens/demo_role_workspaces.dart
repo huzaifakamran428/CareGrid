@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:file_picker/file_picker.dart';
 import '../../../../app/theme/brand_tokens.dart';
 import '../../../../core/widgets/caregrid_brand.dart';
 import '../../data/repositories/auth_repository.dart';
@@ -18,13 +19,33 @@ class _MembershipWorkspaceState extends State<MembershipWorkspace> {
   final name = TextEditingController();
   final email = TextEditingController();
   final password = TextEditingController();
+  final documents = <String, DemoNgoDocument>{};
+  static const categories = ['NGO registration certificate', 'Authorized representative ID', 'Supporting document'];
+  bool picking = false;
+  Future<void> pickDocument(String category) async {
+    setState(() => picking = true);
+    try {
+      final result = await FilePicker.platform.pickFiles(type: FileType.custom, allowedExtensions: ['pdf', 'png', 'jpg', 'jpeg'], withData: true);
+      if (!mounted || result == null) return;
+      final file = result.files.single;
+      final bytes = file.bytes;
+      final document = bytes == null ? null : DemoNgoDocument(category, file.name, bytes);
+      if (document == null || !document.valid) {
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Choose a valid PDF, PNG or JPEG file up to 5 MB.')));
+        return;
+      }
+      setState(() => documents[category] = document);
+    } catch (_) {
+      if (mounted) ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Could not open the file picker. Try again.')));
+    } finally { if (mounted) setState(() => picking = false); }
+  }
   @override
   void dispose() { name.dispose(); email.dispose(); password.dispose(); super.dispose(); }
   String date(DateTime d) => '${d.day.toString().padLeft(2,'0')}/${d.month.toString().padLeft(2,'0')}/${d.year}';
   void register() {
-    final ok = repo.registerNgo(name.text, email.text, password.text);
+    final ok = repo.registerNgo(name.text, email.text, password.text, documents: documents.values.toList());
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(ok ? 'Trial account created. Sign in using the assigned credentials.' : 'Enter a unique email, name and password of at least 8 characters.')));
-    if (ok) { name.clear(); email.clear(); password.clear(); setState(() {}); }
+    if (ok) { name.clear(); email.clear(); password.clear(); setState(() => documents.clear()); }
   }
   @override
   Widget build(BuildContext context) => Scaffold(
@@ -39,7 +60,16 @@ class _MembershipWorkspaceState extends State<MembershipWorkspace> {
         TextField(controller: email, keyboardType: TextInputType.emailAddress, decoration: const InputDecoration(labelText: 'Demo email')),
         TextField(controller: password, obscureText: true, decoration: const InputDecoration(labelText: 'Temporary demo password')),
         const SizedBox(height: 12),
-        FilledButton(onPressed: register, child: const Text('Start one-month trial')),
+        const Text('Registration documents', style: TextStyle(fontWeight: FontWeight.w700)),
+        const Text('Optional demo files only. PDF, PNG or JPEG; maximum 5 MB each.'),
+        for (final category in categories) ...[
+          const SizedBox(height: 8),
+          OutlinedButton.icon(onPressed: picking ? null : () => pickDocument(category), icon: const Icon(Icons.upload_file), label: Text(category)),
+          if (documents.containsKey(category))
+            ListTile(dense: true, title: Text(documents[category]!.name), subtitle: const Text('Attached for registration'), trailing: IconButton(tooltip: 'Remove file', onPressed: () => setState(() => documents.remove(category)), icon: const Icon(Icons.close))),
+        ],
+        const SizedBox(height: 12),
+        FilledButton(onPressed: picking ? null : register, child: const Text('Start one-month trial')),
       ]))),
       const SizedBox(height: 16),
       for (final item in CareGridAuthRepository.memberships.values)
@@ -47,6 +77,7 @@ class _MembershipWorkspaceState extends State<MembershipWorkspace> {
           Text(item.name, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
           Text(item.email),
           Text('${item.status} - expires ${date(item.expires)}'),
+          for (final document in item.documents) Text('${document.category}: ${document.name}', style: Theme.of(context).textTheme.bodySmall),
           const SizedBox(height: 8),
           OutlinedButton(onPressed: () => setState(() => repo.renew(item.email)), child: Text(item.plan == 'Trial' ? 'Activate annual license' : 'Renew annual license')),
         ]))),
