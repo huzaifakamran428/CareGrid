@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../../app/theme/caregrid_theme.dart';
 import 'package:intl/intl.dart';
 
 void main() {
@@ -13,11 +14,7 @@ class CareGridApp extends StatelessWidget {
     return MaterialApp(
       title: 'CareGrid - Collection Deadline',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF087C69)),
-        useMaterial3: true,
-        fontFamily: 'Roboto',
-      ),
+      theme: CareGridTheme.light,
       home: const CollectionDeadlineScreen(),
     );
   }
@@ -104,7 +101,7 @@ class _CollectionDeadlineScreenState extends State<CollectionDeadlineScreen> {
     String formattedDateText = 'Today — ${DateFormat('EEEE, d MMM yyyy').format(selectedDate)}';
 
     return Scaffold(
-      backgroundColor: const Color(0xFF0A4730),
+      backgroundColor: const Color(0xFF075A50),
       body: SafeArea(
         child: Column(
           children: [
@@ -126,7 +123,7 @@ class _CollectionDeadlineScreenState extends State<CollectionDeadlineScreen> {
                   Text(
                     'Set pickup date, cutoff time & auto-expiry\nExpired listings automatically hidden from NGOs',
                     style: TextStyle(
-                      color: Color(0xFFB2DFDB),
+                      color: Color(0xFFB2DFCE),
                       fontSize: 13,
                       height: 1.3,
                     ),
@@ -157,7 +154,7 @@ class _CollectionDeadlineScreenState extends State<CollectionDeadlineScreen> {
                         style: TextStyle(
                           fontSize: 11,
                           fontWeight: FontWeight.bold,
-                          color: Color(0xFF374151),
+                          color: Color(0xFF173D37),
                           letterSpacing: 0.5,
                         ),
                       ),
@@ -168,24 +165,24 @@ class _CollectionDeadlineScreenState extends State<CollectionDeadlineScreen> {
                         child: Container(
                           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
                           decoration: BoxDecoration(
-                            color: const Color(0xFFEBF5EE),
-                            border: Border.all(color: const Color(0xFF2E7D56), width: 1.2),
+                            color: const Color(0xFFE5F5EE),
+                            border: Border.all(color: const Color(0xFF087C69), width: 1.2),
                             borderRadius: BorderRadius.circular(12),
                           ),
                           child: Row(
                             children: [
-                              const Icon(Icons.calendar_month, color: Color(0xFF2E7D56), size: 20),
+                              const Icon(Icons.calendar_month, color: Color(0xFF087C69), size: 20),
                               const SizedBox(width: 12),
                               Text(
                                 formattedDateText,
                                 style: const TextStyle(
                                   fontWeight: FontWeight.bold,
-                                  color: Color(0xFF1F2937),
+                                  color: Color(0xFF173D37),
                                   fontSize: 14,
                                 ),
                               ),
                               const Spacer(),
-                              const Icon(Icons.edit_calendar, color: Color(0xFF2E7D56), size: 18),
+                              const Icon(Icons.edit_calendar, color: Color(0xFF087C69), size: 18),
                             ],
                           ),
                         ),
@@ -204,7 +201,7 @@ class _CollectionDeadlineScreenState extends State<CollectionDeadlineScreen> {
                                   style: TextStyle(
                                     fontSize: 11,
                                     fontWeight: FontWeight.bold,
-                                    color: Color(0xFF374151),
+                                    color: Color(0xFF173D37),
                                     letterSpacing: 0.5,
                                   ),
                                 ),
@@ -216,18 +213,18 @@ class _CollectionDeadlineScreenState extends State<CollectionDeadlineScreen> {
                                     padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
                                     decoration: BoxDecoration(
                                       color: Colors.white,
-                                      border: Border.all(color: const Color(0xFFD1D5DB)),
+                                      border: Border.all(color: const Color(0xFFDAE8E1)),
                                       borderRadius: BorderRadius.circular(12),
                                     ),
                                     child: Row(
                                       children: [
-                                        const Icon(Icons.access_time_rounded, color: Color(0xFF6B7280), size: 18),
+                                        const Icon(Icons.access_time_rounded, color: Color(0xFF58746D), size: 18),
                                         const SizedBox(width: 8),
                                         Text(
                                           _formatTime(pickupWindowStart),
                                           style: const TextStyle(
                                             fontWeight: FontWeight.bold,
-                                            color: Color(0xFF1F2937),
+                                            color: Color(0xFF173D37),
                                             fontSize: 13.5,
                                           ),
                                         ),
@@ -248,7 +245,7 @@ class _CollectionDeadlineScreenState extends State<CollectionDeadlineScreen> {
                                   style: TextStyle(
                                     fontSize: 11,
                                     fontWeight: FontWeight.bold,
-                                    color: Color(0xFF374151),
+                                    color: Color(0xFF173D37),
                                     letterSpacing: 0.5,
                                   ),
                                 ),
@@ -259,19 +256,19 @@ class _CollectionDeadlineScreenState extends State<CollectionDeadlineScreen> {
                                   child: Container(
                                     padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
                                     decoration: BoxDecoration(
-                                      color: const Color(0xFFFEF3C7),
+                                      color: const Color(0xFFFFF4E2),
                                       border: Border.all(color: const Color(0xFFE3A33B), width: 1.5),
                                       borderRadius: BorderRadius.circular(12),
                                     ),
                                     child: Row(
                                       children: [
-                                        const Icon(Icons.alarm, color: Color(0xFFD97706), size: 18),
+                                        const Icon(Icons.alarm, color: Color(0xFFAD751D), size: 18),
                                         const SizedBox(width: 8),
                                         Text(
                                           _formatTime(collectionDeadline),
                                           style: const TextStyle(
                                             fontWeight: FontWeight.bold,
-                                            color: Color(0xFF92400E),
+                                            color: Color(0xFFAD751D),
                                             fontSize: 13.5,
                                           ),
                                         ),
@@ -290,8 +287,8 @@ class _CollectionDeadlineScreenState extends State<CollectionDeadlineScreen> {
                       Container(
                         padding: const EdgeInsets.all(16),
                         decoration: BoxDecoration(
-                          color: const Color(0xFFF0FDF4),
-                          border: Border.all(color: const Color(0xFFA7F3D0)),
+                          color: const Color(0xFFE5F5EE),
+                          border: Border.all(color: const Color(0xFFB2DFCE)),
                           borderRadius: BorderRadius.circular(12),
                         ),
                         child: Column(
@@ -305,7 +302,7 @@ class _CollectionDeadlineScreenState extends State<CollectionDeadlineScreen> {
                                   'Remaining Pickup Window: Active',
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,
-                                    color: Color(0xFF065F46),
+                                    color: Color(0xFF075A50),
                                     fontSize: 13.5,
                                   ),
                                 ),
@@ -319,11 +316,11 @@ class _CollectionDeadlineScreenState extends State<CollectionDeadlineScreen> {
                             Row(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: const [
-                                Text('✓ ', style: TextStyle(color: Color(0xFF059669), fontWeight: FontWeight.bold, fontSize: 13)),
+                                Text('✓ ', style: TextStyle(color: Color(0xFF087C69), fontWeight: FontWeight.bold, fontSize: 13)),
                                 Expanded(
                                   child: Text(
                                     'Expired listings removed from NGO feed',
-                                    style: TextStyle(color: Color(0xFF065F46), fontWeight: FontWeight.bold, fontSize: 13),
+                                    style: TextStyle(color: Color(0xFF075A50), fontWeight: FontWeight.bold, fontSize: 13),
                                   ),
                                 ),
                               ],
@@ -339,8 +336,8 @@ class _CollectionDeadlineScreenState extends State<CollectionDeadlineScreen> {
                       Container(
                         padding: const EdgeInsets.all(16),
                         decoration: BoxDecoration(
-                          color: const Color(0xFFFFF1F2),
-                          border: Border.all(color: const Color(0xFFFECDD3)),
+                          color: const Color(0xFFFFECEE),
+                          border: Border.all(color: const Color(0xFFE5A1A7)),
                           borderRadius: BorderRadius.circular(12),
                         ),
                         child: Column(
@@ -351,7 +348,7 @@ class _CollectionDeadlineScreenState extends State<CollectionDeadlineScreen> {
                                 Container(
                                   padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                                   decoration: BoxDecoration(
-                                    color: const Color(0xFFE11D48),
+                                    color: const Color(0xFFBC4751),
                                     borderRadius: BorderRadius.circular(6),
                                   ),
                                   child: const Text(
@@ -370,7 +367,7 @@ class _CollectionDeadlineScreenState extends State<CollectionDeadlineScreen> {
                               'Batch #FD-204 (Lunch Biryani) — EXPIRED',
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
-                                color: Color(0xFF9F1239),
+                                color: Color(0xFFBC4751),
                                 fontSize: 13.5,
                               ),
                             ),
@@ -378,7 +375,7 @@ class _CollectionDeadlineScreenState extends State<CollectionDeadlineScreen> {
                             const Text(
                               'Hidden from NGO search results after 04:00 PM',
                               style: TextStyle(
-                                color: Color(0xFF881337),
+                                color: Color(0xFFBC4751),
                                 fontSize: 12.5,
                               ),
                             ),
@@ -393,7 +390,7 @@ class _CollectionDeadlineScreenState extends State<CollectionDeadlineScreen> {
                         style: TextStyle(
                           fontSize: 11,
                           fontWeight: FontWeight.bold,
-                          color: Color(0xFF374151),
+                          color: Color(0xFF173D37),
                           letterSpacing: 0.5,
                         ),
                       ),
@@ -453,18 +450,18 @@ class _CollectionDeadlineScreenState extends State<CollectionDeadlineScreen> {
                         width: double.infinity,
                         padding: const EdgeInsets.symmetric(vertical: 14),
                         decoration: BoxDecoration(
-                          color: const Color(0xFFD1FAE5),
+                          color: const Color(0xFFE5F5EE),
                           borderRadius: BorderRadius.circular(14),
                         ),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            const Icon(Icons.circle, color: Color(0xFF059669), size: 10),
+                            const Icon(Icons.circle, color: Color(0xFF087C69), size: 10),
                             const SizedBox(width: 8),
                             Text(
                               'Active Until ${DateFormat('d MMM yyyy').format(selectedDate)}, ${_formatTime(collectionDeadline)}',
                               style: const TextStyle(
-                                color: Color(0xFF065F46),
+                                color: Color(0xFF075A50),
                                 fontWeight: FontWeight.bold,
                                 fontSize: 13,
                               ),
@@ -487,12 +484,12 @@ class _CollectionDeadlineScreenState extends State<CollectionDeadlineScreen> {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text('• ', style: TextStyle(color: Color(0xFF059669), fontWeight: FontWeight.bold, fontSize: 14)),
+        const Text('• ', style: TextStyle(color: Color(0xFF087C69), fontWeight: FontWeight.bold, fontSize: 14)),
         Expanded(
           child: Text(
             text,
             style: const TextStyle(
-              color: Color(0xFF065F46),
+              color: Color(0xFF075A50),
               fontSize: 12.5,
             ),
           ),
@@ -509,16 +506,16 @@ class _CollectionDeadlineScreenState extends State<CollectionDeadlineScreen> {
         padding: const EdgeInsets.symmetric(vertical: 12),
         alignment: Alignment.center,
         decoration: BoxDecoration(
-          color: isSelected ? const Color(0xFF087C69) : const Color(0xFFF3F4F6),
+          color: isSelected ? const Color(0xFF087C69) : const Color(0xFFF0F6F2),
           borderRadius: BorderRadius.circular(10),
           border: Border.all(
-            color: isSelected ? const Color(0xFF087C69) : const Color(0xFFE5E7EB),
+            color: isSelected ? const Color(0xFF087C69) : const Color(0xFFDAE8E1),
           ),
         ),
         child: Text(
           label,
           style: TextStyle(
-            color: isSelected ? Colors.white : const Color(0xFF374151),
+            color: isSelected ? Colors.white : const Color(0xFF173D37),
             fontWeight: FontWeight.bold,
             fontSize: 13,
           ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../../app/theme/caregrid_theme.dart';
 import 'package:intl/intl.dart';
 
 void main() {
@@ -13,11 +14,7 @@ class CareGridApp extends StatelessWidget {
     return MaterialApp(
       title: 'CareGrid - Manage Food Listings',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF087C69)),
-        useMaterial3: true,
-        fontFamily: 'Roboto',
-      ),
+      theme: CareGridTheme.light,
       home: const ManageFoodListingsScreen(),
     );
   }
@@ -246,7 +243,7 @@ class _ManageFoodListingsScreenState extends State<ManageFoodListingsScreen> {
             style: TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.bold,
-              color: Color(0xFF9F1239),
+              color: Color(0xFFBC4751),
             ),
           ),
           content: Column(
@@ -255,7 +252,7 @@ class _ManageFoodListingsScreenState extends State<ManageFoodListingsScreen> {
             children: [
               const Text(
                 'This will immediately hide the listing from the NGO feed.',
-                style: TextStyle(fontSize: 13, color: Color(0xFF4B5563)),
+                style: TextStyle(fontSize: 13, color: Color(0xFF58746D)),
               ),
               const SizedBox(height: 12),
               TextField(
@@ -276,7 +273,7 @@ class _ManageFoodListingsScreenState extends State<ManageFoodListingsScreen> {
             ),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFFDC2626),
+                backgroundColor: const Color(0xFFBC4751),
                 foregroundColor: Colors.white,
               ),
               onPressed: () {
@@ -314,7 +311,7 @@ class _ManageFoodListingsScreenState extends State<ManageFoodListingsScreen> {
                 style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
-                  color: Color(0xFF1F2937),
+                  color: Color(0xFF173D37),
                 ),
               ),
               const SizedBox(height: 14),
@@ -329,7 +326,7 @@ class _ManageFoodListingsScreenState extends State<ManageFoodListingsScreen> {
               const Divider(),
               ListTile(
                 contentPadding: EdgeInsets.zero,
-                leading: const Icon(Icons.cancel, color: Color(0xFFDC2626)),
+                leading: const Icon(Icons.cancel, color: Color(0xFFBC4751)),
                 title: Text('Batch #FD-207 — $batch207Title'),
                 subtitle: Text('Status: CANCELLED • $batch207Reason'),
               ),
@@ -369,7 +366,7 @@ class _ManageFoodListingsScreenState extends State<ManageFoodListingsScreen> {
                     Text(
                       'Edit quantity/details or cancel unavailable food',
                       style: TextStyle(
-                        color: Color(0xFFD1FAE5),
+                        color: Color(0xFFE5F5EE),
                         fontSize: 13.5,
                       ),
                     ),
@@ -377,7 +374,7 @@ class _ManageFoodListingsScreenState extends State<ManageFoodListingsScreen> {
                     Text(
                       'Updates status & removes cancelled items',
                       style: TextStyle(
-                        color: Color(0xFFA7F3D0),
+                        color: Color(0xFFB2DFCE),
                         fontSize: 12.5,
                       ),
                     ),
@@ -460,7 +457,7 @@ class _ManageFoodListingsScreenState extends State<ManageFoodListingsScreen> {
                               Text(
                                 batch209Title,
                                 style: const TextStyle(
-                                  color: Color(0xFF111827),
+                                  color: Color(0xFF173D37),
                                   fontWeight: FontWeight.bold,
                                   fontSize: 15.5,
                                 ),
@@ -469,7 +466,7 @@ class _ManageFoodListingsScreenState extends State<ManageFoodListingsScreen> {
                               Text(
                                 'Updated Qty: $batch209Qty Portions • Cutoff: ${_formatTime(batch209Cutoff)}',
                                 style: const TextStyle(
-                                  color: Color(0xFF4B5563),
+                                  color: Color(0xFF58746D),
                                   fontSize: 12.5,
                                   fontWeight: FontWeight.w500,
                                 ),
@@ -512,9 +509,9 @@ class _ManageFoodListingsScreenState extends State<ManageFoodListingsScreen> {
                                         style: OutlinedButton.styleFrom(
                                           backgroundColor: Colors.white,
                                           foregroundColor:
-                                          const Color(0xFFDC2626),
+                                          const Color(0xFFBC4751),
                                           side: const BorderSide(
-                                            color: Color(0xFFDC2626),
+                                            color: Color(0xFFBC4751),
                                             width: 1.2,
                                           ),
                                           shape: RoundedRectangleBorder(
@@ -584,7 +581,7 @@ class _ManageFoodListingsScreenState extends State<ManageFoodListingsScreen> {
                       Container(
                         padding: const EdgeInsets.all(16),
                         decoration: BoxDecoration(
-                          color: const Color(0xFFFEF3C7).withOpacity(0.65),
+                          color: const Color(0xFFFFF4E2).withOpacity(0.65),
                           border: Border.all(
                             color: const Color(0xFFE3A33B),
                             width: 1.1,
@@ -604,7 +601,7 @@ class _ManageFoodListingsScreenState extends State<ManageFoodListingsScreen> {
                               child: const Text(
                                 'QUICK UPDATE MODE',
                                 style: TextStyle(
-                                  color: Color(0xFF1F2937),
+                                  color: Color(0xFF173D37),
                                   fontWeight: FontWeight.bold,
                                   fontSize: 10.5,
                                   letterSpacing: 0.4,
@@ -615,7 +612,7 @@ class _ManageFoodListingsScreenState extends State<ManageFoodListingsScreen> {
                             const Text(
                               'Adjust Portion Count or Cutoff Time:',
                               style: TextStyle(
-                                color: Color(0xFF1F2937),
+                                color: Color(0xFF173D37),
                                 fontWeight: FontWeight.bold,
                                 fontSize: 13.5,
                               ),
@@ -633,14 +630,14 @@ class _ManageFoodListingsScreenState extends State<ManageFoodListingsScreen> {
                                       decoration: BoxDecoration(
                                         color: Colors.white,
                                         border: Border.all(
-                                            color: const Color(0xFFD97706)),
+                                            color: const Color(0xFFAD751D)),
                                         borderRadius: BorderRadius.circular(10),
                                       ),
                                       child: Text(
                                         'Qty: $batch209Qty Boxes',
                                         textAlign: TextAlign.center,
                                         style: const TextStyle(
-                                          color: Color(0xFF1F2937),
+                                          color: Color(0xFF173D37),
                                           fontWeight: FontWeight.bold,
                                           fontSize: 13,
                                         ),
@@ -659,14 +656,14 @@ class _ManageFoodListingsScreenState extends State<ManageFoodListingsScreen> {
                                       decoration: BoxDecoration(
                                         color: Colors.white,
                                         border: Border.all(
-                                            color: const Color(0xFFD97706)),
+                                            color: const Color(0xFFAD751D)),
                                         borderRadius: BorderRadius.circular(10),
                                       ),
                                       child: Text(
                                         'Cutoff: ${_formatTime(batch209Cutoff)}',
                                         textAlign: TextAlign.center,
                                         style: const TextStyle(
-                                          color: Color(0xFF1F2937),
+                                          color: Color(0xFF173D37),
                                           fontWeight: FontWeight.bold,
                                           fontSize: 13,
                                         ),
@@ -682,7 +679,7 @@ class _ManageFoodListingsScreenState extends State<ManageFoodListingsScreen> {
                                 Text(
                                   '• ',
                                   style: TextStyle(
-                                    color: Color(0xFF92400E),
+                                    color: Color(0xFFAD751D),
                                     fontWeight: FontWeight.bold,
                                     fontSize: 14,
                                   ),
@@ -691,7 +688,7 @@ class _ManageFoodListingsScreenState extends State<ManageFoodListingsScreen> {
                                   child: Text(
                                     'Prevents NGOs from traveling for unavailable food',
                                     style: TextStyle(
-                                      color: Color(0xFF92400E),
+                                      color: Color(0xFFAD751D),
                                       fontSize: 12,
                                       fontWeight: FontWeight.w500,
                                     ),
@@ -745,10 +742,10 @@ class _ManageFoodListingsScreenState extends State<ManageFoodListingsScreen> {
                         height: 48,
                         child: OutlinedButton(
                           style: OutlinedButton.styleFrom(
-                            backgroundColor: const Color(0xFFF3F4F6),
+                            backgroundColor: const Color(0xFFF0F6F2),
                             foregroundColor: const Color(0xFF087C69),
                             side: const BorderSide(
-                              color: Color(0xFFD1D5DB),
+                              color: Color(0xFFDAE8E1),
                               width: 1.1,
                             ),
                             shape: RoundedRectangleBorder(
@@ -785,9 +782,9 @@ class _ManageFoodListingsScreenState extends State<ManageFoodListingsScreen> {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: const Color(0xFFFFF1F2),
+        color: const Color(0xFFFFECEE),
         border: Border.all(
-          color: const Color(0xFFFDA4AF),
+          color: const Color(0xFFE5A1A7),
           width: 1.2,
         ),
         borderRadius: BorderRadius.circular(16),
@@ -802,7 +799,7 @@ class _ManageFoodListingsScreenState extends State<ManageFoodListingsScreen> {
                 padding:
                 const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                 decoration: BoxDecoration(
-                  color: const Color(0xFFE11D48),
+                  color: const Color(0xFFBC4751),
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: Row(
@@ -827,7 +824,7 @@ class _ManageFoodListingsScreenState extends State<ManageFoodListingsScreen> {
                   Text(
                     batchId,
                     style: const TextStyle(
-                      color: Color(0xFF9F1239),
+                      color: Color(0xFFBC4751),
                       fontWeight: FontWeight.bold,
                       fontSize: 12.5,
                     ),
@@ -855,7 +852,7 @@ class _ManageFoodListingsScreenState extends State<ManageFoodListingsScreen> {
           Text(
             title,
             style: const TextStyle(
-              color: Color(0xFF1F2937),
+              color: Color(0xFF173D37),
               fontWeight: FontWeight.bold,
               fontSize: 15,
             ),
@@ -864,20 +861,20 @@ class _ManageFoodListingsScreenState extends State<ManageFoodListingsScreen> {
           Text(
             'Reason: $reason',
             style: const TextStyle(
-              color: Color(0xFF9F1239),
+              color: Color(0xFFBC4751),
               fontSize: 12.5,
             ),
           ),
           const SizedBox(height: 8),
           Row(
             children: const [
-              Icon(Icons.circle, color: Color(0xFF9F1239), size: 9),
+              Icon(Icons.circle, color: Color(0xFFBC4751), size: 9),
               SizedBox(width: 6),
               Expanded(
                 child: Text(
                   'Status updated & removed from NGO feed',
                   style: TextStyle(
-                    color: Color(0xFF9F1239),
+                    color: Color(0xFFBC4751),
                     fontWeight: FontWeight.bold,
                     fontSize: 12,
                   ),

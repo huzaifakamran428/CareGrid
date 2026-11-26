@@ -6,6 +6,7 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
+import '../../../../app/theme/caregrid_theme.dart';
 import 'package:flutter/services.dart';
 import '../../../../app/theme/brand_tokens.dart';
 
@@ -40,11 +41,7 @@ class CareGridDonationApp extends StatelessWidget {
     return MaterialApp(
       title: 'CareGrid | Donate',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: kGreen),
-        useMaterial3: true,
-        fontFamily: 'Roboto',
-      ),
+      theme: CareGridTheme.light,
       home: const DonateNgoSelectionScreen(),
     );
   }
@@ -265,7 +262,7 @@ class CareGridLogo extends StatelessWidget {
       height: size,
       padding: const EdgeInsets.all(2),
       decoration: BoxDecoration(
-        color: const Color(0xFFF4F9F2),
+        color: const Color(0xFFF7FAF8),
         borderRadius: BorderRadius.circular(size * 0.26),
       ),
       child: Image.memory(
@@ -348,7 +345,7 @@ class CareGridPage extends StatelessWidget {
                     child: Text(
                       subtitle,
                       style: const TextStyle(
-                        color: Color(0xFFD1FAE5),
+                        color: Color(0xFFE5F5EE),
                         fontSize: 13.5,
                       ),
                     ),
@@ -407,8 +404,8 @@ class PrimaryButton extends StatelessWidget {
         style: ElevatedButton.styleFrom(
           backgroundColor: background,
           foregroundColor: foreground,
-          disabledBackgroundColor: const Color(0xFFD1D5DB),
-          disabledForegroundColor: const Color(0xFF6B7280),
+          disabledBackgroundColor: const Color(0xFFDAE8E1),
+          disabledForegroundColor: const Color(0xFF58746D),
           elevation: 0,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
@@ -517,7 +514,7 @@ BoxDecoration cardDecoration({bool selected = false}) {
     color: selected ? kMint : kSurface,
     borderRadius: BorderRadius.circular(16),
     border: Border.all(
-      color: selected ? kGreen : const Color(0xFFD1D5DB),
+      color: selected ? kGreen : const Color(0xFFDAE8E1),
       width: selected ? 1.5 : 1.1,
     ),
   );
@@ -605,7 +602,7 @@ class _DonateNgoSelectionScreenState extends State<DonateNgoSelectionScreen> {
                 'CareGrid does not deduct platform commissions from donor contributions. Every rupee you pledge goes directly toward verified welfare operations.',
                 style: TextStyle(
                   fontSize: 13.5,
-                  color: Color(0xFF374151),
+                  color: Color(0xFF173D37),
                   height: 1.4,
                 ),
               ),
@@ -639,9 +636,9 @@ class _DonateNgoSelectionScreenState extends State<DonateNgoSelectionScreen> {
             style: const TextStyle(fontSize: 13.5, color: kText),
             decoration: InputDecoration(
               hintText: 'Search registered & approved NGOs...',
-              hintStyle: const TextStyle(color: Color(0xFF6B7280), fontSize: 13),
+              hintStyle: const TextStyle(color: Color(0xFF58746D), fontSize: 13),
               filled: true,
-              fillColor: const Color(0xFFF3F6F4),
+              fillColor: const Color(0xFFF7FAF8),
               prefixIcon: const Icon(Icons.search, color: kGreen, size: 20),
               suffixIcon: _query.isEmpty
                   ? null
@@ -685,7 +682,7 @@ class _DonateNgoSelectionScreenState extends State<DonateNgoSelectionScreen> {
                         color: selected ? kGreen : kMint,
                         borderRadius: BorderRadius.circular(20),
                         border: Border.all(
-                          color: selected ? kGreen : const Color(0xFFA7F3D0),
+                          color: selected ? kGreen : const Color(0xFFB2DFCE),
                         ),
                       ),
                       child: Row(
@@ -770,7 +767,7 @@ class _DonateNgoSelectionScreenState extends State<DonateNgoSelectionScreen> {
                 children: [
                   Icon(
                     selected ? Icons.check_box : Icons.check_box_outline_blank,
-                    color: selected ? kGreen : const Color(0xFF9CA3AF),
+                    color: selected ? kGreen : const Color(0xFF58746D),
                     size: 22,
                   ),
                   const SizedBox(width: 8),
@@ -790,7 +787,7 @@ class _DonateNgoSelectionScreenState extends State<DonateNgoSelectionScreen> {
                     padding:
                     const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                     decoration: BoxDecoration(
-                      color: selected ? kGreen : const Color(0xFFD1FAE5),
+                      color: selected ? kGreen : const Color(0xFFE5F5EE),
                       borderRadius: BorderRadius.circular(6),
                     ),
                     child: Text(
@@ -799,7 +796,7 @@ class _DonateNgoSelectionScreenState extends State<DonateNgoSelectionScreen> {
                         fontSize: 10,
                         fontWeight: FontWeight.bold,
                         color:
-                        selected ? Colors.white : const Color(0xFF065F46),
+                        selected ? Colors.white : const Color(0xFF075A50),
                       ),
                     ),
                   ),
@@ -824,7 +821,7 @@ class _DonateNgoSelectionScreenState extends State<DonateNgoSelectionScreen> {
                     padding:
                     const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                     decoration: BoxDecoration(
-                      color: active ? kGreen : const Color(0xFFE5E7EB),
+                      color: active ? kGreen : const Color(0xFFDAE8E1),
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: Text(
@@ -832,7 +829,7 @@ class _DonateNgoSelectionScreenState extends State<DonateNgoSelectionScreen> {
                       style: TextStyle(
                         fontSize: 11.5,
                         fontWeight: FontWeight.bold,
-                        color: active ? Colors.white : const Color(0xFF374151),
+                        color: active ? Colors.white : const Color(0xFF173D37),
                       ),
                     ),
                   );
@@ -962,7 +959,7 @@ class _EnterDonationScreenState extends State<EnterDonationScreen> {
                       const Text(
                         'SELECTED NGO & CAUSE',
                         style: TextStyle(
-                          color: Color(0xFFA7F3D0),
+                          color: Color(0xFFB2DFCE),
                           fontSize: 10.5,
                           fontWeight: FontWeight.bold,
                           letterSpacing: 0.5,
@@ -982,7 +979,7 @@ class _EnterDonationScreenState extends State<EnterDonationScreen> {
                       Text(
                         'Category: ${_draft.category}',
                         style: const TextStyle(
-                          color: Color(0xFFFBBF24),
+                          color: Color(0xFFE3A33B),
                           fontSize: 12.5,
                           fontWeight: FontWeight.bold,
                         ),
@@ -1091,7 +1088,7 @@ class _EnterDonationScreenState extends State<EnterDonationScreen> {
                   style: const TextStyle(
                     fontSize: 13,
                     fontWeight: FontWeight.bold,
-                    color: Color(0xFF374151),
+                    color: Color(0xFF173D37),
                   ),
                 ),
               ],
@@ -1124,7 +1121,7 @@ class _EnterDonationScreenState extends State<EnterDonationScreen> {
                           vertical: 11, horizontal: 4),
                       alignment: Alignment.center,
                       decoration: BoxDecoration(
-                        color: selected ? kGreen : const Color(0xFFF3F6F4),
+                        color: selected ? kGreen : const Color(0xFFF7FAF8),
                         borderRadius: BorderRadius.circular(10),
                         border:
                         Border.all(color: selected ? kGreen : kBorder),
@@ -1163,7 +1160,7 @@ class _EnterDonationScreenState extends State<EnterDonationScreen> {
                       : 'Donor Platform Fee:',
                   '${money(_draft.currency, 0)} (Free)',
                 ),
-                const Divider(color: Color(0xFFE2E8F0)),
+                const Divider(color: Color(0xFFDAE8E1)),
                 SummaryRow('Total Going to NGO:', total, strong: true),
               ],
             ),
@@ -1187,7 +1184,7 @@ class _EnterDonationScreenState extends State<EnterDonationScreen> {
 
   Widget _roleOption({required String label, required bool value}) {
     final selected = _draft.isVolunteer == value;
-    final accent = value ? kGreen : const Color(0xFFBE123C);
+    final accent = value ? kGreen : const Color(0xFFBC4751);
 
     return Expanded(
       child: InkWell(
@@ -1197,11 +1194,11 @@ class _EnterDonationScreenState extends State<EnterDonationScreen> {
           padding: const EdgeInsets.symmetric(vertical: 13, horizontal: 8),
           decoration: BoxDecoration(
             color: selected
-                ? (value ? kMint : const Color(0xFFFFF1F2))
+                ? (value ? kMint : const Color(0xFFFFECEE))
                 : Colors.white,
             borderRadius: BorderRadius.circular(12),
             border: Border.all(
-              color: selected ? accent : const Color(0xFFD1D5DB),
+              color: selected ? accent : const Color(0xFFDAE8E1),
               width: selected ? 1.5 : 1.1,
             ),
           ),
@@ -1462,7 +1459,7 @@ class _SecureCheckoutScreenState extends State<SecureCheckoutScreen> {
               const SizedBox(height: 2),
               const Text(
                 'Processed safely via External Payment Gateway',
-                style: TextStyle(fontSize: 12, color: Color(0xFF6B7280)),
+                style: TextStyle(fontSize: 12, color: Color(0xFF58746D)),
               ),
               const SizedBox(height: 12),
               ...List.generate(_methods.length, (index) {
@@ -1483,7 +1480,7 @@ class _SecureCheckoutScreenState extends State<SecureCheckoutScreen> {
                                 ? Icons.radio_button_checked
                                 : Icons.radio_button_unchecked,
                             color:
-                            selected ? kGreen : const Color(0xFF9CA3AF),
+                            selected ? kGreen : const Color(0xFF58746D),
                             size: 20,
                           ),
                           const SizedBox(width: 12),
@@ -1680,7 +1677,7 @@ class _SecureCheckoutScreenState extends State<SecureCheckoutScreen> {
               fillColor: kSurface,
               hintText: hint,
               hintStyle:
-              const TextStyle(fontSize: 12.5, color: Color(0xFF9CA3AF)),
+              const TextStyle(fontSize: 12.5, color: Color(0xFF58746D)),
               // Error sirf tab dikhe jab user kuch likh chuka ho.
               errorText: controller.text.isEmpty ? null : error,
               errorMaxLines: 2,
@@ -1900,7 +1897,7 @@ class _DonationHistoryScreenState extends State<DonationHistoryScreen> {
                       '(Zero platform fees applied • ${records.length} Paid Receipts)',
                       textAlign: TextAlign.center,
                       style: const TextStyle(
-                        color: Color(0xFF065F46),
+                        color: Color(0xFF075A50),
                         fontSize: 12,
                         fontWeight: FontWeight.bold,
                       ),
@@ -1961,7 +1958,7 @@ class _DonationHistoryScreenState extends State<DonationHistoryScreen> {
                     padding:
                     const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                     decoration: BoxDecoration(
-                      color: selected ? kDarkGreen : const Color(0xFFD1FAE5),
+                      color: selected ? kDarkGreen : const Color(0xFFE5F5EE),
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: Text(
@@ -1970,7 +1967,7 @@ class _DonationHistoryScreenState extends State<DonationHistoryScreen> {
                         fontSize: 10.5,
                         fontWeight: FontWeight.bold,
                         color:
-                        selected ? Colors.white : const Color(0xFF065F46),
+                        selected ? Colors.white : const Color(0xFF075A50),
                       ),
                     ),
                   ),
@@ -2004,7 +2001,7 @@ class _DonationHistoryScreenState extends State<DonationHistoryScreen> {
               const SizedBox(height: 4),
               Text(
                 'Category: ${record.category} • ${record.paymentMethod}',
-                style: const TextStyle(fontSize: 12, color: Color(0xFF6B7280)),
+                style: const TextStyle(fontSize: 12, color: Color(0xFF58746D)),
               ),
               if (selected) ...[
                 const SizedBox(height: 8),

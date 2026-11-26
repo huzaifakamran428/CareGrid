@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../../app/theme/caregrid_theme.dart';
 import 'package:flutter/services.dart';
 
 void main() {
@@ -13,11 +14,7 @@ class CareGridCheckoutApp extends StatelessWidget {
     return MaterialApp(
       title: 'CareGrid | Secure Checkout',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF155E42)),
-        useMaterial3: true,
-        fontFamily: 'Roboto',
-      ),
+      theme: CareGridTheme.light,
       home: const SecureCheckoutScreen(),
     );
   }
@@ -238,7 +235,7 @@ class _SecureCheckoutScreenState extends State<SecureCheckoutScreen> {
                       child: Text(
                         'Select Supported Online Payment Method',
                         style: TextStyle(
-                          color: Color(0xFFD1FAE5),
+                          color: Color(0xFFE5F5EE),
                           fontSize: 13.5,
                         ),
                       ),
@@ -270,7 +267,7 @@ class _SecureCheckoutScreenState extends State<SecureCheckoutScreen> {
                         style: TextStyle(
                           fontSize: 14.5,
                           fontWeight: FontWeight.bold,
-                          color: Color(0xFF111827),
+                          color: Color(0xFF173D37),
                         ),
                       ),
                       const SizedBox(height: 2),
@@ -278,7 +275,7 @@ class _SecureCheckoutScreenState extends State<SecureCheckoutScreen> {
                         'Processed safely via External Payment Gateway',
                         style: TextStyle(
                           fontSize: 12,
-                          color: Color(0xFF6B7280),
+                          color: Color(0xFF58746D),
                         ),
                       ),
                       const SizedBox(height: 12),
@@ -298,13 +295,13 @@ class _SecureCheckoutScreenState extends State<SecureCheckoutScreen> {
                               ),
                               decoration: BoxDecoration(
                                 color: isSelected
-                                    ? const Color(0xFFECFDF5)
-                                    : const Color(0xFFF8FAFC),
+                                    ? const Color(0xFFE5F5EE)
+                                    : const Color(0xFFF7FAF8),
                                 borderRadius: BorderRadius.circular(12),
                                 border: Border.all(
                                   color: isSelected
                                       ? const Color(0xFF155E42)
-                                      : const Color(0xFFD1DDD6),
+                                      : const Color(0xFFDAE8E1),
                                   width: isSelected ? 1.5 : 1.1,
                                 ),
                               ),
@@ -318,7 +315,7 @@ class _SecureCheckoutScreenState extends State<SecureCheckoutScreen> {
                                       border: Border.all(
                                         color: isSelected
                                             ? const Color(0xFF155E42)
-                                            : const Color(0xFF9CA3AF),
+                                            : const Color(0xFF58746D),
                                         width: 1.8,
                                       ),
                                     ),
@@ -343,8 +340,8 @@ class _SecureCheckoutScreenState extends State<SecureCheckoutScreen> {
                                         fontSize: 13.5,
                                         fontWeight: FontWeight.bold,
                                         color: isSelected
-                                            ? const Color(0xFF111827)
-                                            : const Color(0xFF1F2937),
+                                            ? const Color(0xFF173D37)
+                                            : const Color(0xFF173D37),
                                       ),
                                     ),
                                   ),
@@ -370,10 +367,10 @@ class _SecureCheckoutScreenState extends State<SecureCheckoutScreen> {
                           vertical: 12,
                         ),
                         decoration: BoxDecoration(
-                          color: const Color(0xFFFFFBEB),
+                          color: const Color(0xFFFFF4E2),
                           borderRadius: BorderRadius.circular(12),
                           border: Border.all(
-                            color: const Color(0xFFF59E0B),
+                            color: const Color(0xFFE3A33B),
                             width: 1.1,
                           ),
                         ),
@@ -382,7 +379,7 @@ class _SecureCheckoutScreenState extends State<SecureCheckoutScreen> {
                           children: const [
                             Icon(
                               Icons.lock,
-                              color: Color(0xFFF59E0B),
+                              color: Color(0xFFE3A33B),
                               size: 16,
                             ),
                             SizedBox(width: 6),
@@ -391,7 +388,7 @@ class _SecureCheckoutScreenState extends State<SecureCheckoutScreen> {
                                 '256-Bit TLS Gateway • Instant Receipt Generated',
                                 overflow: TextOverflow.ellipsis,
                                 style: TextStyle(
-                                  color: Color(0xFF92400E),
+                                  color: Color(0xFFAD751D),
                                   fontWeight: FontWeight.bold,
                                   fontSize: 12.5,
                                 ),
@@ -409,10 +406,10 @@ class _SecureCheckoutScreenState extends State<SecureCheckoutScreen> {
                         height: 50,
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color(0xFF0E4D37),
+                            backgroundColor: const Color(0xFF075A50),
                             foregroundColor: Colors.white,
-                            disabledBackgroundColor: const Color(0xFFD1D5DB),
-                            disabledForegroundColor: const Color(0xFF6B7280),
+                            disabledBackgroundColor: const Color(0xFFDAE8E1),
+                            disabledForegroundColor: const Color(0xFF58746D),
                             elevation: 0,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(12),
@@ -441,8 +438,8 @@ class _SecureCheckoutScreenState extends State<SecureCheckoutScreen> {
                         height: 50,
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color(0xFFF59E0B),
-                            foregroundColor: const Color(0xFF1F2937),
+                            backgroundColor: const Color(0xFFE3A33B),
+                            foregroundColor: const Color(0xFF173D37),
                             elevation: 0,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(12),
@@ -487,7 +484,7 @@ class _SecureCheckoutScreenState extends State<SecureCheckoutScreen> {
               style: TextStyle(
                 fontSize: 13,
                 fontWeight: FontWeight.bold,
-                color: Color(0xFF111827),
+                color: Color(0xFF173D37),
               ),
             ),
             const SizedBox(height: 8),
@@ -497,7 +494,7 @@ class _SecureCheckoutScreenState extends State<SecureCheckoutScreen> {
               inputFormatters: [
                 FilteringTextInputFormatter.deny(RegExp(r'[-0-9]')),
               ],
-              style: const TextStyle(fontSize: 14, color: Color(0xFF374151)),
+              style: const TextStyle(fontSize: 14, color: Color(0xFF173D37)),
               decoration: _inputDecoration(
                 hint: 'Full name on card (letters only)',
                 errorText: nameErr,
@@ -509,19 +506,19 @@ class _SecureCheckoutScreenState extends State<SecureCheckoutScreen> {
               style: TextStyle(
                 fontSize: 13,
                 fontWeight: FontWeight.bold,
-                color: Color(0xFF111827),
+                color: Color(0xFF173D37),
               ),
             ),
             const SizedBox(height: 8),
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 4),
               decoration: BoxDecoration(
-                color: const Color(0xFFF8FAFC),
+                color: const Color(0xFFF7FAF8),
                 borderRadius: BorderRadius.circular(12),
                 border: Border.all(
                   color: cardErr == null
                       ? const Color(0xFF155E42)
-                      : const Color(0xFFDC2626),
+                      : const Color(0xFFBC4751),
                   width: 1.3,
                 ),
               ),
@@ -539,7 +536,7 @@ class _SecureCheckoutScreenState extends State<SecureCheckoutScreen> {
                       style: const TextStyle(
                         fontSize: 14.5,
                         fontWeight: FontWeight.bold,
-                        color: Color(0xFF111827),
+                        color: Color(0xFF173D37),
                         letterSpacing: 0.6,
                       ),
                       decoration: const InputDecoration(
@@ -547,7 +544,7 @@ class _SecureCheckoutScreenState extends State<SecureCheckoutScreen> {
                         hintStyle: TextStyle(
                           fontSize: 12.5,
                           fontWeight: FontWeight.normal,
-                          color: Color(0xFF9CA3AF),
+                          color: Color(0xFF58746D),
                         ),
                         border: InputBorder.none,
                         isDense: true,
@@ -581,7 +578,7 @@ class _SecureCheckoutScreenState extends State<SecureCheckoutScreen> {
                         style: TextStyle(
                           fontSize: 13,
                           fontWeight: FontWeight.bold,
-                          color: Color(0xFF111827),
+                          color: Color(0xFF173D37),
                         ),
                       ),
                       const SizedBox(height: 8),
@@ -606,7 +603,7 @@ class _SecureCheckoutScreenState extends State<SecureCheckoutScreen> {
                         ],
                         style: const TextStyle(
                           fontSize: 14,
-                          color: Color(0xFF374151),
+                          color: Color(0xFF173D37),
                         ),
                         decoration: _inputDecoration(
                           hint: 'MM/YY (e.g. 08/29)',
@@ -626,7 +623,7 @@ class _SecureCheckoutScreenState extends State<SecureCheckoutScreen> {
                         style: TextStyle(
                           fontSize: 13,
                           fontWeight: FontWeight.bold,
-                          color: Color(0xFF111827),
+                          color: Color(0xFF173D37),
                         ),
                       ),
                       const SizedBox(height: 8),
@@ -641,7 +638,7 @@ class _SecureCheckoutScreenState extends State<SecureCheckoutScreen> {
                         ],
                         style: const TextStyle(
                           fontSize: 14,
-                          color: Color(0xFF374151),
+                          color: Color(0xFF173D37),
                         ),
                         decoration: _inputDecoration(
                           hint: '3 or 4 digits',
@@ -668,7 +665,7 @@ class _SecureCheckoutScreenState extends State<SecureCheckoutScreen> {
               style: TextStyle(
                 fontSize: 13,
                 fontWeight: FontWeight.bold,
-                color: Color(0xFF111827),
+                color: Color(0xFF173D37),
               ),
             ),
             const SizedBox(height: 8),
@@ -678,7 +675,7 @@ class _SecureCheckoutScreenState extends State<SecureCheckoutScreen> {
               inputFormatters: [
                 FilteringTextInputFormatter.deny(RegExp(r'[-0-9]')),
               ],
-              style: const TextStyle(fontSize: 14, color: Color(0xFF374151)),
+              style: const TextStyle(fontSize: 14, color: Color(0xFF173D37)),
               decoration: _inputDecoration(
                 hint: 'Account holder name',
                 errorText: nameErr,
@@ -690,7 +687,7 @@ class _SecureCheckoutScreenState extends State<SecureCheckoutScreen> {
               style: TextStyle(
                 fontSize: 13,
                 fontWeight: FontWeight.bold,
-                color: Color(0xFF111827),
+                color: Color(0xFF173D37),
               ),
             ),
             const SizedBox(height: 8),
@@ -703,7 +700,7 @@ class _SecureCheckoutScreenState extends State<SecureCheckoutScreen> {
                 }
                 setState(() {});
               },
-              style: const TextStyle(fontSize: 14, color: Color(0xFF374151)),
+              style: const TextStyle(fontSize: 14, color: Color(0xFF173D37)),
               decoration: _inputDecoration(
                 hint: 'name@example.com or 03001234567',
                 errorText: walletErr,
@@ -723,7 +720,7 @@ class _SecureCheckoutScreenState extends State<SecureCheckoutScreen> {
               style: TextStyle(
                 fontSize: 13,
                 fontWeight: FontWeight.bold,
-                color: Color(0xFF111827),
+                color: Color(0xFF173D37),
               ),
             ),
             const SizedBox(height: 8),
@@ -733,7 +730,7 @@ class _SecureCheckoutScreenState extends State<SecureCheckoutScreen> {
               inputFormatters: [
                 FilteringTextInputFormatter.deny(RegExp(r'[-0-9]')),
               ],
-              style: const TextStyle(fontSize: 14, color: Color(0xFF374151)),
+              style: const TextStyle(fontSize: 14, color: Color(0xFF173D37)),
               decoration: _inputDecoration(
                 hint: 'Bank account title',
                 errorText: nameErr,
@@ -745,7 +742,7 @@ class _SecureCheckoutScreenState extends State<SecureCheckoutScreen> {
               style: TextStyle(
                 fontSize: 13,
                 fontWeight: FontWeight.bold,
-                color: Color(0xFF111827),
+                color: Color(0xFF173D37),
               ),
             ),
             const SizedBox(height: 8),
@@ -765,7 +762,7 @@ class _SecureCheckoutScreenState extends State<SecureCheckoutScreen> {
                 FilteringTextInputFormatter.allow(RegExp(r'[A-Za-z0-9 ]')),
                 LengthLimitingTextInputFormatter(34),
               ],
-              style: const TextStyle(fontSize: 14, color: Color(0xFF374151)),
+              style: const TextStyle(fontSize: 14, color: Color(0xFF173D37)),
               decoration: _inputDecoration(
                 hint: 'PK36MEZN0002140101234567',
                 errorText: ibanErr,
@@ -786,7 +783,7 @@ class _SecureCheckoutScreenState extends State<SecureCheckoutScreen> {
               style: TextStyle(
                 fontSize: 13,
                 fontWeight: FontWeight.bold,
-                color: Color(0xFF111827),
+                color: Color(0xFF173D37),
               ),
             ),
             const SizedBox(height: 8),
@@ -800,7 +797,7 @@ class _SecureCheckoutScreenState extends State<SecureCheckoutScreen> {
                 }
                 setState(() {});
               },
-              style: const TextStyle(fontSize: 14, color: Color(0xFF374151)),
+              style: const TextStyle(fontSize: 14, color: Color(0xFF173D37)),
               decoration: _inputDecoration(
                 hint: 'name@example.com (PayPal / Stripe email)',
                 errorText: emailErr,
@@ -817,15 +814,15 @@ class _SecureCheckoutScreenState extends State<SecureCheckoutScreen> {
   }) {
     return InputDecoration(
       filled: true,
-      fillColor: const Color(0xFFF8FAFC),
+      fillColor: const Color(0xFFF7FAF8),
       hintText: hint,
-      hintStyle: const TextStyle(fontSize: 12.5, color: Color(0xFF9CA3AF)),
+      hintStyle: const TextStyle(fontSize: 12.5, color: Color(0xFF58746D)),
       errorText: errorText,
-      errorStyle: const TextStyle(fontSize: 11.5, color: Color(0xFFDC2626)),
+      errorStyle: const TextStyle(fontSize: 11.5, color: Color(0xFFBC4751)),
       contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 13),
       enabledBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(12),
-        borderSide: const BorderSide(color: Color(0xFFD1DDD6), width: 1.1),
+        borderSide: const BorderSide(color: Color(0xFFDAE8E1), width: 1.1),
       ),
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(12),
@@ -833,11 +830,11 @@ class _SecureCheckoutScreenState extends State<SecureCheckoutScreen> {
       ),
       errorBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(12),
-        borderSide: const BorderSide(color: Color(0xFFDC2626), width: 1.3),
+        borderSide: const BorderSide(color: Color(0xFFBC4751), width: 1.3),
       ),
       focusedErrorBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(12),
-        borderSide: const BorderSide(color: Color(0xFFDC2626), width: 1.6),
+        borderSide: const BorderSide(color: Color(0xFFBC4751), width: 1.6),
       ),
     );
   }
@@ -847,7 +844,7 @@ class _SecureCheckoutScreenState extends State<SecureCheckoutScreen> {
       padding: const EdgeInsets.only(top: 5, left: 4),
       child: Text(
         message,
-        style: const TextStyle(fontSize: 11.5, color: Color(0xFFDC2626)),
+        style: const TextStyle(fontSize: 11.5, color: Color(0xFFBC4751)),
       ),
     );
   }

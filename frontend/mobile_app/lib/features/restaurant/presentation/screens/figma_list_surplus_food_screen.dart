@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../../app/theme/caregrid_theme.dart';
 
 void main() {
   runApp(const CareGridSurplusApp());
@@ -12,11 +13,7 @@ class CareGridSurplusApp extends StatelessWidget {
     return MaterialApp(
       title: 'CareGrid - List Surplus Food',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF087C69)),
-        useMaterial3: true,
-        fontFamily: 'Roboto',
-      ),
+      theme: CareGridTheme.light,
       home: const ListSurplusFoodScreen(),
     );
   }
@@ -79,7 +76,7 @@ class _ListSurplusFoodScreenState extends State<ListSurplusFoodScreen> {
           content: Text(
             'Please fill in food name, description, and pickup address.',
           ),
-          backgroundColor: Color(0xFFB91C1C),
+          backgroundColor: Color(0xFFBC4751),
         ),
       );
       return;
@@ -129,7 +126,7 @@ class _ListSurplusFoodScreenState extends State<ListSurplusFoodScreen> {
                     Text(
                       'Restaurant Mobile App • Create Donation',
                       style: TextStyle(
-                        color: Color(0xFFD1FAE5),
+                        color: Color(0xFFE5F5EE),
                         fontSize: 13.5,
                         fontWeight: FontWeight.w500,
                       ),
@@ -138,7 +135,7 @@ class _ListSurplusFoodScreenState extends State<ListSurplusFoodScreen> {
                     Text(
                       'Publish food details & notify nearby NGOs',
                       style: TextStyle(
-                        color: Color(0xFFA7F3D0),
+                        color: Color(0xFFB2DFCE),
                         fontSize: 12.5,
                       ),
                     ),
@@ -171,8 +168,8 @@ class _ListSurplusFoodScreenState extends State<ListSurplusFoodScreen> {
                           vertical: 12,
                         ),
                         decoration: BoxDecoration(
-                          color: const Color(0xFFF3F6F4),
-                          border: Border.all(color: const Color(0xFFD1DDD6)),
+                          color: const Color(0xFFF7FAF8),
+                          border: Border.all(color: const Color(0xFFDAE8E1)),
                           borderRadius: BorderRadius.circular(12),
                         ),
                         child: Row(
@@ -187,7 +184,7 @@ class _ListSurplusFoodScreenState extends State<ListSurplusFoodScreen> {
                               child: Text(
                                 'Bundoo Khan Kitchens • Verified Partner',
                                 style: TextStyle(
-                                  color: Color(0xFF1F2937),
+                                  color: Color(0xFF173D37),
                                   fontWeight: FontWeight.bold,
                                   fontSize: 13.5,
                                 ),
@@ -205,7 +202,7 @@ class _ListSurplusFoodScreenState extends State<ListSurplusFoodScreen> {
                         style: TextStyle(
                           fontSize: 11,
                           fontWeight: FontWeight.bold,
-                          color: Color(0xFF374151),
+                          color: Color(0xFF173D37),
                           letterSpacing: 0.5,
                         ),
                       ),
@@ -215,7 +212,7 @@ class _ListSurplusFoodScreenState extends State<ListSurplusFoodScreen> {
                         onChanged: (_) => setState(() => _isPublished = false),
                         style: const TextStyle(
                           fontWeight: FontWeight.bold,
-                          color: Color(0xFF111827),
+                          color: Color(0xFF173D37),
                           fontSize: 14.5,
                         ),
                         decoration: InputDecoration(
@@ -233,7 +230,7 @@ class _ListSurplusFoodScreenState extends State<ListSurplusFoodScreen> {
                           focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(12),
                             borderSide: const BorderSide(
-                              color: Color(0xFF0A4730),
+                              color: Color(0xFF075A50),
                               width: 2,
                             ),
                           ),
@@ -248,7 +245,7 @@ class _ListSurplusFoodScreenState extends State<ListSurplusFoodScreen> {
                         style: TextStyle(
                           fontSize: 11,
                           fontWeight: FontWeight.bold,
-                          color: Color(0xFF374151),
+                          color: Color(0xFF173D37),
                           letterSpacing: 0.5,
                         ),
                       ),
@@ -285,7 +282,7 @@ class _ListSurplusFoodScreenState extends State<ListSurplusFoodScreen> {
                                         children: [
                                           const Icon(
                                             Icons.soup_kitchen,
-                                            color: Color(0xFFFBBF24),
+                                            color: Color(0xFFE3A33B),
                                             size: 17,
                                           ),
                                           const SizedBox(width: 6),
@@ -317,9 +314,9 @@ class _ListSurplusFoodScreenState extends State<ListSurplusFoodScreen> {
                             child: Container(
                               padding: const EdgeInsets.symmetric(horizontal: 12),
                               decoration: BoxDecoration(
-                                color: const Color(0xFFF3F6F4),
+                                color: const Color(0xFFF7FAF8),
                                 border: Border.all(
-                                  color: const Color(0xFFD1DDD6),
+                                  color: const Color(0xFFDAE8E1),
                                   width: 1.2,
                                 ),
                                 borderRadius: BorderRadius.circular(12),
@@ -335,7 +332,7 @@ class _ListSurplusFoodScreenState extends State<ListSurplusFoodScreen> {
                                     size: 20,
                                   ),
                                   style: const TextStyle(
-                                    color: Color(0xFF1F2937),
+                                    color: Color(0xFF173D37),
                                     fontWeight: FontWeight.bold,
                                     fontSize: 13,
                                   ),
@@ -383,7 +380,7 @@ class _ListSurplusFoodScreenState extends State<ListSurplusFoodScreen> {
                         style: TextStyle(
                           fontSize: 11,
                           fontWeight: FontWeight.bold,
-                          color: Color(0xFF374151),
+                          color: Color(0xFF173D37),
                           letterSpacing: 0.5,
                         ),
                       ),
@@ -393,18 +390,18 @@ class _ListSurplusFoodScreenState extends State<ListSurplusFoodScreen> {
                         maxLines: 3,
                         onChanged: (_) => setState(() => _isPublished = false),
                         style: const TextStyle(
-                          color: Color(0xFF374151),
+                          color: Color(0xFF173D37),
                           fontSize: 13.5,
                           height: 1.35,
                         ),
                         decoration: InputDecoration(
                           filled: true,
-                          fillColor: const Color(0xFFFAFAFA),
+                          fillColor: const Color(0xFFF7FAF8),
                           contentPadding: const EdgeInsets.all(14),
                           enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(12),
                             borderSide: const BorderSide(
-                              color: Color(0xFFD1D5DB),
+                              color: Color(0xFFDAE8E1),
                               width: 1.1,
                             ),
                           ),
@@ -426,7 +423,7 @@ class _ListSurplusFoodScreenState extends State<ListSurplusFoodScreen> {
                         style: TextStyle(
                           fontSize: 11,
                           fontWeight: FontWeight.bold,
-                          color: Color(0xFF374151),
+                          color: Color(0xFF173D37),
                           letterSpacing: 0.5,
                         ),
                       ),
@@ -435,16 +432,16 @@ class _ListSurplusFoodScreenState extends State<ListSurplusFoodScreen> {
                         controller: _addressController,
                         onChanged: (_) => setState(() => _isPublished = false),
                         style: const TextStyle(
-                          color: Color(0xFF1F2937),
+                          color: Color(0xFF173D37),
                           fontSize: 13.5,
                           fontWeight: FontWeight.w500,
                         ),
                         decoration: InputDecoration(
                           filled: true,
-                          fillColor: const Color(0xFFFAFAFA),
+                          fillColor: const Color(0xFFF7FAF8),
                           prefixIcon: const Icon(
                             Icons.location_on,
-                            color: Color(0xFFDC2626),
+                            color: Color(0xFFBC4751),
                             size: 20,
                           ),
                           contentPadding: const EdgeInsets.symmetric(
@@ -454,7 +451,7 @@ class _ListSurplusFoodScreenState extends State<ListSurplusFoodScreen> {
                           enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(12),
                             borderSide: const BorderSide(
-                              color: Color(0xFFD1D5DB),
+                              color: Color(0xFFDAE8E1),
                               width: 1.1,
                             ),
                           ),
@@ -479,7 +476,7 @@ class _ListSurplusFoodScreenState extends State<ListSurplusFoodScreen> {
                         decoration: BoxDecoration(
                           color: const Color(0xFFE5F5EE),
                           border: Border.all(
-                            color: const Color(0xFFA7F3D0),
+                            color: const Color(0xFFB2DFCE),
                             width: 1.2,
                           ),
                           borderRadius: BorderRadius.circular(14),
@@ -499,7 +496,7 @@ class _ListSurplusFoodScreenState extends State<ListSurplusFoodScreen> {
                                   const Text(
                                     'Communicate to Eligible NGOs',
                                     style: TextStyle(
-                                      color: Color(0xFF064E3B),
+                                      color: Color(0xFF075A50),
                                       fontWeight: FontWeight.bold,
                                       fontSize: 13.5,
                                     ),
@@ -510,7 +507,7 @@ class _ListSurplusFoodScreenState extends State<ListSurplusFoodScreen> {
                                         ? 'Auto-notifies 6 verified NGOs within 8 km'
                                         : 'NGO auto-notifications paused',
                                     style: const TextStyle(
-                                      color: Color(0xFF047857),
+                                      color: Color(0xFF087C69),
                                       fontSize: 12,
                                     ),
                                   ),
@@ -541,8 +538,8 @@ class _ListSurplusFoodScreenState extends State<ListSurplusFoodScreen> {
                           vertical: 12,
                         ),
                         decoration: BoxDecoration(
-                          color: const Color(0xFFF8FAFC),
-                          border: Border.all(color: const Color(0xFFE2E8F0)),
+                          color: const Color(0xFFF7FAF8),
+                          border: Border.all(color: const Color(0xFFDAE8E1)),
                           borderRadius: BorderRadius.circular(12),
                         ),
                         child: Column(
@@ -554,7 +551,7 @@ class _ListSurplusFoodScreenState extends State<ListSurplusFoodScreen> {
                                   Icons.check,
                                   color: _isFormValid
                                       ? const Color(0xFF087C69)
-                                      : const Color(0xFF9CA3AF),
+                                      : const Color(0xFF58746D),
                                   size: 16,
                                 ),
                                 const SizedBox(width: 8),
@@ -566,7 +563,7 @@ class _ListSurplusFoodScreenState extends State<ListSurplusFoodScreen> {
                                     style: TextStyle(
                                       color: _isFormValid
                                           ? const Color(0xFF087C69)
-                                          : const Color(0xFF6B7280),
+                                          : const Color(0xFF58746D),
                                       fontWeight: FontWeight.bold,
                                       fontSize: 12.5,
                                     ),
@@ -639,7 +636,7 @@ class _ListSurplusFoodScreenState extends State<ListSurplusFoodScreen> {
                         width: double.infinity,
                         padding: const EdgeInsets.symmetric(vertical: 14),
                         decoration: BoxDecoration(
-                          color: const Color(0xFFDDF5E8),
+                          color: const Color(0xFFE5F5EE),
                           borderRadius: BorderRadius.circular(14),
                         ),
                         child: Row(

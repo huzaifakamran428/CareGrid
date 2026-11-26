@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../../app/theme/caregrid_theme.dart';
 
 void main() {
   runApp(const CareGridQuantityApp());
@@ -12,11 +13,7 @@ class CareGridQuantityApp extends StatelessWidget {
     return MaterialApp(
       title: 'CareGrid - Surplus Food Quantity',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF087C69)),
-        useMaterial3: true,
-        fontFamily: 'Roboto',
-      ),
+      theme: CareGridTheme.light,
       home: const SurplusFoodQuantityScreen(),
     );
   }
@@ -127,7 +124,7 @@ class _SurplusFoodQuantityScreenState extends State<SurplusFoodQuantityScreen> {
           content: Text(
             'Quantity cannot be 0. Increase quantity before proceeding.',
           ),
-          backgroundColor: Color(0xFFB91C1C),
+          backgroundColor: Color(0xFFBC4751),
         ),
       );
       return;
@@ -138,7 +135,7 @@ class _SurplusFoodQuantityScreenState extends State<SurplusFoodQuantityScreen> {
         content: Text(
           'Proceeding to Collection Deadline with $_quantity $_selectedUnit...',
         ),
-        backgroundColor: const Color(0xFF0A3A2A),
+        backgroundColor: const Color(0xFF075A50),
       ),
     );
   }
@@ -173,7 +170,7 @@ class _SurplusFoodQuantityScreenState extends State<SurplusFoodQuantityScreen> {
                     Text(
                       'Specify exact portions & weight for NGOs',
                       style: TextStyle(
-                        color: Color(0xFFD1FAE5),
+                        color: Color(0xFFE5F5EE),
                         fontSize: 13.5,
                         fontWeight: FontWeight.w500,
                       ),
@@ -182,7 +179,7 @@ class _SurplusFoodQuantityScreenState extends State<SurplusFoodQuantityScreen> {
                     Text(
                       'Displayed directly on each listed food item',
                       style: TextStyle(
-                        color: Color(0xFFA7F3D0),
+                        color: Color(0xFFB2DFCE),
                         fontSize: 12.5,
                       ),
                     ),
@@ -215,8 +212,8 @@ class _SurplusFoodQuantityScreenState extends State<SurplusFoodQuantityScreen> {
                           vertical: 14,
                         ),
                         decoration: BoxDecoration(
-                          color: const Color(0xFFF3F6F4),
-                          border: Border.all(color: const Color(0xFFD1DDD6)),
+                          color: const Color(0xFFF7FAF8),
+                          border: Border.all(color: const Color(0xFFDAE8E1)),
                           borderRadius: BorderRadius.circular(14),
                         ),
                         child: Column(
@@ -225,7 +222,7 @@ class _SurplusFoodQuantityScreenState extends State<SurplusFoodQuantityScreen> {
                             Text(
                               'Chicken Pulao & Roasted Naan',
                               style: TextStyle(
-                                color: Color(0xFF111827),
+                                color: Color(0xFF173D37),
                                 fontWeight: FontWeight.bold,
                                 fontSize: 15,
                               ),
@@ -234,7 +231,7 @@ class _SurplusFoodQuantityScreenState extends State<SurplusFoodQuantityScreen> {
                             Text(
                               'Category: Cooked Meal • Batch #FD-209',
                               style: TextStyle(
-                                color: Color(0xFF4B5563),
+                                color: Color(0xFF58746D),
                                 fontSize: 12.5,
                                 fontWeight: FontWeight.w500,
                               ),
@@ -251,7 +248,7 @@ class _SurplusFoodQuantityScreenState extends State<SurplusFoodQuantityScreen> {
                         style: TextStyle(
                           fontSize: 11,
                           fontWeight: FontWeight.bold,
-                          color: Color(0xFF374151),
+                          color: Color(0xFF173D37),
                           letterSpacing: 0.5,
                         ),
                       ),
@@ -284,7 +281,7 @@ class _SurplusFoodQuantityScreenState extends State<SurplusFoodQuantityScreen> {
                                   border: Border.all(
                                     color: _quantity > 0
                                         ? const Color(0xFF087C69)
-                                        : const Color(0xFFD1D5DB),
+                                        : const Color(0xFFDAE8E1),
                                     width: 1.4,
                                   ),
                                   borderRadius: BorderRadius.circular(10),
@@ -293,7 +290,7 @@ class _SurplusFoodQuantityScreenState extends State<SurplusFoodQuantityScreen> {
                                   Icons.remove,
                                   color: _quantity > 0
                                       ? const Color(0xFF087C69)
-                                      : const Color(0xFF9CA3AF),
+                                      : const Color(0xFF58746D),
                                   size: 22,
                                 ),
                               ),
@@ -306,8 +303,8 @@ class _SurplusFoodQuantityScreenState extends State<SurplusFoodQuantityScreen> {
                                   '$_quantity',
                                   style: TextStyle(
                                     color: _quantity > 0
-                                        ? const Color(0xFF111827)
-                                        : const Color(0xFFDC2626),
+                                        ? const Color(0xFF173D37)
+                                        : const Color(0xFFBC4751),
                                     fontSize: 28,
                                     fontWeight: FontWeight.bold,
                                     height: 1.1,
@@ -317,7 +314,7 @@ class _SurplusFoodQuantityScreenState extends State<SurplusFoodQuantityScreen> {
                                 Text(
                                   _unitLabel,
                                   style: const TextStyle(
-                                    color: Color(0xFF374151),
+                                    color: Color(0xFF173D37),
                                     fontSize: 11,
                                     fontWeight: FontWeight.bold,
                                     letterSpacing: 0.6,
@@ -356,7 +353,7 @@ class _SurplusFoodQuantityScreenState extends State<SurplusFoodQuantityScreen> {
                         style: TextStyle(
                           fontSize: 11,
                           fontWeight: FontWeight.bold,
-                          color: Color(0xFF374151),
+                          color: Color(0xFF173D37),
                           letterSpacing: 0.5,
                         ),
                       ),
@@ -379,11 +376,11 @@ class _SurplusFoodQuantityScreenState extends State<SurplusFoodQuantityScreen> {
                                   decoration: BoxDecoration(
                                     color: isSelected
                                         ? const Color(0xFF087C69)
-                                        : const Color(0xFFF3F6F4),
+                                        : const Color(0xFFF7FAF8),
                                     border: Border.all(
                                       color: isSelected
                                           ? const Color(0xFF087C69)
-                                          : const Color(0xFFD1DDD6),
+                                          : const Color(0xFFDAE8E1),
                                       width: 1.2,
                                     ),
                                     borderRadius: BorderRadius.circular(10),
@@ -393,7 +390,7 @@ class _SurplusFoodQuantityScreenState extends State<SurplusFoodQuantityScreen> {
                                     style: TextStyle(
                                       color: isSelected
                                           ? Colors.white
-                                          : const Color(0xFF1F2937),
+                                          : const Color(0xFF173D37),
                                       fontWeight: FontWeight.bold,
                                       fontSize: 13,
                                     ),
@@ -412,8 +409,8 @@ class _SurplusFoodQuantityScreenState extends State<SurplusFoodQuantityScreen> {
                         width: double.infinity,
                         padding: const EdgeInsets.all(14),
                         decoration: BoxDecoration(
-                          color: const Color(0xFFF3F6F4),
-                          border: Border.all(color: const Color(0xFFD1DDD6)),
+                          color: const Color(0xFFF7FAF8),
+                          border: Border.all(color: const Color(0xFFDAE8E1)),
                           borderRadius: BorderRadius.circular(14),
                         ),
                         child: Column(
@@ -422,7 +419,7 @@ class _SurplusFoodQuantityScreenState extends State<SurplusFoodQuantityScreen> {
                             const Text(
                               'Packaging & Transport Estimate',
                               style: TextStyle(
-                                color: Color(0xFF1F2937),
+                                color: Color(0xFF173D37),
                                 fontWeight: FontWeight.bold,
                                 fontSize: 13.5,
                               ),
@@ -431,7 +428,7 @@ class _SurplusFoodQuantityScreenState extends State<SurplusFoodQuantityScreen> {
                             Text(
                               '• $_quantity Individual Sealed $_selectedUnit (~${_estimatedWeightKg.toStringAsFixed(0)} kg)',
                               style: const TextStyle(
-                                color: Color(0xFF4B5563),
+                                color: Color(0xFF58746D),
                                 fontSize: 12.5,
                               ),
                             ),
@@ -439,7 +436,7 @@ class _SurplusFoodQuantityScreenState extends State<SurplusFoodQuantityScreen> {
                             Text(
                               '• $_transportEstimate',
                               style: const TextStyle(
-                                color: Color(0xFF4B5563),
+                                color: Color(0xFF58746D),
                                 fontSize: 12.5,
                               ),
                             ),
@@ -454,7 +451,7 @@ class _SurplusFoodQuantityScreenState extends State<SurplusFoodQuantityScreen> {
                         width: double.infinity,
                         padding: const EdgeInsets.all(14),
                         decoration: BoxDecoration(
-                          color: const Color(0xFFFEF3C7).withOpacity(0.55),
+                          color: const Color(0xFFFFF4E2).withOpacity(0.55),
                           border: Border.all(
                             color: const Color(0xFFE3A33B),
                             width: 1.1,
@@ -467,7 +464,7 @@ class _SurplusFoodQuantityScreenState extends State<SurplusFoodQuantityScreen> {
                             const Text(
                               'NGO LISTING QUANTITY PREVIEW',
                               style: TextStyle(
-                                color: Color(0xFF92400E),
+                                color: Color(0xFFAD751D),
                                 fontWeight: FontWeight.bold,
                                 fontSize: 10.5,
                                 letterSpacing: 0.4,
@@ -483,14 +480,14 @@ class _SurplusFoodQuantityScreenState extends State<SurplusFoodQuantityScreen> {
                               decoration: BoxDecoration(
                                 color: Colors.white,
                                 border: Border.all(
-                                  color: const Color(0xFFFCD34D),
+                                  color: const Color(0xFFE3A33B),
                                 ),
                                 borderRadius: BorderRadius.circular(10),
                               ),
                               child: Text(
                                 'Chicken Pulao • Qty: $_quantity $_selectedUnit',
                                 style: const TextStyle(
-                                  color: Color(0xFF1F2937),
+                                  color: Color(0xFF173D37),
                                   fontWeight: FontWeight.bold,
                                   fontSize: 13.5,
                                 ),
@@ -502,8 +499,8 @@ class _SurplusFoodQuantityScreenState extends State<SurplusFoodQuantityScreen> {
                                 Icon(
                                   canSend ? Icons.check : Icons.info_outline,
                                   color: canSend
-                                      ? const Color(0xFF92400E)
-                                      : const Color(0xFFDC2626),
+                                      ? const Color(0xFFAD751D)
+                                      : const Color(0xFFBC4751),
                                   size: 15,
                                 ),
                                 const SizedBox(width: 6),
@@ -514,8 +511,8 @@ class _SurplusFoodQuantityScreenState extends State<SurplusFoodQuantityScreen> {
                                         : 'Quantity cannot be 0 to send/confirm',
                                     style: TextStyle(
                                       color: canSend
-                                          ? const Color(0xFF92400E)
-                                          : const Color(0xFFDC2626),
+                                          ? const Color(0xFFAD751D)
+                                          : const Color(0xFFBC4751),
                                       fontWeight: FontWeight.w600,
                                       fontSize: 12,
                                     ),
@@ -537,8 +534,8 @@ class _SurplusFoodQuantityScreenState extends State<SurplusFoodQuantityScreen> {
                           style: ElevatedButton.styleFrom(
                             backgroundColor: const Color(0xFF087C69),
                             foregroundColor: Colors.white,
-                            disabledBackgroundColor: const Color(0xFFD1D5DB),
-                            disabledForegroundColor: const Color(0xFF6B7280),
+                            disabledBackgroundColor: const Color(0xFFDAE8E1),
+                            disabledForegroundColor: const Color(0xFF58746D),
                             elevation: 0,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(12),
@@ -566,11 +563,11 @@ class _SurplusFoodQuantityScreenState extends State<SurplusFoodQuantityScreen> {
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
                             backgroundColor: canSend
-                                ? const Color(0xFF062E20)
-                                : const Color(0xFFE5E7EB),
+                                ? const Color(0xFF075A50)
+                                : const Color(0xFFDAE8E1),
                             foregroundColor: canSend
                                 ? Colors.white
-                                : const Color(0xFF9CA3AF),
+                                : const Color(0xFF58746D),
                             elevation: 0,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(12),
