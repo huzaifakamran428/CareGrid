@@ -22,6 +22,7 @@ class DemoFlowTests(TestCase):
         self.client.get(reverse("web_logout"))
         self.assertRedirects(self.login(ngo.email, "Example123"), reverse("ngo_dashboard"))
         self.assertEqual(self.client.get(reverse("membership_dashboard")).status_code, 403)
+        self.assertEqual(self.client.get(reverse("preview_file", args=["admin_portal/index.html"])).status_code, 403)
         self.client.get(reverse("web_logout"))
         self.assertEqual(self.login("expired@caregrid.example", "Ngo@123").status_code, 200)
         self.login("membership@caregrid.example", "Member@123")

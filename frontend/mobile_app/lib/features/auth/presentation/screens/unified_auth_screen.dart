@@ -711,7 +711,7 @@ class _UnifiedAuthScreenState extends State<UnifiedAuthScreen> {
             padding: const EdgeInsets.symmetric(vertical: 15),
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
           ),
-          child: const Text('Encrypt & Submit Documents for Audit', style: TextStyle(fontWeight: FontWeight.w800)),
+          child: const Text('Submit Demo Documents for Review', style: TextStyle(fontWeight: FontWeight.w800)),
         ),
         const SizedBox(height: 10),
         Center(
@@ -754,6 +754,22 @@ class _UnifiedAuthScreenState extends State<UnifiedAuthScreen> {
             validator: (v) => (v == null || v.isEmpty) ? 'Enter your password' : null,
           ),
           const SizedBox(height: 8),
+          ExpansionTile(
+            tilePadding: EdgeInsets.zero,
+            title: const Text('Demo accounts'),
+            subtitle: const Text('Tap to fill the login fields'),
+            children: [
+              for (final entry in CareGridAuthRepository.demoAccounts)
+                ListTile(
+                  title: Text(entry.user.role.name),
+                  subtitle: Text('${entry.user.email}\n${entry.password}'),
+                  onTap: () {
+                    _emailCtrl.text = entry.user.email;
+                    _passCtrl.text = entry.password;
+                  },
+                ),
+            ],
+          ),
           CheckboxListTile(
             value: _keepSignedIn,
             onChanged: (v) => setState(() => _keepSignedIn = v ?? true),
@@ -761,7 +777,7 @@ class _UnifiedAuthScreenState extends State<UnifiedAuthScreen> {
             controlAffinity: ListTileControlAffinity.leading,
             activeColor: CareGridPalette.primary,
             title: const Text(
-              'Keep me signed in on this device',
+              'Demo session (not saved across restarts)',
               style: TextStyle(fontSize: 13, color: CareGridPalette.secondaryText),
             ),
           ),

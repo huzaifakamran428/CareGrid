@@ -57,7 +57,7 @@ def home_redirect(request):
 def web_login_view(request):
     if request.method == "POST":
         email = request.POST.get("username", "").strip().lower()
-        password = request.POST.get("password", "").strip()
+        password = request.POST.get("password", "")
         seed_demo_memberships()
         membership = DemoNgoMembership.objects.filter(email=email).first()
         if membership:

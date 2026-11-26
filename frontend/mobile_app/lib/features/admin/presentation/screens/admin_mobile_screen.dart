@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../../app/theme/brand_tokens.dart';
+import '../../../../core/widgets/caregrid_brand.dart';
 import '../../../auth/domain/entities/portal_user.dart';
 import '../../../auth/data/repositories/auth_repository.dart';
 
@@ -13,7 +14,7 @@ class AdminMobileScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: CareGridPalette.canvas,
       appBar: AppBar(
-        title: Text('System Admin Console'),
+        title: const CareGridPageTitle('System Admin Console'),
         actions: [
           IconButton(
             tooltip: 'Sign Out',

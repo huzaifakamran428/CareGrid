@@ -12,6 +12,14 @@ class CareGridAuthRepository {
     return DateTime(first.year, first.month, date.day > last ? last : date.day, date.hour, date.minute, date.second);
   }
 
+  static const _seedEmails = [
+    'admin@caregrid.org', 'membership@caregrid.example', 'kamran@alkhidmat-lhr.org',
+    'ayesha.bibi@caregrid.pk', 'pharmacy@medpluscare.org', 'lab@chughtai-care.org',
+    'ops@lahorekitchen.pk', 'sponsor@caregrid.example', 'expired@caregrid.example',
+  ];
+  static List<({String password, PortalUser user})> get demoAccounts =>
+      _seedEmails.map((email) => _accounts[email]!).toList(growable: false);
+
   static List<PortalUser> get users => _accounts.values.map((r) => r.user).toList(growable: false);
 
   bool registerNgo(String name, String email, String password) {
@@ -107,7 +115,7 @@ class CareGridAuthRepository {
 
   PortalUser? signIn(String email, String password) {
     final record = _accounts[email.trim().toLowerCase()];
-    if (record != null && record.password == password.trim()) {
+    if (record != null && record.password == password) {
       if (record.user.role == CareGridPortalRole.ngo && !(memberships[record.user.email]?.active ?? false)) return null;
       return record.user;
     }
@@ -132,7 +140,7 @@ class CareGridAuthRepository {
       role: CareGridPortalRole.beneficiary,
       subtitle: 'CNIC: ${cnic.trim()} • ${phone.trim()}',
     );
-    _accounts[cleanEmail] = (password: password.trim(), user: newUser);
+    _accounts[cleanEmail] = (password: password, user: newUser);
     return newUser;
   }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../../app/theme/brand_tokens.dart';
+import '../../../../core/widgets/caregrid_brand.dart';
 import '../../data/repositories/auth_repository.dart';
 import '../../domain/entities/portal_user.dart';
 import '../../../sponsor/presentation/screens/Sponser.dart' as donation;
@@ -27,7 +28,7 @@ class _MembershipWorkspaceState extends State<MembershipWorkspace> {
   }
   @override
   Widget build(BuildContext context) => Scaffold(
-    appBar: AppBar(title: const Text('NGO Memberships'), actions: [IconButton(tooltip: 'Sign Out', onPressed: widget.onSignOut, icon: const Icon(Icons.logout))]),
+    appBar: AppBar(title: const CareGridPageTitle('Memberships'), actions: [IconButton(tooltip: 'Sign Out', onPressed: widget.onSignOut, icon: const Icon(Icons.logout))]),
     body: ListView(padding: const EdgeInsets.all(18), children: [
       const Text('Membership administration', style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: CareGridPalette.primaryDeep)),
       const Text('Local mobile demo: one calendar month free, then annual licensing. Changes reset on app restart.'),
@@ -59,7 +60,7 @@ class SponsorWorkspace extends StatelessWidget {
   const SponsorWorkspace({super.key, required this.user, required this.onSignOut});
   @override
   Widget build(BuildContext context) => Scaffold(
-    appBar: AppBar(title: const Text('Sponsor workspace'), actions: [IconButton(tooltip: 'Sign Out', onPressed: onSignOut, icon: const Icon(Icons.logout))]),
+    appBar: AppBar(title: const CareGridPageTitle('Sponsor'), actions: [IconButton(tooltip: 'Sign Out', onPressed: onSignOut, icon: const Icon(Icons.logout))]),
     body: Navigator(onGenerateRoute: (_) => MaterialPageRoute(builder: (_) => const donation.DonateNgoSelectionScreen())),
   );
 }

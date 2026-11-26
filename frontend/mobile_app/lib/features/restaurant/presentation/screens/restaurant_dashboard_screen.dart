@@ -4,6 +4,7 @@ import 'figma_manage_food_listings_screen.dart' as manage;
 import 'figma_surplus_food_quantity_screen.dart' as quantity;
 import 'figma_collection_deadline_screen.dart' as deadline;
 import '../../../../app/theme/brand_tokens.dart';
+import '../../../../core/widgets/caregrid_brand.dart';
 import '../../../auth/domain/entities/portal_user.dart';
 
 class RestaurantDashboardScreen extends StatelessWidget {
@@ -16,7 +17,7 @@ class RestaurantDashboardScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: CareGridPalette.canvas,
       appBar: AppBar(
-        title: Text('Surplus Food Dispatch'),
+        title: const CareGridPageTitle('Surplus Food Dispatch'),
         actions: [
           IconButton(
             tooltip: 'Sign Out',

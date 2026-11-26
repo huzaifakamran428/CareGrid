@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../../app/theme/brand_tokens.dart';
+import '../../../../core/widgets/caregrid_brand.dart';
 import '../../../auth/domain/entities/portal_user.dart';
 
 class PharmacyMobileScreen extends StatelessWidget {
@@ -12,7 +13,7 @@ class PharmacyMobileScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: CareGridPalette.canvas,
       appBar: AppBar(
-        title: Text('Pharmacy & Prescription Console'),
+        title: const CareGridPageTitle('Pharmacy & Prescription Console'),
         actions: [
           IconButton(
             tooltip: 'Sign Out',

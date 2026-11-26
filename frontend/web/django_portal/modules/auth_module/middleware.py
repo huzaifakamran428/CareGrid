@@ -21,15 +21,15 @@ class DemoRoleMiddleware:
     def __call__(self, request):
         prefix = request.path_info.strip("/").split("/")[0]
         role = ROLE_PREFIXES.get(prefix)
+        user = request.session.get("cg_user")
         if role:
-            user = request.session.get("cg_user")
             if not user:
                 return redirect("web_login")
             if user.get("role") != role:
                 return HttpResponseForbidden("This workspace is not assigned to your demo account.")
-            if role == "ngo":
-                membership = DemoNgoMembership.objects.filter(email=user.get("email")).first()
-                if not membership or not membership.active:
-                    request.session.pop("cg_user", None)
-                    return redirect("web_login")
+        if user and user.get("role") == "ngo" and (role or prefix in {"features", "preview-files"}):
+            membership = DemoNgoMembership.objects.filter(email=user.get("email")).first()
+            if not membership or not membership.active:
+                request.session.pop("cg_user", None)
+                return redirect("web_login")
         return self.get_response(request)
