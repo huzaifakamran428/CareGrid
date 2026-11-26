@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CareGrid Admin Console — Complaint Resolution & Service Feedback</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+          },
+          colors: {
+            cgEmerald: '#155E42',
+            cgEmeraldDark: '#0F4C36',
+            cgMint: '#ECFDF5',
+            cgMintBorder: '#A7F3D0',
+            cgAmber: '#F59E0B',
+            cgAmberBg: '#FFFBEB',
+            cgBorder: '#D1DDD6',
+          }
+        }
+      }
+    };
+  </script>
+  <style>
+    body {
+      background-color: #F4F7F5;
+      color: #111827;
+      overflow-x: hidden;
+    }
+    .tabular-nums {
+      font-variant-numeric: tabular-nums;
+    }
+    select.cg-select-light {
+      appearance: none;
+      -webkit-appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23155E42'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2.3' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 0.85rem center;
+      background-size: 0.95rem;
+    }
+    select.cg-select-dark {
+      appearance: none;
+      -webkit-appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23ffffff'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2.2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 0.75rem center;
+      background-size: 0.85rem;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col antialiased selection:bg-emerald-200 selection:text-emerald-950">
+
+  <!-- Full-Width Production Top Navigation Bar -->
+  <header class="sticky top-0 z-40 w-full bg-[#155E42] text-white border-b border-emerald-950/30 shadow-sm">
+    <div class="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 py-3 flex flex-wrap items-center justify-between gap-3">
+      <!-- Brand Identity -->
+      <div class="flex items-center gap-3 min-w-0">
+        <div class="w-9 h-9 rounded-xl bg-[#F59E0B] text-[#0F4C36] font-extrabold text-sm flex items-center justify-center shrink-0 shadow-xs">
+          CG
+        </div>
+        <div class="min-w-0">
+          <div class="flex items-center gap-2">
+            <span class="font-extrabold text-base sm:text-lg tracking-tight text-white truncate">
+              CareGrid Admin Console
+            </span>
+            <span class="hidden md:inline-block text-[11px] font-semibold px-2.5 py-0.5 rounded-full bg-white/10 text-emerald-100">
+              Operations &amp; Quality Assurance
+            </span>
+          </div>
+          <p class="text-[11px] text-emerald-100/80 truncate">
+            Lahore Regional Welfare Network • Beneficiary Support Desk
+          </p>
+        </div>
+      </div>
+
+      <!-- Module Navigation Links -->
+      <nav aria-label="Admin navigation" class="flex items-center gap-1 bg-[#0F4C36] p-1 rounded-xl border border-white/10 overflow-x-auto max-w-full">
+        <button
+          type="button"
+          onclick="showToast('Navigated to Operations Overview')"
+          class="px-3 py-1.5 rounded-lg text-xs font-semibold text-emerald-100 hover:text-white hover:bg-white/10 transition cursor-pointer whitespace-nowrap"
+        >
+          Dashboard
+        </button>
+        <button
+          type="button"
+          onclick="showToast('Navigated to Payments & Gateway Audit')"
+          class="px-3 py-1.5 rounded-lg text-xs font-semibold text-emerald-100 hover:text-white hover:bg-white/10 transition cursor-pointer whitespace-nowrap"
+        >
+          Payments Audit
+        </button>
+        <button
+          type="button"
+          aria-current="page"
+          class="px-3.5 py-1.5 rounded-lg text-xs font-bold bg-[#F59E0B] text-gray-950 shadow-xs cursor-pointer whitespace-nowrap"
+        >
+          Complaints &amp; Feedback
+        </button>
+        <button
+          type="button"
+          onclick="showToast('Navigated to Verified Partner Network')"
+          class="px-3 py-1.5 rounded-lg text-xs font-semibold text-emerald-100 hover:text-white hover:bg-white/10 transition cursor-pointer whitespace-nowrap"
+        >
+          Partners
+        </button>
+      </nav>
+
+      <!-- Logged-in Administrator Badge -->
+      <div class="hidden xl:flex items-center gap-2.5 px-3 py-1.5 rounded-xl bg-[#0F4C36] border border-white/15 shrink-0">
+        <div class="w-7 h-7 rounded-full bg-emerald-200 text-[#0F4C36] font-extrabold text-xs flex items-center justify-center">
+          SA
+        </div>
+        <div class="text-left leading-tight">
+          <p class="text-xs font-bold text-white">Sara Ahmed</p>
+          <p class="text-[10.5px] text-emerald-200">System Administrator</p>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Centered Responsive Workspace -->
+  <main class="flex-1 w-full max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 space-y-6">
+
+    <!-- Page Title & Subtitle Header -->
+    <div class="flex flex-col md:flex-row md:items-end justify-between gap-3">
+      <div>
+        <h1 class="text-xl sm:text-2xl lg:text-[26px] font-extrabold text-gray-900 tracking-tight">
+          System Administrator Console — Complaint Resolution &amp; Service Feedback
+        </h1>
+        <p class="text-xs sm:text-sm text-gray-600 mt-1">
+          Read beneficiary complaints, post official responses, update resolution status &amp; review service ratings
+        </p>
+      </div>
+
+      <div class="flex flex-wrap items-center gap-2 shrink-0">
+        <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white border border-[#D1DDD6] text-xs font-bold text-[#155E42] shadow-2xs">
+          <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+          <span>Beneficiary App Sync Active</span>
+        </span>
+      </div>
+    </div>
+
+    <!-- ===================================================================== -->
+    <!-- SECTION 1: SUBMITTED BENEFICIARY COMPLAINTS QUEUE & COMPOSER          -->
+    <!-- ===================================================================== -->
+    <section class="bg-white border border-[#B7D8C8] rounded-2xl shadow-xs overflow-hidden">
+      <!-- Section Top Bar -->
+      <div class="bg-[#F2FAF6] border-b border-[#D1DDD6] px-4 sm:px-6 py-3.5 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <div class="flex items-center gap-2.5">
+          <span class="w-7 h-7 rounded-lg bg-[#155E42]/10 text-[#155E42] flex items-center justify-center shrink-0" aria-hidden="true">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+            </svg>
+          </span>
+          <h2 class="text-sm sm:text-base font-extrabold text-[#155E42]">
+            Submitted Beneficiary Complaints Queue &amp; Admin Resolution Composer
+          </h2>
+        </div>
+
+        <!-- Live Counters Pill -->
+        <div class="self-start sm:self-auto inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-[#FFFBEB] border border-[#F59E0B] text-xs font-extrabold text-[#92400E] tabular-nums shrink-0">
+          <span class="w-2 h-2 rounded-full bg-[#D97706]"></span>
+          <span id="liveQueueCounter">2 Open / 14 Resolved</span>
+        </div>
+      </div>
+
+      <!-- Two-Column Responsive Grid (~38% Left Queue / ~62% Right Composer) -->
+      <div class="p-4 sm:p-6 grid grid-cols-1 lg:grid-cols-12 gap-5 items-stretch">
+
+        <!-- Left Column: Submitted Complaints Queue -->
+        <div class="lg:col-span-5 bg-[#FAFDFB] border border-[#D1DDD6] rounded-2xl p-4 flex flex-col justify-between space-y-3.5">
+          <div class="space-y-3">
+            <div class="flex flex-wrap items-center justify-between gap-2">
+              <h3 class="text-xs font-extrabold uppercase tracking-wider text-gray-600">
+                SUBMITTED COMPLAINTS
+              </h3>
+
+              <!-- Queue Filter Tabs -->
+              <div id="queueFilterTabs" class="flex items-center gap-1 bg-white p-1 rounded-lg border border-gray-200">
+                <button
+                  type="button"
+                  data-filter="all"
+                  onclick="setQueueFilter('all')"
+                  class="queue-tab px-2.5 py-1 rounded-md text-[11px] font-bold bg-[#155E42] text-white transition cursor-pointer"
+                >
+                  All (3)
+                </button>
+                <button
+                  type="button"
+                  data-filter="active"
+                  onclick="setQueueFilter('active')"
+                  class="queue-tab px-2.5 py-1 rounded-md text-[11px] font-semibold text-gray-600 hover:bg-gray-100 transition cursor-pointer"
+                >
+                  Open / In Progress
+                </button>
+                <button
+                  type="button"
+                  data-filter="resolved"
+                  onclick="setQueueFilter('resolved')"
+                  class="queue-tab px-2.5 py-1 rounded-md text-[11px] font-semibold text-gray-600 hover:bg-gray-100 transition cursor-pointer"
+                >
+                  Resolved
+                </button>
+              </div>
+            </div>
+
+            <!-- Interactive Complaint Cards Container -->
+            <div id="complaintsQueueList" class="space-y-3">
+              <!-- Populated by JavaScript -->
+            </div>
+          </div>
+
+          <p class="text-[11px] text-gray-500 pt-1 border-t border-gray-200/80">
+            Select any ticket from the queue to review beneficiary context and post an official resolution.
+          </p>
+        </div>
+
+        <!-- Right Column: Admin Resolution Composer -->
+        <div class="lg:col-span-7 bg-white border border-[#D1DDD6] rounded-2xl p-4 sm:p-5 flex flex-col justify-between space-y-4">
+          <div class="space-y-4">
+            <!-- Composer Heading -->
+            <div class="flex flex-wrap items-center justify-between gap-2">
+              <h3 id="composerHeading" class="text-base sm:text-lg font-extrabold text-[#155E42] tabular-nums">
+                Respond &amp; Update Status (#CMP-2026-4418)
+              </h3>
+              <span id="composerPartnerBadge" class="text-[11px] font-bold px-2.5 py-1 rounded-lg bg-[#ECFDF5] text-[#155E42] border border-[#A7F3D0]">
+                MedCare Community Pharmacy • Gulberg III
+              </span>
+            </div>
+
+            <!-- Beneficiary Original Context Summary Strip -->
+            <div class="bg-[#F8FAFC] border border-gray-200 rounded-xl p-3.5 space-y-1.5">
+              <div class="flex flex-wrap items-center justify-between gap-2 text-xs">
+                <span id="composerBeneficiaryMeta" class="font-bold text-gray-900">
+                  Ayesha Bibi • Beneficiary ID: CG-BEN-2026-009481
+                </span>
+                <span id="composerSubmittedAt" class="text-gray-500 font-medium tabular-nums">
+                  Submitted: Today, 02:18 PM
+                </span>
+              </div>
+              <p id="composerOriginalIssue" class="text-xs sm:text-sm text-gray-700 leading-relaxed">
+                <span class="font-bold text-gray-900">Reported Issue:</span> Pharmacy Co-Pay Tier Mismatch — Charged 40% co-pay instead of approved 20% chronic care subsidy on receipt #TXN-9038.
+              </p>
+            </div>
+
+            <!-- Administrator Response Textarea -->
+            <div class="space-y-1.5">
+              <div class="flex items-center justify-between gap-2">
+                <label for="adminResponseInput" class="block text-xs font-extrabold uppercase tracking-wider text-gray-700">
+                  ADMINISTRATOR RESPONSE TO BENEFICIARY <span class="text-rose-600">*</span>
+                </label>
+                <span id="responseCharCount" class="text-[11px] font-semibold text-gray-500 tabular-nums">
+                  188 chars
+                </span>
+              </div>
+
+              <textarea
+                id="adminResponseInput"
+                rows="4"
+                oninput="handleResponseInput()"
+                placeholder="Write a clear, actionable resolution message for the beneficiary..."
+                class="w-full rounded-xl border-2 border-[#155E42] bg-white px-4 py-3 text-xs sm:text-sm text-gray-900 leading-relaxed focus:outline-none focus:ring-2 focus:ring-[#155E42]/25 transition resize-y"
+              ></textarea>
+              <p id="responseValidationHint" class="hidden text-xs font-semibold text-rose-600">
+                Please enter an official response before saving or updating the ticket status.
+              </p>
+            </div>
+
+            <!-- Status Dropdown + Send Reply & Save Button -->
+            <div class="space-y-1.5">
+              <label for="statusSelect" class="block text-xs font-extrabold uppercase tracking-wider text-gray-700">
+                UPDATE COMPLAINT STATUS <span class="text-rose-600">*</span>
+              </label>
+
+              <div class="grid grid-cols-1 sm:grid-cols-12 gap-3 items-stretch">
+                <div class="sm:col-span-6">
+                  <select
+                    id="statusSelect"
+                    class="cg-select-light w-full h-11 rounded-xl border border-[#155E42] bg-[#ECFDF5] hover:bg-[#E1F7EC] px-4 pr-10 text-xs sm:text-sm font-bold text-[#155E42] cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#155E42]/25 transition"
+                  >
+                    <option value="resolved">Resolved (Clear Flag)</option>
+                    <option value="in_progress">In Progress (Under Investigation)</option>
+                    <option value="open">Open (Needs Action)</option>
+                  </select>
+                </div>
+
+                <div class="sm:col-span-6">
+                  <button
+                    id="sendReplyBtn"
+                    type="button"
+                    onclick="saveComplaintResolution()"
+                    class="w-full h-11 px-5 rounded-xl bg-[#155E42] hover:bg-[#0F4C36] disabled:bg-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed text-white font-bold text-xs sm:text-sm shadow-xs transition cursor-pointer flex items-center justify-center gap-2"
+                  >
+                    <span>✓</span>
+                    <span>Send Reply &amp; Save</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Helper Notes -->
+          <div class="pt-1 space-y-1 text-xs">
+            <p class="font-bold text-[#155E42] flex items-center gap-1.5">
+              <span>✓</span>
+              <span>Response immediately visible on Beneficiary Mobile App.</span>
+            </p>
+            <p class="text-gray-600 flex items-center gap-1.5 pl-0.5">
+              <span>•</span>
+              <span>Removes beneficiary's active "complaint" flag once resolved.</span>
+            </p>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ===================================================================== -->
+    <!-- SECTION 2: BENEFICIARY SERVICE FEEDBACK & CONTINUOUS IMPROVEMENT      -->
+    <!-- ===================================================================== -->
+    <section class="bg-white border border-[#B7D8C8] rounded-2xl shadow-xs overflow-hidden">
+      <!-- Dark Emerald Header Bar -->
+      <div class="bg-[#0F4C36] px-4 sm:px-6 py-3.5 flex flex-col md:flex-row md:items-center justify-between gap-3">
+        <div class="flex items-center gap-2.5">
+          <span class="text-[#FBBF24] text-base leading-none" aria-hidden="true">★</span>
+          <h2 class="text-sm sm:text-base font-extrabold text-white">
+            Beneficiary Service Feedback &amp; Continuous Improvement Insights
+          </h2>
+        </div>
+
+        <!-- Average Rating + Filter Controls -->
+        <div class="flex flex-wrap items-center gap-2.5 self-start md:self-auto">
+          <div class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/10 border border-white/15 text-xs sm:text-sm font-extrabold text-[#FBBF24] tabular-nums">
+            <span>Avg Rating:</span>
+            <span id="avgRatingDisplay">4.8 / 5.0</span>
+          </div>
+
+          <label for="feedbackCategoryFilter" class="sr-only">Filter feedback by service type</label>
+          <select
+            id="feedbackCategoryFilter"
+            onchange="renderFeedbackCards()"
+            class="cg-select-dark bg-[#155E42] hover:bg-[#1B6B4D] text-white text-xs font-bold pl-3 pr-8 py-1.5 rounded-xl border border-white/20 cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#FBBF24]"
+          >
+            <option value="all" class="bg-white text-gray-900">All Services</option>
+            <option value="Diagnostics" class="bg-white text-gray-900">Diagnostics</option>
+            <option value="Food Relief" class="bg-white text-gray-900">Food Relief</option>
+            <option value="Pharmacy" class="bg-white text-gray-900">Pharmacy</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Feedback Cards Grid -->
+      <div class="p-4 sm:p-6">
+        <div id="feedbackGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
+          <!-- Populated by JavaScript -->
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Clean Production Footer -->
+  <footer class="w-full bg-white border-t border-[#D1DDD6] mt-auto">
+    <div class="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-gray-500">
+      <span>CareGrid Administrator Console • Beneficiary Support &amp; Quality Assurance</span>
+      <span>All ticket resolutions and partner ratings are logged with audit timestamps</span>
+    </div>
+  </footer>
+
+  <!-- Toast Notification -->
+  <div id="toastBanner" class="hidden fixed bottom-5 right-5 z-50 max-w-sm">
+    <div class="bg-[#0F4C36] text-white px-4 py-3 rounded-xl shadow-lg border border-emerald-300/30 flex items-center gap-2.5 text-xs sm:text-sm font-semibold">
+      <span class="text-emerald-300 font-bold">✓</span>
+      <span id="toastText">Saved</span>
+    </div>
+  </div>
+
+  <script>
+    // =========================================================================
+    // DATA & STATE: BENEFICIARY COMPLAINTS
+    // =========================================================================
+    let baseResolvedCount = 13; // Plus 1 resolved ticket in active list = 14 Resolved, 2 Open/Active
+    let selectedTicketId = 'CMP-2026-4418';
+    let currentQueueFilter = 'all';
+
+    const complaints = [
+      {
+        id: 'CMP-2026-4418',
+        beneficiaryName: 'Ayesha Bibi',
+        beneficiaryId: 'CG-BEN-2026-009481',
+        issueTitle: 'Pharmacy Co-Pay Tier Mismatch',
+        issueDetails: 'Charged 40% co-pay instead of approved 20% chronic care subsidy on receipt #TXN-9038.',
+        partnerFacility: 'MedCare Community Pharmacy • Gulberg III',
+        submittedAt: 'Today, 02:18 PM',
+        status: 'resolved',
+        adminReply: 'We verified #TXN-9038 and credited PKR 300 excess co-pay back to your subsidy balance. Partner pharmacy billing rule has been updated to enforce your 80% subsidy tier.'
+      },
+      {
+        id: 'CMP-2026-4419',
+        beneficiaryName: 'M. Tariq',
+        beneficiaryId: 'CG-BEN-2026-009412',
+        issueTitle: 'Delayed Lab Sample Collection Slot',
+        issueDetails: 'Morning fasting blood sample slot at Johar Town collection center was delayed by 55 minutes without SMS alert.',
+        partnerFacility: 'Shifa Diagnostic Lab • Johar Town',
+        submittedAt: 'Today, 11:05 AM',
+        status: 'in_progress',
+        adminReply: 'We have escalated your slot delay with the Johar Town lab coordinator and prioritized your rescheduled 7:30 AM fasting appointment for tomorrow morning.'
+      },
+      {
+        id: 'CMP-2026-4420',
+        beneficiaryName: 'Fatima Noor',
+        beneficiaryId: 'CG-BEN-2026-009504',
+        issueTitle: 'Ration Voucher QR Code Scan Timeout',
+        issueDetails: 'Monthly family ration voucher QR timed out twice at Kot Lakhpat distribution desk due to offline terminal sync.',
+        partnerFacility: 'Al-Khidmat Food Relief • Kot Lakhpat',
+        submittedAt: 'Yesterday, 06:40 PM',
+        status: 'open',
+        adminReply: ''
+      }
+    ];
+
+    // =========================================================================
+    // DATA & STATE: BENEFICIARY SERVICE FEEDBACK
+    // =========================================================================
+    const feedbackItems = [
+      {
+        id: 'FB-101',
+        providerName: 'Shifa Diagnostic Lab',
+        category: 'Diagnostics',
+        rating: 5.0,
+        starsDisplay: '★★★★★',
+        comment: '"Fast sample collection using Digital ID & 75% subsidy. Suggestion: Add early 7:30 AM fasting slots."',
+        beneficiaryName: 'Ayesha Bibi',
+        serviceRef: '#LAB-9910',
+        reviewed: false
+      },
+      {
+        id: 'FB-102',
+        providerName: 'Al-Khidmat Food Relief',
+        category: 'Food Relief',
+        rating: 5.0,
+        starsDisplay: '★★★★★',
+        comment: '"Hot sealed meal boxes arrived on time at Kot Lakhpat camp. Clean packaging and respectful volunteers."',
+        beneficiaryName: 'Zainab Bibi',
+        serviceRef: '#NGO-104',
+        reviewed: true
+      },
+      {
+        id: 'FB-103',
+        providerName: 'Chughtai Community Pharmacy',
+        category: 'Pharmacy',
+        rating: 4.5,
+        starsDisplay: '★★★★☆',
+        comment: '"Insulin refill verified smoothly at counter. Suggestion: Display subsidy breakdown clearly on printed slip."',
+        beneficiaryName: 'M. Tariq',
+        serviceRef: '#PHM-4412',
+        reviewed: false
+      }
+    ];
+
+    // =========================================================================
+    // TOAST HELPER
+    // =========================================================================
+    let toastTimer = null;
+    function showToast(message) {
+      const banner = document.getElementById('toastBanner');
+      const text = document.getElementById('toastText');
+      text.textContent = message;
+      banner.classList.remove('hidden');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => {
+        banner.classList.add('hidden');
+      }, 3200);
+    }
+
+    // =========================================================================
+    // QUEUE & COMPOSER FUNCTIONS
+    // =========================================================================
+    function updateQueueCounters() {
+      const openOrActiveCount = complaints.filter((c) => c.status !== 'resolved').length;
+      const resolvedInQueue = complaints.filter((c) => c.status === 'resolved').length;
+      const totalResolved = baseResolvedCount + resolvedInQueue;
+
+      document.getElementById('liveQueueCounter').textContent =
+        `${openOrActiveCount} Open / ${totalResolved} Resolved`;
+
+      const allTab = document.querySelector('.queue-tab[data-filter="all"]');
+      if (allTab) {
+        allTab.textContent = `All (${complaints.length})`;
+      }
+    }
+
+    function setQueueFilter(filter) {
+      currentQueueFilter = filter;
+      document.querySelectorAll('.queue-tab').forEach((btn) => {
+        const isActive = btn.dataset.filter === filter;
+        btn.className = isActive
+          ? 'queue-tab px-2.5 py-1 rounded-md text-[11px] font-bold bg-[#155E42] text-white transition cursor-pointer'
+          : 'queue-tab px-2.5 py-1 rounded-md text-[11px] font-semibold text-gray-600 hover:bg-gray-100 transition cursor-pointer';
+      });
+      renderComplaintsQueue();
+    }
+
+    function getStatusBadgeMarkup(status) {
+      if (status === 'resolved') {
+        return `
+          <span class="inline-flex items-center px-3 py-1 rounded-md bg-[#155E42] text-white text-[11px] font-extrabold tracking-wide">
+            STATUS: RESOLVED ✓
+          </span>
+        `;
+      }
+      if (status === 'in_progress') {
+        return `
+          <span class="inline-flex items-center px-3 py-1 rounded-md bg-[#F59E0B] text-gray-950 text-[11px] font-extrabold tracking-wide">
+            STATUS: IN PROGRESS
+          </span>
+        `;
+      }
+      return `
+        <span class="inline-flex items-center px-3 py-1 rounded-md bg-[#FEE2E2] text-[#991B1B] border border-[#FCA5A5] text-[11px] font-extrabold tracking-wide">
+          STATUS: OPEN
+        </span>
+      `;
+    }
+
+    function renderComplaintsQueue() {
+      const container = document.getElementById('complaintsQueueList');
+
+      const visibleTickets = complaints.filter((ticket) => {
+        if (currentQueueFilter === 'resolved') return ticket.status === 'resolved';
+        if (currentQueueFilter === 'active') return ticket.status !== 'resolved';
+        return true;
+      });
+
+      if (visibleTickets.length === 0) {
+        container.innerHTML = `
+          <div class="p-6 text-center bg-white border border-dashed border-gray-300 rounded-xl text-xs text-gray-500">
+            No complaint tickets in this filter view.
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = visibleTickets.map((ticket) => {
+        const isSelected = ticket.id === selectedTicketId;
+        const isResolved = ticket.status === 'resolved';
+
+        let cardSurface = '';
+        if (isSelected && isResolved) {
+          cardSurface = 'bg-[#ECFDF5] border-[#155E42] ring-2 ring-[#155E42]/15';
+        } else if (isSelected) {
+          cardSurface = 'bg-[#FFFBEB] border-[#D97706] ring-2 ring-[#F59E0B]/20';
+        } else if (ticket.status === 'in_progress') {
+          cardSurface = 'bg-[#FFF8F8] hover:bg-[#FFF1F2] border-[#FDA4AF]';
+        } else if (ticket.status === 'open') {
+          cardSurface = 'bg-white hover:bg-rose-50/40 border-[#FCA5A5]';
+        } else {
+          cardSurface = 'bg-white hover:bg-[#ECFDF5]/60 border-[#D1DDD6]';
+        }
+
+        const titleColor = isResolved ? 'text-[#155E42]' : 'text-[#9F1239]';
+        const issueColor = isResolved ? 'text-[#166534]' : 'text-[#881337]';
+
+        return `
+          <div
+            role="button"
+            tabindex="0"
+            onclick="selectComplaint('${ticket.id}')"
+            onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();selectComplaint('${ticket.id}');}"
+            class="rounded-xl border-2 ${cardSurface} p-4 transition cursor-pointer space-y-2"
+          >
+            <div class="flex items-start justify-between gap-2">
+              <p class="text-sm sm:text-[15px] font-extrabold ${titleColor} tabular-nums">
+                #${ticket.id} • ${ticket.beneficiaryName}
+              </p>
+              ${isSelected ? '<span class="text-[10.5px] font-extrabold uppercase px-2 py-0.5 rounded bg-white/90 text-gray-700 border border-gray-200 shrink-0">Active</span>' : ''}
+            </div>
+
+            <div class="space-y-0.5">
+              <p class="text-xs sm:text-[13px] font-semibold ${issueColor}">
+                Issue: ${ticket.issueTitle}
+              </p>
+              <p class="text-xs text-gray-600 tabular-nums">
+                Beneficiary ID: ${ticket.beneficiaryId}
+              </p>
+            </div>
+
+            <div class="pt-1">
+              ${getStatusBadgeMarkup(ticket.status)}
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function selectComplaint(ticketId) {
+      selectedTicketId = ticketId;
+      const ticket = complaints.find((c) => c.id === ticketId);
+      if (!ticket) return;
+
+      document.getElementById('composerHeading').textContent =
+        `Respond & Update Status (#${ticket.id})`;
+      document.getElementById('composerPartnerBadge').textContent =
+        ticket.partnerFacility;
+      document.getElementById('composerBeneficiaryMeta').textContent =
+        `${ticket.beneficiaryName} • Beneficiary ID: ${ticket.beneficiaryId}`;
+      document.getElementById('composerSubmittedAt').textContent =
+        `Submitted: ${ticket.submittedAt}`;
+      document.getElementById('composerOriginalIssue').innerHTML =
+        `<span class="font-bold text-gray-900">Reported Issue:</span> ${ticket.issueTitle} — ${ticket.issueDetails}`;
+
+      const textarea = document.getElementById('adminResponseInput');
+      textarea.value = ticket.adminReply;
+
+      const statusSelect = document.getElementById('statusSelect');
+      statusSelect.value = ticket.status;
+
+      handleResponseInput();
+      renderComplaintsQueue();
+    }
+
+    function handleResponseInput() {
+      const textarea = document.getElementById('adminResponseInput');
+      const sendBtn = document.getElementById('sendReplyBtn');
+      const hint = document.getElementById('responseValidationHint');
+      const charCount = document.getElementById('responseCharCount');
+
+      const trimmed = textarea.value.trim();
+      charCount.textContent = `${textarea.value.length} chars`;
+
+      if (trimmed.length === 0) {
+        sendBtn.disabled = true;
+        hint.classList.remove('hidden');
+      } else {
+        sendBtn.disabled = false;
+        hint.classList.add('hidden');
+      }
+    }
+
+    function saveComplaintResolution() {
+      const ticket = complaints.find((c) => c.id === selectedTicketId);
+      if (!ticket) return;
+
+      const textarea = document.getElementById('adminResponseInput');
+      const newReply = textarea.value.trim();
+      if (!newReply) {
+        handleResponseInput();
+        return;
+      }
+
+      const newStatus = document.getElementById('statusSelect').value;
+      ticket.adminReply = newReply;
+      ticket.status = newStatus;
+
+      updateQueueCounters();
+      renderComplaintsQueue();
+
+      const statusReadable =
+        newStatus === 'resolved'
+          ? 'Resolved & beneficiary flag cleared'
+          : newStatus === 'in_progress'
+            ? 'In Progress'
+            : 'Open';
+
+      showToast(`Ticket #${ticket.id} saved (${statusReadable}) & synced to Beneficiary App.`);
+    }
+
+    // =========================================================================
+    // SERVICE FEEDBACK & INSIGHTS FUNCTIONS
+    // =========================================================================
+    function updateAverageRating() {
+      const total = feedbackItems.reduce((acc, item) => acc + item.rating, 0);
+      const avg = (total / feedbackItems.length).toFixed(1);
+      document.getElementById('avgRatingDisplay').textContent = `${avg} / 5.0`;
+    }
+
+    function toggleFeedbackReview(id) {
+      const item = feedbackItems.find((f) => f.id === id);
+      if (!item) return;
+      item.reviewed = !item.reviewed;
+      renderFeedbackCards();
+      showToast(
+        item.reviewed
+          ? `Acknowledged feedback for ${item.providerName} (${item.serviceRef}).`
+          : `Reopened partner review flag for ${item.providerName}.`
+      );
+    }
+
+    function renderFeedbackCards() {
+      const categoryFilter = document.getElementById('feedbackCategoryFilter').value;
+      const grid = document.getElementById('feedbackGrid');
+
+      const filtered = categoryFilter === 'all'
+        ? feedbackItems
+        : feedbackItems.filter((f) => f.category === categoryFilter);
+
+      grid.innerHTML = filtered.map((item) => {
+        const badgeStyle = item.reviewed
+          ? 'bg-[#ECFDF5] text-[#155E42] border-[#A7F3D0] hover:bg-[#D1FAE5]'
+          : 'bg-[#FFFBEB] text-[#92400E] border-[#FDE68A] hover:bg-[#FEF3C7]';
+        const badgeText = item.reviewed
+          ? '✓ Acknowledged by Admin'
+          : 'Flag for Partner Review';
+
+        return `
+          <article class="bg-[#FAFDFB] border border-[#D1DDD6] rounded-2xl p-4 sm:p-5 flex flex-col justify-between space-y-3.5 hover:border-[#155E42]/50 transition">
+            <div class="space-y-2.5">
+              <div class="flex flex-wrap items-center justify-between gap-2">
+                <h3 class="text-sm sm:text-base font-extrabold text-gray-900">
+                  ${item.providerName}
+                </h3>
+                <div class="inline-flex items-center gap-1 text-xs sm:text-sm font-extrabold text-[#D97706] tabular-nums">
+                  <span class="tracking-tight text-[#F59E0B]">${item.starsDisplay}</span>
+                  <span>(${item.rating.toFixed(1)})</span>
+                </div>
+              </div>
+
+              <p class="text-xs sm:text-[13.5px] text-gray-700 leading-relaxed">
+                ${item.comment}
+              </p>
+            </div>
+
+            <div class="pt-2.5 border-t border-gray-200/80 flex flex-wrap items-center justify-between gap-2">
+              <p class="text-xs font-bold text-[#155E42] tabular-nums">
+                By: ${item.beneficiaryName} • Service ${item.serviceRef}
+              </p>
+
+              <button
+                type="button"
+                onclick="toggleFeedbackReview('${item.id}')"
+                class="px-2.5 py-1 rounded-lg border text-[11px] font-bold transition cursor-pointer ${badgeStyle}"
+              >
+                ${badgeText}
+              </button>
+            </div>
+          </article>
+        `;
+      }).join('');
+    }
+
+    // =========================================================================
+    // INITIALIZE PAGE
+    // =========================================================================
+    updateQueueCounters();
+    selectComplaint(selectedTicketId);
+    updateAverageRating();
+    renderFeedbackCards();
+  </script>
+</body>
+</html>

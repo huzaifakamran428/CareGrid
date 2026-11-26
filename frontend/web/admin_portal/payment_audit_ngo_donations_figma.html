@@ -1,0 +1,906 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CareGrid — Admin Payment Audit & NGO Incoming Donations</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+          },
+          colors: {
+            cgGreen: '#155E42',
+            cgGreenDark: '#0E4D37',
+            cgMint: '#ECFDF5',
+            cgMintPill: '#D1FAE5',
+            cgAmber: '#F59E0B',
+            cgAmberBg: '#FFFBEB',
+            cgBorder: '#D1DDD6',
+          }
+        }
+      }
+    };
+  </script>
+  <style>
+    body {
+      background-color: #F2F7F4;
+      color: #111827;
+      overflow-x: hidden;
+    }
+    .tabular-nums {
+      font-variant-numeric: tabular-nums;
+    }
+    select.cg-select {
+      appearance: none;
+      -webkit-appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23ffffff'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2.2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 0.7rem center;
+      background-size: 0.85rem;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col antialiased selection:bg-emerald-200 selection:text-emerald-950">
+
+  <!-- Real Full-Width Web Top Navigation Bar -->
+  <header class="sticky top-0 z-40 w-full bg-[#0E4D37] text-white border-b border-emerald-900/40 shadow-sm">
+    <div class="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 py-3 flex flex-wrap items-center justify-between gap-3">
+      <!-- Brand Identity -->
+      <div class="flex items-center gap-3 min-w-0">
+        <div class="w-9 h-9 rounded-xl bg-[#F59E0B] text-[#0E4D37] font-extrabold text-sm flex items-center justify-center shrink-0 shadow-xs">
+          CG
+        </div>
+        <div class="min-w-0">
+          <div class="flex items-center gap-2">
+            <span class="font-extrabold text-base sm:text-lg tracking-tight text-white truncate">CareGrid</span>
+            <span class="hidden sm:inline-block text-[11px] font-semibold px-2 py-0.5 rounded-full bg-white/10 text-emerald-100">
+              Welfare Transparency Suite
+            </span>
+          </div>
+          <p class="text-[11px] text-emerald-200/85 truncate">
+            Reference UI • Interactive Demo Data
+          </p>
+        </div>
+      </div>
+
+      <!-- Primary View Switcher -->
+      <nav aria-label="Portal views" class="flex items-center gap-1.5 bg-[#093626] p-1 rounded-xl border border-white/10 w-full sm:w-auto justify-center">
+        <button
+          id="switchNgoBtn"
+          type="button"
+          onclick="switchScreen('ngo')"
+          class="flex-1 sm:flex-initial px-3.5 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition cursor-pointer bg-[#F59E0B] text-gray-950 shadow-xs whitespace-nowrap"
+        >
+          NGO Donation Analytics
+        </button>
+        <button
+          id="switchAdminBtn"
+          type="button"
+          onclick="switchScreen('admin')"
+          class="flex-1 sm:flex-initial px-3.5 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold transition cursor-pointer text-emerald-100 hover:text-white hover:bg-white/10 whitespace-nowrap"
+        >
+          Admin Payment Audit
+        </button>
+      </nav>
+
+      <!-- Live Global Status Indicator -->
+      <div class="hidden xl:flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/10 border border-white/15 text-xs font-semibold text-emerald-100 shrink-0">
+        <span id="navLiveDot" class="w-2 h-2 rounded-full bg-emerald-300"></span>
+        <span id="navLiveText">Gateway Live • 0% Platform Fee</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Centered Responsive Workspace -->
+  <main class="flex-1 w-full max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
+
+    <!-- ===================================================================== -->
+    <!-- VIEW 1: NGO DONATION ANALYTICS                                      -->
+    <!-- ===================================================================== -->
+    <section id="ngoScreen" class="space-y-5">
+
+      <!-- Sub-header Bar -->
+      <div class="bg-white border border-[#D1DDD6] rounded-2xl px-4 sm:px-6 py-4 flex flex-col md:flex-row md:items-center justify-between gap-3 shadow-2xs">
+        <div class="min-w-0">
+          <h1 class="text-base sm:text-xl font-extrabold text-[#0E4D37] tracking-tight">
+            CareGrid NGO Web Portal — Incoming Donations by Welfare Category
+          </h1>
+          <p class="text-xs sm:text-sm text-gray-600 mt-0.5">
+            Track net incoming welfare contributions, category distribution, and monthly online growth
+          </p>
+        </div>
+
+        <button
+          id="syncBadgeBtn"
+          type="button"
+          onclick="triggerGatewaySync()"
+          class="self-start md:self-auto px-4 py-2 rounded-xl bg-[#FFFBEB] hover:bg-[#FEF3C7] border border-[#F59E0B] text-[#92400E] font-bold text-xs sm:text-sm transition cursor-pointer flex items-center gap-2 shrink-0"
+        >
+          <span id="syncIcon" class="font-extrabold">✓</span>
+          <span id="syncText">Real-Time Gateway Sync</span>
+        </button>
+      </div>
+
+      <!-- 3-Column Summary Grid -->
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-5">
+
+        <!-- Card 1: TOTAL DONATIONS RECEIVED -->
+        <div class="bg-white border border-[#B7D8C8] rounded-2xl p-5 flex flex-col justify-between shadow-2xs">
+          <div>
+            <p class="text-xs font-bold uppercase tracking-wider text-gray-500">
+              TOTAL DONATIONS RECEIVED
+            </p>
+            <p class="text-2xl sm:text-3xl font-extrabold text-[#0E4D37] tabular-nums mt-2">
+              $12,450.00
+            </p>
+            <p class="text-xs sm:text-sm font-bold text-[#155E42] mt-1.5">
+              248 Total Donations • 100% Net to NGO
+            </p>
+          </div>
+
+          <div class="mt-5 space-y-2">
+            <div class="w-full h-2.5 rounded-full bg-emerald-100 overflow-hidden">
+              <div class="h-full w-4/5 rounded-full bg-[#0E4D37]"></div>
+            </div>
+            <p class="text-xs text-gray-500">
+              Includes Donor/Sponsor &amp; Volunteer contributions
+            </p>
+          </div>
+        </div>
+
+        <!-- Card 2: FUNDS & COUNT PER CATEGORY -->
+        <div class="bg-white border border-[#D1DDD6] rounded-2xl p-5 space-y-3.5 shadow-2xs">
+          <div class="flex items-center justify-between gap-2">
+            <p class="text-xs font-bold uppercase tracking-wider text-gray-500">
+              FUNDS &amp; COUNT PER CATEGORY
+            </p>
+            <span class="text-[11px] font-semibold text-[#155E42] bg-[#ECFDF5] px-2 py-0.5 rounded-md shrink-0">
+              Click to filter
+            </span>
+          </div>
+
+          <!-- Food Support -->
+          <div
+            role="button"
+            tabindex="0"
+            onclick="selectCategoryFromCard('Food Support')"
+            onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();selectCategoryFromCard('Food Support');}"
+            class="space-y-1.5 p-2 -mx-2 rounded-xl hover:bg-[#ECFDF5] transition cursor-pointer"
+          >
+            <div class="flex items-center justify-between gap-2 text-xs sm:text-sm font-bold text-gray-800">
+              <span>Food Support (112 donations)</span>
+              <span class="tabular-nums text-gray-900 shrink-0">$5,600</span>
+            </div>
+            <div class="w-full h-2 rounded-full bg-gray-100 overflow-hidden">
+              <div class="h-full w-[76%] rounded-full bg-[#0E4D37]"></div>
+            </div>
+          </div>
+
+          <!-- Healthcare -->
+          <div
+            role="button"
+            tabindex="0"
+            onclick="selectCategoryFromCard('Healthcare')"
+            onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();selectCategoryFromCard('Healthcare');}"
+            class="space-y-1.5 p-2 -mx-2 rounded-xl hover:bg-[#ECFDF5] transition cursor-pointer"
+          >
+            <div class="flex items-center justify-between gap-2 text-xs sm:text-sm font-bold text-gray-800">
+              <span>Healthcare (84 donations)</span>
+              <span class="tabular-nums text-gray-900 shrink-0">$4,200</span>
+            </div>
+            <div class="w-full h-2 rounded-full bg-gray-100 overflow-hidden">
+              <div class="h-full w-[58%] rounded-full bg-[#15803D]"></div>
+            </div>
+          </div>
+
+          <!-- Education -->
+          <div
+            role="button"
+            tabindex="0"
+            onclick="selectCategoryFromCard('Education')"
+            onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();selectCategoryFromCard('Education');}"
+            class="space-y-1.5 p-2 -mx-2 rounded-xl hover:bg-[#FFFBEB] transition cursor-pointer"
+          >
+            <div class="flex items-center justify-between gap-2 text-xs sm:text-sm font-bold text-gray-800">
+              <span>Education (52 donations)</span>
+              <span class="tabular-nums text-gray-900 shrink-0">$2,650</span>
+            </div>
+            <div class="w-full h-2 rounded-full bg-gray-100 overflow-hidden">
+              <div class="h-full w-[38%] rounded-full bg-[#F59E0B]"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 3: CONTRIBUTOR BREAKDOWN -->
+        <div class="bg-white border border-[#D1DDD6] rounded-2xl p-5 space-y-3 shadow-2xs flex flex-col justify-center">
+          <p class="text-xs font-bold uppercase tracking-wider text-gray-500">
+            CONTRIBUTOR BREAKDOWN
+          </p>
+
+          <div
+            onclick="showToast('Donors & Sponsors contributed $9,300 across 164 donations.')"
+            class="bg-[#ECFDF5] hover:bg-[#E0F7EC] border border-[#BBF7D0] rounded-xl px-4 py-3 flex items-center justify-between gap-3 transition cursor-pointer"
+          >
+            <div class="min-w-0">
+              <p class="text-xs sm:text-sm font-bold text-gray-900 truncate">
+                Donors &amp; Sponsors (164)
+              </p>
+              <p class="text-[11px] sm:text-xs text-gray-600 mt-0.5">
+                74.7% of total welfare funding
+              </p>
+            </div>
+            <span class="text-base sm:text-lg font-extrabold text-[#0E4D37] tabular-nums shrink-0">
+              $9,300
+            </span>
+          </div>
+
+          <div
+            onclick="showToast('Volunteers contributed $3,150 with $0 platform fee enforced.')"
+            class="bg-[#FFFBEB] hover:bg-[#FEF3C7] border border-[#F59E0B] rounded-xl px-4 py-3 flex items-center justify-between gap-3 transition cursor-pointer"
+          >
+            <div class="min-w-0">
+              <p class="text-xs sm:text-sm font-bold text-gray-900 truncate">
+                Volunteers (84 • $0 Fee)
+              </p>
+              <p class="text-[11px] sm:text-xs text-[#92400E] mt-0.5">
+                25.3% voluntary volunteer aid
+              </p>
+            </div>
+            <span class="text-base sm:text-lg font-extrabold text-[#B45309] tabular-nums shrink-0">
+              $3,150
+            </span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Lower Analytics Section: Records & Monthly Trend -->
+      <div class="bg-white border border-[#B7D8C8] rounded-2xl overflow-hidden shadow-2xs">
+        <div class="bg-[#0E4D37] px-4 sm:px-6 py-3.5 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <h2 class="text-xs sm:text-sm md:text-base font-bold text-white">
+            Donation Records Received (Amount, Date, Donor/Volunteer Info &amp; Welfare Category)
+          </h2>
+
+          <div class="flex items-center gap-2 self-start sm:self-auto shrink-0">
+            <label for="categoryFilterSelect" class="sr-only">Filter by Category</label>
+            <select
+              id="categoryFilterSelect"
+              onchange="renderNgoLedger()"
+              class="cg-select bg-[#1B6B4D] hover:bg-[#155E42] text-white text-xs sm:text-sm font-bold pl-3.5 pr-9 py-2 rounded-xl border border-white/25 cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#F59E0B]"
+            >
+              <option value="All Categories" class="bg-white text-gray-900">Filter by Category</option>
+              <option value="Food Support" class="bg-white text-gray-900">Food Support</option>
+              <option value="Healthcare" class="bg-white text-gray-900">Healthcare</option>
+              <option value="Education" class="bg-white text-gray-900">Education</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="p-4 sm:p-6 grid grid-cols-1 lg:grid-cols-12 gap-5 items-stretch">
+
+          <!-- Monthly Online Donations Trend Chart -->
+          <div class="lg:col-span-6 bg-[#FAFDFB] border border-[#D1DDD6] rounded-xl p-4 sm:p-5 flex flex-col justify-between">
+            <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+              <div>
+                <h3 class="text-xs sm:text-sm font-bold text-gray-900">
+                  Monthly Online Donations Trend (Jun – Nov 2026)
+                </h3>
+                <p class="text-[11px] text-gray-500">Hover or click a month point to inspect volume</p>
+              </div>
+              <span id="chartPointReadout" class="text-xs font-bold text-[#0E4D37] bg-[#ECFDF5] px-3 py-1 rounded-full border border-[#A7F3D0] tabular-nums">
+                Nov: $3,420
+              </span>
+            </div>
+
+            <div class="relative w-full flex-1 min-h-[200px] flex items-center">
+              <svg id="trendSvg" viewBox="0 0 460 200" class="w-full h-auto overflow-visible" role="img" aria-label="Monthly Online Donations Trend from June to November 2026">
+                <defs>
+                  <linearGradient id="areaGrad" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stop-color="#0E4D37" stop-opacity="0.22" />
+                    <stop offset="100%" stop-color="#0E4D37" stop-opacity="0.01" />
+                  </linearGradient>
+                </defs>
+
+                <!-- Horizontal Grid Lines -->
+                <line x1="24" y1="32" x2="440" y2="32" stroke="#E5E7EB" stroke-width="1" />
+                <line x1="24" y1="76" x2="440" y2="76" stroke="#E5E7EB" stroke-width="1" />
+                <line x1="24" y1="120" x2="440" y2="120" stroke="#E5E7EB" stroke-width="1" />
+                <line x1="24" y1="162" x2="440" y2="162" stroke="#D1D5DB" stroke-width="1.2" />
+
+                <!-- Area Fill -->
+                <path
+                  d="M 42 142 L 122 114 L 202 126 L 282 84 L 362 64 L 422 28 L 422 162 L 42 162 Z"
+                  fill="url(#areaGrad)"
+                />
+
+                <!-- Trend Line -->
+                <polyline
+                  fill="none"
+                  stroke="#0E4D37"
+                  stroke-width="2.6"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  points="42,142 122,114 202,126 282,84 362,64 422,28"
+                />
+
+                <!-- Interactive Data Points -->
+                <g class="cursor-pointer" onclick="inspectMonth('Jun', '$1,120')" onmouseenter="inspectMonth('Jun', '$1,120')">
+                  <circle cx="42" cy="142" r="4.5" fill="#0E4D37" />
+                  <circle cx="42" cy="142" r="11" fill="transparent" />
+                  <text x="42" y="182" text-anchor="middle" font-size="11" fill="#6B7280" font-weight="500">Jun</text>
+                </g>
+
+                <g class="cursor-pointer" onclick="inspectMonth('Jul', '$1,680')" onmouseenter="inspectMonth('Jul', '$1,680')">
+                  <circle cx="122" cy="114" r="4.5" fill="#0E4D37" />
+                  <circle cx="122" cy="114" r="11" fill="transparent" />
+                  <text x="122" y="182" text-anchor="middle" font-size="11" fill="#6B7280" font-weight="500">Jul</text>
+                </g>
+
+                <g class="cursor-pointer" onclick="inspectMonth('Aug', '$1,450')" onmouseenter="inspectMonth('Aug', '$1,450')">
+                  <circle cx="202" cy="126" r="4.5" fill="#0E4D37" />
+                  <circle cx="202" cy="126" r="11" fill="transparent" />
+                  <text x="202" y="182" text-anchor="middle" font-size="11" fill="#6B7280" font-weight="500">Aug</text>
+                </g>
+
+                <g class="cursor-pointer" onclick="inspectMonth('Sep', '$2,340')" onmouseenter="inspectMonth('Sep', '$2,340')">
+                  <circle cx="282" cy="84" r="4.5" fill="#0E4D37" />
+                  <circle cx="282" cy="84" r="11" fill="transparent" />
+                  <text x="282" y="182" text-anchor="middle" font-size="11" fill="#6B7280" font-weight="500">Sep</text>
+                </g>
+
+                <g class="cursor-pointer" onclick="inspectMonth('Oct', '$2,740')" onmouseenter="inspectMonth('Oct', '$2,740')">
+                  <circle cx="362" cy="64" r="4.5" fill="#0E4D37" />
+                  <circle cx="362" cy="64" r="11" fill="transparent" />
+                  <text x="362" y="182" text-anchor="middle" font-size="11" fill="#6B7280" font-weight="500">Oct</text>
+                </g>
+
+                <g class="cursor-pointer" onclick="inspectMonth('Nov', '$3,420')" onmouseenter="inspectMonth('Nov', '$3,420')">
+                  <circle cx="422" cy="28" r="6.5" fill="#F59E0B" stroke="#0E4D37" stroke-width="2" />
+                  <circle cx="422" cy="28" r="13" fill="transparent" />
+                  <text x="422" y="182" text-anchor="middle" font-size="11.5" fill="#111827" font-weight="700">Nov</text>
+                </g>
+              </svg>
+            </div>
+          </div>
+
+          <!-- Donation Records Table + Export Button -->
+          <div class="lg:col-span-6 flex flex-col justify-between gap-4">
+            <div class="overflow-x-auto border border-[#E2E8F0] rounded-xl">
+              <table class="w-full text-left border-collapse">
+                <thead>
+                  <tr class="border-b border-gray-200 bg-[#F8FAFC] text-xs font-bold text-gray-500">
+                    <th class="py-2.5 px-3.5">Date</th>
+                    <th class="py-2.5 px-3.5">Donor / Volunteer</th>
+                    <th class="py-2.5 px-3.5">Category</th>
+                    <th class="py-2.5 px-3.5 text-right">Amount</th>
+                  </tr>
+                </thead>
+                <tbody id="ngoLedgerBody" class="divide-y divide-gray-100 text-xs sm:text-sm tabular-nums">
+                  <!-- Populated by JS -->
+                </tbody>
+              </table>
+            </div>
+
+            <button
+              type="button"
+              onclick="exportLedgerCsv()"
+              class="w-full py-3 px-4 rounded-xl bg-[#0E4D37] hover:bg-[#093626] text-white font-bold text-xs sm:text-sm shadow-xs transition cursor-pointer"
+            >
+              Export Donation Ledger CSV
+            </button>
+          </div>
+
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ===================================================================== -->
+    <!-- VIEW 2: ADMIN PAYMENT AUDIT                                         -->
+    <!-- ===================================================================== -->
+    <section id="adminScreen" class="hidden space-y-5">
+
+      <!-- Sub-header Bar -->
+      <div class="bg-white border border-[#D1DDD6] rounded-2xl px-4 sm:px-6 py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-2xs">
+        <div>
+          <h1 class="text-lg sm:text-xl font-extrabold text-[#0E4D37] tracking-tight">
+            System Admin Payment Audit
+          </h1>
+          <p class="text-xs sm:text-sm text-gray-600 mt-0.5">
+            External Gateway Transparency &amp; Receipts
+          </p>
+        </div>
+
+        <button
+          id="gatewayTogglePill"
+          type="button"
+          onclick="toggleGatewayStatus()"
+          title="Click to toggle gateway status"
+          class="self-start sm:self-auto px-4 py-2 rounded-xl bg-[#0E4D37] hover:bg-[#093626] text-white font-bold text-xs sm:text-sm shadow-xs transition cursor-pointer flex items-center gap-2 shrink-0"
+        >
+          <span id="gatewayDot" class="w-2 h-2 rounded-full bg-emerald-300"></span>
+          <span id="gatewayStatusText">Gateway: ONLINE</span>
+        </button>
+      </div>
+
+      <!-- External Payment Gateway Audit Card -->
+      <div class="bg-white border border-[#D1DDD6] rounded-2xl p-4 sm:p-6 space-y-5 shadow-2xs">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div>
+            <h2 class="text-sm sm:text-base font-extrabold text-gray-900">
+              External Payment Gateway Audit
+            </h2>
+            <p class="text-xs text-gray-500 mt-0.5">
+              Filter live gateway settlements and inspect receipt references
+            </p>
+          </div>
+
+          <!-- Dynamic Filter Tabs -->
+          <div id="adminFilterTabs" class="flex flex-wrap items-center gap-2">
+            <!-- Populated by JS -->
+          </div>
+        </div>
+
+        <!-- Two KPI Cards -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div class="bg-[#FAFDFB] border border-[#B7D8C8] rounded-xl p-4 sm:p-5">
+            <p class="text-xs font-bold uppercase tracking-wider text-gray-500">
+              GATEWAY SUCCESS RATE
+            </p>
+            <p id="kpiSuccessRate" class="text-2xl sm:text-3xl font-extrabold text-[#0E4D37] tabular-nums mt-1.5">
+              99.2%
+            </p>
+          </div>
+          <div class="bg-[#FAFDFB] border border-[#B7D8C8] rounded-xl p-4 sm:p-5">
+            <p class="text-xs font-bold uppercase tracking-wider text-gray-500">
+              RECEIPTS GENERATED
+            </p>
+            <p id="kpiReceiptsRate" class="text-2xl sm:text-3xl font-extrabold text-[#0E4D37] tabular-nums mt-1.5">
+              100%
+            </p>
+          </div>
+        </div>
+
+        <!-- Live Transaction ID & Status Tracking -->
+        <div class="space-y-2.5">
+          <div class="flex flex-wrap items-center justify-between gap-2">
+            <h3 class="text-xs sm:text-sm font-bold text-gray-900">
+              Live Transaction ID &amp; Status Tracking
+            </h3>
+            <span class="text-xs text-gray-500">Click any transaction row to inspect receipt</span>
+          </div>
+
+          <div id="adminTransactionsList" class="space-y-2.5">
+            <!-- Populated by JS -->
+          </div>
+        </div>
+
+        <!-- Volunteer Platform Fee Policy Banner -->
+        <div class="bg-[#FFFBEB] border border-[#FDE68A] rounded-xl px-4 py-3 text-center">
+          <p class="text-xs sm:text-sm font-bold text-[#92400E]">
+            Volunteer Platform Fee Policy: $0.00 Enforced
+          </p>
+        </div>
+      </div>
+
+      <!-- Verified NGO Donation Disbursements Card -->
+      <div class="bg-white border border-[#B7D8C8] rounded-2xl p-4 sm:p-6 space-y-4 shadow-2xs">
+        <h2 class="text-sm sm:text-base font-extrabold text-gray-900">
+          Verified NGO Donation Disbursements
+        </h2>
+
+        <div
+          onclick="showToast('Al-Khidmat Care Foundation disbursement verified ($12,450.00).')"
+          class="bg-[#ECFDF5] hover:bg-[#E1F7EC] border border-[#BBF7D0] rounded-xl px-4 py-3.5 flex items-center justify-between gap-3 transition cursor-pointer"
+        >
+          <span class="text-xs sm:text-sm font-bold text-gray-900">
+            Al-Khidmat Care Foundation
+          </span>
+          <span class="text-sm sm:text-base font-extrabold text-[#0E4D37] tabular-nums shrink-0">
+            $12,450.00
+          </span>
+        </div>
+
+        <button
+          type="button"
+          onclick="openAuditReportModal()"
+          class="w-full py-3 px-4 rounded-xl bg-[#0E4D37] hover:bg-[#093626] text-white font-bold text-xs sm:text-sm shadow-xs transition cursor-pointer"
+        >
+          Download Full Gateway Audit Report
+        </button>
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- Clean Web Footer -->
+  <footer class="w-full bg-white border-t border-[#D1DDD6] mt-auto">
+    <div class="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-gray-500">
+      <span>CareGrid Web Portal • Voluntary Welfare &amp; Audit Interface</span>
+      <span>Sample reference figures for UI demonstration</span>
+    </div>
+  </footer>
+
+  <!-- Transaction / Receipt Detail Modal -->
+  <div id="txnModal" class="hidden fixed inset-0 z-50 bg-black/45 flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl max-w-md w-full border border-[#D1DDD6] shadow-xl overflow-hidden">
+      <div class="bg-[#0E4D37] px-5 py-3.5 flex items-center justify-between text-white">
+        <h3 id="txnModalTitle" class="font-bold text-sm sm:text-base">Transaction Receipt Inspector</h3>
+        <button type="button" onclick="closeTxnModal()" class="text-white/80 hover:text-white font-bold text-lg cursor-pointer">✕</button>
+      </div>
+      <div id="txnModalBody" class="p-5 space-y-3 text-xs sm:text-sm text-gray-700">
+        <!-- Populated dynamically -->
+      </div>
+      <div class="px-5 py-3.5 bg-gray-50 border-t border-gray-200 flex justify-end gap-2">
+        <button
+          type="button"
+          onclick="closeTxnModal()"
+          class="px-4 py-2 rounded-lg bg-[#0E4D37] hover:bg-[#093626] text-white font-bold text-xs cursor-pointer"
+        >
+          Done
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Audit Report Export Modal -->
+  <div id="reportModal" class="hidden fixed inset-0 z-50 bg-black/45 flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl max-w-lg w-full border border-[#D1DDD6] shadow-xl overflow-hidden">
+      <div class="bg-[#0E4D37] px-5 py-3.5 flex items-center justify-between text-white">
+        <h3 class="font-bold text-sm sm:text-base">Gateway Audit Report Preview</h3>
+        <button type="button" onclick="closeReportModal()" class="text-white/80 hover:text-white font-bold text-lg cursor-pointer">✕</button>
+      </div>
+      <div class="p-5 space-y-3 text-xs sm:text-sm text-gray-700">
+        <p class="font-semibold text-gray-900">CareGrid External Payment Gateway Summary</p>
+        <div class="bg-[#ECFDF5] border border-[#BBF7D0] rounded-xl p-3.5 space-y-1.5 tabular-nums">
+          <div class="flex justify-between"><span>Total Audited Transactions:</span><span class="font-bold">248</span></div>
+          <div class="flex justify-between"><span>Settled / Paid:</span><span class="font-bold text-[#0E4D37]">246 (99.2%)</span></div>
+          <div class="flex justify-between"><span>Pending Settlement:</span><span class="font-bold text-[#B45309]">2</span></div>
+          <div class="flex justify-between"><span>Volunteer Platform Fee:</span><span class="font-bold text-[#0E4D37]">$0.00 Enforced</span></div>
+          <div class="flex justify-between border-t border-[#A7F3D0] pt-1.5">
+            <span>Verified Disbursement (Al-Khidmat):</span>
+            <span class="font-extrabold text-[#0E4D37]">$12,450.00</span>
+          </div>
+        </div>
+        <p class="text-xs text-gray-500">
+          Reference report generated for frontend inspection.
+        </p>
+      </div>
+      <div class="px-5 py-3.5 bg-gray-50 border-t border-gray-200 flex justify-end gap-2">
+        <button
+          type="button"
+          onclick="closeReportModal()"
+          class="px-4 py-2 rounded-lg bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold text-xs cursor-pointer"
+        >
+          Close
+        </button>
+        <button
+          type="button"
+          onclick="confirmReportDownload()"
+          class="px-4 py-2 rounded-lg bg-[#0E4D37] hover:bg-[#093626] text-white font-bold text-xs cursor-pointer"
+        >
+          Download CSV Summary
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Banner -->
+  <div id="toastBanner" class="hidden fixed bottom-5 right-5 z-50 max-w-sm">
+    <div class="bg-[#0E4D37] text-white px-4 py-3 rounded-xl shadow-lg border border-emerald-300/30 flex items-center gap-2.5 text-xs sm:text-sm font-semibold">
+      <span class="text-emerald-300">✓</span>
+      <span id="toastText">Updated</span>
+    </div>
+  </div>
+
+  <script>
+    // Screen Switcher State
+    function switchScreen(screen) {
+      const adminScreen = document.getElementById('adminScreen');
+      const ngoScreen = document.getElementById('ngoScreen');
+      const switchAdminBtn = document.getElementById('switchAdminBtn');
+      const switchNgoBtn = document.getElementById('switchNgoBtn');
+
+      if (screen === 'admin') {
+        adminScreen.classList.remove('hidden');
+        ngoScreen.classList.add('hidden');
+        switchAdminBtn.className = 'flex-1 sm:flex-initial px-3.5 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition cursor-pointer bg-[#F59E0B] text-gray-950 shadow-xs whitespace-nowrap';
+        switchNgoBtn.className = 'flex-1 sm:flex-initial px-3.5 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold transition cursor-pointer text-emerald-100 hover:text-white hover:bg-white/10 whitespace-nowrap';
+      } else {
+        ngoScreen.classList.remove('hidden');
+        adminScreen.classList.add('hidden');
+        switchNgoBtn.className = 'flex-1 sm:flex-initial px-3.5 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition cursor-pointer bg-[#F59E0B] text-gray-950 shadow-xs whitespace-nowrap';
+        switchAdminBtn.className = 'flex-1 sm:flex-initial px-3.5 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold transition cursor-pointer text-emerald-100 hover:text-white hover:bg-white/10 whitespace-nowrap';
+      }
+    }
+
+    // Toast Helper
+    let toastTimeout = null;
+    function showToast(message) {
+      const banner = document.getElementById('toastBanner');
+      const textEl = document.getElementById('toastText');
+      textEl.textContent = message;
+      banner.classList.remove('hidden');
+      clearTimeout(toastTimeout);
+      toastTimeout = setTimeout(() => {
+        banner.classList.add('hidden');
+      }, 3000);
+    }
+
+    // =====================================================================
+    // SCREEN 1 LOGIC: SYSTEM ADMIN PAYMENT AUDIT
+    // =====================================================================
+    let gatewayOnline = true;
+    let adminFilter = 'all';
+
+    const adminTransactions = [
+      {
+        id: 'TXN-98412',
+        amount: '$50.00',
+        contributor: 'Volunteer',
+        status: 'paid',
+        statusLabel: 'PAID ✓',
+        ngo: 'Al-Khidmat Care Foundation',
+        category: 'Food Support',
+        fee: '$0.00 (Enforced)',
+        receipt: 'RCPT-2026-98412'
+      },
+      {
+        id: 'TXN-98409',
+        amount: '$500.00',
+        contributor: 'Sponsor',
+        status: 'paid',
+        statusLabel: 'PAID ✓',
+        ngo: 'Al-Khidmat Care Foundation',
+        category: 'Healthcare',
+        fee: '$0.00',
+        receipt: 'RCPT-2026-98409'
+      },
+      {
+        id: 'TXN-98405',
+        amount: '$120.00',
+        contributor: 'Donor',
+        status: 'pending',
+        statusLabel: 'PENDING •',
+        ngo: 'Al-Khidmat Care Foundation',
+        category: 'Education',
+        fee: '$0.00',
+        receipt: 'Awaiting Gateway Settlement'
+      },
+      {
+        id: 'TXN-98401',
+        amount: '$75.00',
+        contributor: 'Volunteer',
+        status: 'pending',
+        statusLabel: 'PENDING •',
+        ngo: 'Al-Khidmat Care Foundation',
+        category: 'Food Support',
+        fee: '$0.00 (Enforced)',
+        receipt: 'Awaiting Gateway Settlement'
+      }
+    ];
+
+    function toggleGatewayStatus() {
+      gatewayOnline = !gatewayOnline;
+      const pill = document.getElementById('gatewayTogglePill');
+      const text = document.getElementById('gatewayStatusText');
+      const dot = document.getElementById('gatewayDot');
+      const kpiRate = document.getElementById('kpiSuccessRate');
+      const navDot = document.getElementById('navLiveDot');
+      const navText = document.getElementById('navLiveText');
+
+      if (gatewayOnline) {
+        pill.className = 'self-start sm:self-auto px-4 py-2 rounded-xl bg-[#0E4D37] hover:bg-[#093626] text-white font-bold text-xs sm:text-sm shadow-xs transition cursor-pointer flex items-center gap-2 shrink-0';
+        text.textContent = 'Gateway: ONLINE';
+        dot.className = 'w-2 h-2 rounded-full bg-emerald-300';
+        kpiRate.textContent = '99.2%';
+        navDot.className = 'w-2 h-2 rounded-full bg-emerald-300';
+        navText.textContent = 'Gateway Live • 0% Platform Fee';
+        showToast('External Payment Gateway switched to ONLINE.');
+      } else {
+        pill.className = 'self-start sm:self-auto px-4 py-2 rounded-xl bg-[#B45309] hover:bg-[#92400E] text-white font-bold text-xs sm:text-sm shadow-xs transition cursor-pointer flex items-center gap-2 shrink-0';
+        text.textContent = 'Gateway: MAINTENANCE';
+        dot.className = 'w-2 h-2 rounded-full bg-amber-200';
+        kpiRate.textContent = 'PAUSED';
+        navDot.className = 'w-2 h-2 rounded-full bg-amber-300';
+        navText.textContent = 'Gateway Maintenance • 0% Fee';
+        showToast('External Payment Gateway switched to MAINTENANCE.');
+      }
+    }
+
+    function renderAdminFilterTabs() {
+      const tabsContainer = document.getElementById('adminFilterTabs');
+      const allCount = adminTransactions.length;
+      const paidCount = adminTransactions.filter((t) => t.status === 'paid').length;
+      const pendingCount = adminTransactions.filter((t) => t.status === 'pending').length;
+
+      const defs = [
+        { key: 'all', label: `All (${allCount})` },
+        { key: 'paid', label: `Paid (${paidCount})` },
+        { key: 'pending', label: `Pending (${pendingCount})` }
+      ];
+
+      tabsContainer.innerHTML = defs.map((d) => {
+        const active = adminFilter === d.key;
+        let cls = '';
+        if (active && d.key === 'pending') {
+          cls = 'bg-[#B45309] text-white';
+        } else if (active) {
+          cls = 'bg-[#0E4D37] text-white';
+        } else if (d.key === 'paid') {
+          cls = 'bg-[#D1FAE5] text-[#065F46] hover:bg-[#A7F3D0]';
+        } else if (d.key === 'pending') {
+          cls = 'bg-[#FEF3C7] text-[#92400E] hover:bg-[#FDE68A]';
+        } else {
+          cls = 'bg-[#E2E8F0] text-gray-700 hover:bg-gray-300';
+        }
+
+        return `
+          <button
+            type="button"
+            onclick="setAdminFilter('${d.key}')"
+            class="px-3.5 py-1.5 rounded-lg text-xs font-bold transition cursor-pointer ${cls}"
+          >
+            ${d.label}
+          </button>
+        `;
+      }).join('');
+    }
+
+    function setAdminFilter(filter) {
+      adminFilter = filter;
+      renderAdminFilterTabs();
+      renderAdminTransactions();
+    }
+
+    function renderAdminTransactions() {
+      const container = document.getElementById('adminTransactionsList');
+      const rows = adminFilter === 'all'
+        ? adminTransactions
+        : adminTransactions.filter((t) => t.status === adminFilter);
+
+      container.innerHTML = rows.map((t) => {
+        const isPaid = t.status === 'paid';
+        const rowBg = isPaid
+          ? 'bg-[#ECFDF5] hover:bg-[#E0F7EC] border-[#A7F3D0]'
+          : 'bg-[#FFFBEB] hover:bg-[#FEF3C7] border-[#FDE68A]';
+        const statusColor = isPaid ? 'text-[#0E4D37]' : 'text-[#B45309]';
+
+        return `
+          <div
+            onclick="openTxnModal('${t.id}')"
+            class="border ${rowBg} rounded-xl px-4 py-3 flex items-center justify-between gap-3 transition cursor-pointer"
+          >
+            <span class="text-xs sm:text-sm font-bold text-gray-900 tabular-nums">
+              ${t.id} • ${t.amount} (${t.contributor})
+            </span>
+            <span class="text-xs sm:text-sm font-extrabold ${statusColor} whitespace-nowrap">
+              ${t.statusLabel}
+            </span>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function openTxnModal(id) {
+      const txn = adminTransactions.find((t) => t.id === id);
+      if (!txn) return;
+      document.getElementById('txnModalTitle').textContent = `Transaction ${txn.id}`;
+      document.getElementById('txnModalBody').innerHTML = `
+        <div class="bg-[#F8FAFC] border border-gray-200 rounded-xl p-3.5 space-y-2 tabular-nums">
+          <div class="flex justify-between"><span class="text-gray-500">Amount:</span><span class="font-bold text-gray-900">${txn.amount}</span></div>
+          <div class="flex justify-between"><span class="text-gray-500">Contributor Type:</span><span class="font-bold text-gray-900">${txn.contributor}</span></div>
+          <div class="flex justify-between"><span class="text-gray-500">Recipient NGO:</span><span class="font-bold text-gray-900">${txn.ngo}</span></div>
+          <div class="flex justify-between"><span class="text-gray-500">Welfare Category:</span><span class="font-bold text-[#0E4D37]">${txn.category}</span></div>
+          <div class="flex justify-between"><span class="text-gray-500">Platform Fee:</span><span class="font-bold text-[#0E4D37]">${txn.fee}</span></div>
+          <div class="flex justify-between"><span class="text-gray-500">Receipt Reference:</span><span class="font-bold text-gray-900">${txn.receipt}</span></div>
+        </div>
+      `;
+      document.getElementById('txnModal').classList.remove('hidden');
+    }
+
+    function closeTxnModal() {
+      document.getElementById('txnModal').classList.add('hidden');
+    }
+
+    function openAuditReportModal() {
+      document.getElementById('reportModal').classList.remove('hidden');
+    }
+
+    function closeReportModal() {
+      document.getElementById('reportModal').classList.add('hidden');
+    }
+
+    function confirmReportDownload() {
+      closeReportModal();
+      showToast('Gateway Audit Report CSV prepared for download.');
+    }
+
+    // =====================================================================
+    // SCREEN 2 LOGIC: NGO WEB PORTAL — INCOMING DONATIONS
+    // =====================================================================
+    const ledgerRecords = [
+      { date: '15 Nov 26', contributor: 'Usman T. (Vol)', category: 'Food Support', amount: '$50.00', catClass: 'text-[#0E4D37] font-bold' },
+      { date: '14 Nov 26', contributor: 'Apex Corp (Sponsor)', category: 'Healthcare', amount: '$500.00', catClass: 'text-[#0E4D37] font-bold' },
+      { date: '12 Nov 26', contributor: 'Sara Malik (Donor)', category: 'Education', amount: '$120.00', catClass: 'text-[#B45309] font-bold' },
+      { date: '10 Nov 26', contributor: 'Bilal R. (Vol)', category: 'Food Support', amount: '$35.00', catClass: 'text-[#0E4D37] font-bold' }
+    ];
+
+    function renderNgoLedger() {
+      const selectedCat = document.getElementById('categoryFilterSelect').value;
+      const tbody = document.getElementById('ngoLedgerBody');
+
+      const filtered = selectedCat === 'All Categories'
+        ? ledgerRecords
+        : ledgerRecords.filter((r) => r.category === selectedCat);
+
+      tbody.innerHTML = filtered.map((row) => `
+        <tr class="hover:bg-[#F8FAFC] transition">
+          <td class="py-3 px-3 text-gray-500 whitespace-nowrap">${row.date}</td>
+          <td class="py-3 px-3 font-bold text-gray-900">${row.contributor}</td>
+          <td class="py-3 px-3 ${row.catClass} whitespace-nowrap">${row.category}</td>
+          <td class="py-3 px-3 font-extrabold text-gray-900 text-right whitespace-nowrap">${row.amount}</td>
+        </tr>
+      `).join('');
+    }
+
+    function selectCategoryFromCard(category) {
+      document.getElementById('categoryFilterSelect').value = category;
+      renderNgoLedger();
+      showToast(`Filtered ledger by ${category}.`);
+    }
+
+    function inspectMonth(month, value) {
+      document.getElementById('chartPointReadout').textContent = `${month}: ${value}`;
+    }
+
+    function triggerGatewaySync() {
+      const icon = document.getElementById('syncIcon');
+      const text = document.getElementById('syncText');
+      icon.textContent = '↻';
+      text.textContent = 'Syncing...';
+      setTimeout(() => {
+        icon.textContent = '✓';
+        text.textContent = 'Real-Time Gateway Sync';
+        showToast('Synced incoming NGO donation records with gateway.');
+      }, 450);
+    }
+
+    function exportLedgerCsv() {
+      const selectedCat = document.getElementById('categoryFilterSelect').value;
+      const rows = selectedCat === 'All Categories'
+        ? ledgerRecords
+        : ledgerRecords.filter((r) => r.category === selectedCat);
+
+      const csvLines = [
+        'Date,Donor / Volunteer,Category,Amount',
+        ...rows.map((r) => `"${r.date}","${r.contributor}","${r.category}","${r.amount}"`)
+      ];
+      const blob = new Blob([csvLines.join('\n')], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = 'caregrid_ngo_donation_ledger.csv';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+
+      showToast(`Exported ${rows.length} ledger rows to CSV.`);
+    }
+
+    // Initialize Views
+    renderAdminFilterTabs();
+    renderAdminTransactions();
+    renderNgoLedger();
+  </script>
+</body>
+</html>

@@ -1,0 +1,846 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CareGrid — NGO Food Collection Request Alerts</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+          },
+          colors: {
+            cgEmerald: '#155E42',
+            cgEmeraldDark: '#0F4C36',
+            cgMint: '#ECFDF5',
+            cgMintBorder: '#A7F3D0',
+            cgAmber: '#F59E0B',
+            cgBorder: '#D1DDD6',
+          }
+        }
+      }
+    };
+  </script>
+  <style>
+    body {
+      background-color: #F4F7F5;
+      color: #111827;
+      overflow-x: hidden;
+    }
+    .tabular-nums {
+      font-variant-numeric: tabular-nums;
+    }
+    select.cg-select {
+      appearance: none;
+      -webkit-appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23155E42'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2.2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 0.85rem center;
+      background-size: 0.95rem;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col antialiased selection:bg-emerald-200 selection:text-emerald-950">
+
+  <!-- Full-Width Production Top Navigation Bar -->
+  <header class="sticky top-0 z-40 w-full bg-[#155E42] text-white border-b border-emerald-950/30 shadow-sm">
+    <div class="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 py-3 flex flex-wrap items-center justify-between gap-3">
+      <!-- Brand Identity -->
+      <div class="flex items-center gap-3 min-w-0">
+        <div class="w-9 h-9 rounded-xl bg-[#F59E0B] text-[#0F4C36] font-extrabold text-sm flex items-center justify-center shrink-0 shadow-xs">
+          CG
+        </div>
+        <div class="min-w-0">
+          <div class="flex items-center gap-2">
+            <span class="font-extrabold text-base sm:text-lg tracking-tight text-white truncate">
+              CareGrid • NGO Operations Portal
+            </span>
+          </div>
+          <p class="text-[11px] text-emerald-100/85 truncate">
+            Al-Khidmat Welfare Hub • Lahore
+          </p>
+        </div>
+      </div>
+
+      <!-- Primary Navigation Links -->
+      <nav aria-label="NGO portal navigation" class="flex items-center gap-1 bg-[#0F4C36] p-1 rounded-xl border border-white/10 overflow-x-auto max-w-full">
+        <button
+          type="button"
+          onclick="showToast('Switched to NGO Operations Dashboard')"
+          class="px-3 py-1.5 rounded-lg text-xs font-semibold text-emerald-100 hover:text-white hover:bg-white/10 transition cursor-pointer whitespace-nowrap"
+        >
+          Dashboard
+        </button>
+        <button
+          type="button"
+          onclick="openAlternativeListingsModal()"
+          class="px-3 py-1.5 rounded-lg text-xs font-semibold text-emerald-100 hover:text-white hover:bg-white/10 transition cursor-pointer whitespace-nowrap"
+        >
+          Food Listings
+        </button>
+        <button
+          type="button"
+          aria-current="page"
+          class="px-3.5 py-1.5 rounded-lg text-xs font-bold bg-[#F59E0B] text-gray-950 shadow-xs cursor-pointer whitespace-nowrap flex items-center gap-1.5"
+        >
+          <span>Collection Alerts</span>
+          <span id="navUnreadBadge" class="px-1.5 py-0.2 rounded-full bg-[#0F4C36] text-white text-[10px] font-extrabold tabular-nums">
+            2
+          </span>
+        </button>
+        <button
+          type="button"
+          onclick="setAlertFilter('claims')"
+          class="px-3 py-1.5 rounded-lg text-xs font-semibold text-emerald-100 hover:text-white hover:bg-white/10 transition cursor-pointer whitespace-nowrap"
+        >
+          Subsidized Claims
+        </button>
+      </nav>
+
+      <!-- NGO Hub & Live Connection Pill -->
+      <div class="hidden xl:flex items-center gap-2.5 shrink-0">
+        <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl bg-[#0F4C36] border border-white/15 text-xs font-semibold text-emerald-100">
+          <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+          <span>Real-Time Event Stream</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Responsive Container -->
+  <main class="flex-1 w-full max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 space-y-6">
+
+    <!-- Page Header & Filter Controls -->
+    <section class="flex flex-col lg:flex-row lg:items-end justify-between gap-4">
+      <div>
+        <h1 class="text-xl sm:text-2xl lg:text-[28px] font-extrabold text-gray-900 tracking-tight">
+          NGO Web Portal — Food Collection Request Alerts
+        </h1>
+        <p class="text-xs sm:text-sm text-gray-600 mt-1">
+          Immediate notification when a partner restaurant accepts or rejects an NGO pickup request
+        </p>
+      </div>
+
+      <!-- Filter Pills & Mark Read Action -->
+      <div class="flex flex-wrap items-center gap-2">
+        <div id="alertFilterBar" class="inline-flex flex-wrap items-center gap-1.5 bg-white p-1 rounded-xl border border-[#D1DDD6] shadow-2xs">
+          <button
+            type="button"
+            data-filter="all"
+            onclick="setAlertFilter('all')"
+            class="alert-filter-btn px-3 py-1.5 rounded-lg text-xs font-bold bg-[#155E42] text-white transition cursor-pointer"
+          >
+            All Alerts (3)
+          </button>
+          <button
+            type="button"
+            data-filter="accepted"
+            onclick="setAlertFilter('accepted')"
+            class="alert-filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold text-gray-700 hover:bg-gray-100 transition cursor-pointer"
+          >
+            Accepted
+          </button>
+          <button
+            type="button"
+            data-filter="rejected"
+            onclick="setAlertFilter('rejected')"
+            class="alert-filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold text-gray-700 hover:bg-gray-100 transition cursor-pointer"
+          >
+            Rejected
+          </button>
+          <button
+            type="button"
+            data-filter="claims"
+            onclick="setAlertFilter('claims')"
+            class="alert-filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold text-gray-700 hover:bg-gray-100 transition cursor-pointer"
+          >
+            Partner Claims
+          </button>
+        </div>
+
+        <button
+          type="button"
+          onclick="markAllAlertsRead()"
+          class="px-3.5 py-2 rounded-xl bg-white hover:bg-[#ECFDF5] border border-[#D1DDD6] text-xs font-bold text-[#155E42] shadow-2xs transition cursor-pointer"
+        >
+          ✓ Mark All as Read
+        </button>
+      </div>
+    </section>
+
+    <!-- Primary Responsive Content Grid -->
+    <section class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+
+      <!-- Left / Primary Column: Live Alerts Feed -->
+      <div id="alertsFeedContainer" class="lg:col-span-8 space-y-4">
+        <!-- Populated dynamically by JavaScript -->
+      </div>
+
+      <!-- Right Column: Cross-Portal Alert Summary & Live Event Control -->
+      <aside class="lg:col-span-4 space-y-4">
+        <!-- NGO Notification & Cross-Portal Alert Summary Card -->
+        <div class="bg-white border border-[#D1DDD6] rounded-2xl p-5 sm:p-6 shadow-2xs space-y-4">
+          <div class="flex items-center justify-between gap-2">
+            <h2 class="text-sm sm:text-base font-extrabold text-gray-900">
+              NGO Notification &amp; Cross-Portal Alert Summary:
+            </h2>
+          </div>
+
+          <ul class="space-y-3 text-xs sm:text-[13.5px] text-gray-700 leading-relaxed">
+            <li class="flex items-start gap-2.5">
+              <span class="mt-1.5 w-1.5 h-1.5 rounded-full bg-[#155E42] shrink-0"></span>
+              <span>Triggered automatically upon restaurant decision in the Restaurant Partner App.</span>
+            </li>
+            <li class="flex items-start gap-2.5">
+              <span class="mt-1.5 w-1.5 h-1.5 rounded-full bg-[#155E42] shrink-0"></span>
+              <span>Displays clear Accepted / Rejected request status, gate pass codes &amp; pickup instructions.</span>
+            </li>
+            <li class="flex items-start gap-2.5">
+              <span class="mt-1.5 w-1.5 h-1.5 rounded-full bg-[#155E42] shrink-0"></span>
+              <span>Also alerts NGO coordinators when partner Pharmacies or Diagnostic Labs upload subsidized beneficiary bills.</span>
+            </li>
+          </ul>
+
+          <div class="pt-3 border-t border-gray-100">
+            <p class="text-xs sm:text-[13px] font-extrabold text-[#155E42] flex items-center gap-2">
+              <span>✓</span>
+              <span>Zero polling delay — Real-time event delivery to NGO Web Portal</span>
+            </p>
+          </div>
+        </div>
+
+        <!-- Active Fleet & Dispatch Readiness Card -->
+        <div class="bg-[#FAFDFB] border border-[#B7D8C8] rounded-2xl p-5 space-y-3.5 shadow-2xs">
+          <div class="flex items-center justify-between">
+            <h3 class="text-xs font-extrabold uppercase tracking-wider text-[#155E42]">
+              Collection Fleet Status
+            </h3>
+            <span id="fleetReadyBadge" class="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-[#DCFCE7] text-[#155E42]">
+              3 Units Ready
+            </span>
+          </div>
+
+          <div class="space-y-2 text-xs text-gray-700">
+            <div class="flex items-center justify-between bg-white border border-gray-200 rounded-xl px-3.5 py-2.5">
+              <div>
+                <p class="font-bold text-gray-900">Unit #LHR-04 • Insulated Van</p>
+                <p class="text-[11px] text-gray-500">Driver: Kamran Akmal • Gulberg Zone</p>
+              </div>
+              <span id="unit04Status" class="font-bold text-[#155E42]">Standby</span>
+            </div>
+
+            <div class="flex items-center justify-between bg-white border border-gray-200 rounded-xl px-3.5 py-2.5">
+              <div>
+                <p class="font-bold text-gray-900">Unit #LHR-09 • Chiller Pickup</p>
+                <p class="text-[11px] text-gray-500">Driver: Tariq Mahmood • DHA Zone</p>
+              </div>
+              <span class="font-bold text-[#155E42]">Standby</span>
+            </div>
+          </div>
+
+          <button
+            type="button"
+            onclick="simulateIncomingRestaurantDecision()"
+            class="w-full py-2.5 px-4 rounded-xl bg-white hover:bg-[#ECFDF5] border border-[#155E42] text-[#155E42] font-bold text-xs transition cursor-pointer flex items-center justify-center gap-2"
+          >
+            <span>⚡</span>
+            <span>Simulate New Restaurant Response</span>
+          </button>
+        </div>
+      </aside>
+
+    </section>
+  </main>
+
+  <!-- Clean Production Footer -->
+  <footer class="w-full bg-white border-t border-[#D1DDD6] mt-auto">
+    <div class="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-gray-500">
+      <span>CareGrid NGO Operations Portal • Al-Khidmat Welfare Hub</span>
+      <span>Real-time logistics &amp; partner claim notifications</span>
+    </div>
+  </footer>
+
+  <!-- ======================================================================= -->
+  <!-- MODAL 1: DISPATCH NGO COLLECTION VAN                                    -->
+  <!-- ======================================================================= -->
+  <div id="dispatchModal" class="hidden fixed inset-0 z-50 bg-black/45 flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl max-w-md w-full border border-[#D1DDD6] shadow-xl overflow-hidden">
+      <div class="bg-[#155E42] px-5 py-4 flex items-center justify-between text-white">
+        <h3 class="font-extrabold text-sm sm:text-base">Dispatch NGO Collection Van</h3>
+        <button type="button" onclick="closeModal('dispatchModal')" class="text-white/80 hover:text-white font-bold text-lg cursor-pointer">✕</button>
+      </div>
+
+      <div class="p-5 space-y-4">
+        <div id="dispatchSummaryBox" class="bg-[#ECFDF5] border border-[#A7F3D0] rounded-xl p-3.5 space-y-1 text-xs">
+          <!-- Populated dynamically -->
+        </div>
+
+        <div class="space-y-1.5">
+          <label for="vehicleSelect" class="block text-xs font-extrabold uppercase tracking-wider text-gray-700">
+            Assign Collection Vehicle &amp; Driver
+          </label>
+          <select
+            id="vehicleSelect"
+            class="cg-select w-full h-11 rounded-xl border border-[#155E42] bg-white px-3.5 pr-10 text-xs sm:text-sm font-bold text-gray-900 cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#155E42]/25"
+          >
+            <option value="Unit #LHR-04 (Kamran Akmal • Insulated Van)">Unit #LHR-04 — Kamran Akmal (Insulated Van)</option>
+            <option value="Unit #LHR-09 (Tariq Mahmood • Chiller Pickup)">Unit #LHR-09 — Tariq Mahmood (Chiller Pickup)</option>
+            <option value="Unit #LHR-12 (Bilal Raza • Express Cargo Bike)">Unit #LHR-12 — Bilal Raza (Express Cargo Bike)</option>
+          </select>
+        </div>
+
+        <div class="space-y-1.5">
+          <label for="dispatchNotesInput" class="block text-xs font-extrabold uppercase tracking-wider text-gray-700">
+            Driver Handover Instructions (Optional)
+          </label>
+          <input
+            id="dispatchNotesInput"
+            type="text"
+            value="Present Gate Pass Code at restaurant loading bay before cutoff."
+            class="w-full h-10 rounded-xl border border-gray-300 px-3.5 text-xs sm:text-sm text-gray-800 focus:outline-none focus:border-[#155E42]"
+          />
+        </div>
+      </div>
+
+      <div class="px-5 py-3.5 bg-gray-50 border-t border-gray-200 flex justify-end gap-2.5">
+        <button
+          type="button"
+          onclick="closeModal('dispatchModal')"
+          class="px-4 py-2 rounded-xl bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold text-xs cursor-pointer"
+        >
+          Cancel
+        </button>
+        <button
+          type="button"
+          onclick="confirmVanDispatch()"
+          class="px-4 py-2 rounded-xl bg-[#155E42] hover:bg-[#0F4C36] text-white font-bold text-xs cursor-pointer"
+        >
+          Confirm &amp; Dispatch Van →
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======================================================================= -->
+  <!-- MODAL 2: STORED STATUS & RESTAURANT REPLY AUDIT                         -->
+  <!-- ======================================================================= -->
+  <div id="replyAuditModal" class="hidden fixed inset-0 z-50 bg-black/45 flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl max-w-md w-full border border-[#D1DDD6] shadow-xl overflow-hidden">
+      <div class="bg-[#155E42] px-5 py-4 flex items-center justify-between text-white">
+        <h3 class="font-extrabold text-sm sm:text-base">Stored Restaurant Decision &amp; Gate Pass</h3>
+        <button type="button" onclick="closeModal('replyAuditModal')" class="text-white/80 hover:text-white font-bold text-lg cursor-pointer">✕</button>
+      </div>
+
+      <div id="replyAuditBody" class="p-5 space-y-3 text-xs sm:text-sm text-gray-700">
+        <!-- Populated dynamically -->
+      </div>
+
+      <div class="px-5 py-3.5 bg-gray-50 border-t border-gray-200 flex justify-end">
+        <button
+          type="button"
+          onclick="closeModal('replyAuditModal')"
+          class="px-4 py-2 rounded-xl bg-[#155E42] hover:bg-[#0F4C36] text-white font-bold text-xs cursor-pointer"
+        >
+          Close Record
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======================================================================= -->
+  <!-- MODAL 3: BROWSE OTHER ACTIVE SURPLUS LISTINGS                           -->
+  <!-- ======================================================================= -->
+  <div id="alternativeListingsModal" class="hidden fixed inset-0 z-50 bg-black/45 flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl max-w-lg w-full border border-[#D1DDD6] shadow-xl overflow-hidden">
+      <div class="bg-[#155E42] px-5 py-4 flex items-center justify-between text-white">
+        <div>
+          <h3 class="font-extrabold text-sm sm:text-base">Available Surplus Food Listings Nearby</h3>
+          <p class="text-[11px] text-emerald-100">Request an immediate replacement pickup for your route</p>
+        </div>
+        <button type="button" onclick="closeModal('alternativeListingsModal')" class="text-white/80 hover:text-white font-bold text-lg cursor-pointer">✕</button>
+      </div>
+
+      <div id="alternativeListingsBody" class="p-5 space-y-3 max-h-[65vh] overflow-y-auto">
+        <!-- Populated dynamically -->
+      </div>
+
+      <div class="px-5 py-3.5 bg-gray-50 border-t border-gray-200 flex justify-end">
+        <button
+          type="button"
+          onclick="closeModal('alternativeListingsModal')"
+          class="px-4 py-2 rounded-xl bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold text-xs cursor-pointer"
+        >
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Banner -->
+  <div id="toastBanner" class="hidden fixed bottom-5 right-5 z-50 max-w-sm">
+    <div class="bg-[#0F4C36] text-white px-4 py-3 rounded-xl shadow-lg border border-emerald-300/30 flex items-center gap-2.5 text-xs sm:text-sm font-semibold">
+      <span class="text-emerald-300 font-bold">✓</span>
+      <span id="toastText">Notification updated</span>
+    </div>
+  </div>
+
+  <script>
+    // =========================================================================
+    // LIVE ALERTS DATA MODEL
+    // =========================================================================
+    let activeAlertFilter = 'all';
+    let activeDispatchRequestId = null;
+
+    const alertsList = [
+      {
+        id: 'REQ-812',
+        type: 'accepted',
+        unread: true,
+        timestamp: 'Just Now',
+        title: 'Bundoo Khan Kitchens Accepted Food Pickup',
+        listingLine: 'Listing #FD-209: Chicken Pulao & Roasted Naan (50 Meal Boxes)',
+        pickupLine: 'Pickup Window: Today before 11:45 PM • Gate Pass Code: #4491',
+        gatePass: '#4491',
+        restaurantAddress: 'MM Alam Road, Gulberg III, Lahore',
+        restaurantReply: 'Confirmed. Foil trays are sealed in warmers at Loading Gate B. Ask for Shift Supervisor Kamran.',
+        dispatchedUnit: null
+      },
+      {
+        id: 'REQ-806',
+        type: 'rejected',
+        unread: true,
+        timestamp: '18 mins ago',
+        title: 'Metro Grill & Catering Declined Collection Request',
+        listingLine: 'Listing #FD-204: Assorted Catering Trays (30 Portions)',
+        restaurantNote: 'Restaurant Note: Food batch already assigned to earlier volunteer unit.',
+        replacementRequested: false
+      },
+      {
+        id: 'CLM-319',
+        type: 'claims',
+        unread: false,
+        timestamp: '42 mins ago',
+        title: 'Shifa Diagnostic Lab Uploaded Subsidized Beneficiary Bill',
+        listingLine: 'Beneficiary: Ayesha Bibi (CG-BEN-2026-009481) • 75% Welfare Subsidy Applied',
+        pickupLine: 'Invoice #LAB-9910 • Verified Net NGO Co-Pay Settlement: PKR 1,850',
+        gatePass: 'Verified Invoice',
+        restaurantAddress: 'Jail Road Branch, Lahore',
+        restaurantReply: 'Digital lab report & stamped subsidy invoice uploaded for NGO audit clearance.',
+        dispatchedUnit: 'Cleared'
+      }
+    ];
+
+    const alternativeSurplusListings = [
+      {
+        listingId: 'FD-214',
+        restaurant: 'Spice Bazaar Restaurant',
+        area: 'DHA Phase 5, Lahore',
+        food: 'Lentil Curry, Steamed Rice & Salad (80 Portions)',
+        cutoff: 'Tonight, 12:30 AM',
+        gatePass: '#4518',
+        claimed: false
+      },
+      {
+        listingId: 'FD-216',
+        restaurant: 'Gourmet Bakers & Sweets',
+        area: 'Model Town, Lahore',
+        food: 'Fresh Whole Wheat Bread & Sandwiches (40 Food Packs)',
+        cutoff: 'Tomorrow, 10:30 AM',
+        gatePass: '#4522',
+        claimed: false
+      }
+    ];
+
+    // =========================================================================
+    // TOAST & MODAL HELPERS
+    // =========================================================================
+    let toastTimer = null;
+    function showToast(msg) {
+      const banner = document.getElementById('toastBanner');
+      document.getElementById('toastText').textContent = msg;
+      banner.classList.remove('hidden');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => {
+        banner.classList.add('hidden');
+      }, 3200);
+    }
+
+    function closeModal(id) {
+      document.getElementById(id).classList.add('hidden');
+    }
+
+    // =========================================================================
+    // RENDER ALERTS FEED & COUNTERS
+    // =========================================================================
+    function updateFilterButtonsAndCounters() {
+      const unreadCount = alertsList.filter((a) => a.unread).length;
+      const badge = document.getElementById('navUnreadBadge');
+      if (unreadCount > 0) {
+        badge.textContent = unreadCount;
+        badge.classList.remove('hidden');
+      } else {
+        badge.classList.add('hidden');
+      }
+
+      const allBtn = document.querySelector('.alert-filter-btn[data-filter="all"]');
+      if (allBtn) {
+        allBtn.textContent = `All Alerts (${alertsList.length})`;
+      }
+
+      document.querySelectorAll('.alert-filter-btn').forEach((btn) => {
+        const isActive = btn.dataset.filter === activeAlertFilter;
+        btn.className = isActive
+          ? 'alert-filter-btn px-3 py-1.5 rounded-lg text-xs font-bold bg-[#155E42] text-white transition cursor-pointer'
+          : 'alert-filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold text-gray-700 hover:bg-gray-100 transition cursor-pointer';
+      });
+    }
+
+    function setAlertFilter(filter) {
+      activeAlertFilter = filter;
+      updateFilterButtonsAndCounters();
+      renderAlertsFeed();
+    }
+
+    function markAllAlertsRead() {
+      alertsList.forEach((a) => {
+        a.unread = false;
+      });
+      updateFilterButtonsAndCounters();
+      renderAlertsFeed();
+      showToast('All collection and partner alerts marked as read.');
+    }
+
+    function renderAlertsFeed() {
+      const container = document.getElementById('alertsFeedContainer');
+      const filtered = activeAlertFilter === 'all'
+        ? alertsList
+        : alertsList.filter((a) => a.type === activeAlertFilter);
+
+      if (filtered.length === 0) {
+        container.innerHTML = `
+          <div class="bg-white border border-dashed border-gray-300 rounded-2xl p-8 text-center text-xs sm:text-sm text-gray-500">
+            No alerts under this category filter right now.
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = filtered.map((alert) => {
+        if (alert.type === 'accepted') {
+          const dispatchButtonHtml = alert.dispatchedUnit
+            ? `
+              <button
+                type="button"
+                onclick="openDispatchModal('${alert.id}')"
+                class="w-full py-2.5 px-4 rounded-xl bg-[#0F4C36] text-white font-bold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-2xs transition cursor-pointer"
+              >
+                <span>✓ Van Dispatched (${alert.dispatchedUnit.split(' ')[0]} ${alert.dispatchedUnit.split(' ')[1]})</span>
+              </button>
+            `
+            : `
+              <button
+                type="button"
+                onclick="openDispatchModal('${alert.id}')"
+                class="w-full py-2.5 px-4 rounded-xl bg-[#155E42] hover:bg-[#0F4C36] text-white font-bold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-2xs transition cursor-pointer"
+              >
+                <span>Dispatch NGO Collection Van →</span>
+              </button>
+            `;
+
+          return `
+            <article class="bg-[#EBF7F1] border-2 border-[#155E42]/60 rounded-2xl p-5 sm:p-6 space-y-4 shadow-2xs transition">
+              <div class="flex flex-wrap items-center justify-between gap-2">
+                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-[#155E42] text-white text-[11px] font-extrabold tracking-wide uppercase">
+                  <span>✓</span>
+                  <span>STATUS: REQUEST ACCEPTED</span>
+                </span>
+
+                <div class="flex items-center gap-2">
+                  ${alert.unread ? '<span class="w-2 h-2 rounded-full bg-[#155E42]" title="Unread alert"></span>' : ''}
+                  <span class="text-xs font-extrabold text-[#155E42] tabular-nums">
+                    ${alert.timestamp} • #${alert.id}
+                  </span>
+                </div>
+              </div>
+
+              <div class="space-y-1.5">
+                <h2 class="text-base sm:text-lg font-extrabold text-gray-900">
+                  ${alert.title}
+                </h2>
+                <p class="text-xs sm:text-sm text-gray-700 font-medium">
+                  ${alert.listingLine}
+                </p>
+                <p class="text-xs sm:text-sm text-gray-700 font-medium tabular-nums">
+                  ${alert.pickupLine}
+                </p>
+              </div>
+
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
+                ${dispatchButtonHtml}
+
+                <button
+                  type="button"
+                  onclick="openReplyAuditModal('${alert.id}')"
+                  class="w-full py-2.5 px-4 rounded-xl bg-white hover:bg-[#ECFDF5] border border-[#155E42]/40 text-[#155E42] font-bold text-xs sm:text-sm flex items-center justify-center gap-2 transition cursor-pointer"
+                >
+                  <span>✓ Status &amp; Restaurant Reply Stored</span>
+                </button>
+              </div>
+            </article>
+          `;
+        }
+
+        if (alert.type === 'rejected') {
+          return `
+            <article class="bg-[#FDF2F2] border-2 border-[#F8B4B4] rounded-2xl p-5 sm:p-6 space-y-4 shadow-2xs transition">
+              <div class="flex flex-wrap items-center justify-between gap-2">
+                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-[#DC2626] text-white text-[11px] font-extrabold tracking-wide uppercase">
+                  <span>✕</span>
+                  <span>STATUS: REQUEST REJECTED</span>
+                </span>
+
+                <div class="flex items-center gap-2">
+                  ${alert.unread ? '<span class="w-2 h-2 rounded-full bg-[#DC2626]" title="Unread alert"></span>' : ''}
+                  <span class="text-xs font-extrabold text-[#991B1B] tabular-nums">
+                    ${alert.timestamp} • #${alert.id}
+                  </span>
+                </div>
+              </div>
+
+              <div class="space-y-1.5">
+                <h2 class="text-base sm:text-lg font-extrabold text-[#991B1B]">
+                  ${alert.title}
+                </h2>
+                <p class="text-xs sm:text-sm text-gray-700 font-medium">
+                  ${alert.listingLine}
+                </p>
+                <p class="text-xs sm:text-sm font-bold text-[#991B1B]">
+                  ${alert.restaurantNote}
+                </p>
+              </div>
+
+              <div class="pt-1">
+                <button
+                  type="button"
+                  onclick="openAlternativeListingsModal()"
+                  class="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-white hover:bg-rose-50 border border-[#F87171] text-[#991B1B] font-bold text-xs sm:text-sm inline-flex items-center justify-center gap-2 transition cursor-pointer"
+                >
+                  <span>Browse Other Active Listings →</span>
+                </button>
+              </div>
+            </article>
+          `;
+        }
+
+        // Subsidized Partner Claim Alert Card
+        return `
+          <article class="bg-white border border-[#D1DDD6] rounded-2xl p-5 sm:p-6 space-y-3.5 shadow-2xs transition">
+            <div class="flex flex-wrap items-center justify-between gap-2">
+              <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-[#FEF3C7] border border-[#F59E0B] text-[#92400E] text-[11px] font-extrabold tracking-wide uppercase">
+                <span>★</span>
+                <span>SUBSIDIZED PARTNER CLAIM UPLOADED</span>
+              </span>
+
+              <span class="text-xs font-bold text-gray-500 tabular-nums">
+                ${alert.timestamp} • #${alert.id}
+              </span>
+            </div>
+
+            <div class="space-y-1">
+              <h2 class="text-base sm:text-lg font-extrabold text-gray-900">
+                ${alert.title}
+              </h2>
+              <p class="text-xs sm:text-sm text-gray-700">
+                ${alert.listingLine}
+              </p>
+              <p class="text-xs sm:text-sm font-bold text-[#155E42] tabular-nums">
+                ${alert.pickupLine}
+              </p>
+            </div>
+
+            <div class="pt-1">
+              <button
+                type="button"
+                onclick="openReplyAuditModal('${alert.id}')"
+                class="px-4 py-2 rounded-xl bg-[#ECFDF5] hover:bg-[#D1FAE5] border border-[#A7F3D0] text-[#155E42] font-bold text-xs transition cursor-pointer"
+              >
+                Inspect Uploaded Bill &amp; Verification Log
+              </button>
+            </div>
+          </article>
+        `;
+      }).join('');
+    }
+
+    // =========================================================================
+    // DISPATCH VAN MODAL LOGIC
+    // =========================================================================
+    function openDispatchModal(reqId) {
+      const alert = alertsList.find((a) => a.id === reqId);
+      if (!alert) return;
+      activeDispatchRequestId = reqId;
+      alert.unread = false;
+      updateFilterButtonsAndCounters();
+
+      document.getElementById('dispatchSummaryBox').innerHTML = `
+        <p class="font-extrabold text-[#155E42]">${alert.title} (#${alert.id})</p>
+        <p class="text-gray-700 font-medium">${alert.listingLine}</p>
+        <p class="text-gray-700 font-bold tabular-nums">${alert.pickupLine}</p>
+        <p class="text-gray-600">Location: ${alert.restaurantAddress}</p>
+      `;
+
+      document.getElementById('dispatchModal').classList.remove('hidden');
+    }
+
+    function confirmVanDispatch() {
+      const alert = alertsList.find((a) => a.id === activeDispatchRequestId);
+      if (!alert) return;
+      const chosenVehicle = document.getElementById('vehicleSelect').value;
+      alert.dispatchedUnit = chosenVehicle;
+
+      if (chosenVehicle.includes('LHR-04')) {
+        const unit04 = document.getElementById('unit04Status');
+        unit04.textContent = 'En Route (#REQ-812)';
+        unit04.className = 'font-bold text-[#D97706]';
+      }
+
+      closeModal('dispatchModal');
+      renderAlertsFeed();
+      showToast(`Dispatched ${chosenVehicle.split(' (')[0]} for #${alert.id}.`);
+    }
+
+    // =========================================================================
+    // STORED REPLY AUDIT MODAL LOGIC
+    // =========================================================================
+    function openReplyAuditModal(reqId) {
+      const alert = alertsList.find((a) => a.id === reqId);
+      if (!alert) return;
+      alert.unread = false;
+      updateFilterButtonsAndCounters();
+      renderAlertsFeed();
+
+      document.getElementById('replyAuditBody').innerHTML = `
+        <div class="bg-[#F8FAFC] border border-gray-200 rounded-xl p-4 space-y-2 tabular-nums">
+          <div class="flex justify-between gap-2">
+            <span class="text-gray-500">Request / Record ID:</span>
+            <span class="font-extrabold text-gray-900">#${alert.id}</span>
+          </div>
+          <div class="flex justify-between gap-2">
+            <span class="text-gray-500">Gate Pass / Verification:</span>
+            <span class="font-extrabold text-[#155E42]">${alert.gatePass}</span>
+          </div>
+          <div class="flex justify-between gap-2">
+            <span class="text-gray-500">Pickup Location:</span>
+            <span class="font-bold text-gray-900 text-right">${alert.restaurantAddress}</span>
+          </div>
+          <div class="flex justify-between gap-2">
+            <span class="text-gray-500">Fleet Assignment:</span>
+            <span class="font-bold text-gray-900 text-right">${alert.dispatchedUnit || 'Awaiting Van Dispatch'}</span>
+          </div>
+        </div>
+        <div class="bg-[#ECFDF5] border border-[#A7F3D0] rounded-xl p-3.5 space-y-1">
+          <p class="text-[11px] font-extrabold uppercase tracking-wider text-[#155E42]">
+            Stored Partner Note
+          </p>
+          <p class="text-xs text-gray-800 leading-relaxed">
+            "${alert.restaurantReply}"
+          </p>
+        </div>
+      `;
+
+      document.getElementById('replyAuditModal').classList.remove('hidden');
+    }
+
+    // =========================================================================
+    // ALTERNATIVE LISTINGS QUICK-CLAIM MODAL
+    // =========================================================================
+    function openAlternativeListingsModal() {
+      const body = document.getElementById('alternativeListingsBody');
+      body.innerHTML = alternativeSurplusListings.map((item) => {
+        const btnMarkup = item.claimed
+          ? `<span class="px-3 py-1.5 rounded-lg bg-[#DCFCE7] text-[#155E42] font-bold text-xs">✓ Pickup Requested</span>`
+          : `<button type="button" onclick="claimAlternativeListing('${item.listingId}')" class="px-3.5 py-1.5 rounded-lg bg-[#155E42] hover:bg-[#0F4C36] text-white font-bold text-xs transition cursor-pointer">Request Pickup →</button>`;
+
+        return `
+          <div class="bg-[#FAFDFB] border border-[#D1DDD6] rounded-xl p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div class="space-y-1">
+              <p class="text-xs sm:text-sm font-extrabold text-gray-900">
+                #${item.listingId} • ${item.restaurant}
+              </p>
+              <p class="text-xs text-gray-700 font-medium">${item.food}</p>
+              <p class="text-[11px] text-gray-500">${item.area} • Cutoff: ${item.cutoff}</p>
+            </div>
+            <div class="shrink-0">
+              ${btnMarkup}
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      document.getElementById('alternativeListingsModal').classList.remove('hidden');
+    }
+
+    function claimAlternativeListing(listingId) {
+      const item = alternativeSurplusListings.find((l) => l.listingId === listingId);
+      if (!item || item.claimed) return;
+      item.claimed = true;
+
+      const newReqId = 'REQ-' + Math.floor(815 + Math.random() * 70);
+      alertsList.unshift({
+        id: newReqId,
+        type: 'accepted',
+        unread: true,
+        timestamp: 'Just Now',
+        title: `${item.restaurant} Accepted Food Pickup`,
+        listingLine: `Listing #${item.listingId}: ${item.food}`,
+        pickupLine: `Pickup Window: ${item.cutoff} • Gate Pass Code: ${item.gatePass}`,
+        gatePass: item.gatePass,
+        restaurantAddress: item.area,
+        restaurantReply: 'Replacement pickup request approved immediately. Ready at main dispatch counter.',
+        dispatchedUnit: null
+      });
+
+      openAlternativeListingsModal();
+      updateFilterButtonsAndCounters();
+      renderAlertsFeed();
+      showToast(`Pickup accepted by ${item.restaurant} (#${newReqId}).`);
+    }
+
+    // =========================================================================
+    // REAL-TIME EVENT SIMULATION
+    // =========================================================================
+    let simCounter = 820;
+    function simulateIncomingRestaurantDecision() {
+      simCounter += 1;
+      alertsList.unshift({
+        id: `REQ-${simCounter}`,
+        type: 'accepted',
+        unread: true,
+        timestamp: 'Just Now',
+        title: 'Salt’n Pepper Village Accepted Food Pickup',
+        listingLine: 'Listing #FD-221: Chicken Biryani & Raita Packs (45 Meal Boxes)',
+        pickupLine: 'Pickup Window: Today before 11:55 PM • Gate Pass Code: #4609',
+        gatePass: '#4609',
+        restaurantAddress: 'MM Alam Road, Lahore',
+        restaurantReply: 'Batch packed and sealed. Coordinator may arrive at rear service entrance.',
+        dispatchedUnit: null
+      });
+
+      activeAlertFilter = 'all';
+      updateFilterButtonsAndCounters();
+      renderAlertsFeed();
+      showToast(`Real-time alert received: #REQ-${simCounter} accepted!`);
+    }
+
+    // Initialize Page
+    updateFilterButtonsAndCounters();
+    renderAlertsFeed();
+  </script>
+</body>
+</html>
