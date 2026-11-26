@@ -2,7 +2,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:caregrid_mobile/features/beneficiary/presentation/state/booking_demo_store.dart';
 import 'package:caregrid_mobile/features/complaints_feedback/presentation/state/complaint_demo_store.dart';
 import 'package:caregrid_mobile/features/complaints_feedback/presentation/state/feedback_demo_store.dart';
-import 'package:caregrid_mobile/features/chatbot/presentation/state/chat_demo_store.dart';
 
 void main() {
   test('booking is shared across create, reschedule and cancel', () {
@@ -58,7 +57,6 @@ void main() {
   });
 
   test('chat history contains messages actually sent to the demo bot', () {
-    final store = ChatDemoStore();
     final id = store.startSession();
     store.addMessage(id, sender: 'user', text: 'How do I book a test?');
     store.addMessage(id, sender: 'ai', text: 'Browse the labs tab.');
