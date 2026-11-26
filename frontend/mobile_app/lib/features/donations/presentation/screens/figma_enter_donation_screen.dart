@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../../core/widgets/caregrid_brand.dart';
 import '../../../../app/theme/caregrid_theme.dart';
 
 void main() {
@@ -115,6 +116,8 @@ class _EnterDonationScreenState extends State<EnterDonationScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: const [
+                    CareGridBrandStrip(compact: true),
+                    SizedBox(height: 10),
                     Text(
                       'CareGrid | Enter Donation',
                       style: TextStyle(

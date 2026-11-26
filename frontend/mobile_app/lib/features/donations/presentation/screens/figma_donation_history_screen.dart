@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../../core/widgets/caregrid_brand.dart';
 import '../../../../app/theme/caregrid_theme.dart';
 
 void main() {
@@ -177,6 +178,8 @@ class _DonationHistoryScreenState extends State<DonationHistoryScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    const CareGridBrandStrip(compact: true),
+                    const SizedBox(height: 10),
                     Row(
                       children: [
                         InkWell(

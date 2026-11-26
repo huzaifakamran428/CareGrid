@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../../core/widgets/caregrid_brand.dart';
 import '../../../../app/theme/caregrid_theme.dart';
 import 'package:flutter/services.dart';
 
@@ -202,6 +203,8 @@ class _SecureCheckoutScreenState extends State<SecureCheckoutScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    const CareGridBrandStrip(compact: true),
+                    const SizedBox(height: 10),
                     Row(
                       children: [
                         InkWell(

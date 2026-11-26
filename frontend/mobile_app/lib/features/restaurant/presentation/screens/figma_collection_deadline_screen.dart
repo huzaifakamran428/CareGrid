@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../../core/widgets/caregrid_brand.dart';
 import '../../../../app/theme/caregrid_theme.dart';
 import 'package:intl/intl.dart';
 
@@ -111,6 +112,8 @@ class _CollectionDeadlineScreenState extends State<CollectionDeadlineScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: const [
+                  CareGridBrandStrip(compact: true),
+                  SizedBox(height: 10),
                   Text(
                     'Collection Deadline',
                     style: TextStyle(

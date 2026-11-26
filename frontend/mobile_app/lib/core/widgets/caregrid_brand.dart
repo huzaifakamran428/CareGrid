@@ -28,7 +28,7 @@ class CareGridBrandStrip extends StatelessWidget {
           child: ClipRRect(
             borderRadius: BorderRadius.circular(compact ? 8 : 10),
             child: Image.asset(
-              'assets/images/caregrid_logo.jpg',
+              'assets/images/caregrid_logo.png',
               fit: BoxFit.contain,
               errorBuilder: (context, _, __) => const Icon(
                 Icons.favorite_outline_rounded, color: CareGridPalette.primary),

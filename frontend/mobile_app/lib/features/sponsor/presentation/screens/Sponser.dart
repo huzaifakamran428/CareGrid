@@ -1,9 +1,7 @@
 // CareGrid - Donation Module (single file)
 // Flow: Donate (NGO + cause) -> Amount -> Secure Checkout -> Success -> History
-// Koi extra package ya asset setup nahi chahiye: logo isi file mein embedded hai.
+// The logo is loaded from the shared CareGrid asset.
 
-import 'dart:convert';
-import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import '../../../../app/theme/caregrid_theme.dart';
@@ -248,7 +246,6 @@ void startNewDonation(BuildContext context) {
 // ============================================================================
 // SHARED WIDGETS
 // ============================================================================
-final Uint8List kLogoBytes = base64Decode(_kLogoBase64);
 
 class CareGridLogo extends StatelessWidget {
   const CareGridLogo({super.key, this.size = 40});
@@ -265,8 +262,8 @@ class CareGridLogo extends StatelessWidget {
         color: const Color(0xFFF7FAF8),
         borderRadius: BorderRadius.circular(size * 0.26),
       ),
-      child: Image.memory(
-        kLogoBytes,
+      child: Image.asset(
+        'assets/images/caregrid_logo.png',
         fit: BoxFit.contain,
         filterQuality: FilterQuality.medium,
         semanticLabel: 'CareGrid logo',

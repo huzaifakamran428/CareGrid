@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../../core/widgets/caregrid_brand.dart';
 import '../../../../app/theme/caregrid_theme.dart';
 
 void main() {
@@ -157,6 +158,8 @@ class _SurplusFoodQuantityScreenState extends State<SurplusFoodQuantityScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: const [
+                    CareGridBrandStrip(compact: true),
+                    SizedBox(height: 10),
                     Text(
                       'Surplus Food Quantity',
                       style: TextStyle(
