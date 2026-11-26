@@ -8,6 +8,7 @@ urlpatterns = [
     path('preview-files/<path:file_path>', preview_views.file, name='preview_file'),
     path('membership/', membership_views.dashboard, name='membership_dashboard'),
     path('membership/register/', membership_views.register, name='membership_register'),
+    path('membership/documents/<int:pk>/', membership_views.download_document, name='membership_document'),
     path('membership/<int:pk>/renew/', membership_views.renew, name='membership_renew'),
     path('sponsor/', sponsor_views.dashboard, name='sponsor_dashboard'),
     path('sponsor/donate/', sponsor_views.donate, name='sponsor_donate'),

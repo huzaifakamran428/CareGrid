@@ -6,10 +6,21 @@
   <div class="d-flex flex-wrap justify-content-between align-items-center mb-4">
     <div>
       <h3 class="fw-bold mb-1">NGO Welfare &amp; Subsidy Pool Console</h3>
-      <p class="text-muted small mb-0">Al-Khidmat Foundation • Beneficiary verification, pool allocation &amp; partner settlements</p>
+      <p class="text-muted small mb-0">{{ membership.name }} • Beneficiary verification, pool allocation &amp; partner settlements</p>
     </div>
     <span class="badge badge-active px-3 py-2 rounded-pill"><i class="bi bi-check-circle-fill me-1"></i>Verified NGO Partner</span>
   </div>
+  <section class="cg-card p-3 p-lg-4 mb-4" aria-label="Your NGO license">
+    <div class="d-flex flex-wrap align-items-center justify-content-between gap-3">
+      <div><div class="cg-label"><i class="bi bi-shield-check me-1"></i>Your NGO membership</div>
+        <h2 class="h5 fw-bold mb-1">{{ membership.plan_label }}</h2>
+        <span class="badge {% if membership.days_left <= 7 %}badge-authorized{% else %}badge-active{% endif %}">{{ membership.status }} · Active</span>
+        <p class="small text-muted mb-0 mt-2">Expires {{ membership.expires_on|date:"d M Y" }} (access ends on this date).</p>
+      </div>
+      <div class="cg-mint-box p-3 text-center" aria-live="polite"><div class="fs-2 fw-bold" style="color:var(--cg-primary-dark)">{{ membership.days_left }}</div><div class="small fw-semibold">Days remaining</div></div>
+    </div>
+    {% if membership.days_left <= 7 %}<p class="cg-amber-box p-2 mt-3 mb-0 small">Your membership is ending soon. Contact the Membership Administrator to continue access.</p>{% else %}<p class="small text-muted mt-3 mb-0">Contact the Membership Administrator to {% if membership.plan == "Trial" %}activate your yearly license{% else %}renew your license{% endif %}.</p>{% endif %}
+  </section>
   <div class="row g-3 mb-4">
     <div class="col-md-3"><div class="cg-card p-3"><div class="cg-label">Active Beneficiaries</div><h3 class="fw-bold mb-0">1,428</h3></div></div>
     <div class="col-md-3"><div class="cg-card p-3"><div class="cg-label">Available Subsidy Pool</div><h3 class="fw-bold text-success mb-0">PKR 2.45M</h3></div></div>

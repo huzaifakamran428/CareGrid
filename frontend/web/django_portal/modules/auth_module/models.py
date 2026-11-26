@@ -15,3 +15,18 @@ class DemoNgoMembership(models.Model):
     @property
     def status(self):
         return self.plan if self.active else "Expired"
+
+    @property
+    def days_left(self):
+        return max(0, (self.expires_on - timezone.localdate()).days)
+
+    @property
+    def plan_label(self):
+        return "One-month free trial" if self.plan == "Trial" else "Yearly license"
+
+
+class DemoNgoDocument(models.Model):
+    membership = models.ForeignKey(DemoNgoMembership, on_delete=models.CASCADE, related_name="documents")
+    category = models.CharField(max_length=40)
+    filename = models.CharField(max_length=255)
+    content = models.BinaryField()

@@ -2,7 +2,9 @@ from datetime import date
 from django.test import TestCase
 from django.urls import reverse
 from .demo_memberships import add_months
-from .models import DemoNgoMembership
+from .models import DemoNgoMembership, DemoNgoDocument
+from django.core.files.uploadedfile import SimpleUploadedFile
+from django.utils import timezone
 
 class DemoFlowTests(TestCase):
     def login(self, email, password):
@@ -44,3 +46,39 @@ class DemoFlowTests(TestCase):
         self.client.post(reverse("sponsor_donate"), {"ngo": ngo.pk, "amount": "1000", "cause": "Healthcare"})
         self.assertEqual(len(self.client.session["cg_demo_receipts"]), 1)
         self.assertEqual(self.client.get(reverse("user_management")).status_code, 403)
+
+    def test_ngo_license_and_document_visibility(self):
+        self.login("membership@caregrid.example", "Member@123")
+        self.client.post(reverse("membership_register"), {
+            "name": "Document NGO", "email": "docs@caregrid.example", "password": "Example123",
+            "registration_certificate": SimpleUploadedFile("sample.pdf", b"%PDF-1.4\nfictional demo"),
+        })
+        ngo = DemoNgoMembership.objects.get(email="docs@caregrid.example")
+        document = ngo.documents.get()
+        self.assertEqual(ngo.days_left, (ngo.expires_on - timezone.localdate()).days)
+        self.assertEqual(self.client.get(reverse("membership_document", args=[document.pk])).content, b"%PDF-1.4\nfictional demo")
+        self.client.get(reverse("web_logout"))
+        self.login(ngo.email, "Example123")
+        page = self.client.get(reverse("ngo_dashboard"))
+        self.assertContains(page, "One-month free trial")
+        self.assertContains(page, "Days remaining")
+        self.assertContains(page, "Document NGO")
+        self.assertEqual(self.client.get(reverse("membership_document", args=[document.pk])).status_code, 403)
+        self.client.get(reverse("web_logout"))
+        self.login("admin@caregrid.org", "Admin@123")
+        self.assertEqual(self.client.get(reverse("membership_document", args=[document.pk])).status_code, 403)
+        self.assertNotContains(self.client.get(reverse("user_management")), "Days remaining")
+        self.client.get(reverse("web_logout"))
+        self.login("membership@caregrid.example", "Member@123")
+        self.client.post(reverse("membership_renew", args=[ngo.pk]))
+        self.client.get(reverse("web_logout"))
+        self.login(ngo.email, "Example123")
+        self.assertContains(self.client.get(reverse("ngo_dashboard")), "Yearly license")
+
+    def test_bad_document_rejected(self):
+        self.login("membership@caregrid.example", "Member@123")
+        self.client.post(reverse("membership_register"), {
+            "name": "Invalid", "email": "bad-doc@caregrid.example", "password": "Example123",
+            "registration_certificate": SimpleUploadedFile("fake.pdf", b"not a pdf"),
+        })
+        self.assertFalse(DemoNgoMembership.objects.filter(email="bad-doc@caregrid.example").exists())

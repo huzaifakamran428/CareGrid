@@ -12,20 +12,25 @@
     <section class="col-lg-4"><div class="cg-card p-4">
       <h2 class="h5 fw-bold">Register NGO</h2>
       <p class="small text-muted">Fictional data only. The trial begins immediately. Share the assigned password with your demo user.</p>
-      <form method="post" action="{% url 'membership_register' %}">
+      <form method="post" enctype="multipart/form-data" action="{% url 'membership_register' %}">
         {% csrf_token %}
         <label class="cg-label" for="ngo-name">Organization</label><input class="form-control form-control-cg mb-3" id="ngo-name" name="name" maxlength="160" required>
         <label class="cg-label" for="ngo-email">Demo email</label><input class="form-control form-control-cg mb-3" id="ngo-email" type="email" name="email" required>
         <label class="cg-label" for="ngo-pass">Temporary password</label><input class="form-control form-control-cg mb-3" id="ngo-pass" type="password" name="password" minlength="8" maxlength="128" required>
+        <h3 class="h6 fw-bold mt-3">Registration documents</h3>
+        <p class="small text-muted">Optional for this demo. PDF, PNG or JPEG, up to 5 MB each. Use fictional files only.</p>
+        <label class="cg-label" for="ngo-cert">NGO registration certificate</label><input class="form-control form-control-cg mb-3" id="ngo-cert" name="registration_certificate" type="file" accept=".pdf,.png,.jpg,.jpeg">
+        <label class="cg-label" for="ngo-id">Authorized representative ID</label><input class="form-control form-control-cg mb-3" id="ngo-id" name="representative_id" type="file" accept=".pdf,.png,.jpg,.jpeg">
+        <label class="cg-label" for="ngo-support">Supporting document (address / authorization)</label><input class="form-control form-control-cg mb-3" id="ngo-support" name="supporting_document" type="file" accept=".pdf,.png,.jpg,.jpeg">
         <button class="btn btn-cg-primary w-100">Start free trial</button>
       </form>
     </div></section>
     <section class="col-lg-8"><div class="cg-card p-4">
       <h2 class="h5 fw-bold">License registry</h2>
       <p class="small text-muted">One calendar month free; annual access adds 12 calendar months. Expired accounts cannot sign in. Renewals preserve unused time. No real payment is processed.</p>
-      <div class="table-responsive"><table class="table align-middle"><thead><tr><th>NGO / login</th><th>Status</th><th>Expires</th><th>Action</th></tr></thead><tbody>
+      <div class="table-responsive"><table class="table align-middle"><thead><tr><th>NGO / login</th><th>Status</th><th>Expires</th><th>Documents</th><th>Action</th></tr></thead><tbody>
       {% for item in memberships %}
-        <tr><td><strong>{{ item.name }}</strong><br><small>{{ item.email }}</small></td><td><span class="badge {% if item.active %}badge-active{% else %}badge-suspended{% endif %}">{{ item.status }}</span></td><td>{{ item.expires_on|date:"d M Y" }}</td><td>
+        <tr><td><strong>{{ item.name }}</strong><br><small>{{ item.email }}</small></td><td><span class="badge {% if item.active %}badge-active{% else %}badge-suspended{% endif %}">{{ item.status }}</span></td><td>{{ item.expires_on|date:"d M Y" }}</td><td>{% for document in item.documents.all %}<a class="d-block small text-break" href="{% url 'membership_document' document.pk %}">{{ document.category }}: {{ document.filename }}</a>{% empty %}<span class="small text-muted">None</span>{% endfor %}</td><td>
         <form method="post" action="{% url 'membership_renew' item.pk %}">{% csrf_token %}<button class="btn btn-cg-outline btn-sm">{% if item.plan == "Trial" %}Activate annual{% else %}Renew annual{% endif %}</button></form>
         </td></tr>
       {% endfor %}
