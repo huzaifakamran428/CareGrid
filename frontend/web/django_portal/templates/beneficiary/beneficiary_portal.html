@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}CareGrid — Beneficiary Welfare Portal{% endblock %}
+{% block content %}
+<div class="container py-4">
+  <div class="cg-card p-4 mb-4 text-white" style="background: linear-gradient(135deg, #075A50, #087C69);">
+    <div class="d-flex flex-wrap justify-content-between align-items-center gap-3">
+      <div>
+        <span class="badge bg-warning text-dark fw-bold mb-2">VERIFIED DIGITAL WELFARE PASS</span>
+        <h3 class="fw-bold mb-1">Ayesha Bibi</h3>
+        <div class="small opacity-75">Digital ID: <strong>CG-BEN-2026-009481</strong> • CNIC: 35202-8492014-6</div>
+      </div>
+      <div class="text-md-end">
+        <div class="small opacity-75">Sponsoring NGO</div>
+        <div class="fw-bold fs-5">Al-Khidmat Foundation</div>
+        <span class="badge bg-light text-dark mt-1">80% Pharmacy &amp; Lab Subsidy Active</span>
+      </div>
+    </div>
+  </div>
+  <div class="row g-3">
+    <div class="col-md-4"><div class="cg-card p-3"><div class="cg-label">Remaining Monthly Limit</div><h4 class="fw-bold text-success mb-0">PKR 4,200 / 5,000</h4></div></div>
+    <div class="col-md-4"><div class="cg-card p-3"><div class="cg-label">Active Prescriptions</div><h4 class="fw-bold mb-0">1 Verified Rx</h4></div></div>
+    <div class="col-md-4"><div class="cg-card p-3"><div class="cg-label">Diagnostic Reports</div><h4 class="fw-bold mb-0">1 Report Ready</h4></div></div>
+  </div>
+</div>
+{% endblock %}

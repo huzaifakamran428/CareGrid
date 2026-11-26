@@ -11,7 +11,7 @@ void main() {
       tester.view.resetDevicePixelRatio();
     });
 
-    await tester.pumpWidget(const CareGridApp());
+    await tester.pumpWidget(const CareGridApp(startAuthenticated: true));
     await tester.pumpAndSettle();
 
     await tester.tap(find.text('Labs').last);
@@ -43,7 +43,7 @@ void main() {
       tester.view.resetDevicePixelRatio();
     });
 
-    await tester.pumpWidget(const CareGridApp());
+    await tester.pumpWidget(const CareGridApp(startAuthenticated: true));
     await tester.pumpAndSettle();
     await tester.tap(find.text('Support').last);
     await tester.pumpAndSettle();

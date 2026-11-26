@@ -165,7 +165,7 @@ class _PrescriptionUploadScreenState extends State<PrescriptionUploadScreen> {
                         _buildUploadSelectorCard(),
                         const SizedBox(height: 18),
 
-                        // AI OCR Digitized Result Card
+                        // Prescription Scan Digitized Result Card
                         if (_isScanning)
                           _buildScanningLoaderCard()
                         else if (_hasActiveScanPreview) ...[
@@ -293,7 +293,7 @@ class _PrescriptionUploadScreenState extends State<PrescriptionUploadScreen> {
           ),
           const SizedBox(height: 4),
           const Text(
-            'Demo only: these buttons show sample data. File picking, upload and AI OCR will work after backend integration.',
+            'Demo only: these buttons show sample data. File picking, upload and Prescription Scan will work after backend integration.',
             style: TextStyle(
               color: _mutedText,
               fontSize: 12,
@@ -367,7 +367,7 @@ class _PrescriptionUploadScreenState extends State<PrescriptionUploadScreen> {
           CircularProgressIndicator(color: _primaryGreen, strokeWidth: 3),
           SizedBox(height: 12),
           Text(
-            'Extracting Medicine Details via AI OCR...',
+            'Extracting Medicine Details via Prescription Scan...',
             style: TextStyle(
               color: _darkForestText,
               fontSize: 13.5,

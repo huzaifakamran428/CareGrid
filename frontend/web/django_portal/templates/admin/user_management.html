@@ -1,0 +1,422 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Admin Console — System Overview, Access Control &amp; Registries{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-3 px-lg-4">
+  {% if messages %}
+    {% for message in messages %}
+      <div class="alert alert-success alert-dismissible fade show rounded-3 mb-3">
+        {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+      </div>
+    {% endfor %}
+  {% endif %}
+
+  <!-- Clean Admin Sub-Navigation Bar (Matching Exact Emerald/Amber Palette) -->
+  <div class="cg-card p-3 mb-3 d-flex flex-wrap justify-content-between align-items-center gap-2">
+    <div class="d-flex flex-wrap gap-2" role="tablist">
+      <button class="btn {% if active_tab == 'dashboard' %}btn-cg-primary{% else %}btn-cg-outline{% endif %} btn-sm px-3"
+              data-bs-toggle="tab" data-bs-target="#tabDashboard" type="button">
+        <i class="bi bi-speedometer2 me-1"></i> Central System Overview
+      </button>
+      <button class="btn {% if active_tab == 'users' or not active_tab %}btn-cg-primary{% else %}btn-cg-outline{% endif %} btn-sm px-3"
+              data-bs-toggle="tab" data-bs-target="#tabUsers" type="button">
+        <i class="bi bi-people-fill me-1"></i> Account &amp; Role Control
+      </button>
+      <button class="btn {% if active_tab == 'beneficiaries' %}btn-cg-primary{% else %}btn-cg-outline{% endif %} btn-sm px-3"
+              data-bs-toggle="tab" data-bs-target="#tabBeneficiaries" type="button">
+        <i class="bi bi-person-vcard-fill me-1"></i> Beneficiary Registry
+      </button>
+      <button class="btn {% if active_tab == 'food' %}btn-cg-primary{% else %}btn-cg-outline{% endif %} btn-sm px-3"
+              data-bs-toggle="tab" data-bs-target="#tabFood" type="button">
+        <i class="bi bi-box2-heart-fill me-1"></i> Surplus Food Tracking
+      </button>
+    </div>
+    <span class="badge badge-active px-3 py-2 rounded-pill">
+      <i class="bi bi-circle-fill me-1" style="font-size: 0.55rem;"></i> Live DB Sync: 12:46
+    </span>
+  </div>
+
+  <div class="tab-content">
+    <!-- TAB 1: Central System Overview -->
+    <div class="tab-pane fade {% if active_tab == 'dashboard' %}show active{% endif %}" id="tabDashboard">
+      <div class="cg-card p-4">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <h5 class="fw-bold mb-0">CareGrid Platform Live Metrics</h5>
+          <span class="badge badge-active px-3 py-2 rounded-pill">Live DB Sync: 12:46</span>
+        </div>
+
+        <div class="row g-3 mb-4">
+          <div class="col-6 col-md">
+            <div class="p-3 rounded-3 border h-100" style="border-color: var(--cg-mint-border) !important;">
+              <div class="cg-label">Beneficiaries</div>
+              <div class="fs-3 fw-bold">14,820</div>
+              <small class="text-success fw-semibold">+312 this week</small>
+            </div>
+          </div>
+          <div class="col-6 col-md">
+            <div class="p-3 rounded-3 border h-100" style="border-color: var(--cg-mint-border) !important;">
+              <div class="cg-label">Organizations</div>
+              <div class="fs-3 fw-bold">148</div>
+              <small class="text-muted">NGOs, Pharm, Rest.</small>
+            </div>
+          </div>
+          <div class="col-6 col-md">
+            <div class="p-3 rounded-3 border h-100" style="border-color: var(--cg-mint-border) !important;">
+              <div class="cg-label">Food Meals</div>
+              <div class="fs-3 fw-bold">38,490</div>
+              <small class="fw-semibold" style="color: #B4690E;">96.4% Distributed</small>
+            </div>
+          </div>
+          <div class="col-6 col-md">
+            <div class="p-3 rounded-3 border h-100" style="border-color: var(--cg-mint-border) !important;">
+              <div class="cg-label">Sponsors</div>
+              <div class="fs-3 fw-bold">612</div>
+              <small class="text-success fw-semibold">$84.2K Funded</small>
+            </div>
+          </div>
+          <div class="col-12 col-md">
+            <div class="p-3 rounded-3 border h-100" style="border-color: var(--cg-mint-border) !important;">
+              <div class="cg-label">Healthcare</div>
+              <div class="fs-3 fw-bold">5,290</div>
+              <small class="text-muted">Meds &amp; Lab Tests</small>
+            </div>
+          </div>
+        </div>
+
+        <div class="row g-4">
+          <div class="col-lg-7">
+            <div class="p-3 rounded-3 border h-100" style="border-color: var(--cg-mint-border) !important;">
+              <h6 class="fw-bold mb-3">Cross-Platform Welfare Delivery (Jun – Nov 2026)</h6>
+              <svg viewBox="0 0 500 175" class="w-100" style="max-height: 210px;">
+                <line x1="30" y1="30" x2="470" y2="30" stroke="#E5EFEA" stroke-width="1"/>
+                <line x1="30" y1="70" x2="470" y2="70" stroke="#E5EFEA" stroke-width="1"/>
+                <line x1="30" y1="110" x2="470" y2="110" stroke="#E5EFEA" stroke-width="1"/>
+                <line x1="30" y1="145" x2="470" y2="145" stroke="#D3E4DC" stroke-width="1.5"/>
+                <polyline fill="none" stroke="#087C69" stroke-width="3.5" points="45,132 125,112 205,118 285,84 365,64 445,34"/>
+                <circle cx="45" cy="132" r="5" fill="#087C69"/>
+                <circle cx="125" cy="112" r="5" fill="#087C69"/>
+                <circle cx="205" cy="118" r="5" fill="#087C69"/>
+                <circle cx="285" cy="84" r="5" fill="#087C69"/>
+                <circle cx="365" cy="64" r="5" fill="#087C69"/>
+                <circle cx="445" cy="34" r="6" fill="#E3A33B" stroke="#087C69" stroke-width="2"/>
+                <text x="36" y="165" font-size="11" fill="#58746D">Jun</text>
+                <text x="116" y="165" font-size="11" fill="#58746D">Jul</text>
+                <text x="196" y="165" font-size="11" fill="#58746D">Aug</text>
+                <text x="276" y="165" font-size="11" fill="#58746D">Sep</text>
+                <text x="356" y="165" font-size="11" fill="#58746D">Oct</text>
+                <text x="436" y="165" font-size="11" font-weight="bold" fill="#173D37">Nov</text>
+              </svg>
+              <div class="cg-mint-box py-2 px-3 text-center small fw-semibold mt-2" style="color: var(--cg-primary);">
+                Auto-refreshed from System Transaction &amp; Beneficiary Records
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-5">
+            <div class="p-3 rounded-3 border h-100 d-flex flex-column justify-content-between" style="border-color: var(--cg-mint-border) !important;">
+              <div>
+                <h6 class="fw-bold mb-3">Live Activity Stream</h6>
+                <div class="d-grid gap-2 mb-3">
+                  <div class="cg-mint-box p-3">
+                    <div class="fw-bold small">Healthcare Aid Verified</div>
+                    <div class="text-muted small">Insulin Dispensed • #CG-8841</div>
+                  </div>
+                  <div class="cg-mint-box p-3">
+                    <div class="fw-bold small">Food Batch Redistributed</div>
+                    <div class="text-muted small">120 Meals • Al-Khidmat NGO</div>
+                  </div>
+                  <div class="cg-mint-box p-3">
+                    <div class="fw-bold small">Sponsor Pledge Cleared</div>
+                    <div class="text-muted small">$500.00 • Apex Corp</div>
+                  </div>
+                </div>
+              </div>
+              <button type="button" class="btn btn-cg-primary w-100" data-bs-toggle="tab" data-bs-target="#tabUsers">
+                View Full Audit Trail <i class="bi bi-arrow-right ms-1"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 2: Account & Role Control -->
+    <div class="tab-pane fade {% if active_tab == 'users' or not active_tab %}show active{% endif %}" id="tabUsers">
+      <div class="cg-card p-4">
+        <div class="row g-2 align-items-center mb-4">
+          <div class="col-md-7">
+            <div class="input-group">
+              <span class="input-group-text bg-white border-end-0" style="border-color: #D3E4DC; border-radius: 12px 0 0 12px;">
+                <i class="bi bi-search text-muted"></i>
+              </span>
+              <input type="text" id="userSearchInput" class="form-control form-control-cg border-start-0"
+                     placeholder="Search user name, email, organization or role..." onkeyup="filterUsersTable()">
+            </div>
+          </div>
+
+          <div class="col-md-3">
+            <select id="roleFilterSelect" class="form-select form-select-cg" onchange="filterUsersTable()">
+              <option value="">Role: All Roles</option>
+              <option value="NGO Admin">NGO Admin</option>
+              <option value="Pharmacy">Pharmacy</option>
+              <option value="Lab">Diagnostic Lab</option>
+              <option value="Volunteer">Volunteer</option>
+              <option value="Restaurant">Restaurant</option>
+              <option value="Beneficiary">Beneficiary</option>
+            </select>
+          </div>
+
+          <div class="col-md-2">
+            <button type="button" class="btn btn-cg-primary w-100" data-bs-toggle="modal" data-bs-target="#authorizeUserModal">
+              <i class="bi bi-plus-lg me-1"></i> Authorize User
+            </button>
+          </div>
+        </div>
+
+        <div class="table-responsive rounded-3 border mb-4" style="border-color: var(--cg-mint-border) !important;">
+          <table class="table align-middle mb-0" id="usersAccessTable">
+            <thead style="background-color: var(--cg-primary); color: #FFFFFF;">
+              <tr>
+                <th class="py-3 ps-4">User / Organization</th>
+                <th class="py-3">Role</th>
+                <th class="py-3">Account Status</th>
+                <th class="py-3 text-end pe-4">Access Control Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for u in users_list %}
+              <tr data-role="{{ u.role }}">
+                <td class="ps-4 py-3">
+                  <div class="fw-bold">{{ u.name }}</div>
+                  <small class="text-muted">{{ u.email }} • ID: {{ u.code }}</small>
+                </td>
+                <td class="text-muted fw-medium">{{ u.role }}</td>
+                <td>
+                  {% if u.status == 'ACTIVE' %}
+                    <span class="badge badge-active px-3 py-2 rounded-2">ACTIVE ✓</span>
+                  {% elif u.status == 'AUTHORIZED' %}
+                    <span class="badge badge-authorized px-3 py-2 rounded-2">AUTHORIZED</span>
+                  {% else %}
+                    <span class="badge badge-suspended px-3 py-2 rounded-2">SUSPENDED</span>
+                  {% endif %}
+                </td>
+                <td class="text-end pe-4">
+                  <form method="POST" action="{% url 'toggle_user_status' u.id %}" class="d-inline">
+                    {% csrf_token %}
+                    {% if u.status == 'ACTIVE' %}
+                      <button type="submit" name="action" value="suspend" class="btn btn-sm px-3 fw-semibold"
+                              style="background: var(--cg-danger-bg); color: var(--cg-danger); border: 1px solid var(--cg-danger-border); border-radius: 8px;">
+                        Suspend Account
+                      </button>
+                    {% elif u.status == 'AUTHORIZED' %}
+                      <button type="submit" name="action" value="activate" class="btn btn-sm btn-cg-primary px-3">
+                        Activate Account ✓
+                      </button>
+                    {% else %}
+                      <button type="submit" name="action" value="reactivate" class="btn btn-sm px-3 fw-semibold text-white"
+                              style="background: #132A1E; border-radius: 8px;">
+                        Re-Activate Access
+                      </button>
+                    {% endif %}
+                  </form>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+
+        <div class="cg-mint-box p-3">
+          <div class="fw-bold small mb-2" style="color: var(--cg-primary);">
+            <i class="bi bi-check-lg me-1"></i> Immutable Account Change Log (Accountability &amp; Traceability)
+          </div>
+          <ul class="list-unstyled small mb-0 text-muted d-grid gap-1">
+            {% for log in audit_logs %}
+              <li>• [{{ log.timestamp }}] {{ log.message }}</li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 3: Beneficiary Registry -->
+    <div class="tab-pane fade {% if active_tab == 'beneficiaries' %}show active{% endif %}" id="tabBeneficiaries">
+      <div class="cg-card p-4">
+        <div class="row g-4">
+          <div class="col-lg-7">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <h5 class="fw-bold mb-0">Registered Beneficiaries &amp; Digital IDs</h5>
+              <span class="text-muted small fw-semibold">14,820 Records</span>
+            </div>
+            <input type="text" id="benSearchInput" class="form-control form-control-cg mb-3"
+                   placeholder="Search by Beneficiary Name or Digital ID (CG-BID-...)..." onkeyup="filterBeneficiaries()">
+
+            <div class="d-grid gap-2" id="benRegistryList">
+              {% for b in beneficiaries %}
+              <div class="p-3 rounded-3 border d-flex justify-content-between align-items-center ben-row"
+                   style="border-color: var(--cg-mint-border) !important; cursor: pointer;"
+                   onclick="selectDossier('{{ b.name }}', '{{ b.digital_id }}', '{{ b.ngo }}', '{{ b.region }}', '{{ b.food_rations }}', '{{ b.vouchers }}')">
+                <div>
+                  <div class="fw-bold">{{ b.name }}</div>
+                  <small class="text-muted">NGO: {{ b.ngo }} • Status: {{ b.status }} ✓</small>
+                </div>
+                <span class="badge px-3 py-2 text-white" style="background-color: var(--cg-primary-dark);">ID: {{ b.digital_id }}</span>
+              </div>
+              {% endfor %}
+            </div>
+          </div>
+
+          <div class="col-lg-5">
+            <div class="p-4 rounded-4 border h-100" style="background: #FAFDFB; border-color: var(--cg-mint-border) !important;">
+              <div class="cg-label">Authorized Record Dossier</div>
+              <h4 class="fw-bold mb-3" id="dossierName">Ayesha Bibi</h4>
+
+              <div class="p-3 rounded-4 text-white mb-3 d-flex justify-content-between align-items-center"
+                   style="background: linear-gradient(135deg, #075A50, #087C69);">
+                <div>
+                  <div class="small fw-bold" style="color: var(--cg-amber);">CAREGRID DIGITAL ID</div>
+                  <div class="fs-5 fw-bold" id="dossierId">CG-BID-2026-0842</div>
+                  <small class="opacity-75">CNIC Verified • QR Active</small>
+                </div>
+                <div class="bg-white text-dark p-2 rounded-3">
+                  <i class="bi bi-qr-code fs-1"></i>
+                </div>
+              </div>
+
+              <div class="cg-mint-box p-3 small">
+                <div class="fw-bold mb-2">Authorized Assistance Profile</div>
+                <div class="mb-1">Sponsoring NGO: <strong id="dossierNgo">Al-Khidmat Care</strong></div>
+                <div class="mb-1">Region: <strong id="dossierRegion">Lahore, Punjab</strong></div>
+                <div class="mb-1">Food Rations Received: <strong id="dossierRations">6</strong></div>
+                <div class="mb-2">Medical Vouchers: <strong id="dossierVouchers">3 ($145 Aid)</strong></div>
+                <div class="text-success fw-semibold pt-2 border-top">✓ Audit Access Logged: Root Admin</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 4: Surplus Food Tracking -->
+    <div class="tab-pane fade {% if active_tab == 'food' %}show active{% endif %}" id="tabFood">
+      <div class="cg-card p-4">
+        <div class="d-flex flex-wrap align-items-center gap-2 mb-4">
+          <span class="fw-bold small me-2">Filter Status:</span>
+          <button type="button" class="btn btn-sm btn-cg-primary rounded-pill px-3" onclick="filterFood('ALL')">All (312)</button>
+          <button type="button" class="btn btn-sm btn-light border rounded-pill px-3" onclick="filterFood('REQUEST APPROVED')">Listed / Requested</button>
+          <button type="button" class="btn btn-sm btn-light border rounded-pill px-3" onclick="filterFood('PENDING DROP-OFF')">In Collection</button>
+          <button type="button" class="btn btn-sm btn-cg-outline rounded-pill px-3" onclick="filterFood('DISTRIBUTED')">Distributed ✓</button>
+        </div>
+
+        <div class="table-responsive rounded-3 border" style="border-color: var(--cg-mint-border) !important;">
+          <table class="table align-middle mb-0" id="foodLogsTable">
+            <thead style="background-color: var(--cg-primary); color: #FFFFFF;">
+              <tr>
+                <th class="py-3 ps-4">Batch ID &amp; Donor Listing</th>
+                <th class="py-3">Requesting NGO</th>
+                <th class="py-3">Collection</th>
+                <th class="py-3 text-end pe-4">Distribution Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for f in food_batches %}
+              <tr data-status="{{ f.status }}">
+                <td class="ps-4 py-3">
+                  <div class="fw-bold">{{ f.batch_id }} • {{ f.donor }}</div>
+                  <small class="text-muted">{{ f.listed }}</small>
+                </td>
+                <td class="fw-medium">{{ f.ngo }}</td>
+                <td class="fw-semibold">{{ f.collection }}</td>
+                <td class="text-end pe-4">
+                  {% if f.status == 'DISTRIBUTED' %}
+                    <span class="badge px-3 py-2 text-white" style="background-color: var(--cg-primary);">DISTRIBUTED ✓</span>
+                  {% elif f.status == 'PENDING DROP-OFF' %}
+                    <span class="badge px-3 py-2 text-dark" style="background-color: var(--cg-amber);">PENDING DROP-OFF</span>
+                  {% else %}
+                    <span class="badge px-3 py-2" style="background-color: #DBEAFE; color: #1E40AF;">REQUEST APPROVED</span>
+                  {% endif %}
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- + Authorize User Modal -->
+<div class="modal fade" id="authorizeUserModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content cg-card">
+      <div class="modal-header border-0 pb-0">
+        <h5 class="modal-title fw-bold" style="color: var(--cg-primary);">+ Authorize New Organization / User</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <form method="POST" action="{% url 'authorize_new_user' %}">
+        {% csrf_token %}
+        <div class="modal-body">
+          <div class="mb-3">
+            <label class="cg-label">Full Name or Organization Title *</label>
+            <input type="text" name="name" class="form-control form-control-cg" placeholder="e.g., Shifa Diagnostic Lab" required>
+          </div>
+          <div class="mb-3">
+            <label class="cg-label">Official Email *</label>
+            <input type="email" name="email" class="form-control form-control-cg" placeholder="admin@shifalab.pk" required>
+          </div>
+          <div class="mb-3">
+            <label class="cg-label">Assigned System Role *</label>
+            <select name="role" class="form-select form-select-cg" required>
+              <option value="NGO Admin">NGO Admin</option>
+              <option value="Pharmacy">Partner Pharmacy</option>
+              <option value="Lab">Diagnostic Lab</option>
+              <option value="Restaurant">Restaurant Partner</option>
+              <option value="Volunteer">Volunteer</option>
+            </select>
+          </div>
+        </div>
+        <div class="modal-footer border-0 pt-0">
+          <button type="button" class="btn btn-cg-outline" data-bs-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-cg-primary">Authorize &amp; Log Action</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  function filterUsersTable() {
+    const query = document.getElementById('userSearchInput').value.toLowerCase();
+    const role = document.getElementById('roleFilterSelect').value;
+    document.querySelectorAll('#usersAccessTable tbody tr').forEach(row => {
+      const text = row.innerText.toLowerCase();
+      const rowRole = row.getAttribute('data-role') || '';
+      row.style.display = (text.includes(query) && (!role || rowRole === role)) ? '' : 'none';
+    });
+  }
+  function filterBeneficiaries() {
+    const q = document.getElementById('benSearchInput').value.toLowerCase();
+    document.querySelectorAll('#benRegistryList .ben-row').forEach(el => {
+      el.style.display = el.innerText.toLowerCase().includes(q) ? '' : 'none';
+    });
+  }
+  function selectDossier(name, id, ngo, region, rations, vouchers) {
+    document.getElementById('dossierName').innerText = name;
+    document.getElementById('dossierId').innerText = id;
+    document.getElementById('dossierNgo').innerText = ngo;
+    document.getElementById('dossierRegion').innerText = region;
+    document.getElementById('dossierRations').innerText = rations;
+    document.getElementById('dossierVouchers').innerText = vouchers;
+  }
+  function filterFood(status) {
+    document.querySelectorAll('#foodLogsTable tbody tr').forEach(row => {
+      row.style.display = (status === 'ALL' || row.getAttribute('data-status') === status) ? '' : 'none';
+    });
+  }
+</script>
+{% endblock %}
