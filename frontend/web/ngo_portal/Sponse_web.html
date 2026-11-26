@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CareGrid — NGO Funds &amp; Admin Payment Audit</title>
+  <link rel="icon" type="image/png" href="data:image/png;base64,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" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    *,:after,:before{box-sizing:border-box;border:0 solid #e5e7eb}
+    html{line-height:1.5;-webkit-text-size-adjust:100%;font-family:Inter,system-ui,-apple-system,'Segoe UI',sans-serif}
+    body{margin:0;background:#F4F7F5;color:#1F2937;min-height:100vh}
+    button,input,select{font:inherit;color:inherit;margin:0;padding:0}
+    button,select{cursor:pointer}
+    section[id]{scroll-margin-top:16px}
+  </style>
+</head>
+<body class="min-h-screen">
+  <header style="background:#0F4D36;color:#FFFFFF;box-shadow:0 1px 2px rgba(0,0,0,.05)">
+    <div style="max-width:1440px;margin:0 auto;padding:16px 24px;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px">
+      <div style="display:flex;align-items:center;gap:12px;min-width:0">
+        <div style="width:44px;height:44px;flex-shrink:0;border-radius:12px;background:#F4F9F2;padding:4px;display:flex;align-items:center;justify-content:center">
+          <img src="data:image/png;base64,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" alt="CareGrid logo" style="width:100%;height:100%;object-fit:contain" />
+        </div>
+        <div>
+          <h1 style="margin:0;font-size:18px;font-weight:700;letter-spacing:-0.02em;line-height:1.3">CareGrid Web Portal — NGO Funds &amp; Admin Payment Audit</h1>
+          <p style="margin:2px 0 0;font-size:12px;color:#D1FAE5">Category Fund Analytics, Monthly Trend &amp; External Gateway Audit</p>
+        </div>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;align-items:center;gap:8px;font-size:12px;font-weight:700">
+        <span style="padding:6px 12px;border-radius:9999px;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2)">DP-05 • NGO FUNDS</span>
+        <span style="padding:6px 12px;border-radius:10px;background:#F59E0B;color:#111827">GATEWAY AUDIT</span>
+      </div>
+    </div>
+  </header>
+
+  <main style="max-width:1440px;margin:0 auto;padding:20px 24px;display:flex;flex-direction:column;gap:20px">
+    <!-- Filter & KPI Strip -->
+    <section style="background:#FFFFFF;border:1px solid #E5E7EB;border-radius:12px;padding:14px;box-shadow:0 1px 2px rgba(0,0,0,.05);display:flex;flex-direction:column;gap:12px">
+      <div style="display:flex;flex-wrap:wrap;gap:10px;align-items:center">
+        <input id="searchInput" type="search" aria-label="Search NGOs, transactions, donors or categories" placeholder="Search transaction ID, donor/volunteer, NGO or welfare category..."
+          style="flex:1;min-width:220px;padding:8px 12px;font-size:14px;background:#FFFFFF;border:1px solid #0F4D36;border-radius:8px" />
+        <select id="categoryFilter" aria-label="Filter by welfare category"
+          style="padding:8px 12px;font-size:13px;font-weight:600;border-radius:8px;background:#0F4D36;color:#FFFFFF;border:1px solid #0F4D36">
+          <option value="all">Category: All</option>
+          <option value="Food Support">Food Support</option>
+          <option value="Healthcare">Healthcare</option>
+          <option value="Education">Education</option>
+        </select>
+        <select id="gatewayFilter" aria-label="Filter by payment status"
+          style="padding:8px 12px;font-size:13px;font-weight:600;border-radius:8px;background:#FFFFFF;color:#1F2937;border:1px solid #D1D5DB">
+          <option value="all">Gateway: All (248)</option>
+          <option value="Paid">Paid (246)</option>
+          <option value="Pending">Pending (2)</option>
+        </select>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:10px;font-size:12px;font-weight:700">
+        <span style="padding:6px 14px;border-radius:8px;background:#DCFCE7;border:1px solid #86EFAC;color:#0F4D36">Real-Time Gateway Sync ✓ • Gateway: ONLINE</span>
+        <span style="padding:6px 14px;border-radius:8px;background:#FEF3C7;border:1px solid #FCD34D;color:#92400E">Volunteer Platform Fee Policy: $0.00 Enforced</span>
+        <span id="auditStatsPill" style="padding:6px 14px;border-radius:8px;background:#DBEAFE;border:1px solid #93C5FD;color:#1E40AF">Gateway Success: 99.2% • Receipts: 100%</span>
+      </div>
+    </section>
+
+    <!-- Section 1: NGO Web Portal — Incoming Donations by Welfare Category -->
+    <section id="ngo-funds" style="background:#FFFFFF;border:1px solid #E5E7EB;border-radius:12px;box-shadow:0 1px 2px rgba(0,0,0,.05);overflow:hidden">
+      <div style="padding:14px 20px;background:#E9F7F0;border-bottom:1px solid rgba(15,77,54,0.2);display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px">
+        <div style="display:flex;align-items:center;gap:10px">
+          <img src="data:image/png;base64,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" alt="" style="width:32px;height:32px;flex-shrink:0;border-radius:8px;background:#FFFFFF;padding:2px" />
+          <div>
+            <h2 style="margin:0;font-size:15px;font-weight:700;color:#0F4D36">CareGrid NGO Web Portal — Incoming Donations by Welfare Category</h2>
+            <p style="margin:2px 0 0;font-size:12px;color:#6B7280">Net welfare funds, category distribution, contributor breakdown &amp; monthly trend</p>
+          </div>
+        </div>
+        <span style="padding:6px 12px;border-radius:8px;background:#FEF3C7;border:1px solid #FCD34D;color:#92400E;font-size:12px;font-weight:700">Real-Time Gateway Sync ✓</span>
+      </div>
+
+      <div style="padding:16px;display:flex;flex-direction:column;gap:16px">
+        <!-- Top 3-Card Row -->
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px">
+          <!-- Total Donations Received -->
+          <div style="padding:16px;border-radius:12px;background:#F2FBF6;border:1px solid #A7D7BE;display:flex;flex-direction:column;justify-content:space-between;gap:10px">
+            <div>
+              <p style="margin:0;font-size:11px;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;color:#0F4D36">TOTAL DONATIONS RECEIVED</p>
+              <p id="totalReceivedVal" style="margin:6px 0 2px;font-size:28px;font-weight:800;color:#0F4D36">$12,450.00</p>
+              <p id="totalCountSub" style="margin:0;font-size:12px;font-weight:700;color:#1F2937">248 Total Donations • 100% Net to NGO</p>
+            </div>
+            <div>
+              <div style="height:8px;border-radius:9999px;background:#D1FAE5;overflow:hidden">
+                <div style="width:100%;height:100%;background:#0F4D36;border-radius:9999px"></div>
+              </div>
+              <p style="margin:8px 0 0;font-size:11.5px;color:#4B5563">Includes Donor/Sponsor &amp; Volunteer contributions</p>
+            </div>
+          </div>
+
+          <!-- Funds & Count Per Category -->
+          <div style="padding:16px;border-radius:12px;background:#F9FAFB;border:1px solid #E5E7EB;display:flex;flex-direction:column;gap:12px">
+            <p style="margin:0;font-size:11px;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;color:#374151">FUNDS &amp; COUNT PER CATEGORY</p>
+            <div style="display:flex;flex-direction:column;gap:10px;font-size:12.5px">
+              <div>
+                <div style="display:flex;justify-content:space-between;font-weight:700;margin-bottom:4px">
+                  <span>Food Support (112 donations)</span>
+                  <span style="color:#0F4D36">$5,600</span>
+                </div>
+                <div style="height:7px;border-radius:9999px;background:#E5E7EB;overflow:hidden">
+                  <div style="width:78%;height:100%;background:#0F4D36"></div>
+                </div>
+              </div>
+              <div>
+                <div style="display:flex;justify-content:space-between;font-weight:700;margin-bottom:4px">
+                  <span>Healthcare (84 donations)</span>
+                  <span style="color:#0F4D36">$4,200</span>
+                </div>
+                <div style="height:7px;border-radius:9999px;background:#E5E7EB;overflow:hidden">
+                  <div style="width:58%;height:100%;background:#0F4D36"></div>
+                </div>
+              </div>
+              <div>
+                <div style="display:flex;justify-content:space-between;font-weight:700;margin-bottom:4px">
+                  <span>Education (52 donations)</span>
+                  <span style="color:#B45309">$2,650</span>
+                </div>
+                <div style="height:7px;border-radius:9999px;background:#E5E7EB;overflow:hidden">
+                  <div style="width:38%;height:100%;background:#F59E0B"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Contributor Breakdown -->
+          <div style="padding:16px;border-radius:12px;background:#F9FAFB;border:1px solid #E5E7EB;display:flex;flex-direction:column;gap:10px">
+            <p style="margin:0;font-size:11px;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;color:#374151">CONTRIBUTOR BREAKDOWN</p>
+            <div style="padding:10px 12px;border-radius:10px;background:#ECFDF5;border:1px solid #A7D7BE;display:flex;justify-content:space-between;align-items:center">
+              <div>
+                <p style="margin:0;font-size:13px;font-weight:700;color:#0F4D36">Donors &amp; Sponsors (164)</p>
+                <p style="margin:2px 0 0;font-size:11.5px;color:#4B5563">74.7% of total welfare funding</p>
+              </div>
+              <span style="font-size:15px;font-weight:800;color:#0F4D36">$9,300</span>
+            </div>
+            <div style="padding:10px 12px;border-radius:10px;background:#FFFBEB;border:1px solid #FCD34D;display:flex;justify-content:space-between;align-items:center">
+              <div>
+                <p style="margin:0;font-size:13px;font-weight:700;color:#92400E">Volunteers (84 • $0 Fee)</p>
+                <p style="margin:2px 0 0;font-size:11.5px;color:#92400E">25.3% voluntary volunteer aid</p>
+              </div>
+              <span style="font-size:15px;font-weight:800;color:#B45309">$3,150</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Trend Chart + Donation Records Table -->
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:16px;align-items:stretch">
+          <div style="padding:16px;border-radius:12px;background:#F9FAFB;border:1px solid #E5E7EB;display:flex;flex-direction:column;justify-content:space-between">
+            <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:10px">
+              <h3 style="margin:0;font-size:14px;font-weight:700;color:#111827">Monthly Online Donations Trend (Jun – Nov 2026)</h3>
+              <span style="font-size:11.5px;font-weight:700;color:#0F4D36">Nov Peak: $3,120</span>
+            </div>
+            <svg viewBox="0 0 420 175" style="width:100%;height:auto;display:block" aria-label="Monthly Online Donations Trend from Jun to Nov 2026">
+              <defs>
+                <linearGradient id="cgTrendGrad" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#0F4D36" stop-opacity="0.28" />
+                  <stop offset="100%" stop-color="#0F4D36" stop-opacity="0.02" />
+                </linearGradient>
+              </defs>
+              <line x1="28" y1="24" x2="400" y2="24" stroke="#E5E7EB" stroke-width="1" />
+              <line x1="28" y1="66" x2="400" y2="66" stroke="#E5E7EB" stroke-width="1" />
+              <line x1="28" y1="108" x2="400" y2="108" stroke="#E5E7EB" stroke-width="1" />
+              <line x1="28" y1="146" x2="400" y2="146" stroke="#D1D5DB" stroke-width="1" />
+              <polygon points="36,126 108,104 180,114 252,78 324,56 392,26 392,146 36,146" fill="url(#cgTrendGrad)" />
+              <polyline points="36,126 108,104 180,114 252,78 324,56 392,26" fill="none" stroke="#0F4D36" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
+              <circle cx="36" cy="126" r="4.5" fill="#0F4D36" />
+              <circle cx="108" cy="104" r="4.5" fill="#0F4D36" />
+              <circle cx="180" cy="114" r="4.5" fill="#0F4D36" />
+              <circle cx="252" cy="78" r="4.5" fill="#0F4D36" />
+              <circle cx="324" cy="56" r="4.5" fill="#0F4D36" />
+              <circle cx="392" cy="26" r="6" fill="#F59E0B" stroke="#0F4D36" stroke-width="2" />
+              <text x="36" y="164" text-anchor="middle" font-size="11" fill="#4B5563" font-weight="600">Jun</text>
+              <text x="108" y="164" text-anchor="middle" font-size="11" fill="#4B5563" font-weight="600">Jul</text>
+              <text x="180" y="164" text-anchor="middle" font-size="11" fill="#4B5563" font-weight="600">Aug</text>
+              <text x="252" y="164" text-anchor="middle" font-size="11" fill="#4B5563" font-weight="600">Sep</text>
+              <text x="324" y="164" text-anchor="middle" font-size="11" fill="#4B5563" font-weight="600">Oct</text>
+              <text x="392" y="164" text-anchor="middle" font-size="11" fill="#0F4D36" font-weight="700">Nov</text>
+            </svg>
+          </div>
+
+          <div style="padding:16px;border-radius:12px;background:#F9FAFB;border:1px solid #E5E7EB;display:flex;flex-direction:column;justify-content:space-between;gap:12px">
+            <div style="overflow-x:auto">
+              <table style="width:100%;border-collapse:collapse;font-size:12.5px">
+                <thead>
+                  <tr style="border-bottom:1px solid #E5E7EB;color:#4B5563;text-align:left">
+                    <th style="padding:8px 6px">Date</th>
+                    <th style="padding:8px 6px">Donor / Volunteer</th>
+                    <th style="padding:8px 6px">Category</th>
+                    <th style="padding:8px 6px;text-align:right">Amount</th>
+                  </tr>
+                </thead>
+                <tbody id="ledgerBody"></tbody>
+              </table>
+            </div>
+            <button id="exportLedgerBtn" type="button"
+              style="width:100%;padding:10px 14px;border-radius:8px;background:#0F4D36;color:#FFFFFF;font-size:13px;font-weight:700;border:none">
+              Export Donation Ledger CSV
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 2: System Admin Payment Audit — External Gateway Transparency & Receipts -->
+    <section id="gateway-audit" style="background:#FFFFFF;border:1px solid #E5E7EB;border-radius:12px;box-shadow:0 1px 2px rgba(0,0,0,.05);overflow:hidden">
+      <div style="padding:14px 20px;background:#0F4D36;color:#FFFFFF;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px">
+        <div style="display:flex;align-items:center;gap:10px">
+          <img src="data:image/png;base64,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" alt="" style="width:32px;height:32px;flex-shrink:0;border-radius:8px;background:#F4F9F2;padding:2px" />
+          <div>
+            <h2 style="margin:0;font-size:15px;font-weight:700">System Admin Payment Audit — External Gateway Transparency &amp; Receipts</h2>
+            <p style="margin:2px 0 0;font-size:12px;color:#D1FAE5">Live transaction IDs, status tracking &amp; verified NGO disbursements</p>
+          </div>
+        </div>
+        <span style="padding:6px 12px;border-radius:8px;background:#F59E0B;color:#111827;font-size:12px;font-weight:700">Gateway: ONLINE</span>
+      </div>
+
+      <div style="padding:16px;display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:16px">
+        <!-- External Payment Gateway Audit -->
+        <div style="padding:16px;border-radius:12px;background:#F9FAFB;border:1px solid #E5E7EB;display:flex;flex-direction:column;gap:12px">
+          <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:8px">
+            <h3 style="margin:0;font-size:14px;font-weight:700;color:#111827">External Payment Gateway Audit</h3>
+            <div style="display:flex;gap:6px;font-size:11.5px;font-weight:700">
+              <button type="button" data-gw="all" class="gw-tab" style="padding:5px 10px;border-radius:7px;background:#0F4D36;color:#FFFFFF;border:none">All (248)</button>
+              <button type="button" data-gw="Paid" class="gw-tab" style="padding:5px 10px;border-radius:7px;background:#DCFCE7;color:#0F4D36;border:none">Paid (246)</button>
+              <button type="button" data-gw="Pending" class="gw-tab" style="padding:5px 10px;border-radius:7px;background:#FEF3C7;color:#92400E;border:none">Pending (2)</button>
+            </div>
+          </div>
+
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+            <div style="padding:12px;border-radius:10px;background:#FFFFFF;border:1px solid #A7D7BE">
+              <p style="margin:0;font-size:10.5px;font-weight:700;text-transform:uppercase;color:#4B5563">GATEWAY SUCCESS RATE</p>
+              <p style="margin:4px 0 0;font-size:22px;font-weight:800;color:#0F4D36">99.2%</p>
+            </div>
+            <div style="padding:12px;border-radius:10px;background:#FFFFFF;border:1px solid #A7D7BE">
+              <p style="margin:0;font-size:10.5px;font-weight:700;text-transform:uppercase;color:#4B5563">RECEIPTS GENERATED</p>
+              <p style="margin:4px 0 0;font-size:22px;font-weight:800;color:#0F4D36">100%</p>
+            </div>
+          </div>
+
+          <div>
+            <p style="margin:0 0 8px;font-size:12px;font-weight:700;color:#374151">Live Transaction ID &amp; Status Tracking</p>
+            <div id="liveTxnsList" style="display:flex;flex-direction:column;gap:8px"></div>
+          </div>
+
+          <div style="padding:9px 12px;border-radius:8px;background:#FFFBEB;border:1px solid #FCD34D;color:#92400E;font-size:12px;font-weight:700">
+            Volunteer Platform Fee Policy: $0.00 Enforced
+          </div>
+        </div>
+
+        <!-- Verified NGO Donation Disbursements -->
+        <div style="padding:16px;border-radius:12px;background:#F2FBF6;border:1px solid #A7D7BE;display:flex;flex-direction:column;justify-content:space-between;gap:14px">
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <h3 style="margin:0;font-size:14px;font-weight:700;color:#0F4D36">Verified NGO Donation Disbursements</h3>
+            <div style="padding:14px;border-radius:10px;background:#FFFFFF;border:1px solid #A7D7BE;display:flex;justify-content:space-between;align-items:center;gap:10px">
+              <div>
+                <p style="margin:0;font-size:14px;font-weight:700;color:#111827">Al-Khidmat Care Foundation</p>
+                <p style="margin:2px 0 0;font-size:12px;color:#4B5563">Settled net welfare payout • 0% deduction</p>
+              </div>
+              <span style="font-size:17px;font-weight:800;color:#0F4D36">$12,450.00</span>
+            </div>
+            <div style="padding:12px 14px;border-radius:10px;background:#FFFFFF;border:1px solid #E5E7EB;font-size:12px;color:#374151;display:flex;justify-content:space-between">
+              <span>Audit Verification Status</span>
+              <strong style="color:#0F4D36">246 Settled • 2 In Queue</strong>
+            </div>
+          </div>
+
+          <button id="downloadAuditBtn" type="button"
+            style="width:100%;padding:11px 16px;border-radius:8px;background:#0F4D36;color:#FFFFFF;font-size:13px;font-weight:700;border:none">
+            Download Full Gateway Audit Report
+          </button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div id="toast" role="status" aria-live="polite"
+    style="display:none;position:fixed;bottom:20px;right:20px;z-index:50;padding:12px 16px;border-radius:12px;background:#0F4D36;color:#FFFFFF;font-size:13px;font-weight:600;box-shadow:0 10px 25px rgba(0,0,0,.15)"></div>
+
+  <script>
+    const STORAGE_KEY = 'caregrid-ngo-funds-audit-v1';
+
+    const ledgerRows = [
+      { date: '15 Nov 26', actor: 'Usman T. (Vol)', category: 'Food Support', amount: 50.00 },
+      { date: '14 Nov 26', actor: 'Apex Corp (Sponsor)', category: 'Healthcare', amount: 500.00 },
+      { date: '12 Nov 26', actor: 'Sara Malik (Donor)', category: 'Education', amount: 120.00 },
+      { date: '10 Nov 26', actor: 'Bilal R. (Vol)', category: 'Food Support', amount: 35.00 }
+    ];
+
+    const gatewayTxns = [
+      { id: 'TXN-98412', amount: '$50.00', role: 'Volunteer', category: 'Food Support', status: 'Paid', badge: 'PAID ✓' },
+      { id: 'TXN-98409', amount: '$500.00', role: 'Sponsor', category: 'Healthcare', status: 'Paid', badge: 'PAID ✓' },
+      { id: 'TXN-98395', amount: '$120.00', role: 'Donor', category: 'Education', status: 'Pending', badge: 'PENDING' },
+      { id: 'TXN-98388', amount: '$35.00', role: 'Volunteer', category: 'Food Support', status: 'Pending', badge: 'PENDING' }
+    ];
+
+    let state = { category: 'all', gateway: 'all', query: '' };
+    try {
+      state = Object.assign(state, JSON.parse(localStorage.getItem(STORAGE_KEY)) || {});
+    } catch (e) {}
+
+    const save = () => {
+      try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (e) {}
+    };
+
+    const $ = (id) => document.getElementById(id);
+    const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+
+    let toastTimer;
+    function showToast(msg) {
+      const el = $('toast');
+      el.textContent = msg;
+      el.style.display = 'block';
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => { el.style.display = 'none'; }, 3000);
+    }
+
+    function matchesQuery(parts) {
+      const q = state.query.trim().toLowerCase();
+      return !q || parts.some((p) => String(p).toLowerCase().includes(q));
+    }
+
+    function renderLedger() {
+      const rows = ledgerRows.filter((r) =>
+        (state.category === 'all' || r.category === state.category) &&
+        matchesQuery([r.date, r.actor, r.category, r.amount])
+      );
+      $('ledgerBody').innerHTML = rows.length
+        ? rows.map((r) => `
+            <tr style="border-bottom:1px solid #E5E7EB">
+              <td style="padding:8px 6px;color:#4B5563">${esc(r.date)}</td>
+              <td style="padding:8px 6px;font-weight:700;color:#111827">${esc(r.actor)}</td>
+              <td style="padding:8px 6px;font-weight:600;color:${r.category === 'Education' ? '#B45309' : '#0F4D36'}">${esc(r.category)}</td>
+              <td style="padding:8px 6px;text-align:right;font-weight:700;color:#111827">$${r.amount.toFixed(2)}</td>
+            </tr>
+          `).join('')
+        : `<tr><td colspan="4" style="padding:16px;text-align:center;color:#6B7280">No ledger entries match this filter.</td></tr>`;
+    }
+
+    function renderGatewayTxns() {
+      const items = gatewayTxns.filter((t) =>
+        (state.gateway === 'all' || t.status === state.gateway) &&
+        (state.category === 'all' || t.category === state.category) &&
+        matchesQuery([t.id, t.amount, t.role, t.category, t.status])
+      );
+      $('liveTxnsList').innerHTML = items.length
+        ? items.map((t) => {
+            const isPaid = t.status === 'Paid';
+            return `
+              <div style="padding:10px 12px;border-radius:9px;background:${isPaid ? '#ECFDF5' : '#FFFBEB'};border:1px solid ${isPaid ? '#A7D7BE' : '#FCD34D'};display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:12.5px">
+                <span style="font-weight:700;color:#111827">${esc(t.id)} • ${esc(t.amount)} (${esc(t.role)})</span>
+                <span style="font-weight:800;color:${isPaid ? '#0F4D36' : '#92400E'}">${esc(t.badge)}</span>
+              </div>
+            `;
+          }).join('')
+        : `<p style="margin:0;padding:12px;text-align:center;font-size:12px;color:#6B7280;background:#FFFFFF;border-radius:8px;border:1px dashed #D1D5DB">No transactions match this filter.</p>`;
+    }
+
+    function syncControls() {
+      $('searchInput').value = state.query;
+      $('categoryFilter').value = state.category;
+      $('gatewayFilter').value = state.gateway;
+      document.querySelectorAll('.gw-tab').forEach((btn) => {
+        const active = btn.dataset.gw === state.gateway;
+        btn.style.outline = active ? '2px solid #0F4D36' : 'none';
+      });
+    }
+
+    function renderAll() {
+      syncControls();
+      renderLedger();
+      renderGatewayTxns();
+    }
+
+    $('searchInput').addEventListener('input', (e) => {
+      state.query = e.target.value;
+      save();
+      renderAll();
+    });
+
+    $('categoryFilter').addEventListener('change', (e) => {
+      state.category = e.target.value;
+      save();
+      renderAll();
+    });
+
+    $('gatewayFilter').addEventListener('change', (e) => {
+      state.gateway = e.target.value;
+      save();
+      renderAll();
+    });
+
+    document.querySelectorAll('.gw-tab').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        state.gateway = btn.dataset.gw;
+        save();
+        renderAll();
+      });
+    });
+
+    $('exportLedgerBtn').addEventListener('click', () => {
+      const csv = ['Date,Donor_or_Volunteer,Category,Amount_USD']
+        .concat(ledgerRows.map((r) => `"${r.date}","${r.actor}","${r.category}",${r.amount.toFixed(2)}`))
+        .join('\n');
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'caregrid-donation-ledger.csv';
+      a.click();
+      URL.revokeObjectURL(url);
+      showToast('Donation ledger CSV exported.');
+    });
+
+    $('downloadAuditBtn').addEventListener('click', () => {
+      showToast('Full Gateway Audit Report prepared (248 records • 99.2% success).');
+    });
+
+    renderAll();
+  </script>
+</body>
+</html>
