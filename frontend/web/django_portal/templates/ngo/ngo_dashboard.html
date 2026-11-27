@@ -22,13 +22,13 @@
     {% if membership.days_left <= 7 %}<p class="cg-amber-box p-2 mt-3 mb-0 small">Your membership is ending soon. Contact the Membership Administrator to continue access.</p>{% else %}<p class="small text-muted mt-3 mb-0">Contact the Membership Administrator to {% if membership.plan == "Trial" %}activate your yearly license{% else %}renew your license{% endif %}.</p>{% endif %}
   </section>
   <div class="row g-3 mb-4">
-    <div class="col-md-3"><div class="cg-card p-3"><div class="cg-label">Active Beneficiaries</div><h3 class="fw-bold mb-0">1,428</h3></div></div>
-    <div class="col-md-3"><div class="cg-card p-3"><div class="cg-label">Available Subsidy Pool</div><h3 class="fw-bold text-success mb-0">PKR 2.45M</h3></div></div>
-    <div class="col-md-3"><div class="cg-card p-3"><div class="cg-label">Pending KYC Reviews</div><h3 class="fw-bold text-warning mb-0">19</h3></div></div>
-    <div class="col-md-3"><div class="cg-card p-3"><div class="cg-label">Partner Clinics &amp; Kitchens</div><h3 class="fw-bold mb-0">34</h3></div></div>
+    <div class="col-md-3"><div class="cg-card p-3 cg-metric"><span class="cg-metric-icon" aria-hidden="true"><i class="bi bi-people"></i></span><div><div class="cg-label">Active Beneficiaries</div><h3 class="fw-bold mb-0">1,428</h3></div></div></div>
+    <div class="col-md-3"><div class="cg-card p-3 cg-metric"><span class="cg-metric-icon" aria-hidden="true"><i class="bi bi-wallet2"></i></span><div><div class="cg-label">Available Subsidy Pool</div><h3 class="fw-bold text-success mb-0">PKR 2.45M</h3></div></div></div>
+    <div class="col-md-3"><div class="cg-card p-3 cg-metric"><span class="cg-metric-icon cg-metric-gold" aria-hidden="true"><i class="bi bi-clipboard-check"></i></span><div><div class="cg-label">Pending KYC Reviews</div><h3 class="fw-bold mb-0">19</h3></div></div></div>
+    <div class="col-md-3"><div class="cg-card p-3 cg-metric"><span class="cg-metric-icon" aria-hidden="true"><i class="bi bi-hospital"></i></span><div><div class="cg-label">Partner Clinics &amp; Kitchens</div><h3 class="fw-bold mb-0">34</h3></div></div></div>
   </div>
   <div class="cg-card p-4">
-    <h5 class="fw-bold mb-3">Recent Beneficiary Applications &amp; Disbursements</h5>
+    <h5 class="fw-bold mb-3"><i class="bi bi-clipboard-check me-2" aria-hidden="true" style="color:var(--cg-primary)"></i>Recent Beneficiary Applications &amp; Disbursements</h5>
     <div class="table-responsive">
       <table class="table align-middle mb-0">
         <thead class="table-light"><tr><th>Digital ID</th><th>Beneficiary</th><th>Category</th><th>Subsidy Tier</th><th>Status</th></tr></thead>

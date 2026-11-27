@@ -10,7 +10,7 @@
   {% for message in messages %}<div class="alert alert-info">{{ message }}</div>{% endfor %}
   <div class="row g-4">
     <section class="col-lg-5"><div class="cg-card p-4">
-      <h2 class="h5 fw-bold">New donation</h2>
+      <h2 class="h5 fw-bold"><i class="bi bi-wallet2 me-2" aria-hidden="true" style="color:var(--cg-primary)"></i>New donation</h2>
       <div class="cg-amber-box p-3 small mb-3">Simulation only. No payment details are collected and no money is transferred.</div>
       <form method="post" action="{% url 'sponsor_donate' %}">
         {% csrf_token %}
@@ -21,7 +21,7 @@
       </form>
     </div></section>
     <section class="col-lg-7"><div class="cg-card p-4">
-      <h2 class="h5 fw-bold">Donation history</h2>
+      <h2 class="h5 fw-bold"><i class="bi bi-clock-history me-2" aria-hidden="true" style="color:var(--cg-primary)"></i>Donation history</h2>
       <div class="table-responsive"><table class="table align-middle"><thead><tr><th>Receipt</th><th>NGO / cause</th><th>PKR</th></tr></thead><tbody>
       {% for receipt in receipts %}<tr><td>{{ receipt.reference }}</td><td>{{ receipt.ngo }}<br><small>{{ receipt.cause }}</small></td><td>{{ receipt.amount }}</td></tr>{% empty %}<tr><td colspan="3" class="text-muted">No demo donations yet.</td></tr>{% endfor %}
       </tbody></table></div>
