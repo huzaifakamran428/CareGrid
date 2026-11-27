@@ -177,7 +177,7 @@
       <nav id="cg-section-nav" class="cg-section-nav"></nav>
       <div class="cg-sidebar-footer">Local FYP demonstration · fictional data</div>
     </aside>
-    <main class="cg-workspace-main" id="cg-workspace-main">
+    <div role="main" class="cg-workspace-main" id="cg-workspace-main">
       <div class="cg-section-heading"><div><div class="cg-label" id="cg-breadcrumb">CareGrid / Workspace</div><h1 id="cg-section-title" class="h4 fw-bold mb-0">Overview</h1></div><span class="badge badge-active">Current section</span></div>
       <div id="cg-suspended-notice" class="cg-card p-4 mb-3" hidden><h2 class="h5">Membership access paused</h2><p class="mb-0">Contact the Membership Administrator. This is a browser-only demo restriction, not server authorization.</p></div>
       <div id="cg-native-content">
@@ -186,7 +186,7 @@
   {% if request.session.cg_user %}
       </div>
       <div id="cg-module-content" hidden></div>
-    </main>
+    </div>
   </div>
   {% endif %}
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>

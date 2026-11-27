@@ -26,7 +26,7 @@ python manage.py migrate
 python manage.py runserver 127.0.0.1:8000
 ```
 
-Open http://127.0.0.1:8000/ in your browser. Stop other servers using port 8000 first. The login page has a demo-account picker. Feature screens links to the existing role-specific web UI prototypes without starting another server. The top navigation returns to the dashboard or signs out. Existing legacy files are retained, not deleted.
+Open http://127.0.0.1:8000/ in your browser. Stop other servers using port 8000 first. The login page has a demo-account picker. The persistent role sidebar opens existing feature modules inside the dashboard without starting another server. Existing complex previews remain same-origin embedded panels, not rewritten services. The current section is highlighted and shown in the header. Existing legacy files are retained, not deleted.
 
 ## Mobile
 
@@ -48,6 +48,12 @@ Use your actual simulator ID if different. Run from a local development folder o
 4. Return to Membership Administrator, activate or renew an annual license. Early renewal preserves unused time and extends expiry by 12 calendar months; expired accounts start the new term from renewal.
 5. Sign in as the renewed NGO. Access is restored.
 6. Sign in as Sponsor to simulate a donation. No money is transferred.
+
+## Frontend-only additions
+- Membership Admin can suspend, block and reactivate a license in this browser. This hides the NGO workspace in this browser, but does not change server authorization or subscription dates.
+- Beneficiary > Prescription upload: select a fictional PDF/JPG/PNG (up to 5 MB). Sign out, then sign in as the assigned pharmacy in the same browser. Prescription inbox supports original-file download, simulated OCR review, manual medicine transcription, example subsidy calculation, and a mock dispense status. File bytes use IndexedDB; metadata uses localStorage. No real OCR, clinical validation, or dispensing.
+- All eight web roles have a browser-only FAQ assistant. Existing standalone prototype state is not automatically synchronized.
+- The existing web registration and annual renewal demo actions remain unchanged. Never use genuine documents or health information.
 
 ## Validation and limits
 Run `python manage.py check` and `python manage.py test modules.auth_module` inside the Django virtual environment. Run `flutter analyze --no-fatal-infos --no-fatal-warnings` and `flutter test` in the mobile app.
