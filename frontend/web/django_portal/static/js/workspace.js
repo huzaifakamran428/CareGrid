@@ -46,16 +46,16 @@ native.addEventListener('click',e=>{const b=e.target.closest('[data-license-acti
  if(!save(licenseKey,states)){announce('Browser storage unavailable. No change saved.');return;}updateRestrictions();if(activeKey==='restricted')select(activeKey,false);announce(action==='Active'?'Demo restriction removed. An expired license still needs renewal.':'License '+action.toLowerCase()+' in this browser demo. No backend authorization changed.');
 });
 const frames=new Map();let activeKey='',currentFrame=null;
-function badge(section){activeKey=section.key;$('#cg-section-title').textContent=section.label;$('#cg-current-section').textContent=section.label;$('#cg-breadcrumb').textContent='CareGrid / '+names[role]+' / '+section.label;nav.querySelectorAll('button').forEach(b=>b.setAttribute('aria-current',b.dataset.section===section.key?'page':'false'));}
+function badge(section){activeKey=section.key;const menuLabel=$('#cg-nav-toggle-label');if(menuLabel)menuLabel.textContent=section.label+' · Menu';$('#cg-section-title').textContent=section.label;$('#cg-current-section').textContent=section.label;$('#cg-breadcrumb').textContent='CareGrid / '+names[role]+' / '+section.label;nav.querySelectorAll('button').forEach(b=>b.setAttribute('aria-current',b.dataset.section===section.key?'page':'false'));}
 function decorateFrame(f){
  try{
   const doc=f.contentDocument;if(!doc||!doc.body)return;
   if(!doc.getElementById('cg-embedded-style')){
-   const st=doc.createElement('style');st.id='cg-embedded-style';st.textContent='html,body{min-width:0!important;background:#F7FAF8!important} .cg-assistant{display:none!important} body > header:not(.cg-chat-head), .shell > .sidebar, .shell > .main > .topbar, body > .sidebar, .layout > aside, .cg-control-header{display:none!important} .shell,.layout{display:block!important;min-height:0!important} .shell > .main,.main-wrapper,.layout > main{margin-left:0!important;width:100%!important;max-width:none!important;min-width:0!important} .content-sheet{border-radius:18px!important;padding:20px!important} .shell .content{padding:18px!important} .main-wrapper .top-banner{display:none!important} body > main{max-width:none!important} #alertsFeedContainer{min-width:0}';doc.head.appendChild(st);
+   const st=doc.createElement('style');st.id='cg-embedded-style';st.textContent='html,body{min-width:0!important;background:#F7FAF8!important} .cg-assistant{display:none!important} body > header:not(.cg-chat-head), .shell > .sidebar, .shell > .main > .topbar, body > .sidebar, .layout > aside, .cg-control-header{display:none!important} .shell,.layout{display:block!important;min-height:0!important} .shell > .main,.main-wrapper,.layout > main{margin-left:0!important;width:100%!important;max-width:none!important;min-width:0!important} .content-sheet{border-radius:18px!important;padding:20px!important} .shell .content{padding:18px!important} .main-wrapper .top-banner{display:none!important} body > main{max-width:none!important} #alertsFeedContainer{min-width:0} .shell .page-heading h1{font-size:24px!important} .content-sheet,.shell .content{font-size:14px!important} .content-sheet table,.shell table{font-size:13px!important} .content-sheet .table-wrapper,.shell .table-wrap{max-width:100%;overflow-x:auto} .cg-food-extra{grid-column:1/-1;padding:12px 16px;background:#fff;border:1px solid #D5E8E1;border-radius:14px;color:#173D37} .cg-food-extra summary{cursor:pointer;font-weight:700;color:#075A50} .cg-food-extra[open] summary{margin-bottom:12px} .cg-food-extra aside{width:100%;min-width:0}';doc.head.appendChild(st);
    if(f.contentWindow.location.pathname.includes('food_collection_request_alerts_figma')) {
     const bar=doc.getElementById('alertFilterBar');if(bar){const b=doc.createElement('button');b.type='button';b.className='px-3 py-2 rounded-lg bg-emerald-700 text-white text-xs font-bold';b.textContent='Browse available food';b.onclick=()=>f.contentWindow.openAlternativeListingsModal?.();bar.parentElement.appendChild(b);}
     const h=doc.querySelector('main h1');if(h)h.textContent='Food collection requests';
-    const feed=doc.getElementById('alertsFeedContainer');if(feed&&feed.parentElement){feed.parentElement.style.gridTemplateColumns='minmax(0,1fr)';const aside=feed.parentElement.querySelector('aside');if(aside){aside.style.gridColumn='1 / -1';aside.style.display='grid';aside.style.gridTemplateColumns='repeat(auto-fit,minmax(230px,1fr))';}feed.style.gridColumn='1 / -1';}
+    const feed=doc.getElementById('alertsFeedContainer');if(feed&&feed.parentElement){feed.parentElement.style.gridTemplateColumns='minmax(0,1fr)';const aside=feed.parentElement.querySelector('aside');if(aside){aside.style.gridColumn='1 / -1';aside.style.display='grid';aside.style.gridTemplateColumns='repeat(auto-fit,minmax(230px,1fr))';const extra=doc.createElement('details');extra.className='cg-food-extra';const summary=doc.createElement('summary');summary.textContent='Collection guidance & demo controls';extra.appendChild(summary);aside.before(extra);extra.appendChild(aside);}feed.style.gridColumn='1 / -1';}
    }
    doc.querySelectorAll('img[alt*="CareGrid"],img[alt*="Caregrid"]').forEach(img=>{img.src='/static/img/caregrid_logo.png';img.style.objectFit='contain';});
   }
@@ -83,7 +83,28 @@ function select(key,write=true){
  }else if(s.kind==='frame')showFrame(s);else renderLocal(s.kind,panel());
  if(write)window.scrollTo({top:0,behavior:'auto'});
 }
-for(const s of sections){const b=document.createElement('button');b.type='button';b.dataset.section=s.key;b.innerHTML='<i class="bi bi-grid" aria-hidden="true"></i><span>'+esc(s.label)+'</span><span class="cg-active-dot" aria-hidden="true">●</span>';b.onclick=()=>select(s.key);nav.appendChild(b);}
+const icons={overview:'speedometer2',accounts:'person-gear',beneficiaries:'people',food:'box2-heart',registrations:'person-plus',organizations:'buildings',monitoring:'activity',reports:'file-earmark-bar-graph',complaints:'chat-left-text',feedback:'star',audit:'receipt', 'assistant-control':'gear',operations:'clipboard-check',register:'person-plus', 'digital-ids':'person-vcard',partners:'hospital',sponsors:'hand-thumbs-up',collections:'truck',notifications:'bell',funds:'wallet2',license:'shield-check',restricted:'slash-circle',prescriptions:'cloud-upload','rx-status':'file-earmark-check',support:'headset','rx-inbox':'file-earmark-medical',dispense:'clock-history',guide:'book',queue:'calendar-check',appointments:'calendar-event',requests:'clipboard2-pulse',details:'file-earmark-text',catalog:'flask',upload:'cloud-upload','chat-history':'chat-dots',listings:'basket'};
+const groups={
+ admin:{overview:'Workspace',accounts:'Records & access',registrations:'Operations',complaints:'Support & audit'},
+ ngo:{overview:'Workspace',register:'Beneficiary services',partners:'Partners & welfare',notifications:'Account & updates'},
+ membership:{overview:'Membership management'},
+ beneficiary:{overview:'My welfare',prescriptions:'Healthcare & support'},
+ pharmacy:{overview:'Pharmacy services'},
+ lab:{overview:'Workspace',queue:'Appointments & tests',upload:'Reports & support'},
+ restaurant:{overview:'Food services'},
+ sponsor:{overview:'Donations'}
+};
+const roleIcons={membership:{overview:'shield-check',register:'building-add'},beneficiary:{overview:'heart-pulse'},pharmacy:{overview:'person-vcard'},sponsor:{overview:'wallet2'}};
+const menuToggle=$('#cg-nav-toggle'),sidebar=nav.closest('.cg-workspace-sidebar');
+function setMenu(open){sidebar.classList.toggle('cg-nav-open',open);if(menuToggle)menuToggle.setAttribute('aria-expanded',String(open));}
+if(menuToggle)menuToggle.addEventListener('click',()=>setMenu(!sidebar.classList.contains('cg-nav-open')));
+for(const s of sections){
+ const group=groups[role]?.[s.key];if(group){const heading=document.createElement('div');heading.className='cg-nav-group';heading.textContent=group;nav.appendChild(heading);}
+ const b=document.createElement('button');b.type='button';b.dataset.section=s.key;
+ const icon=roleIcons[role]?.[s.key]||icons[s.key]||'grid';
+ b.innerHTML='<span class="cg-nav-icon" aria-hidden="true"><i class="bi bi-'+icon+'"></i></span><span>'+esc(s.label)+'</span><span class="cg-active-dot" aria-hidden="true"></span>';
+ b.onclick=()=>{select(s.key);setMenu(false);};nav.appendChild(b);
+}
 const oldTabs=native.querySelector('[role="tablist"]');if(role==='admin'&&oldTabs){oldTabs.parentElement.classList.add('cg-admin-legacy-nav');oldTabs.addEventListener('shown.bs.tab',e=>{const s=sections.find(x=>x.kind==='tab'&&'#'+x.target===e.target.dataset.bsTarget);if(s&&activeKey!==s.key){badge(s);history.replaceState(null,'','#cg-'+s.key);}});}
 function db(){return new Promise((resolve,reject)=>{const r=indexedDB.open('caregrid-demo-rx',1);r.onupgradeneeded=()=>r.result.createObjectStore('files');r.onsuccess=()=>resolve(r.result);r.onerror=()=>reject(r.error);});}
 async function fileOp(id,blob){const database=await db();return new Promise((resolve,reject)=>{const writing=blob!==undefined,tx=database.transaction('files',writing?'readwrite':'readonly'),store=tx.objectStore('files'),req=writing?store.put(blob,id):store.get(id);tx.oncomplete=()=>{database.close();resolve(req.result);};tx.onerror=()=>{database.close();reject(tx.error);};tx.onabort=()=>{database.close();reject(tx.error);};});}
