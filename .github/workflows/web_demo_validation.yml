@@ -17,6 +17,8 @@ jobs:
       - name: JavaScript syntax
         run: |
           node --check frontend/web/shared/assistant.js
+          node --check frontend/web/django_portal/static/js/workspace.js
+          node --check frontend/web/django_portal/static/js/assistant.js
           node --check frontend/web/admin_portal/assets/assistant_admin.js
           node --check frontend/web/admin_portal/assets/app.js
           node --check frontend/web/ngo_portal/assets/app.js

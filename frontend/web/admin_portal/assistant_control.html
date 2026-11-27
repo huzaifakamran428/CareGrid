@@ -49,7 +49,7 @@
 </div>
 <section class="cg-control-panel" aria-labelledby="history-heading">
   <div class="cg-section-heading cg-wrap"><div><h2 id="history-heading">Conversation history</h2><p>Shared localhost demo history across browser profiles, latest first. Common sensitive-looking patterns are redacted. Roles are not verified.</p></div>
-    <div class="cg-inline"><label class="cg-sr" for="history-role">Filter role</label><select id="history-role"><option value="all">All roles</option><option value="ngo">NGO</option><option value="admin">Admin</option><option value="lab">Labs</option><option value="pharmacy">Pharmacies</option></select>
+    <div class="cg-inline"><label class="cg-sr" for="history-role">Filter role</label><select id="history-role"><option value="all">All roles</option><option value="ngo">NGO</option><option value="admin">Admin</option><option value="lab">Labs</option><option value="pharmacy">Pharmacies</option><option value="membership">Membership Admin</option><option value="beneficiary">Beneficiary</option><option value="restaurant">Restaurant</option><option value="sponsor">Sponsor</option></select>
     <button type="button" id="export-history" class="cg-outline">Export JSON</button><button type="button" id="clear-history" class="cg-danger">Clear history</button></div></div>
   <div class="cg-history-scroll"><table><thead><tr><th>Time</th><th>Portal role</th><th>Question</th><th>Answer & basis</th></tr></thead><tbody id="history-body"></tbody></table></div>
 </section>
@@ -64,7 +64,7 @@
     <label>Keywords, comma separated <input name="keywords" required maxlength="500" placeholder="digital id, card, verify"></label>
     <label>Category <input name="category" maxlength="65" value="General"></label>
     <fieldset><legend>Which roles can see this answer?</legend>
-      <div class="cg-role-options"><label><input type="checkbox" name="roles" value="ngo"> NGO</label><label><input type="checkbox" name="roles" value="admin"> Admin</label><label><input type="checkbox" name="roles" value="lab"> Labs</label><label><input type="checkbox" name="roles" value="pharmacy"> Pharmacy</label></div>
+      <div class="cg-role-options"><label><input type="checkbox" name="roles" value="ngo"> NGO</label><label><input type="checkbox" name="roles" value="admin"> Admin</label><label><input type="checkbox" name="roles" value="lab"> Labs</label><label><input type="checkbox" name="roles" value="pharmacy"> Pharmacy</label><label><input type="checkbox" name="roles" value="membership"> Membership Admin</label><label><input type="checkbox" name="roles" value="beneficiary"> Beneficiary</label><label><input type="checkbox" name="roles" value="restaurant"> Restaurant</label><label><input type="checkbox" name="roles" value="sponsor"> Sponsor</label></div>
     </fieldset>
     <label class="cg-check"><input type="checkbox" name="enabled" checked> Enabled</label>
     <button type="submit" class="cg-primary">Save question</button>
