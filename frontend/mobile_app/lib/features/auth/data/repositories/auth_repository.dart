@@ -1,45 +1,7 @@
-import 'dart:typed_data';
 import '../../domain/entities/portal_user.dart';
-
 class CareGridAuthRepository {
-  static final Map<String, DemoMembership> memberships = {
-    'kamran@alkhidmat-lhr.org': DemoMembership('Al-Khidmat Care (demo)', 'kamran@alkhidmat-lhr.org', 'Trial', addMonths(DateTime.now(), 1)),
-    'expired@caregrid.example': DemoMembership('Expired NGO (demo)', 'expired@caregrid.example', 'Annual', DateTime.now().subtract(const Duration(days: 1))),
-  };
-
-  static DateTime addMonths(DateTime date, int months) {
-    final first = DateTime(date.year, date.month + months, 1);
-    final last = DateTime(first.year, first.month + 1, 0).day;
-    return DateTime(first.year, first.month, date.day > last ? last : date.day, date.hour, date.minute, date.second);
-  }
-
-  static const _seedEmails = [
-    'admin@caregrid.org', 'membership@caregrid.example', 'kamran@alkhidmat-lhr.org',
-    'ayesha.bibi@caregrid.pk', 'pharmacy@medpluscare.org', 'lab@chughtai-care.org',
-    'ops@lahorekitchen.pk', 'sponsor@caregrid.example', 'expired@caregrid.example',
-  ];
   static List<({String password, PortalUser user})> get demoAccounts =>
-      _seedEmails.map((email) => _accounts[email]!).toList(growable: false);
-
-  static List<PortalUser> get users => _accounts.values.map((r) => r.user).toList(growable: false);
-
-  bool registerNgo(String name, String email, String password, {List<DemoNgoDocument> documents = const []}) {
-    email = email.trim().toLowerCase();
-    if (name.trim().isEmpty || !email.contains('@') || password.length < 8 || _accounts.containsKey(email)) return false;
-    if (documents.length > 3 || documents.any((doc) => !doc.valid)) return false;
-    _accounts[email] = (password: password, user: PortalUser(id: 'NGO-${_accounts.length + 100}', name: name.trim(), email: email, role: CareGridPortalRole.ngo, subtitle: 'NGO membership - demo'));
-    memberships[email] = DemoMembership(name.trim(), email, 'Trial', addMonths(DateTime.now(), 1), documents: documents);
-    return true;
-  }
-
-  void renew(String email) {
-    final item = memberships[email];
-    if (item == null || item.restriction != null) return;
-    final now = DateTime.now();
-    item.expires = addMonths(item.expires.isAfter(now) ? item.expires : now, 12);
-    item.plan = 'Annual';
-  }
-
+      _accounts.values.take(3).toList();
   static final Map<String, ({String password, PortalUser user})> _accounts = {
     'ayesha.bibi@caregrid.pk': (
       password: 'Ben@123',
@@ -61,64 +23,15 @@ class CareGridAuthRepository {
         subtitle: 'Verified Surplus Food Partner • Lahore',
       ),
     ),
-    'pharmacy@medpluscare.org': (
-      password: 'Pharm@123',
-      user: const PortalUser(
-        id: 'PHM-409',
-        name: 'MedPlus Care Pharmacy',
-        email: 'pharmacy@medpluscare.org',
-        role: CareGridPortalRole.pharmacy,
-        subtitle: 'Authorized Pharmacy & Prescription Partner',
-      ),
-    ),
-    'lab@chughtai-care.org': (
-      password: 'Lab@123',
-      user: const PortalUser(
-        id: 'LAB-204',
-        name: 'Chughtai Diagnostic Lab',
-        email: 'lab@chughtai-care.org',
-        role: CareGridPortalRole.lab,
-        subtitle: 'Diagnostic Pathology Partner',
-      ),
-    ),
-    'kamran@alkhidmat-lhr.org': (
-      password: 'Ngo@123',
-      user: const PortalUser(
-        id: 'NGO-104',
-        name: 'Dr. Kamran Siddiqui',
-        email: 'kamran@alkhidmat-lhr.org',
-        role: CareGridPortalRole.ngo,
-        subtitle: 'Al-Khidmat Foundation • NGO Admin',
-      ),
-    ),
-    'membership@caregrid.example': (
-      password: 'Member@123',
-      user: const PortalUser(id: 'ADM-002', name: 'Membership Administrator', email: 'membership@caregrid.example', role: CareGridPortalRole.membershipAdmin, subtitle: 'NGO licenses and credential issuance'),
-    ),
     'sponsor@caregrid.example': (
       password: 'Sponsor@123',
       user: const PortalUser(id: 'SP-001', name: 'Demo Sponsor', email: 'sponsor@caregrid.example', role: CareGridPortalRole.sponsor, subtitle: 'Donations and receipts'),
-    ),
-    'expired@caregrid.example': (
-      password: 'Ngo@123',
-      user: const PortalUser(id: 'NGO-105', name: 'Expired NGO (demo)', email: 'expired@caregrid.example', role: CareGridPortalRole.ngo, subtitle: 'Expired license sample'),
-    ),
-    'admin@caregrid.org': (
-      password: 'Admin@123',
-      user: const PortalUser(
-        id: 'ADM-001',
-        name: 'System Administrator',
-        email: 'admin@caregrid.org',
-        role: CareGridPortalRole.admin,
-        subtitle: 'Root Governance & User Access Console',
-      ),
     ),
   };
 
   PortalUser? signIn(String email, String password) {
     final record = _accounts[email.trim().toLowerCase()];
     if (record != null && record.password == password) {
-      if (record.user.role == CareGridPortalRole.ngo && !(memberships[record.user.email]?.active ?? false)) return null;
       return record.user;
     }
     return null;
@@ -144,37 +57,5 @@ class CareGridAuthRepository {
     );
     _accounts[cleanEmail] = (password: password, user: newUser);
     return newUser;
-  }
-}
-
-class DemoMembership {
-  final String name;
-  final String email;
-  String plan;
-  DateTime expires;
-  final List<DemoNgoDocument> documents;
-  String? restriction;
-  DemoMembership(this.name, this.email, this.plan, this.expires, {List<DemoNgoDocument> documents = const []}) : documents = List.unmodifiable(documents);
-  int get daysLeft { final minutes = expires.difference(DateTime.now()).inSeconds; return minutes <= 0 ? 0 : (minutes / 86400).ceil(); }
-  String get planLabel => plan == 'Trial' ? 'One-month free trial' : 'Yearly license';
-  bool get active => restriction == null && expires.isAfter(DateTime.now());
-  String get status => restriction ?? (active ? plan : 'Expired');
-  void suspend() { restriction = 'Suspended'; }
-  void block() { restriction = 'Blocked'; }
-  void reactivate() { restriction = null; }
-}
-
-class DemoNgoDocument {
-  final String category;
-  final String name;
-  final Uint8List bytes;
-  DemoNgoDocument(this.category, this.name, Uint8List bytes) : bytes = Uint8List.fromList(bytes);
-  bool get valid {
-    if (bytes.isEmpty || bytes.length > 5 * 1024 * 1024) return false;
-    final lower = name.toLowerCase();
-    bool starts(List<int> signature) => bytes.length >= signature.length && List.generate(signature.length, (i) => bytes[i] == signature[i]).every((v) => v);
-    return (lower.endsWith('.pdf') && starts([37, 80, 68, 70, 45])) ||
-      (lower.endsWith('.png') && starts([137, 80, 78, 71, 13, 10, 26, 10])) ||
-      ((lower.endsWith('.jpg') || lower.endsWith('.jpeg')) && starts([255, 216, 255]));
   }
 }

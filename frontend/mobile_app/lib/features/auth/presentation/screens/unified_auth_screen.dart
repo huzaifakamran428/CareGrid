@@ -86,7 +86,7 @@ class _UnifiedAuthScreenState extends State<UnifiedAuthScreen> {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           backgroundColor: CareGridPalette.danger,
-          content: Text('Invalid credentials or expired NGO membership.'),
+          content: Text('Invalid mobile credentials. Staff use the web portal.'),
         ),
       );
       return;
@@ -147,7 +147,7 @@ class _UnifiedAuthScreenState extends State<UnifiedAuthScreen> {
           };
 
     final headerSubtitle = !_isSignup
-        ? 'Demo only - enter your assigned email and password'
+        ? 'Beneficiaries, restaurants and sponsors only'
         : switch (_signupStep) {
             0 => 'Sign up with personal details to apply for welfare services',
             1 => 'Step 1 of 2: Household, Income & Assistance Details',
@@ -763,7 +763,7 @@ class _UnifiedAuthScreenState extends State<UnifiedAuthScreen> {
           ExpansionTile(
             tilePadding: EdgeInsets.zero,
             title: const Text('Demo accounts'),
-            subtitle: const Text('Tap to fill the login fields'),
+            subtitle: const Text('3 mobile roles - tap to fill login fields'),
             children: [
               for (final entry in CareGridAuthRepository.demoAccounts)
                 ListTile(

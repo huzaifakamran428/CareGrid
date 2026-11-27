@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
 import '../state/prescription_demo_store.dart';
-import '../../../auth/data/repositories/auth_repository.dart';
+import '../../../../core/utils/demo_document_validation.dart';
 import '../../../../app/theme/brand_tokens.dart';
 import '../../../../core/widgets/caregrid_brand.dart';
 
@@ -99,13 +99,13 @@ class _PrescriptionUploadScreenState extends State<PrescriptionUploadScreen> {
       if (!mounted || result == null) return;
       final file = result.files.single;
       final bytes = file.bytes;
-      if (bytes == null || !DemoNgoDocument('Prescription', file.name, bytes).valid) {
+      if (bytes == null || !isValidDemoDocument(file.name, bytes)) {
         _showSnack('Choose a valid fictional PDF or image, up to 5 MB.');
         return;
       }
       PrescriptionDemoStore.submit(widget.demoEmail, file.name, bytes);
       setState(() => _hasActiveScanPreview = false);
-      _showSnack('Demo file sent to MedPlus pharmacy in this app session.');
+      _showSnack('Demo file saved locally for manual transfer to web pharmacy.');
     } catch (_) {
       if (mounted) _showSnack('File picker could not open.');
     } finally {
@@ -211,7 +211,17 @@ class _PrescriptionUploadScreenState extends State<PrescriptionUploadScreen> {
                         ),
                         const SizedBox(height: 10),
                         for (final record in PrescriptionDemoStore.forBeneficiary(widget.demoEmail))
-                          Card(child: ListTile(title: Text(record.filename), subtitle: Text('${record.id} • ${record.status}'), trailing: const Icon(Icons.description_outlined))),
+                          Card(child: ListTile(title: Text(record.filename), subtitle: Text('${record.id} • ${record.status}'), trailing: IconButton(
+    tooltip: 'Export prescription',
+    icon: const Icon(Icons.download_outlined),
+    onPressed: () async {
+      try {
+        await FilePicker.platform.saveFile(
+          fileName: record.filename, bytes: record.bytes);
+      } catch (_) {
+        if (mounted) _showSnack('Unable to export file.');
+      }
+    }))),
                         _buildSavedPrescriptionsList(),
                       ],
                     ),
@@ -322,7 +332,7 @@ class _PrescriptionUploadScreenState extends State<PrescriptionUploadScreen> {
           ),
           const SizedBox(height: 4),
           const Text(
-            'Use fictional files only. Choose File sends the original to the pharmacy demo in this app session. Take Photo shows a sample preview.',
+            'Use fictional files only. Choose File saves the original locally for manual web pharmacy review. Take Photo shows a sample preview.',
             style: TextStyle(
               color: _mutedText,
               fontSize: 12,

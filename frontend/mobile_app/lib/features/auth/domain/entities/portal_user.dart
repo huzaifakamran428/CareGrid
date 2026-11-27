@@ -1,11 +1,6 @@
 enum CareGridPortalRole {
   beneficiary,
   restaurant,
-  pharmacy,
-  lab,
-  ngo,
-  admin,
-  membershipAdmin,
   sponsor,
 }
 

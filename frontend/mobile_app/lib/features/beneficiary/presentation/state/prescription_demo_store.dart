@@ -5,9 +5,7 @@ import 'dart:typed_data';
 class DemoPrescription {
   final String id, beneficiaryEmail, pharmacyEmail, filename;
   final Uint8List bytes;
-  String status = 'Submitted';
-  String reviewedText = '';
-  double demoTotal = 0;
+  String status = 'Saved locally';
   DemoPrescription({required this.id, required this.beneficiaryEmail,
     required this.pharmacyEmail, required this.filename, required Uint8List bytes})
     : bytes = Uint8List.fromList(bytes);
@@ -25,6 +23,4 @@ abstract final class PrescriptionDemoStore {
   }
   static List<DemoPrescription> forBeneficiary(String email) =>
     records.where((r) => r.beneficiaryEmail == email).toList();
-  static List<DemoPrescription> forPharmacy(String email) =>
-    records.where((r) => r.pharmacyEmail == email).toList();
 }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'theme/caregrid_theme.dart';
-import '../features/auth/presentation/screens/demo_role_workspaces.dart';
+import '../features/sponsor/presentation/screens/sponsor_workspace.dart';
 import '../features/chatbot/presentation/screens/chatbot_screen.dart';
 import '../features/chatbot/presentation/screens/chat_history_screen.dart';
 import '../features/auth/domain/entities/portal_user.dart';
@@ -16,10 +16,6 @@ import '../features/complaints_feedback/presentation/screens/complaints_home_scr
 import '../features/complaints_feedback/presentation/screens/submit_complaint_screen.dart';
 import '../features/complaints_feedback/presentation/screens/service_feedback_screen.dart';
 import '../features/restaurant/presentation/screens/restaurant_dashboard_screen.dart';
-import '../features/pharmacy/presentation/screens/pharmacy_mobile_screen.dart';
-import '../features/lab_booking/presentation/screens/lab_mobile_screen.dart';
-import '../features/ngo/presentation/screens/ngo_mobile_screen.dart';
-import '../features/admin/presentation/screens/admin_mobile_screen.dart';
 
 class CareGridApp extends StatefulWidget {
   final bool startAuthenticated;
@@ -51,11 +47,6 @@ class _CareGridAppState extends State<CareGridApp> {
     return switch (user.role) {
       CareGridPortalRole.beneficiary => BeneficiaryShell(onSignOut: signOut, demoEmail: user.email),
       CareGridPortalRole.restaurant => RestaurantDashboardScreen(user: user, onSignOut: signOut),
-      CareGridPortalRole.pharmacy => PharmacyMobileScreen(user: user, onSignOut: signOut),
-      CareGridPortalRole.lab => LabMobileScreen(user: user, onSignOut: signOut),
-      CareGridPortalRole.ngo => NgoMobileScreen(user: user, onSignOut: signOut),
-      CareGridPortalRole.admin => AdminMobileScreen(user: user, onSignOut: signOut),
-      CareGridPortalRole.membershipAdmin => MembershipWorkspace(user: user, onSignOut: signOut),
       CareGridPortalRole.sponsor => SponsorWorkspace(user: user, onSignOut: signOut),
     };
   }
