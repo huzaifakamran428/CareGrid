@@ -53,6 +53,7 @@ Use your actual simulator ID if different. Run from a local development folder o
 - Membership Admin can suspend, block and reactivate a license in this browser. This hides the NGO workspace in this browser, but does not change server authorization or subscription dates.
 - Beneficiary > Prescription upload: select a fictional PDF/JPG/PNG (up to 5 MB). Sign out, then sign in as the assigned pharmacy in the same browser. Prescription inbox supports original-file download, simulated OCR review, manual medicine transcription, example subsidy calculation, and a mock dispense status. File bytes use IndexedDB; metadata uses localStorage. No real OCR, clinical validation, or dispensing.
 - All eight web roles have a browser-only FAQ assistant. Existing standalone prototype state is not automatically synchronized.
+- On mobile, the membership controls and prescription file selection/review work within the same running Flutter app; these records reset on restart and do not sync with the web. Use Choose File (camera remains a sample-only preview).
 - The existing web registration and annual renewal demo actions remain unchanged. Never use genuine documents or health information.
 
 ## Validation and limits

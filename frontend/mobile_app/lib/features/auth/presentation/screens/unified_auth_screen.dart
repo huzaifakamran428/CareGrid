@@ -290,13 +290,16 @@ class _UnifiedAuthScreenState extends State<UnifiedAuthScreen> {
                   border: Border.all(color: CareGridPalette.line),
                   boxShadow: const [CareGridLayout.cardShadow],
                 ),
-                child: !_isSignup
-                    ? _buildLoginForm()
-                    : switch (_signupStep) {
-                        0 => _buildSignupStep1(),
-                        1 => _buildSignupStep2(),
-                        _ => _buildSignupStep3(),
-                      },
+                child: Material(
+                  type: MaterialType.transparency,
+                  child: !_isSignup
+                      ? _buildLoginForm()
+                      : switch (_signupStep) {
+                          0 => _buildSignupStep1(),
+                          1 => _buildSignupStep2(),
+                          _ => _buildSignupStep3(),
+                        },
+                ),
               ),
             ],
           ),

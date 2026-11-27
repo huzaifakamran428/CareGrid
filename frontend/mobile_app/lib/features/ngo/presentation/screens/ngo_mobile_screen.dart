@@ -40,7 +40,7 @@ class _NgoMobileScreenState extends State<NgoMobileScreen> {
         padding: const EdgeInsets.all(18),
         children: [
           if (membership == null || !membership.active)
-            Card(child: ListTile(title: const Text('Membership expired'), subtitle: const Text('Contact Membership Admin to renew your license.'), trailing: IconButton(onPressed: widget.onSignOut, icon: const Icon(Icons.logout))))
+            Card(child: ListTile(title: Text('Membership ${membership?.status.toLowerCase() ?? 'unavailable'}'), subtitle: const Text('Contact Membership Admin to restore access.'), trailing: IconButton(onPressed: widget.onSignOut, icon: const Icon(Icons.logout))))
           else ...[
           Container(
             padding: const EdgeInsets.all(20),
