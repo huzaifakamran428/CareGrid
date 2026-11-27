@@ -1,5 +1,5 @@
 from django.shortcuts import redirect
-from django.http import HttpResponseForbidden
+from django.http import HttpResponseForbidden, HttpResponseNotFound
 from .models import DemoNgoMembership
 
 # The Django demo is local-only. Restrict every role-specific URL, not just navigation.
@@ -9,9 +9,6 @@ ROLE_PREFIXES = {
     "ngo": "ngo",
     "pharmacy": "pharmacy",
     "lab": "lab",
-    "restaurant": "restaurant",
-    "beneficiary": "beneficiary",
-    "sponsor": "sponsor",
 }
 
 class DemoRoleMiddleware:
@@ -22,6 +19,11 @@ class DemoRoleMiddleware:
         prefix = request.path_info.strip("/").split("/")[0]
         role = ROLE_PREFIXES.get(prefix)
         user = request.session.get("cg_user")
+        if user and user.get("role") in {"restaurant", "beneficiary", "sponsor"}:
+            request.session.pop("cg_user", None)
+            user = None
+        if prefix in {"restaurant", "beneficiary", "sponsor"}:
+            return HttpResponseNotFound("This workspace is available in the CareGrid mobile app only.")
         if role:
             if not user:
                 return redirect("web_login")

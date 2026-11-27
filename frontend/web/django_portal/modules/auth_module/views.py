@@ -9,10 +9,6 @@ CREDENTIAL_DIRECTORY = {
         "password": "Member@123", "role": "membership",
         "name": "Membership Administrator", "redirect_url": "membership_dashboard",
     },
-    "sponsor@caregrid.example": {
-        "password": "Sponsor@123", "role": "sponsor",
-        "name": "Demo Sponsor", "redirect_url": "sponsor_dashboard",
-    },
     "admin@caregrid.org": {
         "password": "Admin@123",
         "role": "admin",
@@ -37,19 +33,10 @@ CREDENTIAL_DIRECTORY = {
         "name": "Chughtai Diagnostic Lab (#LAB-204)",
         "redirect_url": "lab_portal",
     },
-    "ops@lahorekitchen.pk": {
-        "password": "Food@123",
-        "role": "restaurant",
-        "name": "Lahore Kitchen Relief (#RST-312)",
-        "redirect_url": "restaurant_portal",
-    },
-    "ayesha.bibi@caregrid.pk": {
-        "password": "Ben@123",
-        "role": "beneficiary",
-        "name": "Ayesha Bibi (CG-BEN-2026-009481)",
-        "redirect_url": "beneficiary_portal",
-    },
 }
+
+MOBILE_ONLY_EMAILS = {"sponsor@caregrid.example", "ops@lahorekitchen.pk", "ayesha.bibi@caregrid.pk"}
+
 
 def home_redirect(request):
     return redirect("web_login")
@@ -58,6 +45,9 @@ def web_login_view(request):
     if request.method == "POST":
         email = request.POST.get("username", "").strip().lower()
         password = request.POST.get("password", "")
+        if email in MOBILE_ONLY_EMAILS:
+            messages.error(request, "This account is mobile-only. Open the CareGrid mobile app to sign in.")
+            return render(request, "auth/web_login.html", {"demo_accounts": CREDENTIAL_DIRECTORY.items()})
         seed_demo_memberships()
         membership = DemoNgoMembership.objects.filter(email=email).first()
         if membership:
@@ -77,9 +67,10 @@ def web_login_view(request):
         messages.error(request, "Invalid credentials or expired NGO membership.")
     if request.method == "GET" and request.session.get("cg_user"):
         role = request.session["cg_user"].get("role")
-        targets = {"admin": "user_management", "membership": "membership_dashboard", "ngo": "ngo_dashboard", "pharmacy": "pharmacy_portal", "lab": "lab_portal", "restaurant": "restaurant_portal", "beneficiary": "beneficiary_portal", "sponsor": "sponsor_dashboard"}
+        targets = {"admin": "user_management", "membership": "membership_dashboard", "ngo": "ngo_dashboard", "pharmacy": "pharmacy_portal", "lab": "lab_portal"}
         if role in targets:
             return redirect(targets[role])
+        request.session.pop("cg_user", None)
     return render(request, "auth/web_login.html", {"demo_accounts": CREDENTIAL_DIRECTORY.items()})
 
 def web_logout_view(request):

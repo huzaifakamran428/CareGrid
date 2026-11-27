@@ -36,16 +36,34 @@ class DemoFlowTests(TestCase):
         self.client.get(reverse("web_logout"))
         self.assertRedirects(self.login(expired.email, "Ngo@123"), reverse("ngo_dashboard"))
 
-    def test_role_guards_and_sponsor(self):
-        self.assertRedirects(self.client.get(reverse("sponsor_dashboard")), reverse("web_login"))
+    def test_web_roles_and_mobile_only_accounts(self):
+        for email, password, target in [
+            ("admin@caregrid.org", "Admin@123", "user_management"),
+            ("membership@caregrid.example", "Member@123", "membership_dashboard"),
+            ("kamran@alkhidmat-lhr.org", "Ngo@123", "ngo_dashboard"),
+            ("pharmacy@medpluscare.org", "Pharm@123", "pharmacy_portal"),
+            ("lab@chughtai-care.org", "Lab@123", "lab_portal"),
+        ]:
+            self.assertRedirects(self.login(email, password), reverse(target))
+            self.client.get(reverse("web_logout"))
+        for email, password in [
+            ("sponsor@caregrid.example", "Sponsor@123"),
+            ("ops@lahorekitchen.pk", "Food@123"),
+            ("ayesha.bibi@caregrid.pk", "Ben@123"),
+        ]:
+            result = self.login(email, password)
+            self.assertContains(result, "mobile-only")
+            self.assertNotIn("cg_user", self.client.session)
+            self.assertNotContains(self.client.get(reverse("web_login")), email)
+        for url in ["/sponsor/", "/sponsor/donate/", "/restaurant/", "/beneficiary/"]:
+            self.assertEqual(self.client.get(url).status_code, 404)
+        session = self.client.session
+        session["cg_user"] = {"role": "beneficiary", "email": "ayesha.bibi@caregrid.pk"}
+        session.save()
+        self.client.get(reverse("web_login"))
+        self.assertNotIn("cg_user", self.client.session)
         self.login("admin@caregrid.org", "Admin@123")
         self.assertEqual(self.client.get(reverse("membership_dashboard")).status_code, 403)
-        self.client.get(reverse("web_logout"))
-        self.assertRedirects(self.login("sponsor@caregrid.example", "Sponsor@123"), reverse("sponsor_dashboard"))
-        ngo = DemoNgoMembership.objects.get(email="kamran@alkhidmat-lhr.org")
-        self.client.post(reverse("sponsor_donate"), {"ngo": ngo.pk, "amount": "1000", "cause": "Healthcare"})
-        self.assertEqual(len(self.client.session["cg_demo_receipts"]), 1)
-        self.assertEqual(self.client.get(reverse("user_management")).status_code, 403)
 
     def test_ngo_license_and_document_visibility(self):
         self.login("membership@caregrid.example", "Member@123")
