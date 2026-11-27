@@ -34,7 +34,7 @@ class CareGridAuthRepository {
 
   void renew(String email) {
     final item = memberships[email];
-    if (item == null) return;
+    if (item == null || item.restriction != null) return;
     final now = DateTime.now();
     item.expires = addMonths(item.expires.isAfter(now) ? item.expires : now, 12);
     item.plan = 'Annual';
@@ -153,11 +153,15 @@ class DemoMembership {
   String plan;
   DateTime expires;
   final List<DemoNgoDocument> documents;
+  String? restriction;
   DemoMembership(this.name, this.email, this.plan, this.expires, {List<DemoNgoDocument> documents = const []}) : documents = List.unmodifiable(documents);
   int get daysLeft { final minutes = expires.difference(DateTime.now()).inSeconds; return minutes <= 0 ? 0 : (minutes / 86400).ceil(); }
   String get planLabel => plan == 'Trial' ? 'One-month free trial' : 'Yearly license';
-  bool get active => expires.isAfter(DateTime.now());
-  String get status => active ? plan : 'Expired';
+  bool get active => restriction == null && expires.isAfter(DateTime.now());
+  String get status => restriction ?? (active ? plan : 'Expired');
+  void suspend() { restriction = 'Suspended'; }
+  void block() { restriction = 'Blocked'; }
+  void reactivate() { restriction = null; }
 }
 
 class DemoNgoDocument {

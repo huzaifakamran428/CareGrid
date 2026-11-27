@@ -25,6 +25,13 @@ void main() {
     expect(membership.planLabel, 'One-month free trial');
     repo.renew(membership.email);
     expect(membership.planLabel, 'Yearly license');
+    membership.suspend();
+    expect(repo.signIn(membership.email, 'Demo1234'), isNull);
+    membership.reactivate();
+    expect(repo.signIn(membership.email, 'Demo1234'), isNotNull);
+    membership.block();
+    expect(repo.signIn(membership.email, 'Demo1234'), isNull);
+    membership.reactivate();
   });
 
   test('trial registration, expiry and renewal', () {

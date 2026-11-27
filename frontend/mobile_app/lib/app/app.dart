@@ -49,7 +49,7 @@ class _CareGridAppState extends State<CareGridApp> {
   Widget _buildPortalForUser(PortalUser user) {
     void signOut() => setState(() => _currentUser = null);
     return switch (user.role) {
-      CareGridPortalRole.beneficiary => BeneficiaryShell(onSignOut: signOut),
+      CareGridPortalRole.beneficiary => BeneficiaryShell(onSignOut: signOut, demoEmail: user.email),
       CareGridPortalRole.restaurant => RestaurantDashboardScreen(user: user, onSignOut: signOut),
       CareGridPortalRole.pharmacy => PharmacyMobileScreen(user: user, onSignOut: signOut),
       CareGridPortalRole.lab => LabMobileScreen(user: user, onSignOut: signOut),
@@ -75,7 +75,8 @@ class _CareGridAppState extends State<CareGridApp> {
 
 class BeneficiaryShell extends StatefulWidget {
   final VoidCallback? onSignOut;
-  const BeneficiaryShell({super.key, this.onSignOut});
+  final String demoEmail;
+  const BeneficiaryShell({super.key, this.onSignOut, this.demoEmail = 'ayesha.bibi@caregrid.pk'});
 
   @override
   State<BeneficiaryShell> createState() => _BeneficiaryShellState();
@@ -98,7 +99,7 @@ class _BeneficiaryShellState extends State<BeneficiaryShell> {
     }
     final Widget? screen = switch (destination) {
       'digital-id' => const DigitalIdPassScreen(),
-      'prescription' => const PrescriptionUploadScreen(),
+      'prescription' => PrescriptionUploadScreen(demoEmail: widget.demoEmail),
       'chatbot' => const CaregridChatbotScreen(),
       'chat-history' => const ChatHistoryScreen(),
       'feedback' => const ServiceFeedbackScreen(),

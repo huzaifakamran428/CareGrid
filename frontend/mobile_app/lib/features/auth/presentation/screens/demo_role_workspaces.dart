@@ -79,7 +79,13 @@ class _MembershipWorkspaceState extends State<MembershipWorkspace> {
           Text('${item.status} - expires ${date(item.expires)}'),
           for (final document in item.documents) Text('${document.category}: ${document.name}', style: Theme.of(context).textTheme.bodySmall),
           const SizedBox(height: 8),
-          OutlinedButton(onPressed: () => setState(() => repo.renew(item.email)), child: Text(item.plan == 'Trial' ? 'Activate annual license' : 'Renew annual license')),
+          OutlinedButton(onPressed: item.restriction != null ? null : () => setState(() => repo.renew(item.email)), child: Text(item.plan == 'Trial' ? 'Activate annual license' : 'Renew annual license')),
+          Wrap(spacing: 8, runSpacing: 4, children: [
+            if (item.restriction == null) ...[
+              OutlinedButton(onPressed: item.active ? () => setState(item.suspend) : null, child: const Text('Suspend')),
+              OutlinedButton(onPressed: item.active ? () => setState(item.block) : null, child: const Text('Block')),
+            ] else FilledButton(onPressed: () => setState(item.reactivate), child: const Text('Reactivate')),
+          ]),
         ]))),
     ]),
   );

@@ -1,10 +1,14 @@
 // ignore_for_file: deprecated_member_use
 import 'package:flutter/material.dart';
+import 'package:file_picker/file_picker.dart';
+import '../state/prescription_demo_store.dart';
+import '../../../auth/data/repositories/auth_repository.dart';
 import '../../../../app/theme/brand_tokens.dart';
 import '../../../../core/widgets/caregrid_brand.dart';
 
 class PrescriptionUploadScreen extends StatefulWidget {
-  const PrescriptionUploadScreen({super.key});
+  final String demoEmail;
+  const PrescriptionUploadScreen({super.key, this.demoEmail = 'ayesha.bibi@caregrid.pk'});
 
   @override
   State<PrescriptionUploadScreen> createState() =>
@@ -85,6 +89,29 @@ class _PrescriptionUploadScreenState extends State<PrescriptionUploadScreen> {
       'status': 'Demo record',
     },
   ];
+
+  Future<void> _pickDemoPrescription() async {
+    if (_isScanning) return;
+    setState(() => _isScanning = true);
+    try {
+      final result = await FilePicker.platform.pickFiles(
+        type: FileType.custom, allowedExtensions: ['pdf', 'png', 'jpg', 'jpeg'], withData: true);
+      if (!mounted || result == null) return;
+      final file = result.files.single;
+      final bytes = file.bytes;
+      if (bytes == null || !DemoNgoDocument('Prescription', file.name, bytes).valid) {
+        _showSnack('Choose a valid fictional PDF or image, up to 5 MB.');
+        return;
+      }
+      PrescriptionDemoStore.submit(widget.demoEmail, file.name, bytes);
+      setState(() => _hasActiveScanPreview = false);
+      _showSnack('Demo file sent to MedPlus pharmacy in this app session.');
+    } catch (_) {
+      if (mounted) _showSnack('File picker could not open.');
+    } finally {
+      if (mounted) setState(() => _isScanning = false);
+    }
+  }
 
   void _simulateUpload(String source) {
     setState(() {
@@ -183,6 +210,8 @@ class _PrescriptionUploadScreenState extends State<PrescriptionUploadScreen> {
                           ),
                         ),
                         const SizedBox(height: 10),
+                        for (final record in PrescriptionDemoStore.forBeneficiary(widget.demoEmail))
+                          Card(child: ListTile(title: Text(record.filename), subtitle: Text('${record.id} • ${record.status}'), trailing: const Icon(Icons.description_outlined))),
                         _buildSavedPrescriptionsList(),
                       ],
                     ),
@@ -256,7 +285,7 @@ class _PrescriptionUploadScreenState extends State<PrescriptionUploadScreen> {
           ),
           const SizedBox(height: 4),
           Text(
-            'Scan your doctor’s prescription to extract medicines automatically for subsidized pharmacy dispensing.',
+            'Upload a fictional prescription for pharmacy review. OCR and dispensing are simulated.',
             style: TextStyle(
               color: Colors.white.withValues(alpha: 0.88),
               fontSize: 12.5,
@@ -293,7 +322,7 @@ class _PrescriptionUploadScreenState extends State<PrescriptionUploadScreen> {
           ),
           const SizedBox(height: 4),
           const Text(
-            'Demo only: these buttons show sample data. File picking, upload and Prescription Scan will work after backend integration.',
+            'Use fictional files only. Choose File sends the original to the pharmacy demo in this app session. Take Photo shows a sample preview.',
             style: TextStyle(
               color: _mutedText,
               fontSize: 12,
@@ -305,7 +334,7 @@ class _PrescriptionUploadScreenState extends State<PrescriptionUploadScreen> {
             children: [
               Expanded(
                 child: ElevatedButton.icon(
-                  onPressed: () => _simulateUpload('Camera'),
+                  onPressed: _isScanning ? null : () => _simulateUpload('Camera'),
                   icon: const Icon(Icons.camera_alt_outlined, size: 18),
                   label: const Text(
                     'Take Photo',
@@ -325,7 +354,7 @@ class _PrescriptionUploadScreenState extends State<PrescriptionUploadScreen> {
               const SizedBox(width: 10),
               Expanded(
                 child: OutlinedButton.icon(
-                  onPressed: () => _simulateUpload('Gallery'),
+                  onPressed: _isScanning ? null : _pickDemoPrescription,
                   icon: const Icon(Icons.upload_file_outlined, size: 18),
                   label: const Text(
                     'Choose File',
