@@ -8,9 +8,13 @@
     criteria: 'caregrid.demo.assistant.criteria.v1',
     history: 'caregrid.demo.assistant.history.v1'
   };
-  const ROLES = ['ngo','admin','lab','pharmacy'];
-  const ROLE_LABELS = {ngo:'NGO',admin:'Admin',lab:'Lab partner',pharmacy:'Pharmacy'};
+  const ROLES = ['ngo','admin','lab','pharmacy','membership','beneficiary','restaurant','sponsor'];
+  const ROLE_LABELS = {ngo:'NGO',admin:'Admin',lab:'Lab partner',pharmacy:'Pharmacy',membership:'Membership admin',beneficiary:'Beneficiary',restaurant:'Restaurant',sponsor:'Sponsor'};
   const DEFAULT_FAQS = [
+    {id:'faq-membership',question:'How do NGO licenses work?',answer:'Membership Admin registers an NGO with a one-month free trial and can activate or renew a yearly license. Suspend and block are local UI demonstrations.',keywords:'license,trial,renew,membership',roles:['membership','ngo','admin'],enabled:true,category:'Membership'},
+    {id:'faq-restaurant',question:'How do I list surplus food?',answer:'Open the restaurant food listing section and enter fictional batch details. Use the collection request section to demonstrate pickups.',keywords:'food,listing,pickup,restaurant',roles:['restaurant','ngo'],enabled:true,category:'Food'},
+    {id:'faq-sponsor',question:'How do I make a demo donation?',answer:'Choose an NGO, cause and amount in the Sponsor workspace. No real payment takes place.',keywords:'donate,donation,sponsor,receipt',roles:['sponsor'],enabled:true,category:'Donations'},
+    {id:'faq-beneficiary-rx',question:'How do I upload a prescription?',answer:'Open Prescription upload and attach a fictional file. The selected pharmacy can review it in the same browser demo. No actual medicine is dispensed.',keywords:'prescription,upload,pharmacy',roles:['beneficiary','pharmacy'],enabled:true,category:'Prescriptions'},
     {id:'faq-1',question:'How do I register a beneficiary?',answer:'In the NGO workspace, open Walk-in Registration. Check the original identity documents and consent before creating a DEMO beneficiary record. Real registration requires a secure backend.',keywords:'beneficiary,register,registration,walk in,cnic',roles:['ngo','admin'],enabled:true,category:'Registration'},
     {id:'faq-2',question:'How does the Digital ID work?',answer:'The Digital ID is a visual DEMO card. Secure issuance, QR validation and counter verification are NOT active. Approved organizations will need a signed credential and real verification API.',keywords:'digital id,id card,verify,qr,identity,card',roles:ROLES,enabled:true,category:'Digital ID'},
     {id:'faq-3',question:'How can a laboratory handle a request?',answer:'Open Lab Requests to inspect sample appointments and prescriptions. Real approval, scheduling, OCR verification and reports require backend services. Do not use sample records for patient care.',keywords:'lab,test,appointment,diagnostic,cbc,request,report',roles:['lab','ngo','admin'],enabled:true,category:'Laboratory'},

@@ -18,7 +18,7 @@
 
     <div class="row g-0">
       <!-- Left Sidebar -->
-      <div class="col-lg-3 col-xl-2 p-3" style="background-color: #F7FBF9; border-right: 1.5px solid var(--cg-mint-border);">
+      <div id="cg-old-pharmacy-sidebar" class="col-lg-3 col-xl-2 p-3" style="background-color: #F7FBF9; border-right: 1.5px solid var(--cg-mint-border);">
         <div class="mb-3 pb-2 border-bottom">
           <div class="d-flex align-items-center gap-2 mb-1"><img src="{% static 'img/caregrid_logo.png' %}" alt="CareGrid" height="28" class="rounded-2"><span class="fw-bold" style="color: var(--cg-primary);">MEDPLUS CARE</span></div>
           <small class="text-muted">Verified Partner ID: #PHM-409</small>
@@ -46,7 +46,7 @@
       </div>
 
       <!-- Main Workspace -->
-      <div class="col-lg-9 col-xl-10 p-4 bg-white">
+      <div class="col-12 p-4">
         <div class="d-flex flex-wrap justify-content-between align-items-center mb-4">
           <div>
             <h4 class="fw-bold mb-1">Pharmacy Web Portal — Digital ID Verification &amp; Rx Reader</h4>
@@ -116,7 +116,7 @@
               <div class="border rounded-3 p-3 mb-3" style="border-color: var(--cg-mint-border) !important;">
                 <div class="d-flex justify-content-between align-items-center mb-2">
                   <span class="badge badge-active"><i class="bi bi-file-earmark-check me-1"></i> EXTRACTED PRESCRIPTION FIELDS</span>
-                  <span class="fw-bold small text-success">Confidence: 98.5%</span>
+                  <span class="fw-bold small text-success">Illustrative sample only</span>
                 </div>
 
                 <div class="row g-2 small mb-3 pb-2 border-bottom">
@@ -223,7 +223,7 @@
 
                 <div class="cg-mint-box p-2 px-3 mb-3 small">
                   <i class="bi bi-info-circle-fill text-success me-1"></i>
-                  Bill is permanently bound to <strong>{{ beneficiary.digital_id }}</strong> and routed to <strong>{{ beneficiary.ngo }}</strong> for settlement.
+                  Demo bill is associated with <strong>{{ beneficiary.digital_id }}</strong> and routed to <strong>{{ beneficiary.ngo }}</strong> for settlement.
                 </div>
 
                 <button type="submit" class="btn btn-cg-primary w-100 py-2">

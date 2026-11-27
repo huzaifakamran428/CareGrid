@@ -34,7 +34,7 @@
       </button>
     </div>
     <span class="badge badge-active px-3 py-2 rounded-pill">
-      <i class="bi bi-circle-fill me-1" style="font-size: 0.55rem;"></i> Live DB Sync: 12:46
+      <i class="bi bi-circle-fill me-1" style="font-size: 0.55rem;"></i> Demo data
     </span>
   </div>
 
@@ -44,7 +44,7 @@
       <div class="cg-card p-4">
         <div class="d-flex justify-content-between align-items-center mb-3">
           <h5 class="fw-bold mb-0">CareGrid Platform Live Metrics</h5>
-          <span class="badge badge-active px-3 py-2 rounded-pill">Live DB Sync: 12:46</span>
+          <span class="badge badge-active px-3 py-2 rounded-pill">Demo data</span>
         </div>
 
         <div class="row g-3 mb-4">
@@ -187,14 +187,16 @@
             </thead>
             <tbody>
               {% for u in users_list %}
-              <tr data-role="{{ u.role }}">
+              <tr data-role="{{ u.role }}" data-cg-ngo="{% if u.membership_record %}{{ u.email }}{% endif %}">
                 <td class="ps-4 py-3">
                   <div class="fw-bold">{{ u.name }}</div>
                   <small class="text-muted">{{ u.email }} • ID: {{ u.code }}</small>
                 </td>
                 <td class="text-muted fw-medium">{{ u.role }}</td>
                 <td>
-                  {% if u.status == 'ACTIVE' %}
+                  {% if u.membership_record %}
+                    <span class="badge {% if u.status == 'EXPIRED' %}badge-suspended{% else %}badge-active{% endif %} cg-ngo-admin-status">{% if u.status == 'EXPIRED' %}EXPIRED{% else %}ACTIVE{% endif %}</span>
+                  {% elif u.status == 'ACTIVE' %}
                     <span class="badge badge-active px-3 py-2 rounded-2">ACTIVE ✓</span>
                   {% elif u.status == 'AUTHORIZED' %}
                     <span class="badge badge-authorized px-3 py-2 rounded-2">AUTHORIZED</span>
@@ -203,6 +205,7 @@
                   {% endif %}
                 </td>
                 <td class="text-end pe-4">
+                  {% if u.membership_record %}<span class="small text-muted">Managed by Membership Admin</span>{% else %}
                   <form method="POST" action="{% url 'toggle_user_status' u.id %}" class="d-inline">
                     {% csrf_token %}
                     {% if u.status == 'ACTIVE' %}
@@ -220,7 +223,7 @@
                         Re-Activate Access
                       </button>
                     {% endif %}
-                  </form>
+                  </form>{% endif %}
                 </td>
               </tr>
               {% endfor %}

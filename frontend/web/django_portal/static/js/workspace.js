@@ -1,0 +1,115 @@
+(() => {
+'use strict';
+const role=document.body.dataset.caregridRole,email=document.body.dataset.cgEmail;
+const $=s=>document.querySelector(s), $$=s=>Array.from(document.querySelectorAll(s));
+const native=$('#cg-native-content'), module=$('#cg-module-content'), nav=$('#cg-section-nav');
+if(!native||!module||!nav)return;
+const names={admin:'System Admin',membership:'Membership Admin',ngo:'NGO',beneficiary:'Beneficiary',pharmacy:'Pharmacy',lab:'Laboratory',restaurant:'Restaurant',sponsor:'Sponsor'};
+const local=(key,label,kind='native',target='')=>({key,label,kind,target});
+const frame=(key,label,path,hash='')=>({key,label,kind:'frame',target:path,hash});
+const admin='admin_portal/index.html',ngo='ngo_portal/index.html',lab='labs/templates/';
+const config={
+ admin:[local('overview','System overview','tab','tabDashboard'),local('accounts','Account & role control','tab','tabUsers'),local('beneficiaries','Beneficiary registry','tab','tabBeneficiaries'),local('food','Surplus food tracking','tab','tabFood'),frame('registrations','Registration requests',admin,'approvals'),frame('organizations','Organization records',admin,'organizations'),frame('monitoring','Service monitoring',admin,'monitoring'),frame('reports','Reports',admin,'reports'),frame('complaints','Complaints',admin,'complaints'),frame('feedback','Service feedback','admin_portal/complaint_resolution_service_feedback_figma.html'),frame('audit','Payment audit','admin_portal/payment_audit_ngo_donations_figma.html'),frame('assistant-control','Assistant control','admin_portal/assistant_control.html')],
+ ngo:[local('overview','Overview'),frame('operations','NGO operations',ngo,'overview'),frame('register','Beneficiary registration',ngo,'walk-in'),frame('beneficiaries','Beneficiaries',ngo,'beneficiaries'),frame('digital-ids','Digital ID cards',ngo,'digital-ids'),frame('partners','Service providers',ngo,'partners'),frame('sponsors','Sponsors',ngo,'sponsors'),frame('collections','Food collection requests','ngo_portal/food_collection_request_alerts_figma.html'),frame('notifications','Notifications','ngo_portal/caregrid_notifications_console.html'),frame('funds','NGO funds & claims','ngo_portal/Sponse_web.html'),local('license','My license','license')],
+ membership:[local('overview','License registry','membership','registry'),local('register','Register NGO','membership','register'),local('restricted','Suspended / blocked','membership','restricted')],
+ beneficiary:[local('overview','Welfare overview'),local('prescriptions','Prescription upload','rx-upload'),local('rx-status','Prescription status','rx-status'),local('support','Complaints & feedback','support')],
+ pharmacy:[local('overview','Digital ID & billing'),local('rx-inbox','Prescription inbox & OCR','rx-inbox'),local('dispense','Dispense history','rx-history'),frame('guide','Pharmacy services guide','pharmacy_portal/index.html')],
+ lab:[local('overview','Overview'),frame('queue','Appointment queue',lab+'dashboard.html'),frame('appointments','Appointments',lab+'appointments.html'),frame('requests','Lab requests',lab+'lab_requests.html'),frame('details','Request details',lab+'request_details.html'),frame('catalog','Tests & time slots',lab+'lab_test_catalog.html'),frame('upload','Upload reports',lab+'lab_report_upload.html'),frame('chat-history','Assistant history','chatbot/templates/chat_history.html')],
+ restaurant:[local('overview','Overview'),local('listings','Food listings','food-list'),local('collections','Collection requests','food-requests')],
+ sponsor:[local('overview','Donate & receipts')]
+};
+const sections=config[role]||[local('overview','Overview')];
+const legacy=$('#cg-legacy-redirect');
+if(legacy){const match=sections.find(x=>x.target===legacy.dataset.cgFile);location.replace('/login/'+(match?'#cg-'+match.key:''));return;}
+$('#cg-role-title').textContent=(names[role]||'CareGrid')+' workspace';
+const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const read=(k,f)=>{try{return JSON.parse(localStorage.getItem(k))??f}catch(_){return f}};
+const save=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v));return true}catch(_){return false}};
+const licenseKey='caregrid.ui.licenseRestrictions.v1',rxKey='caregrid.ui.prescriptions.v1',foodKey='caregrid.ui.food.v1';
+const currentRestriction=()=>read(licenseKey,{})[email.toLowerCase()];
+const announce=(msg)=>{let el=$('#cg-workspace-message');if(!el){el=document.createElement('div');el.id='cg-workspace-message';el.className='alert alert-info';el.setAttribute('role','status');$('#cg-workspace-main').insertBefore(el,native);}el.textContent=msg;el.hidden=false;};
+function updateRestrictions(){
+ const states=read(licenseKey,{});
+ $$('[data-cg-membership]').forEach(row=>{
+  const state=states[row.dataset.cgMembership.toLowerCase()],original=row.dataset.cgOriginalStatus;
+  const badge=row.querySelector('.cg-membership-status');if(!badge)return;
+  badge.textContent=state||original;
+  badge.classList.toggle('badge-suspended',!!state||original==='Expired');
+  badge.classList.toggle('badge-active',!state&&original!=='Expired');
+  row.querySelectorAll('[data-license-action]').forEach(b=>{b.hidden=b.dataset.licenseAction==='Active'?!state:!!state||original==='Expired';});
+  const renew=row.querySelector('form button');if(renew)renew.disabled=!!state;
+ });
+ $$('[data-cg-ngo]').forEach(row=>{const state=states[row.dataset.cgNgo.toLowerCase()],badge=row.querySelector('.cg-ngo-admin-status');if(state&&badge){badge.textContent=state.toUpperCase();badge.classList.remove('badge-active');badge.classList.add('badge-suspended');}});
+}
+native.addEventListener('click',e=>{const b=e.target.closest('[data-license-action]');if(!b||role!=='membership')return;const row=b.closest('[data-cg-membership]');if(!row)return;const key=row.dataset.cgMembership.toLowerCase(),action=b.dataset.licenseAction,states=read(licenseKey,{});
+ if(action==='Active')delete states[key];else states[key]=action;
+ if(!save(licenseKey,states)){announce('Browser storage unavailable. No change saved.');return;}updateRestrictions();if(activeKey==='restricted')select(activeKey,false);announce(action==='Active'?'Demo restriction removed. An expired license still needs renewal.':'License '+action.toLowerCase()+' in this browser demo. No backend authorization changed.');
+});
+const frames=new Map();let activeKey='',currentFrame=null;
+function badge(section){activeKey=section.key;$('#cg-section-title').textContent=section.label;$('#cg-current-section').textContent=section.label;$('#cg-breadcrumb').textContent='CareGrid / '+names[role]+' / '+section.label;nav.querySelectorAll('button').forEach(b=>b.setAttribute('aria-current',b.dataset.section===section.key?'page':'false'));}
+function decorateFrame(f){
+ try{
+  const doc=f.contentDocument;if(!doc||!doc.body)return;
+  if(!doc.getElementById('cg-embedded-style')){
+   const st=doc.createElement('style');st.id='cg-embedded-style';st.textContent='html,body{min-width:0!important;background:#F7FAF8!important} .cg-assistant{display:none!important} body > header:not(.cg-chat-head), .shell > .sidebar, .shell > .main > .topbar, body > .sidebar, .layout > aside, .cg-control-header{display:none!important} .shell,.layout{display:block!important;min-height:0!important} .shell > .main,.main-wrapper,.layout > main{margin-left:0!important;width:100%!important;max-width:none!important;min-width:0!important} .content-sheet{border-radius:18px!important;padding:20px!important} .shell .content{padding:18px!important} .main-wrapper .top-banner{display:none!important} body > main{max-width:none!important} #alertsFeedContainer{min-width:0}';doc.head.appendChild(st);
+   if(f.contentWindow.location.pathname.includes('food_collection_request_alerts_figma')) {
+    const bar=doc.getElementById('alertFilterBar');if(bar){const b=doc.createElement('button');b.type='button';b.className='px-3 py-2 rounded-lg bg-emerald-700 text-white text-xs font-bold';b.textContent='Browse available food';b.onclick=()=>f.contentWindow.openAlternativeListingsModal?.();bar.parentElement.appendChild(b);}
+    const h=doc.querySelector('main h1');if(h)h.textContent='Food collection requests';
+    const feed=doc.getElementById('alertsFeedContainer');if(feed&&feed.parentElement){feed.parentElement.style.gridTemplateColumns='minmax(0,1fr)';const aside=feed.parentElement.querySelector('aside');if(aside){aside.style.gridColumn='1 / -1';aside.style.display='grid';aside.style.gridTemplateColumns='repeat(auto-fit,minmax(230px,1fr))';}feed.style.gridColumn='1 / -1';}
+   }
+   doc.querySelectorAll('img[alt*="CareGrid"],img[alt*="Caregrid"]').forEach(img=>{img.src='/static/img/caregrid_logo.png';img.style.objectFit='contain';});
+  }
+  const w=f.contentWindow;
+  const sync=()=>{if(currentFrame!==f)return;const path=w.location.pathname.replace(/^\/preview-files\//,'').replace('labs/templates/lab_dashboard.html','labs/templates/dashboard.html');const hash=w.location.hash.slice(1);const match=sections.find(x=>x.kind==='frame'&&x.target===path&&(x.hash||'')===hash)||sections.find(x=>x.kind==='frame'&&x.target===path&&!x.hash);if(match){badge(match);history.replaceState(null,'','#cg-'+match.key);}};
+  w.addEventListener('hashchange',sync);sync();
+ }catch(_){/* Existing role-protected routes remain authoritative. */}
+}
+function showFrame(s){
+ let f=frames.get(s.target);if(!f){f=document.createElement('iframe');f.className='cg-module-frame';f.title=s.label;f.addEventListener('load',()=>decorateFrame(f));f.src='/preview-files/'+s.target+(s.hash?'#'+s.hash:'');frames.set(s.target,f);module.appendChild(f);}else if(s.hash){try{if(f.contentWindow.location.hash!=='#'+s.hash)f.contentWindow.location.hash=s.hash;}catch(_){f.src='/preview-files/'+s.target+'#'+s.hash;}}
+ module.querySelectorAll(':scope > *').forEach(x=>x.hidden=x!==f);f.hidden=false;currentFrame=f;decorateFrame(f);
+}
+function panel(){let el=$('#cg-local-panel');if(!el){el=document.createElement('section');el.id='cg-local-panel';module.appendChild(el);}module.querySelectorAll(':scope > *').forEach(x=>x.hidden=x!==el);el.hidden=false;currentFrame=null;return el;}
+function resetNative(){native.querySelectorAll('[data-cg-temp-hidden]').forEach(e=>{e.hidden=false;delete e.dataset.cgTempHidden;});}
+function hide(el){if(el){el.hidden=true;el.dataset.cgTempHidden='1';}}
+function select(key,write=true){
+ const s=sections.find(x=>x.key===key)||sections[0];badge(s);if(write)history.replaceState(null,'','#cg-'+s.key);resetNative();
+ if(role==='ngo'&&currentRestriction()){native.hidden=true;module.hidden=true;$('#cg-suspended-notice').hidden=false;return;}
+ $('#cg-suspended-notice').hidden=true;
+ const nativeKind=['native','tab','membership','license'].includes(s.kind);
+ native.hidden=!nativeKind;module.hidden=nativeKind;
+ if(nativeKind){currentFrame=null;if(s.kind==='tab'){const button=native.querySelector('[data-bs-target="#'+s.target+'"]');if(button&&window.bootstrap)bootstrap.Tab.getOrCreateInstance(button).show();else {native.querySelectorAll('.tab-pane').forEach(p=>{p.classList.toggle('active',p.id===s.target);p.classList.toggle('show',p.id===s.target);});}}
+ if(s.kind==='membership'){const reg=$('#cg-register-ngo'),registry=$('#cg-license-registry');if(s.target==='register')hide(registry);else hide(reg);$$('[data-cg-membership]').forEach(row=>{if(s.target==='restricted'&&!read(licenseKey,{})[row.dataset.cgMembership.toLowerCase()])hide(row);});updateRestrictions();}
+ if(s.kind==='license'){const license=$('#cg-my-license');if(license)Array.from(license.parentElement.children).forEach(el=>{if(el!==license)hide(el);});}
+ }else if(s.kind==='frame')showFrame(s);else renderLocal(s.kind,panel());
+ if(write)window.scrollTo({top:0,behavior:'auto'});
+}
+for(const s of sections){const b=document.createElement('button');b.type='button';b.dataset.section=s.key;b.innerHTML='<i class="bi bi-grid" aria-hidden="true"></i><span>'+esc(s.label)+'</span><span class="cg-active-dot" aria-hidden="true">●</span>';b.onclick=()=>select(s.key);nav.appendChild(b);}
+const oldTabs=native.querySelector('[role="tablist"]');if(role==='admin'&&oldTabs){oldTabs.parentElement.classList.add('cg-admin-legacy-nav');oldTabs.addEventListener('shown.bs.tab',e=>{const s=sections.find(x=>x.kind==='tab'&&'#'+x.target===e.target.dataset.bsTarget);if(s&&activeKey!==s.key){badge(s);history.replaceState(null,'','#cg-'+s.key);}});}
+function db(){return new Promise((resolve,reject)=>{const r=indexedDB.open('caregrid-demo-rx',1);r.onupgradeneeded=()=>r.result.createObjectStore('files');r.onsuccess=()=>resolve(r.result);r.onerror=()=>reject(r.error);});}
+async function fileOp(id,blob){const database=await db();return new Promise((resolve,reject)=>{const writing=blob!==undefined,tx=database.transaction('files',writing?'readwrite':'readonly'),store=tx.objectStore('files'),req=writing?store.put(blob,id):store.get(id);tx.oncomplete=()=>{database.close();resolve(req.result);};tx.onerror=()=>{database.close();reject(tx.error);};tx.onabort=()=>{database.close();reject(tx.error);};});}
+const records=()=>read(rxKey,[]);
+const rxUpdate=(id,fn)=>{const all=records(),r=all.find(x=>x.id===id);if(!r)return false;fn(r);return save(rxKey,all);};
+function renderLocal(kind,el){
+ const header=(title,description)=>'<div class="cg-card p-4 mb-3"><h2 class="h5 fw-bold">'+title+'</h2><p class="small text-muted mb-0">'+description+'</p></div>';
+ const note='<p class="cg-amber-box p-3 small">Frontend demo only. Use fictional files and data. Browser storage is not a secure medical record system. No real treatment or payment.</p>';
+ if(kind==='rx-upload'){
+  el.innerHTML=header('Upload prescription','Send a fictional prescription to the demo pharmacy.')+'<div class="cg-card p-4">'+note+'<form id="cg-rx-form"><label class="cg-label" for="cg-rx-doctor">Doctor name (demo)</label><input id="cg-rx-doctor" class="form-control form-control-cg mb-3" maxlength="100" required><label class="cg-label" for="cg-rx-date">Prescription date</label><input id="cg-rx-date" type="date" class="form-control form-control-cg mb-3" required><label class="cg-label" for="cg-rx-file">Prescription PDF or image (5 MB max)</label><input id="cg-rx-file" type="file" accept=".pdf,.jpg,.jpeg,.png" class="form-control mb-3" required><label class="cg-label" for="cg-rx-pharmacy">Assigned pharmacy</label><select id="cg-rx-pharmacy" class="form-select form-select-cg mb-3"><option value="pharmacy@medpluscare.org">MedPlus Care Pharmacy</option></select><button class="btn btn-cg-primary">Submit demo prescription</button></form></div>';
+  el.querySelector('form').onsubmit=async e=>{e.preventDefault();const button=e.target.querySelector('button'),file=$('#cg-rx-file').files[0];if(!file||!/\.(pdf|jpe?g|png)$/i.test(file.name)||file.size<1||file.size>5*1024*1024){announce('Select a PDF, JPG or PNG file up to 5 MB.');return;}button.disabled=true;try{const id='RX-'+Date.now()+'-'+Math.random().toString(36).slice(2,6);await fileOp(id,file);const all=records();all.push({id,email,pharmacy:$('#cg-rx-pharmacy').value,doctor:$('#cg-rx-doctor').value,date:$('#cg-rx-date').value,name:file.name,status:'Submitted',text:'',total:0});if(!save(rxKey,all))throw Error('Browser storage full');select('rx-status');announce('Demo prescription submitted: '+id);}catch(_){announce('Could not save the file in this browser. Try again.');}finally{button.disabled=false;}};
+ }else if(['rx-status','rx-inbox','rx-history'].includes(kind)){
+  const pharmacy=role==='pharmacy',all=records().filter(r=>pharmacy?r.pharmacy===email:r.email===email).filter(r=>kind==='rx-history'?r.status==='Dispensed (demo)':kind==='rx-inbox'?r.status!=='Dispensed (demo)':true);
+  el.innerHTML=header(pharmacy?(kind==='rx-history'?'Dispense history':'Prescription inbox & OCR review'):'My prescriptions','Records are shared between demo accounts in this browser only.')+note+'<div class="cg-rx-list">'+(all.length?all.map(r=>'<article class="cg-card p-4" data-rx-id="'+esc(r.id)+'"><div class="d-flex justify-content-between flex-wrap gap-2"><strong>'+esc(r.id)+'</strong><span class="badge badge-active">'+esc(r.status)+'</span></div><p class="mt-2 mb-1">'+esc(r.name)+'</p><p class="small text-muted">Doctor: '+esc(r.doctor)+' · '+esc(r.date)+'</p>'+(pharmacy?'<button data-rx-download class="btn btn-cg-outline btn-sm">Download original</button>':'')+(pharmacy&&kind==='rx-inbox'?'<button data-rx-ocr class="btn btn-cg-outline btn-sm ms-2">Simulate OCR</button><div class="mt-3"><label class="cg-label">Review / transcribe medicine text (demo)</label><textarea data-rx-text class="form-control form-control-cg" placeholder="Enter fictional prescription text after reviewing the file.">'+esc(r.text)+'</textarea><p class="small text-muted">Simulation does not read the document. Confirm all text manually; never use this for real dispensing.</p><label class="cg-label">Example total bill (PKR)</label><input data-rx-total type="number" min="1" step=".01" class="form-control mb-2" value="'+esc(r.total||'')+'"><button data-rx-verify class="btn btn-cg-primary btn-sm">Verify demo record</button><button data-rx-dispense class="btn btn-cg-outline btn-sm ms-2" '+(r.status==='Verified (demo)'?'':'disabled')+'>Mark dispensed (demo)</button></div>':'')+(r.status==='Dispensed (demo)'?'<p class="mt-2 small">Demo bill: PKR '+esc(r.total)+'</p>':'')+'</article>').join(''):'<div class="cg-card p-4 text-muted">No prescriptions in this section. Upload a fictional file from the beneficiary account first.</div>')+'</div>';
+  el.querySelectorAll('[data-rx-id]').forEach(card=>{const id=card.dataset.rxId,download=card.querySelector('[data-rx-download]'),ocr=card.querySelector('[data-rx-ocr]'),verify=card.querySelector('[data-rx-verify]'),dispense=card.querySelector('[data-rx-dispense]');if(download)download.onclick=async()=>{try{const blob=await fileOp(id);if(!blob)throw Error();const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=records().find(r=>r.id===id).name;a.click();setTimeout(()=>URL.revokeObjectURL(url),1500);}catch(_){announce('Original file is unavailable in this browser.');}};if(ocr)ocr.onclick=()=>{if(rxUpdate(id,r=>{r.status='OCR review (demo)';})){renderLocal(kind,el);announce('OCR simulation opened. No text has been extracted. Review the original and transcribe fictional medicine information.');}};if(verify)verify.onclick=()=>{const text=card.querySelector('[data-rx-text]').value.trim(),total=Number(card.querySelector('[data-rx-total]').value);if(!text||!Number.isFinite(total)||total<=0||total>1000000){announce('Enter reviewed fictional medicine text and a valid bill amount.');return;}if(rxUpdate(id,r=>{r.text=text;r.total=total;r.status='Verified (demo)';})){renderLocal(kind,el);announce('Demo record verified. Example 80% NGO share: PKR '+(total*.8).toFixed(2)+'; beneficiary share: PKR '+(total*.2).toFixed(2)+'.');}};if(dispense)dispense.onclick=()=>{if(rxUpdate(id,r=>{if(r.status==='Verified (demo)')r.status='Dispensed (demo)';})){renderLocal(kind,el);announce('Demo dispense recorded. No medicine or money was transferred.');}};});
+ }else if(kind==='food-list'||kind==='food-requests'){
+  const batches=read(foodKey,[]);el.innerHTML=header(kind==='food-list'?'Manage surplus food listings':'Collection requests','Local demonstration of restaurant pickup coordination.')+(kind==='food-list'?'<form id="cg-food-form" class="cg-card p-4 mb-3"><label class="cg-label">Meal description</label><input name="meal" class="form-control mb-3" required maxlength="100"><label class="cg-label">Quantity</label><input name="qty" type="number" min="1" max="10000" class="form-control mb-3" required><label class="cg-label">Collection deadline</label><input name="deadline" type="datetime-local" class="form-control mb-3" required><button class="btn btn-cg-primary">Publish demo listing</button></form>':'')+'<div class="cg-card p-3 table-responsive"><table class="table align-middle"><thead><tr><th>Batch</th><th>Meal</th><th>Quantity</th><th>Deadline</th><th>Status</th><th>Action</th></tr></thead><tbody>'+batches.map(b=>'<tr><td>'+esc(b.id)+'</td><td>'+esc(b.meal)+'</td><td>'+esc(b.qty)+'</td><td>'+esc(b.deadline)+'</td><td><span class="badge badge-active">'+esc(b.status)+'</span></td><td>'+(b.status==='Listed'&&kind==='food-requests'?'<button data-food-id="'+esc(b.id)+'" data-food-status="Accepted" class="btn btn-cg-outline btn-sm">Accept demo pickup</button>':b.status==='Accepted'?'<button data-food-id="'+esc(b.id)+'" data-food-status="Collected" class="btn btn-cg-outline btn-sm">Mark collected</button>':b.status==='Listed'?'<button data-food-id="'+esc(b.id)+'" data-food-status="Cancelled" class="btn btn-outline-danger btn-sm">Cancel</button>':'—')+'</td></tr>').join('')+(batches.length?'':'<tr><td colspan="6">No new demo listings.</td></tr>')+'</tbody></table></div>';
+  const form=el.querySelector('form');if(form)form.onsubmit=e=>{e.preventDefault();const f=new FormData(form);batches.push({id:'FD-'+Date.now(),meal:f.get('meal'),qty:f.get('qty'),deadline:f.get('deadline'),status:'Listed'});if(save(foodKey,batches)){renderLocal(kind,el);announce('Demo food listing published.');}};
+  el.querySelectorAll('[data-food-id]').forEach(b=>b.onclick=()=>{const item=batches.find(x=>x.id===b.dataset.foodId);if(item){item.status=b.dataset.foodStatus;if(save(foodKey,batches))renderLocal(kind,el);}});
+ }else if(kind==='support'){
+  const k='caregrid.ui.support.'+email;el.innerHTML=header('Complaints & feedback','Submit and review fictional support requests.')+'<form class="cg-card p-4 mb-3"><label class="cg-label">Type</label><select name="type" class="form-select mb-3"><option>Complaint</option><option>Feedback</option></select><label class="cg-label">Message</label><textarea name="message" class="form-control mb-3" required maxlength="500"></textarea><button class="btn btn-cg-primary">Submit demo request</button></form><div class="cg-card p-4">'+read(k,[]).map(x=>'<p class="mb-2"><strong>'+esc(x.type)+'</strong> · '+esc(x.id)+' · Submitted<br>'+esc(x.message)+'</p>').join('')+'</div>';el.querySelector('form').onsubmit=e=>{e.preventDefault();const f=new FormData(e.target),items=read(k,[]);items.push({id:'CG-'+Date.now(),type:f.get('type'),message:f.get('message')});if(save(k,items))renderLocal(kind,el);};
+ }
+}
+updateRestrictions();
+const initial=location.hash.startsWith('#cg-')?location.hash.slice(4):'';
+select(initial,false);
+window.addEventListener('hashchange',()=>{if(location.hash.startsWith('#cg-'))select(location.hash.slice(4),false);});
+window.addEventListener('storage',e=>{if(e.key===licenseKey){updateRestrictions();select(activeKey,false);}if(e.key===rxKey&&['rx-status','rx-inbox','dispense'].includes(activeKey))select(activeKey,false);});
+})();
