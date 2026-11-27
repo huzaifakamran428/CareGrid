@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../../app/theme/brand_tokens.dart';
 import '../../../../core/widgets/caregrid_brand.dart';
 import '../../../../app/theme/caregrid_theme.dart';
 
@@ -93,7 +94,7 @@ class _DonationHistoryScreenState extends State<DonationHistoryScreen> {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(text),
-        backgroundColor: const Color(0xFF155E42),
+        backgroundColor: CareGridPalette.primary,
         behavior: SnackBarBehavior.floating,
       ),
     );
@@ -117,7 +118,7 @@ class _DonationHistoryScreenState extends State<DonationHistoryScreen> {
                 style: const TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
-                  color: Color(0xFF155E42),
+                  color: CareGridPalette.primary,
                 ),
               ),
               const SizedBox(height: 8),
@@ -126,7 +127,7 @@ class _DonationHistoryScreenState extends State<DonationHistoryScreen> {
                 style: const TextStyle(
                   fontSize: 13.5,
                   fontWeight: FontWeight.w600,
-                  color: Color(0xFF173D37),
+                  color: CareGridPalette.ink,
                 ),
               ),
               const SizedBox(height: 6),
@@ -134,7 +135,7 @@ class _DonationHistoryScreenState extends State<DonationHistoryScreen> {
                 'Amount: \$${record.amount.toStringAsFixed(2)} • Category: ${record.category} • Platform Fee: \$0.00',
                 style: const TextStyle(
                   fontSize: 13,
-                  color: Color(0xFF58746D),
+                  color: CareGridPalette.secondaryText,
                 ),
               ),
               const SizedBox(height: 16),
@@ -142,7 +143,7 @@ class _DonationHistoryScreenState extends State<DonationHistoryScreen> {
                 width: double.infinity,
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF155E42),
+                    backgroundColor: CareGridPalette.primary,
                     foregroundColor: Colors.white,
                   ),
                   onPressed: () {
@@ -166,7 +167,7 @@ class _DonationHistoryScreenState extends State<DonationHistoryScreen> {
     final String totalFormatted = _totalAmount.toStringAsFixed(2);
 
     return Scaffold(
-      backgroundColor: const Color(0xFF155E42),
+      backgroundColor: CareGridPalette.primary,
       body: SafeArea(
         child: Column(
           children: [
@@ -213,7 +214,7 @@ class _DonationHistoryScreenState extends State<DonationHistoryScreen> {
                       child: Text(
                         'Past Contributions & Payment Receipts',
                         style: TextStyle(
-                          color: Color(0xFFE5F5EE),
+                          color: CareGridPalette.paleMint,
                           fontSize: 13.5,
                         ),
                       ),
@@ -247,10 +248,10 @@ class _DonationHistoryScreenState extends State<DonationHistoryScreen> {
                           vertical: 14,
                         ),
                         decoration: BoxDecoration(
-                          color: const Color(0xFFFFF4E2),
+                          color: CareGridPalette.goldTint,
                           borderRadius: BorderRadius.circular(14),
                           border: Border.all(
-                            color: const Color(0xFFE3A33B),
+                            color: CareGridPalette.gold,
                             width: 1.2,
                           ),
                         ),
@@ -259,7 +260,7 @@ class _DonationHistoryScreenState extends State<DonationHistoryScreen> {
                             const Text(
                               'Total Voluntary Donations:',
                               style: TextStyle(
-                                color: Color(0xFFAD751D),
+                                color: CareGridPalette.goldDeep,
                                 fontSize: 13.5,
                                 fontWeight: FontWeight.bold,
                               ),
@@ -268,7 +269,7 @@ class _DonationHistoryScreenState extends State<DonationHistoryScreen> {
                             Text(
                               '\$$totalFormatted',
                               style: const TextStyle(
-                                color: Color(0xFF075A50),
+                                color: CareGridPalette.primaryDeep,
                                 fontSize: 28,
                                 fontWeight: FontWeight.bold,
                                 height: 1.15,
@@ -278,7 +279,7 @@ class _DonationHistoryScreenState extends State<DonationHistoryScreen> {
                             Text(
                               '(Zero platform fees applied • ${_records.length} Paid Receipts)',
                               style: const TextStyle(
-                                color: Color(0xFF075A50),
+                                color: CareGridPalette.primaryDeep,
                                 fontSize: 12,
                                 fontWeight: FontWeight.bold,
                               ),
@@ -306,7 +307,7 @@ class _DonationHistoryScreenState extends State<DonationHistoryScreen> {
                         height: 50,
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color(0xFF075A50),
+                            backgroundColor: CareGridPalette.primaryDeep,
                             foregroundColor: Colors.white,
                             elevation: 0,
                             shape: RoundedRectangleBorder(
@@ -334,10 +335,10 @@ class _DonationHistoryScreenState extends State<DonationHistoryScreen> {
                         height: 48,
                         child: OutlinedButton(
                           style: OutlinedButton.styleFrom(
-                            backgroundColor: const Color(0xFFF7FAF8),
-                            foregroundColor: const Color(0xFF173D37),
+                            backgroundColor: CareGridPalette.canvas,
+                            foregroundColor: CareGridPalette.ink,
                             side: const BorderSide(
-                              color: Color(0xFFDAE8E1),
+                              color: CareGridPalette.line,
                               width: 1.1,
                             ),
                             shape: RoundedRectangleBorder(
@@ -377,13 +378,13 @@ class _DonationHistoryScreenState extends State<DonationHistoryScreen> {
         padding: const EdgeInsets.all(14),
         decoration: BoxDecoration(
           color: isSelected
-              ? const Color(0xFFE5F5EE)
-              : const Color(0xFFF7FAF8),
+              ? CareGridPalette.paleMint
+              : CareGridPalette.canvas,
           borderRadius: BorderRadius.circular(16),
           border: Border.all(
             color: isSelected
-                ? const Color(0xFF075A50)
-                : const Color(0xFFDAE8E1),
+                ? CareGridPalette.primaryDeep
+                : CareGridPalette.line,
             width: isSelected ? 1.5 : 1.1,
           ),
         ),
@@ -398,7 +399,7 @@ class _DonationHistoryScreenState extends State<DonationHistoryScreen> {
                   style: const TextStyle(
                     fontSize: 12,
                     fontWeight: FontWeight.bold,
-                    color: Color(0xFF58746D),
+                    color: CareGridPalette.secondaryText,
                   ),
                 ),
                 Container(
@@ -408,8 +409,8 @@ class _DonationHistoryScreenState extends State<DonationHistoryScreen> {
                   ),
                   decoration: BoxDecoration(
                     color: useDarkPaidBadge
-                        ? const Color(0xFF075A50)
-                        : const Color(0xFFE5F5EE),
+                        ? CareGridPalette.primaryDeep
+                        : CareGridPalette.paleMint,
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: Text(
@@ -419,7 +420,7 @@ class _DonationHistoryScreenState extends State<DonationHistoryScreen> {
                       fontWeight: FontWeight.bold,
                       color: useDarkPaidBadge
                           ? Colors.white
-                          : const Color(0xFF075A50),
+                          : CareGridPalette.primaryDeep,
                     ),
                   ),
                 ),
@@ -436,7 +437,7 @@ class _DonationHistoryScreenState extends State<DonationHistoryScreen> {
                     style: const TextStyle(
                       fontSize: 15,
                       fontWeight: FontWeight.bold,
-                      color: Color(0xFF173D37),
+                      color: CareGridPalette.ink,
                     ),
                   ),
                 ),
@@ -446,7 +447,7 @@ class _DonationHistoryScreenState extends State<DonationHistoryScreen> {
                   style: const TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
-                    color: Color(0xFF075A50),
+                    color: CareGridPalette.primaryDeep,
                   ),
                 ),
               ],
@@ -456,7 +457,7 @@ class _DonationHistoryScreenState extends State<DonationHistoryScreen> {
               'Category: ${record.category} • ${record.paymentMethodDetail}',
               style: const TextStyle(
                 fontSize: 12,
-                color: Color(0xFF58746D),
+                color: CareGridPalette.secondaryText,
               ),
             ),
             if (record.isFeatured) ...[
@@ -465,7 +466,7 @@ class _DonationHistoryScreenState extends State<DonationHistoryScreen> {
                 children: [
                   const Icon(
                     Icons.check,
-                    color: Color(0xFF075A50),
+                    color: CareGridPalette.primaryDeep,
                     size: 14,
                   ),
                   const SizedBox(width: 5),
@@ -475,7 +476,7 @@ class _DonationHistoryScreenState extends State<DonationHistoryScreen> {
                       style: const TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.bold,
-                        color: Color(0xFF075A50),
+                        color: CareGridPalette.primaryDeep,
                       ),
                     ),
                   ),
@@ -487,9 +488,9 @@ class _DonationHistoryScreenState extends State<DonationHistoryScreen> {
                 child: OutlinedButton(
                   style: OutlinedButton.styleFrom(
                     backgroundColor: Colors.white,
-                    foregroundColor: const Color(0xFF173D37),
+                    foregroundColor: CareGridPalette.ink,
                     side: const BorderSide(
-                      color: Color(0xFF075A50),
+                      color: CareGridPalette.primaryDeep,
                       width: 1.2,
                     ),
                     padding: const EdgeInsets.symmetric(vertical: 10),
@@ -501,7 +502,7 @@ class _DonationHistoryScreenState extends State<DonationHistoryScreen> {
                   child: const Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Icon(Icons.download, size: 16, color: Color(0xFF58746D)),
+                      Icon(Icons.download, size: 16, color: CareGridPalette.secondaryText),
                       SizedBox(width: 6),
                       Text(
                         'Download Official PDF Receipt',
@@ -520,8 +521,8 @@ class _DonationHistoryScreenState extends State<DonationHistoryScreen> {
                 width: double.infinity,
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFFE5F5EE),
-                    foregroundColor: const Color(0xFF173D37),
+                    backgroundColor: CareGridPalette.paleMint,
+                    foregroundColor: CareGridPalette.ink,
                     elevation: 0,
                     padding: const EdgeInsets.symmetric(vertical: 10),
                     shape: RoundedRectangleBorder(
@@ -535,7 +536,7 @@ class _DonationHistoryScreenState extends State<DonationHistoryScreen> {
                       const Icon(
                         Icons.download,
                         size: 16,
-                        color: Color(0xFF58746D),
+                        color: CareGridPalette.secondaryText,
                       ),
                       const SizedBox(width: 6),
                       Text(

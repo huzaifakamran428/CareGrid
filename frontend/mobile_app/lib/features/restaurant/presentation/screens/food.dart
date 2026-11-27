@@ -4,9 +4,10 @@
 // Koi extra package ya asset setup nahi chahiye (intl bhi nahi).
 
 import 'dart:async';
-import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import '../../../../app/theme/caregrid_theme.dart';
+import '../../../../app/theme/brand_tokens.dart';
 import 'package:flutter/services.dart';
 
 void main() {
@@ -16,22 +17,22 @@ void main() {
 // ============================================================================
 // THEME
 // ============================================================================
-const Color kGreen = Color(0xFF155E42);
-const Color kDarkGreen = Color(0xFF062E20);
-const Color kMint = Color(0xFFECFDF5);
-const Color kMintBorder = Color(0xFFA7F3D0);
-const Color kAmber = Color(0xFFF59E0B);
-const Color kAmberBg = Color(0xFFFEF3C7);
-const Color kAmberText = Color(0xFF92400E);
-const Color kRed = Color(0xFFDC2626);
-const Color kRose = Color(0xFF9F1239);
-const Color kRoseBg = Color(0xFFFFF1F2);
-const Color kRoseBorder = Color(0xFFFDA4AF);
-const Color kInk = Color(0xFF111827);
-const Color kText = Color(0xFF374151);
-const Color kMuted = Color(0xFF6B7280);
-const Color kBorder = Color(0xFFD1DDD6);
-const Color kSurface = Color(0xFFF3F6F4);
+const Color kGreen = CareGridPalette.primary;
+const Color kDarkGreen = CareGridPalette.primaryDeep;
+const Color kMint = CareGridPalette.paleMint;
+const Color kMintBorder = CareGridPalette.mintBorder;
+const Color kAmber = CareGridPalette.gold;
+const Color kAmberBg = CareGridPalette.goldTint;
+const Color kAmberText = CareGridPalette.goldDeep;
+const Color kRed = CareGridPalette.danger;
+const Color kRose = CareGridPalette.danger;
+const Color kRoseBg = CareGridPalette.dangerTint;
+const Color kRoseBorder = CareGridPalette.dangerBorder;
+const Color kInk = CareGridPalette.ink;
+const Color kText = CareGridPalette.ink;
+const Color kMuted = CareGridPalette.secondaryText;
+const Color kBorder = CareGridPalette.line;
+const Color kSurface = CareGridPalette.canvas;
 
 const TextStyle kLabelStyle = TextStyle(
   fontSize: 11,
@@ -51,11 +52,7 @@ class CareGridFoodApp extends StatelessWidget {
     return MaterialApp(
       title: 'CareGrid - Surplus Food',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: kGreen),
-        useMaterial3: true,
-        fontFamily: 'Roboto',
-      ),
+      theme: CareGridTheme.light,
       home: const ManageFoodListingsScreen(),
     );
   }
@@ -250,7 +247,6 @@ final FoodStore store = FoodStore();
 // ============================================================================
 // SHARED WIDGETS
 // ============================================================================
-final _logoBytes = base64Decode(_kLogoBase64);
 
 void showNotice(BuildContext context, String text, {Color color = kGreen}) {
   ScaffoldMessenger.of(context)
@@ -276,11 +272,11 @@ class CareGridLogo extends StatelessWidget {
       height: size,
       padding: const EdgeInsets.all(2),
       decoration: BoxDecoration(
-        color: const Color(0xFFF4F9F2),
+        color: CareGridPalette.canvas,
         borderRadius: BorderRadius.circular(size * 0.26),
       ),
-      child: Image.memory(
-        _logoBytes,
+      child: Image.asset(
+        'assets/images/caregrid_logo.png',
         fit: BoxFit.contain,
         filterQuality: FilterQuality.medium,
         semanticLabel: 'CareGrid logo',
@@ -354,7 +350,7 @@ class CareGridPage extends StatelessWidget {
                     child: Text(
                       subtitle,
                       style: const TextStyle(
-                        color: Color(0xFFD1FAE5),
+                        color: CareGridPalette.paleMint,
                         fontSize: 13.5,
                         fontWeight: FontWeight.w500,
                       ),
@@ -416,7 +412,7 @@ class PrimaryButton extends StatelessWidget {
         style: ElevatedButton.styleFrom(
           backgroundColor: color,
           foregroundColor: Colors.white,
-          disabledBackgroundColor: const Color(0xFFD1D5DB),
+          disabledBackgroundColor: CareGridPalette.line,
           disabledForegroundColor: kMuted,
           elevation: 0,
           shape:
@@ -509,7 +505,7 @@ class StepBar extends StatelessWidget {
                   Container(
                     height: 5,
                     decoration: BoxDecoration(
-                      color: done ? kGreen : const Color(0xFFE5E7EB),
+                      color: done ? kGreen : CareGridPalette.line,
                       borderRadius: BorderRadius.circular(3),
                     ),
                   ),
@@ -1132,13 +1128,13 @@ class _ListSurplusFoodScreenState extends State<ListSurplusFoodScreen> {
             style: const TextStyle(color: kInk, fontSize: 14),
             decoration: InputDecoration(
               filled: true,
-              fillColor: const Color(0xFFFAFAFA),
+              fillColor: CareGridPalette.canvas,
               prefixIcon:
               icon == null ? null : Icon(icon, color: kRed, size: 20),
               errorText:
               controller.text.trim().isEmpty ? 'This field is required' : null,
               contentPadding: const EdgeInsets.all(14),
-              enabledBorder: border(const Color(0xFFD1D5DB), 1.1),
+              enabledBorder: border(CareGridPalette.line, 1.1),
               focusedBorder: border(kGreen, 1.6),
               errorBorder: border(kRed, 1.3),
               focusedErrorBorder: border(kRed, 1.6),
@@ -1573,7 +1569,7 @@ class _CollectionDeadlineScreenState extends State<CollectionDeadlineScreen> {
   }
 
   Widget _picker(String label, String value, IconData icon, VoidCallback onTap,
-      {Color fill = Colors.white, Color border = const Color(0xFFD1D5DB)}) {
+      {Color fill = Colors.white, Color border = CareGridPalette.line}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -1677,7 +1673,7 @@ class _CollectionDeadlineScreenState extends State<CollectionDeadlineScreen> {
                   '✓ Expired listings removed from NGO feed\n'
                   '• Ensures food safety & freshness compliance',
               style: const TextStyle(
-                  color: Color(0xFF065F46), fontSize: 12.5, height: 1.6),
+                  color: CareGridPalette.primaryDeep, fontSize: 12.5, height: 1.6),
             ),
           ),
           const SizedBox(height: 14),

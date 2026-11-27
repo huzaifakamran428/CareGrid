@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../../app/theme/brand_tokens.dart';
 import '../../../../core/widgets/caregrid_brand.dart';
 import '../../../../app/theme/caregrid_theme.dart';
 
@@ -91,7 +92,7 @@ class _EnterDonationScreenState extends State<EnterDonationScreen> {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(message),
-        backgroundColor: const Color(0xFF155E42),
+        backgroundColor: CareGridPalette.primary,
         behavior: SnackBarBehavior.floating,
       ),
     );
@@ -104,7 +105,7 @@ class _EnterDonationScreenState extends State<EnterDonationScreen> {
     final List<double> activePresets = _currencyPresets[_selectedCurrency]!;
 
     return Scaffold(
-      backgroundColor: const Color(0xFF155E42),
+      backgroundColor: CareGridPalette.primary,
       body: SafeArea(
         child: Column(
           children: [
@@ -131,7 +132,7 @@ class _EnterDonationScreenState extends State<EnterDonationScreen> {
                     Text(
                       'Associate NGO, Welfare Cause & Amount',
                       style: TextStyle(
-                        color: Color(0xFFE5F5EE),
+                        color: CareGridPalette.paleMint,
                         fontSize: 13.5,
                       ),
                     ),
@@ -161,7 +162,7 @@ class _EnterDonationScreenState extends State<EnterDonationScreen> {
                         width: double.infinity,
                         padding: const EdgeInsets.all(14),
                         decoration: BoxDecoration(
-                          color: const Color(0xFF075A50),
+                          color: CareGridPalette.primaryDeep,
                           borderRadius: BorderRadius.circular(16),
                         ),
                         child: Row(
@@ -171,13 +172,13 @@ class _EnterDonationScreenState extends State<EnterDonationScreen> {
                               height: 48,
                               alignment: Alignment.center,
                               decoration: BoxDecoration(
-                                color: const Color(0xFFE5F5EE),
+                                color: CareGridPalette.paleMint,
                                 borderRadius: BorderRadius.circular(12),
                               ),
                               child: const Text(
                                 'AK',
                                 style: TextStyle(
-                                  color: Color(0xFF075A50),
+                                  color: CareGridPalette.primaryDeep,
                                   fontWeight: FontWeight.bold,
                                   fontSize: 16,
                                 ),
@@ -191,7 +192,7 @@ class _EnterDonationScreenState extends State<EnterDonationScreen> {
                                   Text(
                                     'SELECTED NGO & CAUSE',
                                     style: TextStyle(
-                                      color: Color(0xFFB2DFCE),
+                                      color: CareGridPalette.mintBorder,
                                       fontSize: 10.5,
                                       fontWeight: FontWeight.bold,
                                       letterSpacing: 0.5,
@@ -211,7 +212,7 @@ class _EnterDonationScreenState extends State<EnterDonationScreen> {
                                   Text(
                                     'Category: Food Support',
                                     style: TextStyle(
-                                      color: Color(0xFFE3A33B),
+                                      color: CareGridPalette.gold,
                                       fontSize: 12.5,
                                       fontWeight: FontWeight.bold,
                                     ),
@@ -231,7 +232,7 @@ class _EnterDonationScreenState extends State<EnterDonationScreen> {
                         style: TextStyle(
                           fontSize: 13.5,
                           fontWeight: FontWeight.bold,
-                          color: Color(0xFF173D37),
+                          color: CareGridPalette.ink,
                         ),
                       ),
                       const SizedBox(height: 10),
@@ -248,13 +249,13 @@ class _EnterDonationScreenState extends State<EnterDonationScreen> {
                                 ),
                                 decoration: BoxDecoration(
                                   color: _isVolunteer
-                                      ? const Color(0xFFE5F5EE)
+                                      ? CareGridPalette.paleMint
                                       : Colors.white,
                                   borderRadius: BorderRadius.circular(12),
                                   border: Border.all(
                                     color: _isVolunteer
-                                        ? const Color(0xFF155E42)
-                                        : const Color(0xFFDAE8E1),
+                                        ? CareGridPalette.primary
+                                        : CareGridPalette.line,
                                     width: _isVolunteer ? 1.5 : 1.1,
                                   ),
                                 ),
@@ -264,7 +265,7 @@ class _EnterDonationScreenState extends State<EnterDonationScreen> {
                                     if (_isVolunteer) ...[
                                       const Icon(
                                         Icons.check,
-                                        color: Color(0xFF155E42),
+                                        color: CareGridPalette.primary,
                                         size: 16,
                                       ),
                                       const SizedBox(width: 5),
@@ -275,8 +276,8 @@ class _EnterDonationScreenState extends State<EnterDonationScreen> {
                                         overflow: TextOverflow.ellipsis,
                                         style: TextStyle(
                                           color: _isVolunteer
-                                              ? const Color(0xFF155E42)
-                                              : const Color(0xFF58746D),
+                                              ? CareGridPalette.primary
+                                              : CareGridPalette.secondaryText,
                                           fontWeight: FontWeight.bold,
                                           fontSize: 13,
                                         ),
@@ -299,13 +300,13 @@ class _EnterDonationScreenState extends State<EnterDonationScreen> {
                                 ),
                                 decoration: BoxDecoration(
                                   color: !_isVolunteer
-                                      ? const Color(0xFFFFECEE)
-                                      : const Color(0xFFFFECEE),
+                                      ? CareGridPalette.dangerTint
+                                      : CareGridPalette.dangerTint,
                                   borderRadius: BorderRadius.circular(12),
                                   border: Border.all(
                                     color: !_isVolunteer
-                                        ? const Color(0xFFBC4751)
-                                        : const Color(0xFFE5A1A7),
+                                        ? CareGridPalette.danger
+                                        : CareGridPalette.dangerBorder,
                                     width: !_isVolunteer ? 1.5 : 1.1,
                                   ),
                                 ),
@@ -315,7 +316,7 @@ class _EnterDonationScreenState extends State<EnterDonationScreen> {
                                     if (!_isVolunteer) ...[
                                       const Icon(
                                         Icons.check,
-                                        color: Color(0xFFBC4751),
+                                        color: CareGridPalette.danger,
                                         size: 16,
                                       ),
                                       const SizedBox(width: 5),
@@ -325,7 +326,7 @@ class _EnterDonationScreenState extends State<EnterDonationScreen> {
                                         'Donor / Sponsor',
                                         overflow: TextOverflow.ellipsis,
                                         style: TextStyle(
-                                          color: Color(0xFFBC4751),
+                                          color: CareGridPalette.danger,
                                           fontWeight: FontWeight.bold,
                                           fontSize: 13,
                                         ),
@@ -350,16 +351,16 @@ class _EnterDonationScreenState extends State<EnterDonationScreen> {
                             style: TextStyle(
                               fontSize: 13.5,
                               fontWeight: FontWeight.bold,
-                              color: Color(0xFF173D37),
+                              color: CareGridPalette.ink,
                             ),
                           ),
                           Container(
                             padding: const EdgeInsets.symmetric(horizontal: 10),
                             decoration: BoxDecoration(
-                              color: const Color(0xFFE5F5EE),
+                              color: CareGridPalette.paleMint,
                               borderRadius: BorderRadius.circular(10),
                               border: Border.all(
-                                color: const Color(0xFF155E42),
+                                color: CareGridPalette.primary,
                                 width: 1.2,
                               ),
                             ),
@@ -369,11 +370,11 @@ class _EnterDonationScreenState extends State<EnterDonationScreen> {
                                 isDense: true,
                                 icon: const Icon(
                                   Icons.keyboard_arrow_down,
-                                  color: Color(0xFF155E42),
+                                  color: CareGridPalette.primary,
                                   size: 18,
                                 ),
                                 style: const TextStyle(
-                                  color: Color(0xFF155E42),
+                                  color: CareGridPalette.primary,
                                   fontWeight: FontWeight.bold,
                                   fontSize: 12.5,
                                 ),
@@ -402,8 +403,8 @@ class _EnterDonationScreenState extends State<EnterDonationScreen> {
                           borderRadius: BorderRadius.circular(14),
                           border: Border.all(
                             color: _isValidAmount
-                                ? const Color(0xFF155E42)
-                                : const Color(0xFFBC4751),
+                                ? CareGridPalette.primary
+                                : CareGridPalette.danger,
                             width: 1.5,
                           ),
                         ),
@@ -415,8 +416,8 @@ class _EnterDonationScreenState extends State<EnterDonationScreen> {
                                 fontSize: _selectedCurrency == 'PKR' ? 22 : 28,
                                 fontWeight: FontWeight.bold,
                                 color: _isValidAmount
-                                    ? const Color(0xFF173D37)
-                                    : const Color(0xFFBC4751),
+                                    ? CareGridPalette.ink
+                                    : CareGridPalette.danger,
                               ),
                             ),
                             const SizedBox(width: 8),
@@ -433,8 +434,8 @@ class _EnterDonationScreenState extends State<EnterDonationScreen> {
                                   fontSize: 28,
                                   fontWeight: FontWeight.bold,
                                   color: _isValidAmount
-                                      ? const Color(0xFF173D37)
-                                      : const Color(0xFFBC4751),
+                                      ? CareGridPalette.ink
+                                      : CareGridPalette.danger,
                                 ),
                                 decoration: const InputDecoration(
                                   border: InputBorder.none,
@@ -449,7 +450,7 @@ class _EnterDonationScreenState extends State<EnterDonationScreen> {
                               style: const TextStyle(
                                 fontSize: 13,
                                 fontWeight: FontWeight.bold,
-                                color: Color(0xFF173D37),
+                                color: CareGridPalette.ink,
                               ),
                             ),
                           ],
@@ -461,7 +462,7 @@ class _EnterDonationScreenState extends State<EnterDonationScreen> {
                         const Text(
                           'Enter a positive amount greater than 0.',
                           style: TextStyle(
-                            color: Color(0xFFBC4751),
+                            color: CareGridPalette.danger,
                             fontSize: 12,
                             fontWeight: FontWeight.w600,
                           ),
@@ -489,13 +490,13 @@ class _EnterDonationScreenState extends State<EnterDonationScreen> {
                                   alignment: Alignment.center,
                                   decoration: BoxDecoration(
                                     color: isSelected
-                                        ? const Color(0xFF155E42)
-                                        : const Color(0xFFF7FAF8),
+                                        ? CareGridPalette.primary
+                                        : CareGridPalette.canvas,
                                     borderRadius: BorderRadius.circular(10),
                                     border: Border.all(
                                       color: isSelected
-                                          ? const Color(0xFF155E42)
-                                          : const Color(0xFFDAE8E1),
+                                          ? CareGridPalette.primary
+                                          : CareGridPalette.line,
                                     ),
                                   ),
                                   child: Text(
@@ -504,7 +505,7 @@ class _EnterDonationScreenState extends State<EnterDonationScreen> {
                                     style: TextStyle(
                                       color: isSelected
                                           ? Colors.white
-                                          : const Color(0xFF173D37),
+                                          : CareGridPalette.ink,
                                       fontWeight: FontWeight.bold,
                                       fontSize: 13,
                                     ),
@@ -523,9 +524,9 @@ class _EnterDonationScreenState extends State<EnterDonationScreen> {
                         width: double.infinity,
                         padding: const EdgeInsets.all(14),
                         decoration: BoxDecoration(
-                          color: const Color(0xFFF7FAF8),
+                          color: CareGridPalette.canvas,
                           borderRadius: BorderRadius.circular(14),
-                          border: Border.all(color: const Color(0xFFDAE8E1)),
+                          border: Border.all(color: CareGridPalette.line),
                         ),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -535,7 +536,7 @@ class _EnterDonationScreenState extends State<EnterDonationScreen> {
                               style: TextStyle(
                                 fontSize: 13,
                                 fontWeight: FontWeight.bold,
-                                color: Color(0xFF173D37),
+                                color: CareGridPalette.ink,
                               ),
                             ),
                             const SizedBox(height: 10),
@@ -546,7 +547,7 @@ class _EnterDonationScreenState extends State<EnterDonationScreen> {
                                   'Contribution Amount:',
                                   style: TextStyle(
                                     fontSize: 12.5,
-                                    color: Color(0xFF58746D),
+                                    color: CareGridPalette.secondaryText,
                                   ),
                                 ),
                                 Text(
@@ -554,7 +555,7 @@ class _EnterDonationScreenState extends State<EnterDonationScreen> {
                                   style: const TextStyle(
                                     fontSize: 13,
                                     fontWeight: FontWeight.bold,
-                                    color: Color(0xFF173D37),
+                                    color: CareGridPalette.ink,
                                   ),
                                 ),
                               ],
@@ -569,7 +570,7 @@ class _EnterDonationScreenState extends State<EnterDonationScreen> {
                                       : 'Donor Platform Fee:',
                                   style: const TextStyle(
                                     fontSize: 12.5,
-                                    color: Color(0xFF58746D),
+                                    color: CareGridPalette.secondaryText,
                                   ),
                                 ),
                                 Text(
@@ -577,7 +578,7 @@ class _EnterDonationScreenState extends State<EnterDonationScreen> {
                                   style: const TextStyle(
                                     fontSize: 13,
                                     fontWeight: FontWeight.bold,
-                                    color: Color(0xFF155E42),
+                                    color: CareGridPalette.primary,
                                   ),
                                 ),
                               ],
@@ -586,7 +587,7 @@ class _EnterDonationScreenState extends State<EnterDonationScreen> {
                               padding: EdgeInsets.symmetric(vertical: 8),
                               child: Divider(
                                 height: 1,
-                                color: Color(0xFFDAE8E1),
+                                color: CareGridPalette.line,
                               ),
                             ),
                             Row(
@@ -597,7 +598,7 @@ class _EnterDonationScreenState extends State<EnterDonationScreen> {
                                   style: TextStyle(
                                     fontSize: 13.5,
                                     fontWeight: FontWeight.bold,
-                                    color: Color(0xFF173D37),
+                                    color: CareGridPalette.ink,
                                   ),
                                 ),
                                 Text(
@@ -605,7 +606,7 @@ class _EnterDonationScreenState extends State<EnterDonationScreen> {
                                   style: const TextStyle(
                                     fontSize: 15,
                                     fontWeight: FontWeight.bold,
-                                    color: Color(0xFF155E42),
+                                    color: CareGridPalette.primary,
                                   ),
                                 ),
                               ],
@@ -622,10 +623,10 @@ class _EnterDonationScreenState extends State<EnterDonationScreen> {
                         height: 50,
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color(0xFF075A50),
+                            backgroundColor: CareGridPalette.primaryDeep,
                             foregroundColor: Colors.white,
-                            disabledBackgroundColor: const Color(0xFFDAE8E1),
-                            disabledForegroundColor: const Color(0xFF58746D),
+                            disabledBackgroundColor: CareGridPalette.line,
+                            disabledForegroundColor: CareGridPalette.secondaryText,
                             elevation: 0,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(12),
@@ -674,17 +675,17 @@ class _EnterDonationScreenState extends State<EnterDonationScreen> {
                             padding: const EdgeInsets.symmetric(vertical: 13),
                             alignment: Alignment.center,
                             decoration: BoxDecoration(
-                              color: const Color(0xFFFFF4E2),
+                              color: CareGridPalette.goldTint,
                               borderRadius: BorderRadius.circular(12),
                               border: Border.all(
-                                color: const Color(0xFFE3A33B),
+                                color: CareGridPalette.gold,
                                 width: 1.2,
                               ),
                             ),
                             child: const Text(
                               'Linked to: Al-Khidmat • Food Support',
                               style: TextStyle(
-                                color: Color(0xFFAD751D),
+                                color: CareGridPalette.goldDeep,
                                 fontWeight: FontWeight.bold,
                                 fontSize: 13,
                               ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../../app/theme/brand_tokens.dart';
 import '../../../../core/widgets/caregrid_brand.dart';
 import '../../../../app/theme/caregrid_theme.dart';
 
@@ -77,7 +78,7 @@ class _ListSurplusFoodScreenState extends State<ListSurplusFoodScreen> {
           content: Text(
             'Please fill in food name, description, and pickup address.',
           ),
-          backgroundColor: Color(0xFFBC4751),
+          backgroundColor: CareGridPalette.danger,
         ),
       );
       return;
@@ -94,7 +95,7 @@ class _ListSurplusFoodScreenState extends State<ListSurplusFoodScreen> {
               ? 'Published "${_foodNameController.text.trim()}" & notified 6 nearby NGOs!'
               : 'Published "${_foodNameController.text.trim()}" to listings.',
         ),
-        backgroundColor: const Color(0xFF087C69),
+        backgroundColor: CareGridPalette.primary,
       ),
     );
   }
@@ -102,7 +103,7 @@ class _ListSurplusFoodScreenState extends State<ListSurplusFoodScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF087C69),
+      backgroundColor: CareGridPalette.primary,
       body: SafeArea(
         child: Column(
           children: [
@@ -129,7 +130,7 @@ class _ListSurplusFoodScreenState extends State<ListSurplusFoodScreen> {
                     Text(
                       'Restaurant Mobile App • Create Donation',
                       style: TextStyle(
-                        color: Color(0xFFE5F5EE),
+                        color: CareGridPalette.paleMint,
                         fontSize: 13.5,
                         fontWeight: FontWeight.w500,
                       ),
@@ -138,7 +139,7 @@ class _ListSurplusFoodScreenState extends State<ListSurplusFoodScreen> {
                     Text(
                       'Publish food details & notify nearby NGOs',
                       style: TextStyle(
-                        color: Color(0xFFB2DFCE),
+                        color: CareGridPalette.mintBorder,
                         fontSize: 12.5,
                       ),
                     ),
@@ -171,15 +172,15 @@ class _ListSurplusFoodScreenState extends State<ListSurplusFoodScreen> {
                           vertical: 12,
                         ),
                         decoration: BoxDecoration(
-                          color: const Color(0xFFF7FAF8),
-                          border: Border.all(color: const Color(0xFFDAE8E1)),
+                          color: CareGridPalette.canvas,
+                          border: Border.all(color: CareGridPalette.line),
                           borderRadius: BorderRadius.circular(12),
                         ),
                         child: Row(
                           children: const [
                             Icon(
                               Icons.restaurant_menu,
-                              color: Color(0xFF087C69),
+                              color: CareGridPalette.primary,
                               size: 18,
                             ),
                             SizedBox(width: 10),
@@ -187,7 +188,7 @@ class _ListSurplusFoodScreenState extends State<ListSurplusFoodScreen> {
                               child: Text(
                                 'Bundoo Khan Kitchens • Verified Partner',
                                 style: TextStyle(
-                                  color: Color(0xFF173D37),
+                                  color: CareGridPalette.ink,
                                   fontWeight: FontWeight.bold,
                                   fontSize: 13.5,
                                 ),
@@ -205,7 +206,7 @@ class _ListSurplusFoodScreenState extends State<ListSurplusFoodScreen> {
                         style: TextStyle(
                           fontSize: 11,
                           fontWeight: FontWeight.bold,
-                          color: Color(0xFF173D37),
+                          color: CareGridPalette.ink,
                           letterSpacing: 0.5,
                         ),
                       ),
@@ -215,7 +216,7 @@ class _ListSurplusFoodScreenState extends State<ListSurplusFoodScreen> {
                         onChanged: (_) => setState(() => _isPublished = false),
                         style: const TextStyle(
                           fontWeight: FontWeight.bold,
-                          color: Color(0xFF173D37),
+                          color: CareGridPalette.ink,
                           fontSize: 14.5,
                         ),
                         decoration: InputDecoration(
@@ -226,14 +227,14 @@ class _ListSurplusFoodScreenState extends State<ListSurplusFoodScreen> {
                           enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(12),
                             borderSide: const BorderSide(
-                              color: Color(0xFF087C69),
+                              color: CareGridPalette.primary,
                               width: 1.3,
                             ),
                           ),
                           focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(12),
                             borderSide: const BorderSide(
-                              color: Color(0xFF075A50),
+                              color: CareGridPalette.primaryDeep,
                               width: 2,
                             ),
                           ),
@@ -248,7 +249,7 @@ class _ListSurplusFoodScreenState extends State<ListSurplusFoodScreen> {
                         style: TextStyle(
                           fontSize: 11,
                           fontWeight: FontWeight.bold,
-                          color: Color(0xFF173D37),
+                          color: CareGridPalette.ink,
                           letterSpacing: 0.5,
                         ),
                       ),
@@ -260,14 +261,14 @@ class _ListSurplusFoodScreenState extends State<ListSurplusFoodScreen> {
                             child: Container(
                               padding: const EdgeInsets.symmetric(horizontal: 12),
                               decoration: BoxDecoration(
-                                color: const Color(0xFF087C69),
+                                color: CareGridPalette.primary,
                                 borderRadius: BorderRadius.circular(12),
                               ),
                               child: DropdownButtonHideUnderline(
                                 child: DropdownButton<String>(
                                   value: _selectedFoodType,
                                   isExpanded: true,
-                                  dropdownColor: const Color(0xFF087C69),
+                                  dropdownColor: CareGridPalette.primary,
                                   icon: const Icon(
                                     Icons.keyboard_arrow_down,
                                     color: Colors.white,
@@ -285,7 +286,7 @@ class _ListSurplusFoodScreenState extends State<ListSurplusFoodScreen> {
                                         children: [
                                           const Icon(
                                             Icons.soup_kitchen,
-                                            color: Color(0xFFE3A33B),
+                                            color: CareGridPalette.gold,
                                             size: 17,
                                           ),
                                           const SizedBox(width: 6),
@@ -317,9 +318,9 @@ class _ListSurplusFoodScreenState extends State<ListSurplusFoodScreen> {
                             child: Container(
                               padding: const EdgeInsets.symmetric(horizontal: 12),
                               decoration: BoxDecoration(
-                                color: const Color(0xFFF7FAF8),
+                                color: CareGridPalette.canvas,
                                 border: Border.all(
-                                  color: const Color(0xFFDAE8E1),
+                                  color: CareGridPalette.line,
                                   width: 1.2,
                                 ),
                                 borderRadius: BorderRadius.circular(12),
@@ -331,11 +332,11 @@ class _ListSurplusFoodScreenState extends State<ListSurplusFoodScreen> {
                                   dropdownColor: Colors.white,
                                   icon: const Icon(
                                     Icons.keyboard_arrow_down,
-                                    color: Color(0xFF087C69),
+                                    color: CareGridPalette.primary,
                                     size: 20,
                                   ),
                                   style: const TextStyle(
-                                    color: Color(0xFF173D37),
+                                    color: CareGridPalette.ink,
                                     fontWeight: FontWeight.bold,
                                     fontSize: 13,
                                   ),
@@ -346,7 +347,7 @@ class _ListSurplusFoodScreenState extends State<ListSurplusFoodScreen> {
                                         children: [
                                           const Icon(
                                             Icons.check,
-                                            color: Color(0xFF087C69),
+                                            color: CareGridPalette.primary,
                                             size: 16,
                                           ),
                                           const SizedBox(width: 6),
@@ -383,7 +384,7 @@ class _ListSurplusFoodScreenState extends State<ListSurplusFoodScreen> {
                         style: TextStyle(
                           fontSize: 11,
                           fontWeight: FontWeight.bold,
-                          color: Color(0xFF173D37),
+                          color: CareGridPalette.ink,
                           letterSpacing: 0.5,
                         ),
                       ),
@@ -393,25 +394,25 @@ class _ListSurplusFoodScreenState extends State<ListSurplusFoodScreen> {
                         maxLines: 3,
                         onChanged: (_) => setState(() => _isPublished = false),
                         style: const TextStyle(
-                          color: Color(0xFF173D37),
+                          color: CareGridPalette.ink,
                           fontSize: 13.5,
                           height: 1.35,
                         ),
                         decoration: InputDecoration(
                           filled: true,
-                          fillColor: const Color(0xFFF7FAF8),
+                          fillColor: CareGridPalette.canvas,
                           contentPadding: const EdgeInsets.all(14),
                           enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(12),
                             borderSide: const BorderSide(
-                              color: Color(0xFFDAE8E1),
+                              color: CareGridPalette.line,
                               width: 1.1,
                             ),
                           ),
                           focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(12),
                             borderSide: const BorderSide(
-                              color: Color(0xFF087C69),
+                              color: CareGridPalette.primary,
                               width: 1.6,
                             ),
                           ),
@@ -426,7 +427,7 @@ class _ListSurplusFoodScreenState extends State<ListSurplusFoodScreen> {
                         style: TextStyle(
                           fontSize: 11,
                           fontWeight: FontWeight.bold,
-                          color: Color(0xFF173D37),
+                          color: CareGridPalette.ink,
                           letterSpacing: 0.5,
                         ),
                       ),
@@ -435,16 +436,16 @@ class _ListSurplusFoodScreenState extends State<ListSurplusFoodScreen> {
                         controller: _addressController,
                         onChanged: (_) => setState(() => _isPublished = false),
                         style: const TextStyle(
-                          color: Color(0xFF173D37),
+                          color: CareGridPalette.ink,
                           fontSize: 13.5,
                           fontWeight: FontWeight.w500,
                         ),
                         decoration: InputDecoration(
                           filled: true,
-                          fillColor: const Color(0xFFF7FAF8),
+                          fillColor: CareGridPalette.canvas,
                           prefixIcon: const Icon(
                             Icons.location_on,
-                            color: Color(0xFFBC4751),
+                            color: CareGridPalette.danger,
                             size: 20,
                           ),
                           contentPadding: const EdgeInsets.symmetric(
@@ -454,14 +455,14 @@ class _ListSurplusFoodScreenState extends State<ListSurplusFoodScreen> {
                           enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(12),
                             borderSide: const BorderSide(
-                              color: Color(0xFFDAE8E1),
+                              color: CareGridPalette.line,
                               width: 1.1,
                             ),
                           ),
                           focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(12),
                             borderSide: const BorderSide(
-                              color: Color(0xFF087C69),
+                              color: CareGridPalette.primary,
                               width: 1.6,
                             ),
                           ),
@@ -477,9 +478,9 @@ class _ListSurplusFoodScreenState extends State<ListSurplusFoodScreen> {
                           vertical: 12,
                         ),
                         decoration: BoxDecoration(
-                          color: const Color(0xFFE5F5EE),
+                          color: CareGridPalette.paleMint,
                           border: Border.all(
-                            color: const Color(0xFFB2DFCE),
+                            color: CareGridPalette.mintBorder,
                             width: 1.2,
                           ),
                           borderRadius: BorderRadius.circular(14),
@@ -488,7 +489,7 @@ class _ListSurplusFoodScreenState extends State<ListSurplusFoodScreen> {
                           children: [
                             const Icon(
                               Icons.notifications_active,
-                              color: Color(0xFFE3A33B),
+                              color: CareGridPalette.gold,
                               size: 20,
                             ),
                             const SizedBox(width: 10),
@@ -499,7 +500,7 @@ class _ListSurplusFoodScreenState extends State<ListSurplusFoodScreen> {
                                   const Text(
                                     'Communicate to Eligible NGOs',
                                     style: TextStyle(
-                                      color: Color(0xFF075A50),
+                                      color: CareGridPalette.primaryDeep,
                                       fontWeight: FontWeight.bold,
                                       fontSize: 13.5,
                                     ),
@@ -510,7 +511,7 @@ class _ListSurplusFoodScreenState extends State<ListSurplusFoodScreen> {
                                         ? 'Auto-notifies 6 verified NGOs within 8 km'
                                         : 'NGO auto-notifications paused',
                                     style: const TextStyle(
-                                      color: Color(0xFF087C69),
+                                      color: CareGridPalette.primary,
                                       fontSize: 12,
                                     ),
                                   ),
@@ -520,7 +521,7 @@ class _ListSurplusFoodScreenState extends State<ListSurplusFoodScreen> {
                             Switch(
                               value: _notifyEligibleNgos,
                               activeColor: Colors.white,
-                              activeTrackColor: const Color(0xFF087C69),
+                              activeTrackColor: CareGridPalette.primary,
                               onChanged: (value) {
                                 setState(() {
                                   _notifyEligibleNgos = value;
@@ -541,8 +542,8 @@ class _ListSurplusFoodScreenState extends State<ListSurplusFoodScreen> {
                           vertical: 12,
                         ),
                         decoration: BoxDecoration(
-                          color: const Color(0xFFF7FAF8),
-                          border: Border.all(color: const Color(0xFFDAE8E1)),
+                          color: CareGridPalette.canvas,
+                          border: Border.all(color: CareGridPalette.line),
                           borderRadius: BorderRadius.circular(12),
                         ),
                         child: Column(
@@ -553,8 +554,8 @@ class _ListSurplusFoodScreenState extends State<ListSurplusFoodScreen> {
                                 Icon(
                                   Icons.check,
                                   color: _isFormValid
-                                      ? const Color(0xFF087C69)
-                                      : const Color(0xFF58746D),
+                                      ? CareGridPalette.primary
+                                      : CareGridPalette.secondaryText,
                                   size: 16,
                                 ),
                                 const SizedBox(width: 8),
@@ -565,8 +566,8 @@ class _ListSurplusFoodScreenState extends State<ListSurplusFoodScreen> {
                                         : 'Complete required fields to validate',
                                     style: TextStyle(
                                       color: _isFormValid
-                                          ? const Color(0xFF087C69)
-                                          : const Color(0xFF58746D),
+                                          ? CareGridPalette.primary
+                                          : CareGridPalette.secondaryText,
                                       fontWeight: FontWeight.bold,
                                       fontSize: 12.5,
                                     ),
@@ -579,7 +580,7 @@ class _ListSurplusFoodScreenState extends State<ListSurplusFoodScreen> {
                               children: const [
                                 Icon(
                                   Icons.check,
-                                  color: Color(0xFF087C69),
+                                  color: CareGridPalette.primary,
                                   size: 16,
                                 ),
                                 SizedBox(width: 8),
@@ -587,7 +588,7 @@ class _ListSurplusFoodScreenState extends State<ListSurplusFoodScreen> {
                                   child: Text(
                                     'Listing saved & broadcast to NGOs',
                                     style: TextStyle(
-                                      color: Color(0xFF087C69),
+                                      color: CareGridPalette.primary,
                                       fontWeight: FontWeight.bold,
                                       fontSize: 12.5,
                                     ),
@@ -607,7 +608,7 @@ class _ListSurplusFoodScreenState extends State<ListSurplusFoodScreen> {
                         height: 52,
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color(0xFF087C69),
+                            backgroundColor: CareGridPalette.primary,
                             foregroundColor: Colors.white,
                             elevation: 0,
                             shape: RoundedRectangleBorder(
@@ -639,7 +640,7 @@ class _ListSurplusFoodScreenState extends State<ListSurplusFoodScreen> {
                         width: double.infinity,
                         padding: const EdgeInsets.symmetric(vertical: 14),
                         decoration: BoxDecoration(
-                          color: const Color(0xFFE5F5EE),
+                          color: CareGridPalette.paleMint,
                           borderRadius: BorderRadius.circular(14),
                         ),
                         child: Row(
@@ -647,7 +648,7 @@ class _ListSurplusFoodScreenState extends State<ListSurplusFoodScreen> {
                           children: [
                             const Icon(
                               Icons.circle,
-                              color: Color(0xFF087C69),
+                              color: CareGridPalette.primary,
                               size: 10,
                             ),
                             const SizedBox(width: 8),
@@ -656,7 +657,7 @@ class _ListSurplusFoodScreenState extends State<ListSurplusFoodScreen> {
                                   ? 'Status: Published & Live'
                                   : 'Status: Ready to Broadcast',
                               style: const TextStyle(
-                                color: Color(0xFF087C69),
+                                color: CareGridPalette.primary,
                                 fontWeight: FontWeight.bold,
                                 fontSize: 13.5,
                               ),

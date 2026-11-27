@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../../app/theme/brand_tokens.dart';
 import '../../../../core/widgets/caregrid_brand.dart';
 import '../../../../app/theme/caregrid_theme.dart';
 
@@ -121,7 +122,7 @@ class _DonateNgoSelectionScreenState extends State<DonateNgoSelectionScreen> {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Please select an approved NGO to continue.'),
-          backgroundColor: Color(0xFFBC4751),
+          backgroundColor: CareGridPalette.danger,
         ),
       );
       return;
@@ -132,7 +133,7 @@ class _DonateNgoSelectionScreenState extends State<DonateNgoSelectionScreen> {
         content: Text(
           'Selected ${ngo.name} • $_selectedCategory — Choose donation amount next.',
         ),
-        backgroundColor: const Color(0xFF155E42),
+        backgroundColor: CareGridPalette.primary,
       ),
     );
   }
@@ -155,7 +156,7 @@ class _DonateNgoSelectionScreenState extends State<DonateNgoSelectionScreen> {
                 style: TextStyle(
                   fontSize: 17,
                   fontWeight: FontWeight.bold,
-                  color: Color(0xFF155E42),
+                  color: CareGridPalette.primary,
                 ),
               ),
               SizedBox(height: 10),
@@ -163,7 +164,7 @@ class _DonateNgoSelectionScreenState extends State<DonateNgoSelectionScreen> {
                 'CareGrid does not deduct platform commissions from donor contributions. Every rupee you pledge goes directly toward verified welfare operations.',
                 style: TextStyle(
                   fontSize: 13.5,
-                  color: Color(0xFF173D37),
+                  color: CareGridPalette.ink,
                   height: 1.4,
                 ),
               ),
@@ -180,7 +181,7 @@ class _DonateNgoSelectionScreenState extends State<DonateNgoSelectionScreen> {
     final visibleNgos = _filteredNgos;
 
     return Scaffold(
-      backgroundColor: const Color(0xFF155E42),
+      backgroundColor: CareGridPalette.primary,
       body: SafeArea(
         child: Column(
           children: [
@@ -207,7 +208,7 @@ class _DonateNgoSelectionScreenState extends State<DonateNgoSelectionScreen> {
                     Text(
                       'Select Approved NGO & Welfare Cause',
                       style: TextStyle(
-                        color: Color(0xFFE5F5EE),
+                        color: CareGridPalette.paleMint,
                         fontSize: 13.5,
                         fontWeight: FontWeight.w400,
                       ),
@@ -236,9 +237,9 @@ class _DonateNgoSelectionScreenState extends State<DonateNgoSelectionScreen> {
                       // SEARCH BAR
                       Container(
                         decoration: BoxDecoration(
-                          color: const Color(0xFFF7FAF8),
+                          color: CareGridPalette.canvas,
                           borderRadius: BorderRadius.circular(14),
-                          border: Border.all(color: const Color(0xFFDAE8E1)),
+                          border: Border.all(color: CareGridPalette.line),
                         ),
                         child: Row(
                           children: [
@@ -250,12 +251,12 @@ class _DonateNgoSelectionScreenState extends State<DonateNgoSelectionScreen> {
                                 },
                                 style: const TextStyle(
                                   fontSize: 13.5,
-                                  color: Color(0xFF173D37),
+                                  color: CareGridPalette.ink,
                                 ),
                                 decoration: const InputDecoration(
                                   hintText: 'Search registered & approved NGOs...',
                                   hintStyle: TextStyle(
-                                    color: Color(0xFF58746D),
+                                    color: CareGridPalette.secondaryText,
                                     fontSize: 13,
                                   ),
                                   border: InputBorder.none,
@@ -271,7 +272,7 @@ class _DonateNgoSelectionScreenState extends State<DonateNgoSelectionScreen> {
                               width: 38,
                               height: 38,
                               decoration: BoxDecoration(
-                                color: const Color(0xFF155E42),
+                                color: CareGridPalette.primary,
                                 borderRadius: BorderRadius.circular(10),
                               ),
                               child: const Icon(
@@ -292,7 +293,7 @@ class _DonateNgoSelectionScreenState extends State<DonateNgoSelectionScreen> {
                         style: TextStyle(
                           fontSize: 13.5,
                           fontWeight: FontWeight.bold,
-                          color: Color(0xFF173D37),
+                          color: CareGridPalette.ink,
                         ),
                       ),
                       const SizedBox(height: 10),
@@ -317,13 +318,13 @@ class _DonateNgoSelectionScreenState extends State<DonateNgoSelectionScreen> {
                                   alignment: Alignment.center,
                                   decoration: BoxDecoration(
                                     color: isSelected
-                                        ? const Color(0xFF155E42)
-                                        : const Color(0xFFE5F5EE),
+                                        ? CareGridPalette.primary
+                                        : CareGridPalette.paleMint,
                                     borderRadius: BorderRadius.circular(20),
                                     border: Border.all(
                                       color: isSelected
-                                          ? const Color(0xFF155E42)
-                                          : const Color(0xFFB2DFCE),
+                                          ? CareGridPalette.primary
+                                          : CareGridPalette.mintBorder,
                                     ),
                                   ),
                                   child: Row(
@@ -345,7 +346,7 @@ class _DonateNgoSelectionScreenState extends State<DonateNgoSelectionScreen> {
                                           style: TextStyle(
                                             color: isSelected
                                                 ? Colors.white
-                                                : const Color(0xFF155E42),
+                                                : CareGridPalette.primary,
                                             fontWeight: FontWeight.bold,
                                             fontSize: 12,
                                           ),
@@ -368,7 +369,7 @@ class _DonateNgoSelectionScreenState extends State<DonateNgoSelectionScreen> {
                         style: TextStyle(
                           fontSize: 13.5,
                           fontWeight: FontWeight.bold,
-                          color: Color(0xFF173D37),
+                          color: CareGridPalette.ink,
                         ),
                       ),
                       const SizedBox(height: 10),
@@ -378,15 +379,15 @@ class _DonateNgoSelectionScreenState extends State<DonateNgoSelectionScreen> {
                           width: double.infinity,
                           padding: const EdgeInsets.all(20),
                           decoration: BoxDecoration(
-                            color: const Color(0xFFF7FAF8),
+                            color: CareGridPalette.canvas,
                             borderRadius: BorderRadius.circular(14),
-                            border: Border.all(color: const Color(0xFFDAE8E1)),
+                            border: Border.all(color: CareGridPalette.line),
                           ),
                           child: const Text(
                             'No approved NGOs match your current filter.',
                             textAlign: TextAlign.center,
                             style: TextStyle(
-                              color: Color(0xFF58746D),
+                              color: CareGridPalette.secondaryText,
                               fontSize: 13,
                             ),
                           ),
@@ -408,7 +409,7 @@ class _DonateNgoSelectionScreenState extends State<DonateNgoSelectionScreen> {
                         height: 50,
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color(0xFF155E42),
+                            backgroundColor: CareGridPalette.primary,
                             foregroundColor: Colors.white,
                             elevation: 0,
                             shape: RoundedRectangleBorder(
@@ -445,17 +446,17 @@ class _DonateNgoSelectionScreenState extends State<DonateNgoSelectionScreen> {
                             padding: const EdgeInsets.symmetric(vertical: 13),
                             alignment: Alignment.center,
                             decoration: BoxDecoration(
-                              color: const Color(0xFFFFF4E2),
+                              color: CareGridPalette.goldTint,
                               borderRadius: BorderRadius.circular(12),
                               border: Border.all(
-                                color: const Color(0xFFE3A33B),
+                                color: CareGridPalette.gold,
                                 width: 1.2,
                               ),
                             ),
                             child: const Text(
                               '100% Voluntary • Zero Platform Fee',
                               style: TextStyle(
-                                color: Color(0xFFAD751D),
+                                color: CareGridPalette.goldDeep,
                                 fontWeight: FontWeight.bold,
                                 fontSize: 13,
                               ),
@@ -486,13 +487,13 @@ class _DonateNgoSelectionScreenState extends State<DonateNgoSelectionScreen> {
         padding: const EdgeInsets.all(14),
         decoration: BoxDecoration(
           color: isSelected
-              ? const Color(0xFFE5F5EE)
-              : const Color(0xFFF7FAF8),
+              ? CareGridPalette.paleMint
+              : CareGridPalette.canvas,
           borderRadius: BorderRadius.circular(16),
           border: Border.all(
             color: isSelected
-                ? const Color(0xFF155E42)
-                : const Color(0xFFDAE8E1),
+                ? CareGridPalette.primary
+                : CareGridPalette.line,
             width: isSelected ? 1.5 : 1.1,
           ),
         ),
@@ -506,12 +507,12 @@ class _DonateNgoSelectionScreenState extends State<DonateNgoSelectionScreen> {
                   width: 22,
                   height: 22,
                   decoration: BoxDecoration(
-                    color: isSelected ? const Color(0xFF155E42) : Colors.white,
+                    color: isSelected ? CareGridPalette.primary : Colors.white,
                     borderRadius: BorderRadius.circular(5),
                     border: Border.all(
                       color: isSelected
-                          ? const Color(0xFF155E42)
-                          : const Color(0xFF58746D),
+                          ? CareGridPalette.primary
+                          : CareGridPalette.secondaryText,
                       width: 1.5,
                     ),
                   ),
@@ -527,7 +528,7 @@ class _DonateNgoSelectionScreenState extends State<DonateNgoSelectionScreen> {
                     style: const TextStyle(
                       fontSize: 15,
                       fontWeight: FontWeight.bold,
-                      color: Color(0xFF173D37),
+                      color: CareGridPalette.ink,
                     ),
                   ),
                 ),
@@ -539,8 +540,8 @@ class _DonateNgoSelectionScreenState extends State<DonateNgoSelectionScreen> {
                   ),
                   decoration: BoxDecoration(
                     color: isSelected
-                        ? const Color(0xFF155E42)
-                        : const Color(0xFFE5F5EE),
+                        ? CareGridPalette.primary
+                        : CareGridPalette.paleMint,
                     borderRadius: BorderRadius.circular(6),
                   ),
                   child: Text(
@@ -550,7 +551,7 @@ class _DonateNgoSelectionScreenState extends State<DonateNgoSelectionScreen> {
                       fontWeight: FontWeight.bold,
                       color: isSelected
                           ? Colors.white
-                          : const Color(0xFF075A50),
+                          : CareGridPalette.primaryDeep,
                     ),
                   ),
                 ),
@@ -561,7 +562,7 @@ class _DonateNgoSelectionScreenState extends State<DonateNgoSelectionScreen> {
               ngo.description,
               style: const TextStyle(
                 fontSize: 12.5,
-                color: Color(0xFF58746D),
+                color: CareGridPalette.secondaryText,
                 height: 1.35,
               ),
             ),
@@ -571,7 +572,7 @@ class _DonateNgoSelectionScreenState extends State<DonateNgoSelectionScreen> {
               style: TextStyle(
                 fontSize: 11.5,
                 fontWeight: FontWeight.bold,
-                color: Color(0xFF173D37),
+                color: CareGridPalette.ink,
               ),
             ),
             const SizedBox(height: 6),
@@ -590,17 +591,17 @@ class _DonateNgoSelectionScreenState extends State<DonateNgoSelectionScreen> {
                   ),
                   decoration: BoxDecoration(
                     color: highlightGreen
-                        ? const Color(0xFF155E42)
+                        ? CareGridPalette.primary
                         : highlightAmber
-                        ? const Color(0xFFFFF4E2)
-                        : const Color(0xFFDAE8E1).withOpacity(0.75),
+                        ? CareGridPalette.goldTint
+                        : CareGridPalette.line.withOpacity(0.75),
                     borderRadius: BorderRadius.circular(8),
                     border: Border.all(
                       color: highlightGreen
-                          ? const Color(0xFF155E42)
+                          ? CareGridPalette.primary
                           : highlightAmber
-                          ? const Color(0xFFE3A33B)
-                          : const Color(0xFFDAE8E1),
+                          ? CareGridPalette.gold
+                          : CareGridPalette.line,
                     ),
                   ),
                   child: Text(
@@ -611,8 +612,8 @@ class _DonateNgoSelectionScreenState extends State<DonateNgoSelectionScreen> {
                       color: highlightGreen
                           ? Colors.white
                           : highlightAmber
-                          ? const Color(0xFFAD751D)
-                          : const Color(0xFF173D37),
+                          ? CareGridPalette.goldDeep
+                          : CareGridPalette.ink,
                     ),
                   ),
                 );
@@ -625,7 +626,7 @@ class _DonateNgoSelectionScreenState extends State<DonateNgoSelectionScreen> {
                 style: const TextStyle(
                   fontSize: 12,
                   fontWeight: FontWeight.bold,
-                  color: Color(0xFF155E42),
+                  color: CareGridPalette.primary,
                 ),
               ),
             ],

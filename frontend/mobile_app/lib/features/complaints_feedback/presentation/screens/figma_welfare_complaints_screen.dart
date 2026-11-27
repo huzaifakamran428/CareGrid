@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import '../../../../app/theme/caregrid_theme.dart';
+import '../../../../app/theme/brand_tokens.dart';
 
 void main() {
   runApp(const CareGridWelfareComplaintsApp());
@@ -12,11 +14,7 @@ class CareGridWelfareComplaintsApp extends StatelessWidget {
     return MaterialApp(
       title: 'CareGrid - Welfare Complaints',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF155E42)),
-        useMaterial3: true,
-        fontFamily: 'Roboto',
-      ),
+      theme: CareGridTheme.light,
       home: const WelfareComplaintsScreen(),
     );
   }
@@ -55,28 +53,28 @@ class _WelfareComplaintsScreenState extends State<WelfareComplaintsScreen> {
       id: 'pharmacy_copay',
       label: 'Subsidized Pharmacy Dispensing Issue',
       icon: Icons.medication,
-      iconColor: Color(0xFFEF4444),
+      iconColor: CareGridPalette.danger,
       isValidSelection: true,
     ),
     WelfareServiceCategory(
       id: 'lab_delay',
       label: 'Diagnostic Lab Appointment & Slot Delay',
       icon: Icons.biotech,
-      iconColor: Color(0xFF0284C7),
+      iconColor: CareGridPalette.info,
       isValidSelection: true,
     ),
     WelfareServiceCategory(
       id: 'food_ration',
       label: 'Food Ration & Surplus Distribution Issue',
       icon: Icons.volunteer_activism,
-      iconColor: Color(0xFF155E42),
+      iconColor: CareGridPalette.primary,
       isValidSelection: true,
     ),
     WelfareServiceCategory(
       id: 'select_category',
       label: 'Select Category (Invalid Guard Test)',
       icon: Icons.help_outline,
-      iconColor: Color(0xFF9CA3AF),
+      iconColor: CareGridPalette.secondaryText,
       isValidSelection: false,
     ),
   ];
@@ -180,7 +178,7 @@ class _WelfareComplaintsScreenState extends State<WelfareComplaintsScreen> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(msg),
-          backgroundColor: const Color(0xFFB91C1C),
+          backgroundColor: CareGridPalette.danger,
           behavior: SnackBarBehavior.floating,
         ),
       );
@@ -202,7 +200,7 @@ class _WelfareComplaintsScreenState extends State<WelfareComplaintsScreen> {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text('Complaint submitted. Issued Reference $_activeRef.'),
-        backgroundColor: const Color(0xFF155E42),
+        backgroundColor: CareGridPalette.primary,
         behavior: SnackBarBehavior.floating,
       ),
     );
@@ -212,7 +210,7 @@ class _WelfareComplaintsScreenState extends State<WelfareComplaintsScreen> {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(message),
-        backgroundColor: const Color(0xFF0E4D37),
+        backgroundColor: CareGridPalette.primaryDeep,
         behavior: SnackBarBehavior.floating,
       ),
     );
@@ -225,7 +223,7 @@ class _WelfareComplaintsScreenState extends State<WelfareComplaintsScreen> {
     final int charCount = _detailsController.text.trim().length;
 
     return Scaffold(
-      backgroundColor: const Color(0xFF155E42),
+      backgroundColor: CareGridPalette.primary,
       body: SafeArea(
         child: Column(
           children: [
@@ -249,7 +247,7 @@ class _WelfareComplaintsScreenState extends State<WelfareComplaintsScreen> {
                     Text(
                       'Beneficiary Mobile App • Report Issues',
                       style: TextStyle(
-                        color: Color(0xFFD1FAE5),
+                        color: CareGridPalette.paleMint,
                         fontSize: 13.5,
                         fontWeight: FontWeight.w500,
                       ),
@@ -258,7 +256,7 @@ class _WelfareComplaintsScreenState extends State<WelfareComplaintsScreen> {
                     Text(
                       'Unique Ref # issued & "Complaint" status set',
                       style: TextStyle(
-                        color: Color(0xFFA7F3D0),
+                        color: CareGridPalette.mintBorder,
                         fontSize: 12.5,
                       ),
                     ),
@@ -286,7 +284,7 @@ class _WelfareComplaintsScreenState extends State<WelfareComplaintsScreen> {
                         style: TextStyle(
                           fontSize: 10.5,
                           fontWeight: FontWeight.bold,
-                          color: Color(0xFF6B7280),
+                          color: CareGridPalette.secondaryText,
                           letterSpacing: 0.6,
                         ),
                       ),
@@ -311,14 +309,14 @@ class _WelfareComplaintsScreenState extends State<WelfareComplaintsScreen> {
                                     fontWeight: FontWeight.bold,
                                     color: active
                                         ? Colors.white
-                                        : const Color(0xFF155E42),
+                                        : CareGridPalette.primary,
                                   ),
                                 ),
                                 selected: active,
-                                selectedColor: const Color(0xFF155E42),
-                                backgroundColor: const Color(0xFFECFDF5),
+                                selectedColor: CareGridPalette.primary,
+                                backgroundColor: CareGridPalette.paleMint,
                                 side: const BorderSide(
-                                  color: Color(0xFFA7F3D0),
+                                  color: CareGridPalette.mintBorder,
                                 ),
                                 onSelected: (_) => _applyScenario(preset),
                               ),
@@ -335,13 +333,13 @@ class _WelfareComplaintsScreenState extends State<WelfareComplaintsScreen> {
                         ),
                         decoration: BoxDecoration(
                           color: _isAccountFlagged
-                              ? const Color(0xFFFFFBEB)
-                              : const Color(0xFFECFDF5),
+                              ? CareGridPalette.goldTint
+                              : CareGridPalette.paleMint,
                           borderRadius: BorderRadius.circular(14),
                           border: Border.all(
                             color: _isAccountFlagged
-                                ? const Color(0xFFF59E0B)
-                                : const Color(0xFF155E42),
+                                ? CareGridPalette.gold
+                                : CareGridPalette.primary,
                             width: 1.2,
                           ),
                         ),
@@ -355,8 +353,8 @@ class _WelfareComplaintsScreenState extends State<WelfareComplaintsScreen> {
                                       ? Icons.warning_amber_rounded
                                       : Icons.verified_user,
                                   color: _isAccountFlagged
-                                      ? const Color(0xFFD97706)
-                                      : const Color(0xFF155E42),
+                                      ? CareGridPalette.goldDeep
+                                      : CareGridPalette.primary,
                                   size: 18,
                                 ),
                                 const SizedBox(width: 6),
@@ -367,8 +365,8 @@ class _WelfareComplaintsScreenState extends State<WelfareComplaintsScreen> {
                                         : 'Account Flag Cleared: Normal Standing',
                                     style: TextStyle(
                                       color: _isAccountFlagged
-                                          ? const Color(0xFF92400E)
-                                          : const Color(0xFF155E42),
+                                          ? CareGridPalette.goldDeep
+                                          : CareGridPalette.primary,
                                       fontWeight: FontWeight.bold,
                                       fontSize: 13,
                                     ),
@@ -381,8 +379,8 @@ class _WelfareComplaintsScreenState extends State<WelfareComplaintsScreen> {
                               'Active Ref: $_activeRef • Sent to Admin',
                               style: TextStyle(
                                 color: _isAccountFlagged
-                                    ? const Color(0xFFB45309)
-                                    : const Color(0xFF047857),
+                                    ? CareGridPalette.goldDeep
+                                    : CareGridPalette.primary,
                                 fontSize: 12,
                                 fontWeight: FontWeight.w500,
                               ),
@@ -396,7 +394,7 @@ class _WelfareComplaintsScreenState extends State<WelfareComplaintsScreen> {
                         style: TextStyle(
                           fontSize: 11,
                           fontWeight: FontWeight.bold,
-                          color: Color(0xFF374151),
+                          color: CareGridPalette.ink,
                           letterSpacing: 0.5,
                         ),
                       ),
@@ -408,12 +406,12 @@ class _WelfareComplaintsScreenState extends State<WelfareComplaintsScreen> {
                           vertical: 4,
                         ),
                         decoration: BoxDecoration(
-                          color: const Color(0xFFFAFAFA),
+                          color: CareGridPalette.canvas,
                           borderRadius: BorderRadius.circular(12),
                           border: Border.all(
                             color: catErr == null
-                                ? const Color(0xFF155E42)
-                                : const Color(0xFFDC2626),
+                                ? CareGridPalette.primary
+                                : CareGridPalette.danger,
                             width: 1.3,
                           ),
                         ),
@@ -424,7 +422,7 @@ class _WelfareComplaintsScreenState extends State<WelfareComplaintsScreen> {
                             dropdownColor: Colors.white,
                             icon: const Icon(
                               Icons.keyboard_arrow_down,
-                              color: Color(0xFF155E42),
+                              color: CareGridPalette.primary,
                             ),
                             items: _categories.map((cat) {
                               return DropdownMenuItem<String>(
@@ -442,7 +440,7 @@ class _WelfareComplaintsScreenState extends State<WelfareComplaintsScreen> {
                                         cat.label,
                                         overflow: TextOverflow.ellipsis,
                                         style: const TextStyle(
-                                          color: Color(0xFF111827),
+                                          color: CareGridPalette.ink,
                                           fontWeight: FontWeight.bold,
                                           fontSize: 13.5,
                                         ),
@@ -469,7 +467,7 @@ class _WelfareComplaintsScreenState extends State<WelfareComplaintsScreen> {
                         Text(
                           catErr,
                           style: const TextStyle(
-                            color: Color(0xFFDC2626),
+                            color: CareGridPalette.danger,
                             fontSize: 11.5,
                             fontWeight: FontWeight.w600,
                           ),
@@ -484,7 +482,7 @@ class _WelfareComplaintsScreenState extends State<WelfareComplaintsScreen> {
                             style: TextStyle(
                               fontSize: 11,
                               fontWeight: FontWeight.bold,
-                              color: Color(0xFF374151),
+                              color: CareGridPalette.ink,
                               letterSpacing: 0.5,
                             ),
                           ),
@@ -494,8 +492,8 @@ class _WelfareComplaintsScreenState extends State<WelfareComplaintsScreen> {
                               fontSize: 11,
                               fontWeight: FontWeight.bold,
                               color: charCount > _maxChars
-                                  ? const Color(0xFFDC2626)
-                                  : const Color(0xFF6B7280),
+                                  ? CareGridPalette.danger
+                                  : CareGridPalette.secondaryText,
                             ),
                           ),
                         ],
@@ -510,51 +508,51 @@ class _WelfareComplaintsScreenState extends State<WelfareComplaintsScreen> {
                           _selectedScenario = 'Custom Edit';
                         }),
                         style: const TextStyle(
-                          color: Color(0xFF374151),
+                          color: CareGridPalette.ink,
                           fontSize: 13.5,
                           height: 1.38,
                         ),
                         decoration: InputDecoration(
                           filled: true,
-                          fillColor: const Color(0xFFFAFAFA),
+                          fillColor: CareGridPalette.canvas,
                           counterText: '',
                           hintText:
                           'Describe the issue clearly with transaction or service details...',
                           hintStyle: const TextStyle(
-                            color: Color(0xFF9CA3AF),
+                            color: CareGridPalette.secondaryText,
                             fontSize: 13,
                           ),
                           errorText: detErr,
                           errorStyle: const TextStyle(
-                            color: Color(0xFFDC2626),
+                            color: CareGridPalette.danger,
                             fontSize: 11.5,
                           ),
                           contentPadding: const EdgeInsets.all(14),
                           enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(14),
                             borderSide: const BorderSide(
-                              color: Color(0xFFD1D5DB),
+                              color: CareGridPalette.line,
                               width: 1.1,
                             ),
                           ),
                           focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(14),
                             borderSide: const BorderSide(
-                              color: Color(0xFF155E42),
+                              color: CareGridPalette.primary,
                               width: 1.6,
                             ),
                           ),
                           errorBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(14),
                             borderSide: const BorderSide(
-                              color: Color(0xFFDC2626),
+                              color: CareGridPalette.danger,
                               width: 1.3,
                             ),
                           ),
                           focusedErrorBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(14),
                             borderSide: const BorderSide(
-                              color: Color(0xFFDC2626),
+                              color: CareGridPalette.danger,
                               width: 1.6,
                             ),
                           ),
@@ -566,10 +564,10 @@ class _WelfareComplaintsScreenState extends State<WelfareComplaintsScreen> {
                         height: 50,
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color(0xFF155E42),
+                            backgroundColor: CareGridPalette.primary,
                             foregroundColor: Colors.white,
-                            disabledBackgroundColor: const Color(0xFFD1D5DB),
-                            disabledForegroundColor: const Color(0xFF6B7280),
+                            disabledBackgroundColor: CareGridPalette.line,
+                            disabledForegroundColor: CareGridPalette.secondaryText,
                             elevation: 0,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(12),
@@ -597,10 +595,10 @@ class _WelfareComplaintsScreenState extends State<WelfareComplaintsScreen> {
                         width: double.infinity,
                         padding: const EdgeInsets.all(14),
                         decoration: BoxDecoration(
-                          color: const Color(0xFFECFDF5),
+                          color: CareGridPalette.paleMint,
                           borderRadius: BorderRadius.circular(16),
                           border: Border.all(
-                            color: const Color(0xFF155E42),
+                            color: CareGridPalette.primary,
                             width: 1.2,
                           ),
                         ),
@@ -616,7 +614,7 @@ class _WelfareComplaintsScreenState extends State<WelfareComplaintsScreen> {
                                     vertical: 5,
                                   ),
                                   decoration: BoxDecoration(
-                                    color: const Color(0xFF0E4D37),
+                                    color: CareGridPalette.primaryDeep,
                                     borderRadius: BorderRadius.circular(8),
                                   ),
                                   child: Row(
@@ -643,7 +641,7 @@ class _WelfareComplaintsScreenState extends State<WelfareComplaintsScreen> {
                                 Text(
                                   'Status: $_complaintStatusLabel',
                                   style: const TextStyle(
-                                    color: Color(0xFF155E42),
+                                    color: CareGridPalette.primary,
                                     fontWeight: FontWeight.bold,
                                     fontSize: 12,
                                   ),
@@ -654,7 +652,7 @@ class _WelfareComplaintsScreenState extends State<WelfareComplaintsScreen> {
                             Text(
                               'Ref $_activeRef — Official Reply:',
                               style: const TextStyle(
-                                color: Color(0xFF111827),
+                                color: CareGridPalette.ink,
                                 fontWeight: FontWeight.bold,
                                 fontSize: 13.5,
                               ),
@@ -663,7 +661,7 @@ class _WelfareComplaintsScreenState extends State<WelfareComplaintsScreen> {
                             Text(
                               _adminReplyText,
                               style: const TextStyle(
-                                color: Color(0xFF374151),
+                                color: CareGridPalette.ink,
                                 fontSize: 13,
                                 height: 1.38,
                               ),
@@ -673,7 +671,7 @@ class _WelfareComplaintsScreenState extends State<WelfareComplaintsScreen> {
                               children: const [
                                 Icon(
                                   Icons.check,
-                                  color: Color(0xFF155E42),
+                                  color: CareGridPalette.primary,
                                   size: 15,
                                 ),
                                 SizedBox(width: 5),
@@ -681,7 +679,7 @@ class _WelfareComplaintsScreenState extends State<WelfareComplaintsScreen> {
                                   child: Text(
                                     'Complaint info & Admin reply visible to user',
                                     style: TextStyle(
-                                      color: Color(0xFF155E42),
+                                      color: CareGridPalette.primary,
                                       fontWeight: FontWeight.bold,
                                       fontSize: 12,
                                     ),
@@ -693,7 +691,7 @@ class _WelfareComplaintsScreenState extends State<WelfareComplaintsScreen> {
                             Text(
                               _adminReplyMeta,
                               style: const TextStyle(
-                                color: Color(0xFF6B7280),
+                                color: CareGridPalette.secondaryText,
                                 fontSize: 11.5,
                               ),
                             ),
@@ -706,7 +704,7 @@ class _WelfareComplaintsScreenState extends State<WelfareComplaintsScreen> {
                         height: 50,
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color(0xFF062E20),
+                            backgroundColor: CareGridPalette.primaryDeep,
                             foregroundColor: Colors.white,
                             elevation: 0,
                             shape: RoundedRectangleBorder(
@@ -746,7 +744,7 @@ class _WelfareComplaintsScreenState extends State<WelfareComplaintsScreen> {
                           child: Container(
                             padding: const EdgeInsets.symmetric(vertical: 14),
                             decoration: BoxDecoration(
-                              color: const Color(0xFFDDF5E8),
+                              color: CareGridPalette.paleMint,
                               borderRadius: BorderRadius.circular(12),
                             ),
                             child: Row(
@@ -754,7 +752,7 @@ class _WelfareComplaintsScreenState extends State<WelfareComplaintsScreen> {
                               children: [
                                 const Icon(
                                   Icons.check,
-                                  color: Color(0xFF155E42),
+                                  color: CareGridPalette.primary,
                                   size: 17,
                                 ),
                                 const SizedBox(width: 6),
@@ -763,7 +761,7 @@ class _WelfareComplaintsScreenState extends State<WelfareComplaintsScreen> {
                                       ? 'Reference $_activeRef Saved'
                                       : 'Save Reference $_activeRef',
                                   style: const TextStyle(
-                                    color: Color(0xFF155E42),
+                                    color: CareGridPalette.primary,
                                     fontWeight: FontWeight.bold,
                                     fontSize: 13.5,
                                   ),

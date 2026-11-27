@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import '../../../../app/theme/caregrid_theme.dart';
+import '../../../../app/theme/brand_tokens.dart';
 import 'package:flutter/services.dart';
 
 void main() {
@@ -13,11 +15,7 @@ class CareGridServiceFeedbackApp extends StatelessWidget {
     return MaterialApp(
       title: 'CareGrid - Service Feedback',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF155E42)),
-        useMaterial3: true,
-        fontFamily: 'Roboto',
-      ),
+      theme: CareGridTheme.light,
       home: const ServiceFeedbackScreen(),
     );
   }
@@ -215,7 +213,7 @@ class _ServiceFeedbackScreenState extends State<ServiceFeedbackScreen> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(message),
-          backgroundColor: const Color(0xFFB91C1C),
+          backgroundColor: CareGridPalette.danger,
           behavior: SnackBarBehavior.floating,
         ),
       );
@@ -233,7 +231,7 @@ class _ServiceFeedbackScreenState extends State<ServiceFeedbackScreen> {
         content: Text(
           'Feedback saved ($_savedReceiptCode) for ${_selectedService.providerName} ($_rating.0/5.0).',
         ),
-        backgroundColor: const Color(0xFF155E42),
+        backgroundColor: CareGridPalette.primary,
         behavior: SnackBarBehavior.floating,
       ),
     );
@@ -247,7 +245,7 @@ class _ServiceFeedbackScreenState extends State<ServiceFeedbackScreen> {
     final String? textError = _feedbackValidationError;
 
     return Scaffold(
-      backgroundColor: const Color(0xFF155E42),
+      backgroundColor: CareGridPalette.primary,
       body: SafeArea(
         child: Column(
           children: [
@@ -272,7 +270,7 @@ class _ServiceFeedbackScreenState extends State<ServiceFeedbackScreen> {
                     Text(
                       'Beneficiary Rating & Improvement Suggestions',
                       style: TextStyle(
-                        color: Color(0xFFD1FAE5),
+                        color: CareGridPalette.paleMint,
                         fontSize: 13.5,
                         fontWeight: FontWeight.w500,
                       ),
@@ -281,7 +279,7 @@ class _ServiceFeedbackScreenState extends State<ServiceFeedbackScreen> {
                     Text(
                       'Saved on service & reviewed by Administrators',
                       style: TextStyle(
-                        color: Color(0xFFA7F3D0),
+                        color: CareGridPalette.mintBorder,
                         fontSize: 12.5,
                       ),
                     ),
@@ -312,7 +310,7 @@ class _ServiceFeedbackScreenState extends State<ServiceFeedbackScreen> {
                         style: TextStyle(
                           fontSize: 10.5,
                           fontWeight: FontWeight.bold,
-                          color: Color(0xFF6B7280),
+                          color: CareGridPalette.secondaryText,
                           letterSpacing: 0.6,
                         ),
                       ),
@@ -338,14 +336,14 @@ class _ServiceFeedbackScreenState extends State<ServiceFeedbackScreen> {
                                     fontWeight: FontWeight.bold,
                                     color: active
                                         ? Colors.white
-                                        : const Color(0xFF155E42),
+                                        : CareGridPalette.primary,
                                   ),
                                 ),
                                 selected: active,
-                                selectedColor: const Color(0xFF155E42),
-                                backgroundColor: const Color(0xFFECFDF5),
+                                selectedColor: CareGridPalette.primary,
+                                backgroundColor: CareGridPalette.paleMint,
                                 side: const BorderSide(
-                                  color: Color(0xFFA7F3D0),
+                                  color: CareGridPalette.mintBorder,
                                 ),
                                 onSelected: (_) => _applyTestScenario(preset),
                               ),
@@ -362,7 +360,7 @@ class _ServiceFeedbackScreenState extends State<ServiceFeedbackScreen> {
                         style: TextStyle(
                           fontSize: 11,
                           fontWeight: FontWeight.bold,
-                          color: Color(0xFF374151),
+                          color: CareGridPalette.ink,
                           letterSpacing: 0.5,
                         ),
                       ),
@@ -374,11 +372,11 @@ class _ServiceFeedbackScreenState extends State<ServiceFeedbackScreen> {
                           vertical: 10,
                         ),
                         decoration: BoxDecoration(
-                          color: const Color(0xFFF3F6F4),
+                          color: CareGridPalette.canvas,
                           border: Border.all(
                             color: serviceError == null
-                                ? const Color(0xFF155E42)
-                                : const Color(0xFFDC2626),
+                                ? CareGridPalette.primary
+                                : CareGridPalette.danger,
                             width: 1.3,
                           ),
                           borderRadius: BorderRadius.circular(14),
@@ -393,7 +391,7 @@ class _ServiceFeedbackScreenState extends State<ServiceFeedbackScreen> {
                                 dropdownColor: Colors.white,
                                 icon: const Icon(
                                   Icons.keyboard_arrow_down,
-                                  color: Color(0xFF155E42),
+                                  color: CareGridPalette.primary,
                                 ),
                                 items: _services.map((service) {
                                   return DropdownMenuItem<CompletedServiceOption>(
@@ -402,7 +400,7 @@ class _ServiceFeedbackScreenState extends State<ServiceFeedbackScreen> {
                                       children: [
                                         const Icon(
                                           Icons.biotech,
-                                          color: Color(0xFF64748B),
+                                          color: CareGridPalette.secondaryText,
                                           size: 18,
                                         ),
                                         const SizedBox(width: 8),
@@ -411,7 +409,7 @@ class _ServiceFeedbackScreenState extends State<ServiceFeedbackScreen> {
                                             service.serviceTitle,
                                             overflow: TextOverflow.ellipsis,
                                             style: const TextStyle(
-                                              color: Color(0xFF111827),
+                                              color: CareGridPalette.ink,
                                               fontWeight: FontWeight.bold,
                                               fontSize: 13.5,
                                             ),
@@ -438,8 +436,8 @@ class _ServiceFeedbackScreenState extends State<ServiceFeedbackScreen> {
                                 'Service Record ${_selectedService.recordCode} • ${_selectedService.completionLabel}',
                                 style: TextStyle(
                                   color: _selectedService.isEligibleForFeedback
-                                      ? const Color(0xFF4B5563)
-                                      : const Color(0xFFDC2626),
+                                      ? CareGridPalette.secondaryText
+                                      : CareGridPalette.danger,
                                   fontSize: 12,
                                   fontWeight: FontWeight.w500,
                                 ),
@@ -453,7 +451,7 @@ class _ServiceFeedbackScreenState extends State<ServiceFeedbackScreen> {
                         Text(
                           serviceError,
                           style: const TextStyle(
-                            color: Color(0xFFDC2626),
+                            color: CareGridPalette.danger,
                             fontSize: 11.5,
                             fontWeight: FontWeight.w600,
                           ),
@@ -471,7 +469,7 @@ class _ServiceFeedbackScreenState extends State<ServiceFeedbackScreen> {
                             style: TextStyle(
                               fontSize: 11,
                               fontWeight: FontWeight.bold,
-                              color: Color(0xFF374151),
+                              color: CareGridPalette.ink,
                               letterSpacing: 0.5,
                             ),
                           ),
@@ -489,7 +487,7 @@ class _ServiceFeedbackScreenState extends State<ServiceFeedbackScreen> {
                                 style: TextStyle(
                                   fontSize: 11.5,
                                   fontWeight: FontWeight.w600,
-                                  color: Color(0xFF155E42),
+                                  color: CareGridPalette.primary,
                                   decoration: TextDecoration.underline,
                                 ),
                               ),
@@ -505,12 +503,12 @@ class _ServiceFeedbackScreenState extends State<ServiceFeedbackScreen> {
                         ),
                         decoration: BoxDecoration(
                           color: ratingError == null
-                              ? const Color(0xFFECFDF5)
-                              : const Color(0xFFFEF2F2),
+                              ? CareGridPalette.paleMint
+                              : CareGridPalette.dangerTint,
                           border: Border.all(
                             color: ratingError == null
-                                ? const Color(0xFF155E42)
-                                : const Color(0xFFDC2626),
+                                ? CareGridPalette.primary
+                                : CareGridPalette.danger,
                             width: 1.2,
                           ),
                           borderRadius: BorderRadius.circular(14),
@@ -540,8 +538,8 @@ class _ServiceFeedbackScreenState extends State<ServiceFeedbackScreen> {
                                           ? Icons.star_rounded
                                           : Icons.star_outline_rounded,
                                       color: filled
-                                          ? const Color(0xFFF59E0B)
-                                          : const Color(0xFF9CA3AF),
+                                          ? CareGridPalette.gold
+                                          : CareGridPalette.secondaryText,
                                       size: 36,
                                     ),
                                   ),
@@ -553,8 +551,8 @@ class _ServiceFeedbackScreenState extends State<ServiceFeedbackScreen> {
                               '${_rating.toStringAsFixed(1)} / 5.0 — $_ratingDescriptor',
                               style: TextStyle(
                                 color: ratingError == null
-                                    ? const Color(0xFF111827)
-                                    : const Color(0xFFDC2626),
+                                    ? CareGridPalette.ink
+                                    : CareGridPalette.danger,
                                 fontWeight: FontWeight.bold,
                                 fontSize: 13.5,
                               ),
@@ -567,7 +565,7 @@ class _ServiceFeedbackScreenState extends State<ServiceFeedbackScreen> {
                         Text(
                           ratingError,
                           style: const TextStyle(
-                            color: Color(0xFFDC2626),
+                            color: CareGridPalette.danger,
                             fontSize: 11.5,
                             fontWeight: FontWeight.w600,
                           ),
@@ -585,7 +583,7 @@ class _ServiceFeedbackScreenState extends State<ServiceFeedbackScreen> {
                             style: TextStyle(
                               fontSize: 11,
                               fontWeight: FontWeight.bold,
-                              color: Color(0xFF374151),
+                              color: CareGridPalette.ink,
                               letterSpacing: 0.5,
                             ),
                           ),
@@ -595,8 +593,8 @@ class _ServiceFeedbackScreenState extends State<ServiceFeedbackScreen> {
                               fontSize: 11,
                               fontWeight: FontWeight.bold,
                               color: charCount > _maxChars
-                                  ? const Color(0xFFDC2626)
-                                  : const Color(0xFF6B7280),
+                                  ? CareGridPalette.danger
+                                  : CareGridPalette.secondaryText,
                             ),
                           ),
                         ],
@@ -610,50 +608,50 @@ class _ServiceFeedbackScreenState extends State<ServiceFeedbackScreen> {
                           LengthLimitingTextInputFormatter(_maxChars + 20),
                         ],
                         style: const TextStyle(
-                          color: Color(0xFF374151),
+                          color: CareGridPalette.ink,
                           fontSize: 13.5,
                           height: 1.38,
                         ),
                         decoration: InputDecoration(
                           filled: true,
-                          fillColor: const Color(0xFFFAFAFA),
+                          fillColor: CareGridPalette.canvas,
                           hintText:
                           'Share your service experience and suggestions for improvement...',
                           hintStyle: const TextStyle(
-                            color: Color(0xFF9CA3AF),
+                            color: CareGridPalette.secondaryText,
                             fontSize: 13,
                           ),
                           errorText: textError,
                           errorStyle: const TextStyle(
-                            color: Color(0xFFDC2626),
+                            color: CareGridPalette.danger,
                             fontSize: 11.5,
                           ),
                           contentPadding: const EdgeInsets.all(14),
                           enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(14),
                             borderSide: const BorderSide(
-                              color: Color(0xFFD1D5DB),
+                              color: CareGridPalette.line,
                               width: 1.1,
                             ),
                           ),
                           focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(14),
                             borderSide: const BorderSide(
-                              color: Color(0xFF155E42),
+                              color: CareGridPalette.primary,
                               width: 1.6,
                             ),
                           ),
                           errorBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(14),
                             borderSide: const BorderSide(
-                              color: Color(0xFFDC2626),
+                              color: CareGridPalette.danger,
                               width: 1.3,
                             ),
                           ),
                           focusedErrorBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(14),
                             borderSide: const BorderSide(
-                              color: Color(0xFFDC2626),
+                              color: CareGridPalette.danger,
                               width: 1.6,
                             ),
                           ),
@@ -667,10 +665,10 @@ class _ServiceFeedbackScreenState extends State<ServiceFeedbackScreen> {
                         width: double.infinity,
                         padding: const EdgeInsets.all(14),
                         decoration: BoxDecoration(
-                          color: const Color(0xFFFFFBEB),
+                          color: CareGridPalette.goldTint,
                           borderRadius: BorderRadius.circular(14),
                           border: Border.all(
-                            color: const Color(0xFFF59E0B),
+                            color: CareGridPalette.gold,
                             width: 1.1,
                           ),
                         ),
@@ -681,14 +679,14 @@ class _ServiceFeedbackScreenState extends State<ServiceFeedbackScreen> {
                               children: const [
                                 Icon(
                                   Icons.bar_chart_rounded,
-                                  color: Color(0xFF2563EB),
+                                  color: CareGridPalette.info,
                                   size: 18,
                                 ),
                                 SizedBox(width: 6),
                                 Text(
                                   'Feedback Binding & Admin Visibility:',
                                   style: TextStyle(
-                                    color: Color(0xFF92400E),
+                                    color: CareGridPalette.goldDeep,
                                     fontWeight: FontWeight.bold,
                                     fontSize: 13,
                                   ),
@@ -699,7 +697,7 @@ class _ServiceFeedbackScreenState extends State<ServiceFeedbackScreen> {
                             Text(
                               '• Linked to Service: ${_selectedService.providerName} (${_selectedService.recordCode})',
                               style: const TextStyle(
-                                color: Color(0xFF78350F),
+                                color: CareGridPalette.goldDeep,
                                 fontSize: 12.5,
                               ),
                             ),
@@ -707,7 +705,7 @@ class _ServiceFeedbackScreenState extends State<ServiceFeedbackScreen> {
                             Text(
                               '• Rating ($_rating.0/5.0) & comments stored in Feedback DB',
                               style: const TextStyle(
-                                color: Color(0xFF78350F),
+                                color: CareGridPalette.goldDeep,
                                 fontSize: 12.5,
                               ),
                             ),
@@ -716,7 +714,7 @@ class _ServiceFeedbackScreenState extends State<ServiceFeedbackScreen> {
                               children: const [
                                 Icon(
                                   Icons.check,
-                                  color: Color(0xFF155E42),
+                                  color: CareGridPalette.primary,
                                   size: 16,
                                 ),
                                 SizedBox(width: 6),
@@ -724,7 +722,7 @@ class _ServiceFeedbackScreenState extends State<ServiceFeedbackScreen> {
                                   child: Text(
                                     'Visible to authorized System Administrators',
                                     style: TextStyle(
-                                      color: Color(0xFF155E42),
+                                      color: CareGridPalette.primary,
                                       fontWeight: FontWeight.bold,
                                       fontSize: 12.5,
                                     ),
@@ -744,10 +742,10 @@ class _ServiceFeedbackScreenState extends State<ServiceFeedbackScreen> {
                         height: 52,
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color(0xFF155E42),
+                            backgroundColor: CareGridPalette.primary,
                             foregroundColor: Colors.white,
-                            disabledBackgroundColor: const Color(0xFFD1D5DB),
-                            disabledForegroundColor: const Color(0xFF6B7280),
+                            disabledBackgroundColor: CareGridPalette.line,
+                            disabledForegroundColor: CareGridPalette.secondaryText,
                             elevation: 0,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(14),
@@ -782,8 +780,8 @@ class _ServiceFeedbackScreenState extends State<ServiceFeedbackScreen> {
                         ),
                         decoration: BoxDecoration(
                           color: _canSubmit
-                              ? const Color(0xFFDDF5E8)
-                              : const Color(0xFFF3F4F6),
+                              ? CareGridPalette.paleMint
+                              : CareGridPalette.paleNeutral,
                           borderRadius: BorderRadius.circular(14),
                         ),
                         child: Row(
@@ -792,8 +790,8 @@ class _ServiceFeedbackScreenState extends State<ServiceFeedbackScreen> {
                             Icon(
                               Icons.circle,
                               color: _canSubmit
-                                  ? const Color(0xFF155E42)
-                                  : const Color(0xFF9CA3AF),
+                                  ? CareGridPalette.primary
+                                  : CareGridPalette.secondaryText,
                               size: 10,
                             ),
                             const SizedBox(width: 8),
@@ -808,8 +806,8 @@ class _ServiceFeedbackScreenState extends State<ServiceFeedbackScreen> {
                                 overflow: TextOverflow.ellipsis,
                                 style: TextStyle(
                                   color: _canSubmit
-                                      ? const Color(0xFF155E42)
-                                      : const Color(0xFF4B5563),
+                                      ? CareGridPalette.primary
+                                      : CareGridPalette.secondaryText,
                                   fontWeight: FontWeight.bold,
                                   fontSize: 13.5,
                                 ),

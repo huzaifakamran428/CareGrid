@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../../app/theme/brand_tokens.dart';
 import '../../../../core/widgets/caregrid_brand.dart';
 import '../../../../app/theme/caregrid_theme.dart';
 import 'package:intl/intl.dart';
@@ -102,7 +103,7 @@ class _CollectionDeadlineScreenState extends State<CollectionDeadlineScreen> {
     String formattedDateText = 'Today — ${DateFormat('EEEE, d MMM yyyy').format(selectedDate)}';
 
     return Scaffold(
-      backgroundColor: const Color(0xFF075A50),
+      backgroundColor: CareGridPalette.primaryDeep,
       body: SafeArea(
         child: Column(
           children: [
@@ -126,7 +127,7 @@ class _CollectionDeadlineScreenState extends State<CollectionDeadlineScreen> {
                   Text(
                     'Set pickup date, cutoff time & auto-expiry\nExpired listings automatically hidden from NGOs',
                     style: TextStyle(
-                      color: Color(0xFFB2DFCE),
+                      color: CareGridPalette.mintBorder,
                       fontSize: 13,
                       height: 1.3,
                     ),
@@ -157,7 +158,7 @@ class _CollectionDeadlineScreenState extends State<CollectionDeadlineScreen> {
                         style: TextStyle(
                           fontSize: 11,
                           fontWeight: FontWeight.bold,
-                          color: Color(0xFF173D37),
+                          color: CareGridPalette.ink,
                           letterSpacing: 0.5,
                         ),
                       ),
@@ -168,24 +169,24 @@ class _CollectionDeadlineScreenState extends State<CollectionDeadlineScreen> {
                         child: Container(
                           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
                           decoration: BoxDecoration(
-                            color: const Color(0xFFE5F5EE),
-                            border: Border.all(color: const Color(0xFF087C69), width: 1.2),
+                            color: CareGridPalette.paleMint,
+                            border: Border.all(color: CareGridPalette.primary, width: 1.2),
                             borderRadius: BorderRadius.circular(12),
                           ),
                           child: Row(
                             children: [
-                              const Icon(Icons.calendar_month, color: Color(0xFF087C69), size: 20),
+                              const Icon(Icons.calendar_month, color: CareGridPalette.primary, size: 20),
                               const SizedBox(width: 12),
                               Text(
                                 formattedDateText,
                                 style: const TextStyle(
                                   fontWeight: FontWeight.bold,
-                                  color: Color(0xFF173D37),
+                                  color: CareGridPalette.ink,
                                   fontSize: 14,
                                 ),
                               ),
                               const Spacer(),
-                              const Icon(Icons.edit_calendar, color: Color(0xFF087C69), size: 18),
+                              const Icon(Icons.edit_calendar, color: CareGridPalette.primary, size: 18),
                             ],
                           ),
                         ),
@@ -204,7 +205,7 @@ class _CollectionDeadlineScreenState extends State<CollectionDeadlineScreen> {
                                   style: TextStyle(
                                     fontSize: 11,
                                     fontWeight: FontWeight.bold,
-                                    color: Color(0xFF173D37),
+                                    color: CareGridPalette.ink,
                                     letterSpacing: 0.5,
                                   ),
                                 ),
@@ -216,18 +217,18 @@ class _CollectionDeadlineScreenState extends State<CollectionDeadlineScreen> {
                                     padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
                                     decoration: BoxDecoration(
                                       color: Colors.white,
-                                      border: Border.all(color: const Color(0xFFDAE8E1)),
+                                      border: Border.all(color: CareGridPalette.line),
                                       borderRadius: BorderRadius.circular(12),
                                     ),
                                     child: Row(
                                       children: [
-                                        const Icon(Icons.access_time_rounded, color: Color(0xFF58746D), size: 18),
+                                        const Icon(Icons.access_time_rounded, color: CareGridPalette.secondaryText, size: 18),
                                         const SizedBox(width: 8),
                                         Text(
                                           _formatTime(pickupWindowStart),
                                           style: const TextStyle(
                                             fontWeight: FontWeight.bold,
-                                            color: Color(0xFF173D37),
+                                            color: CareGridPalette.ink,
                                             fontSize: 13.5,
                                           ),
                                         ),
@@ -248,7 +249,7 @@ class _CollectionDeadlineScreenState extends State<CollectionDeadlineScreen> {
                                   style: TextStyle(
                                     fontSize: 11,
                                     fontWeight: FontWeight.bold,
-                                    color: Color(0xFF173D37),
+                                    color: CareGridPalette.ink,
                                     letterSpacing: 0.5,
                                   ),
                                 ),
@@ -259,19 +260,19 @@ class _CollectionDeadlineScreenState extends State<CollectionDeadlineScreen> {
                                   child: Container(
                                     padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
                                     decoration: BoxDecoration(
-                                      color: const Color(0xFFFFF4E2),
-                                      border: Border.all(color: const Color(0xFFE3A33B), width: 1.5),
+                                      color: CareGridPalette.goldTint,
+                                      border: Border.all(color: CareGridPalette.gold, width: 1.5),
                                       borderRadius: BorderRadius.circular(12),
                                     ),
                                     child: Row(
                                       children: [
-                                        const Icon(Icons.alarm, color: Color(0xFFAD751D), size: 18),
+                                        const Icon(Icons.alarm, color: CareGridPalette.goldDeep, size: 18),
                                         const SizedBox(width: 8),
                                         Text(
                                           _formatTime(collectionDeadline),
                                           style: const TextStyle(
                                             fontWeight: FontWeight.bold,
-                                            color: Color(0xFFAD751D),
+                                            color: CareGridPalette.goldDeep,
                                             fontSize: 13.5,
                                           ),
                                         ),
@@ -290,8 +291,8 @@ class _CollectionDeadlineScreenState extends State<CollectionDeadlineScreen> {
                       Container(
                         padding: const EdgeInsets.all(16),
                         decoration: BoxDecoration(
-                          color: const Color(0xFFE5F5EE),
-                          border: Border.all(color: const Color(0xFFB2DFCE)),
+                          color: CareGridPalette.paleMint,
+                          border: Border.all(color: CareGridPalette.mintBorder),
                           borderRadius: BorderRadius.circular(12),
                         ),
                         child: Column(
@@ -305,7 +306,7 @@ class _CollectionDeadlineScreenState extends State<CollectionDeadlineScreen> {
                                   'Remaining Pickup Window: Active',
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,
-                                    color: Color(0xFF075A50),
+                                    color: CareGridPalette.primaryDeep,
                                     fontSize: 13.5,
                                   ),
                                 ),
@@ -319,11 +320,11 @@ class _CollectionDeadlineScreenState extends State<CollectionDeadlineScreen> {
                             Row(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: const [
-                                Text('✓ ', style: TextStyle(color: Color(0xFF087C69), fontWeight: FontWeight.bold, fontSize: 13)),
+                                Text('✓ ', style: TextStyle(color: CareGridPalette.primary, fontWeight: FontWeight.bold, fontSize: 13)),
                                 Expanded(
                                   child: Text(
                                     'Expired listings removed from NGO feed',
-                                    style: TextStyle(color: Color(0xFF075A50), fontWeight: FontWeight.bold, fontSize: 13),
+                                    style: TextStyle(color: CareGridPalette.primaryDeep, fontWeight: FontWeight.bold, fontSize: 13),
                                   ),
                                 ),
                               ],
@@ -339,8 +340,8 @@ class _CollectionDeadlineScreenState extends State<CollectionDeadlineScreen> {
                       Container(
                         padding: const EdgeInsets.all(16),
                         decoration: BoxDecoration(
-                          color: const Color(0xFFFFECEE),
-                          border: Border.all(color: const Color(0xFFE5A1A7)),
+                          color: CareGridPalette.dangerTint,
+                          border: Border.all(color: CareGridPalette.dangerBorder),
                           borderRadius: BorderRadius.circular(12),
                         ),
                         child: Column(
@@ -351,7 +352,7 @@ class _CollectionDeadlineScreenState extends State<CollectionDeadlineScreen> {
                                 Container(
                                   padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                                   decoration: BoxDecoration(
-                                    color: const Color(0xFFBC4751),
+                                    color: CareGridPalette.danger,
                                     borderRadius: BorderRadius.circular(6),
                                   ),
                                   child: const Text(
@@ -370,7 +371,7 @@ class _CollectionDeadlineScreenState extends State<CollectionDeadlineScreen> {
                               'Batch #FD-204 (Lunch Biryani) — EXPIRED',
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
-                                color: Color(0xFFBC4751),
+                                color: CareGridPalette.danger,
                                 fontSize: 13.5,
                               ),
                             ),
@@ -378,7 +379,7 @@ class _CollectionDeadlineScreenState extends State<CollectionDeadlineScreen> {
                             const Text(
                               'Hidden from NGO search results after 04:00 PM',
                               style: TextStyle(
-                                color: Color(0xFFBC4751),
+                                color: CareGridPalette.danger,
                                 fontSize: 12.5,
                               ),
                             ),
@@ -393,7 +394,7 @@ class _CollectionDeadlineScreenState extends State<CollectionDeadlineScreen> {
                         style: TextStyle(
                           fontSize: 11,
                           fontWeight: FontWeight.bold,
-                          color: Color(0xFF173D37),
+                          color: CareGridPalette.ink,
                           letterSpacing: 0.5,
                         ),
                       ),
@@ -415,7 +416,7 @@ class _CollectionDeadlineScreenState extends State<CollectionDeadlineScreen> {
                         height: 52,
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color(0xFF087C69),
+                            backgroundColor: CareGridPalette.primary,
                             foregroundColor: Colors.white,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(14),
@@ -426,7 +427,7 @@ class _CollectionDeadlineScreenState extends State<CollectionDeadlineScreen> {
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
                                 content: Text('Deadline saved successfully for ${_formatTime(collectionDeadline)}!'),
-                                backgroundColor: const Color(0xFF087C69),
+                                backgroundColor: CareGridPalette.primary,
                               ),
                             );
                           },
@@ -453,18 +454,18 @@ class _CollectionDeadlineScreenState extends State<CollectionDeadlineScreen> {
                         width: double.infinity,
                         padding: const EdgeInsets.symmetric(vertical: 14),
                         decoration: BoxDecoration(
-                          color: const Color(0xFFE5F5EE),
+                          color: CareGridPalette.paleMint,
                           borderRadius: BorderRadius.circular(14),
                         ),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            const Icon(Icons.circle, color: Color(0xFF087C69), size: 10),
+                            const Icon(Icons.circle, color: CareGridPalette.primary, size: 10),
                             const SizedBox(width: 8),
                             Text(
                               'Active Until ${DateFormat('d MMM yyyy').format(selectedDate)}, ${_formatTime(collectionDeadline)}',
                               style: const TextStyle(
-                                color: Color(0xFF075A50),
+                                color: CareGridPalette.primaryDeep,
                                 fontWeight: FontWeight.bold,
                                 fontSize: 13,
                               ),
@@ -487,12 +488,12 @@ class _CollectionDeadlineScreenState extends State<CollectionDeadlineScreen> {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text('• ', style: TextStyle(color: Color(0xFF087C69), fontWeight: FontWeight.bold, fontSize: 14)),
+        const Text('• ', style: TextStyle(color: CareGridPalette.primary, fontWeight: FontWeight.bold, fontSize: 14)),
         Expanded(
           child: Text(
             text,
             style: const TextStyle(
-              color: Color(0xFF075A50),
+              color: CareGridPalette.primaryDeep,
               fontSize: 12.5,
             ),
           ),
@@ -509,16 +510,16 @@ class _CollectionDeadlineScreenState extends State<CollectionDeadlineScreen> {
         padding: const EdgeInsets.symmetric(vertical: 12),
         alignment: Alignment.center,
         decoration: BoxDecoration(
-          color: isSelected ? const Color(0xFF087C69) : const Color(0xFFF0F6F2),
+          color: isSelected ? CareGridPalette.primary : CareGridPalette.paleNeutral,
           borderRadius: BorderRadius.circular(10),
           border: Border.all(
-            color: isSelected ? const Color(0xFF087C69) : const Color(0xFFDAE8E1),
+            color: isSelected ? CareGridPalette.primary : CareGridPalette.line,
           ),
         ),
         child: Text(
           label,
           style: TextStyle(
-            color: isSelected ? Colors.white : const Color(0xFF173D37),
+            color: isSelected ? Colors.white : CareGridPalette.ink,
             fontWeight: FontWeight.bold,
             fontSize: 13,
           ),
