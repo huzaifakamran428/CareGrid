@@ -1,3 +1,4 @@
+/// Mobile-only role boundary. Staff and NGO workspaces belong to the web app.
 enum CareGridPortalRole {
   beneficiary,
   restaurant,
