@@ -16,12 +16,12 @@
             sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
           },
           colors: {
-            cgEmerald: '#155E42',
-            cgEmeraldDark: '#0F4C36',
-            cgMint: '#ECFDF5',
-            cgMintBorder: '#A7F3D0',
-            cgAmber: '#F59E0B',
-            cgBorder: '#D1DDD6',
+            cgEmerald: '#087C69',
+            cgEmeraldDark: '#075A50',
+            cgMint: '#E5F5EE',
+            cgMintBorder: '#B2DFCE',
+            cgAmber: '#E3A33B',
+            cgBorder: '#DAE8E1',
           }
         }
       }
@@ -29,8 +29,8 @@
   </script>
   <style>
     body {
-      background-color: #F4F7F5;
-      color: #111827;
+      background-color: #F1F8F5;
+      color: #173D37;
       overflow-x: hidden;
     }
     .tabular-nums {
@@ -39,23 +39,43 @@
     select.cg-select {
       appearance: none;
       -webkit-appearance: none;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23155E42'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2.2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23087C69'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2.2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
       background-repeat: no-repeat;
       background-position: right 0.85rem center;
       background-size: 0.95rem;
     }
   </style>
+<link rel="stylesheet" href="../shared/portal-theme.css">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* Shared CareGrid presentation: typography, neutral surfaces and semantic states. */
+html,body{font-family:'Plus Jakarta Sans',system-ui,-apple-system,'Segoe UI',sans-serif!important;color:#173D37}
+body{background:radial-gradient(ellipse at 8% 4%,#DFF2EA 0%,transparent 46%),radial-gradient(ellipse at 95% 95%,#FFF4E2 0%,transparent 40%),#F1F8F5}
+button,input,select,textarea{font-family:inherit!important}
+:focus-visible{outline:3px solid #E3A33B;outline-offset:2px}
+.text-gray-900,.text-gray-950,.text-gray-800,.text-slate-900{color:#173D37!important}
+.text-gray-500,.text-gray-600,.text-gray-700,.text-slate-500{color:#49665F!important}
+.bg-gray-50,.bg-gray-100,.bg-slate-50{background-color:#F7FAF8!important}
+.border-gray-200,.border-gray-300{border-color:#DAE8E1!important}
+.bg-blue-600,.bg-blue-700,.bg-emerald-600,.bg-emerald-700{background-color:#087C69!important}
+.text-blue-600,.text-blue-700,.text-blue-800{color:#075A50!important}
+.bg-blue-100,.bg-emerald-50,.bg-emerald-100{background-color:#E5F5EE!important}
+.bg-rose-600,.bg-rose-700{background-color:#BC4751!important}
+.bg-rose-50{background-color:#FFECEE!important}
+.text-rose-600,.text-rose-700,.text-rose-800,.text-rose-900{color:#942E3C!important}
+.border-rose-400{border-color:#E5A1A7!important}
+img[alt*="CareGrid"]{object-fit:contain}
+@media(max-width:760px){main,section{min-width:0}table{font-size:12px}}
+</style>
 </head>
 <body class="min-h-screen flex flex-col antialiased selection:bg-emerald-200 selection:text-emerald-950">
 
   <!-- Full-Width Production Top Navigation Bar -->
-  <header class="sticky top-0 z-40 w-full bg-[#155E42] text-white border-b border-emerald-950/30 shadow-sm">
+  <header class="sticky top-0 z-40 w-full bg-[#087C69] text-white border-b border-emerald-950/30 shadow-sm">
     <div class="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 py-3 flex flex-wrap items-center justify-between gap-3">
       <!-- Brand Identity -->
       <div class="flex items-center gap-3 min-w-0">
-        <div class="w-9 h-9 rounded-xl bg-[#F59E0B] text-[#0F4C36] font-extrabold text-sm flex items-center justify-center shrink-0 shadow-xs">
-          CG
-        </div>
+        <div class="w-9 h-9 rounded-xl bg-[#E3A33B] text-[#075A50] font-extrabold text-sm flex items-center justify-center shrink-0 shadow-xs" style="background:#fff"><img src="../shared/static/img/caregrid_logo.png" alt="CareGrid logo" style="width:100%;height:100%;object-fit:contain;border-radius:8px"></div>
         <div class="min-w-0">
           <div class="flex items-center gap-2">
             <span class="font-extrabold text-base sm:text-lg tracking-tight text-white truncate">
@@ -69,7 +89,7 @@
       </div>
 
       <!-- Primary Navigation Links -->
-      <nav aria-label="NGO portal navigation" class="flex items-center gap-1 bg-[#0F4C36] p-1 rounded-xl border border-white/10 overflow-x-auto max-w-full">
+      <nav aria-label="NGO portal navigation" class="flex items-center gap-1 bg-[#075A50] p-1 rounded-xl border border-white/10 overflow-x-auto max-w-full">
         <button
           type="button"
           onclick="showToast('Switched to NGO Operations Dashboard')"
@@ -87,10 +107,10 @@
         <button
           type="button"
           aria-current="page"
-          class="px-3.5 py-1.5 rounded-lg text-xs font-bold bg-[#F59E0B] text-gray-950 shadow-xs cursor-pointer whitespace-nowrap flex items-center gap-1.5"
+          class="px-3.5 py-1.5 rounded-lg text-xs font-bold bg-[#E3A33B] text-gray-950 shadow-xs cursor-pointer whitespace-nowrap flex items-center gap-1.5"
         >
           <span>Collection Alerts</span>
-          <span id="navUnreadBadge" class="px-1.5 py-0.2 rounded-full bg-[#0F4C36] text-white text-[10px] font-extrabold tabular-nums">
+          <span id="navUnreadBadge" class="px-1.5 py-0.2 rounded-full bg-[#075A50] text-white text-[10px] font-extrabold tabular-nums">
             2
           </span>
         </button>
@@ -105,7 +125,7 @@
 
       <!-- NGO Hub & Live Connection Pill -->
       <div class="hidden xl:flex items-center gap-2.5 shrink-0">
-        <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl bg-[#0F4C36] border border-white/15 text-xs font-semibold text-emerald-100">
+        <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl bg-[#075A50] border border-white/15 text-xs font-semibold text-emerald-100">
           <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
           <span>Real-Time Event Stream</span>
         </div>
@@ -129,12 +149,12 @@
 
       <!-- Filter Pills & Mark Read Action -->
       <div class="flex flex-wrap items-center gap-2">
-        <div id="alertFilterBar" class="inline-flex flex-wrap items-center gap-1.5 bg-white p-1 rounded-xl border border-[#D1DDD6] shadow-2xs">
+        <div id="alertFilterBar" class="inline-flex flex-wrap items-center gap-1.5 bg-white p-1 rounded-xl border border-[#DAE8E1] shadow-2xs">
           <button
             type="button"
             data-filter="all"
             onclick="setAlertFilter('all')"
-            class="alert-filter-btn px-3 py-1.5 rounded-lg text-xs font-bold bg-[#155E42] text-white transition cursor-pointer"
+            class="alert-filter-btn px-3 py-1.5 rounded-lg text-xs font-bold bg-[#087C69] text-white transition cursor-pointer"
           >
             All Alerts (3)
           </button>
@@ -167,7 +187,7 @@
         <button
           type="button"
           onclick="markAllAlertsRead()"
-          class="px-3.5 py-2 rounded-xl bg-white hover:bg-[#ECFDF5] border border-[#D1DDD6] text-xs font-bold text-[#155E42] shadow-2xs transition cursor-pointer"
+          class="px-3.5 py-2 rounded-xl bg-white hover:bg-[#E5F5EE] border border-[#DAE8E1] text-xs font-bold text-[#087C69] shadow-2xs transition cursor-pointer"
         >
           ✓ Mark All as Read
         </button>
@@ -185,7 +205,7 @@
       <!-- Right Column: Cross-Portal Alert Summary & Live Event Control -->
       <aside class="lg:col-span-4 space-y-4">
         <!-- NGO Notification & Cross-Portal Alert Summary Card -->
-        <div class="bg-white border border-[#D1DDD6] rounded-2xl p-5 sm:p-6 shadow-2xs space-y-4">
+        <div class="bg-white border border-[#DAE8E1] rounded-2xl p-5 sm:p-6 shadow-2xs space-y-4">
           <div class="flex items-center justify-between gap-2">
             <h2 class="text-sm sm:text-base font-extrabold text-gray-900">
               NGO Notification &amp; Cross-Portal Alert Summary:
@@ -194,21 +214,21 @@
 
           <ul class="space-y-3 text-xs sm:text-[13.5px] text-gray-700 leading-relaxed">
             <li class="flex items-start gap-2.5">
-              <span class="mt-1.5 w-1.5 h-1.5 rounded-full bg-[#155E42] shrink-0"></span>
+              <span class="mt-1.5 w-1.5 h-1.5 rounded-full bg-[#087C69] shrink-0"></span>
               <span>Triggered automatically upon restaurant decision in the Restaurant Partner App.</span>
             </li>
             <li class="flex items-start gap-2.5">
-              <span class="mt-1.5 w-1.5 h-1.5 rounded-full bg-[#155E42] shrink-0"></span>
+              <span class="mt-1.5 w-1.5 h-1.5 rounded-full bg-[#087C69] shrink-0"></span>
               <span>Displays clear Accepted / Rejected request status, gate pass codes &amp; pickup instructions.</span>
             </li>
             <li class="flex items-start gap-2.5">
-              <span class="mt-1.5 w-1.5 h-1.5 rounded-full bg-[#155E42] shrink-0"></span>
+              <span class="mt-1.5 w-1.5 h-1.5 rounded-full bg-[#087C69] shrink-0"></span>
               <span>Also alerts NGO coordinators when partner Pharmacies or Diagnostic Labs upload subsidized beneficiary bills.</span>
             </li>
           </ul>
 
           <div class="pt-3 border-t border-gray-100">
-            <p class="text-xs sm:text-[13px] font-extrabold text-[#155E42] flex items-center gap-2">
+            <p class="text-xs sm:text-[13px] font-extrabold text-[#087C69] flex items-center gap-2">
               <span>✓</span>
               <span>Zero polling delay — Real-time event delivery to NGO Web Portal</span>
             </p>
@@ -216,12 +236,12 @@
         </div>
 
         <!-- Active Fleet & Dispatch Readiness Card -->
-        <div class="bg-[#FAFDFB] border border-[#B7D8C8] rounded-2xl p-5 space-y-3.5 shadow-2xs">
+        <div class="bg-[#F7FAF8] border border-[#B2DFCE] rounded-2xl p-5 space-y-3.5 shadow-2xs">
           <div class="flex items-center justify-between">
-            <h3 class="text-xs font-extrabold uppercase tracking-wider text-[#155E42]">
+            <h3 class="text-xs font-extrabold uppercase tracking-wider text-[#087C69]">
               Collection Fleet Status
             </h3>
-            <span id="fleetReadyBadge" class="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-[#DCFCE7] text-[#155E42]">
+            <span id="fleetReadyBadge" class="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-[#E5F5EE] text-[#087C69]">
               3 Units Ready
             </span>
           </div>
@@ -232,7 +252,7 @@
                 <p class="font-bold text-gray-900">Unit #LHR-04 • Insulated Van</p>
                 <p class="text-[11px] text-gray-500">Driver: Kamran Akmal • Gulberg Zone</p>
               </div>
-              <span id="unit04Status" class="font-bold text-[#155E42]">Standby</span>
+              <span id="unit04Status" class="font-bold text-[#087C69]">Standby</span>
             </div>
 
             <div class="flex items-center justify-between bg-white border border-gray-200 rounded-xl px-3.5 py-2.5">
@@ -240,14 +260,14 @@
                 <p class="font-bold text-gray-900">Unit #LHR-09 • Chiller Pickup</p>
                 <p class="text-[11px] text-gray-500">Driver: Tariq Mahmood • DHA Zone</p>
               </div>
-              <span class="font-bold text-[#155E42]">Standby</span>
+              <span class="font-bold text-[#087C69]">Standby</span>
             </div>
           </div>
 
           <button
             type="button"
             onclick="simulateIncomingRestaurantDecision()"
-            class="w-full py-2.5 px-4 rounded-xl bg-white hover:bg-[#ECFDF5] border border-[#155E42] text-[#155E42] font-bold text-xs transition cursor-pointer flex items-center justify-center gap-2"
+            class="w-full py-2.5 px-4 rounded-xl bg-white hover:bg-[#E5F5EE] border border-[#087C69] text-[#087C69] font-bold text-xs transition cursor-pointer flex items-center justify-center gap-2"
           >
             <span>⚡</span>
             <span>Simulate New Restaurant Response</span>
@@ -259,7 +279,7 @@
   </main>
 
   <!-- Clean Production Footer -->
-  <footer class="w-full bg-white border-t border-[#D1DDD6] mt-auto">
+  <footer class="w-full bg-white border-t border-[#DAE8E1] mt-auto">
     <div class="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-gray-500">
       <span>CareGrid NGO Operations Portal • Al-Khidmat Welfare Hub</span>
       <span>Real-time logistics &amp; partner claim notifications</span>
@@ -270,14 +290,14 @@
   <!-- MODAL 1: DISPATCH NGO COLLECTION VAN                                    -->
   <!-- ======================================================================= -->
   <div id="dispatchModal" class="hidden fixed inset-0 z-50 bg-black/45 flex items-center justify-center p-4">
-    <div class="bg-white rounded-2xl max-w-md w-full border border-[#D1DDD6] shadow-xl overflow-hidden">
-      <div class="bg-[#155E42] px-5 py-4 flex items-center justify-between text-white">
+    <div class="bg-white rounded-2xl max-w-md w-full border border-[#DAE8E1] shadow-xl overflow-hidden">
+      <div class="bg-[#087C69] px-5 py-4 flex items-center justify-between text-white">
         <h3 class="font-extrabold text-sm sm:text-base">Dispatch NGO Collection Van</h3>
         <button type="button" onclick="closeModal('dispatchModal')" class="text-white/80 hover:text-white font-bold text-lg cursor-pointer">✕</button>
       </div>
 
       <div class="p-5 space-y-4">
-        <div id="dispatchSummaryBox" class="bg-[#ECFDF5] border border-[#A7F3D0] rounded-xl p-3.5 space-y-1 text-xs">
+        <div id="dispatchSummaryBox" class="bg-[#E5F5EE] border border-[#B2DFCE] rounded-xl p-3.5 space-y-1 text-xs">
           <!-- Populated dynamically -->
         </div>
 
@@ -287,7 +307,7 @@
           </label>
           <select
             id="vehicleSelect"
-            class="cg-select w-full h-11 rounded-xl border border-[#155E42] bg-white px-3.5 pr-10 text-xs sm:text-sm font-bold text-gray-900 cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#155E42]/25"
+            class="cg-select w-full h-11 rounded-xl border border-[#087C69] bg-white px-3.5 pr-10 text-xs sm:text-sm font-bold text-gray-900 cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#087C69]/25"
           >
             <option value="Unit #LHR-04 (Kamran Akmal • Insulated Van)">Unit #LHR-04 — Kamran Akmal (Insulated Van)</option>
             <option value="Unit #LHR-09 (Tariq Mahmood • Chiller Pickup)">Unit #LHR-09 — Tariq Mahmood (Chiller Pickup)</option>
@@ -303,7 +323,7 @@
             id="dispatchNotesInput"
             type="text"
             value="Present Gate Pass Code at restaurant loading bay before cutoff."
-            class="w-full h-10 rounded-xl border border-gray-300 px-3.5 text-xs sm:text-sm text-gray-800 focus:outline-none focus:border-[#155E42]"
+            class="w-full h-10 rounded-xl border border-gray-300 px-3.5 text-xs sm:text-sm text-gray-800 focus:outline-none focus:border-[#087C69]"
           />
         </div>
       </div>
@@ -319,7 +339,7 @@
         <button
           type="button"
           onclick="confirmVanDispatch()"
-          class="px-4 py-2 rounded-xl bg-[#155E42] hover:bg-[#0F4C36] text-white font-bold text-xs cursor-pointer"
+          class="px-4 py-2 rounded-xl bg-[#087C69] hover:bg-[#075A50] text-white font-bold text-xs cursor-pointer"
         >
           Confirm &amp; Dispatch Van →
         </button>
@@ -331,8 +351,8 @@
   <!-- MODAL 2: STORED STATUS & RESTAURANT REPLY AUDIT                         -->
   <!-- ======================================================================= -->
   <div id="replyAuditModal" class="hidden fixed inset-0 z-50 bg-black/45 flex items-center justify-center p-4">
-    <div class="bg-white rounded-2xl max-w-md w-full border border-[#D1DDD6] shadow-xl overflow-hidden">
-      <div class="bg-[#155E42] px-5 py-4 flex items-center justify-between text-white">
+    <div class="bg-white rounded-2xl max-w-md w-full border border-[#DAE8E1] shadow-xl overflow-hidden">
+      <div class="bg-[#087C69] px-5 py-4 flex items-center justify-between text-white">
         <h3 class="font-extrabold text-sm sm:text-base">Stored Restaurant Decision &amp; Gate Pass</h3>
         <button type="button" onclick="closeModal('replyAuditModal')" class="text-white/80 hover:text-white font-bold text-lg cursor-pointer">✕</button>
       </div>
@@ -345,7 +365,7 @@
         <button
           type="button"
           onclick="closeModal('replyAuditModal')"
-          class="px-4 py-2 rounded-xl bg-[#155E42] hover:bg-[#0F4C36] text-white font-bold text-xs cursor-pointer"
+          class="px-4 py-2 rounded-xl bg-[#087C69] hover:bg-[#075A50] text-white font-bold text-xs cursor-pointer"
         >
           Close Record
         </button>
@@ -357,8 +377,8 @@
   <!-- MODAL 3: BROWSE OTHER ACTIVE SURPLUS LISTINGS                           -->
   <!-- ======================================================================= -->
   <div id="alternativeListingsModal" class="hidden fixed inset-0 z-50 bg-black/45 flex items-center justify-center p-4">
-    <div class="bg-white rounded-2xl max-w-lg w-full border border-[#D1DDD6] shadow-xl overflow-hidden">
-      <div class="bg-[#155E42] px-5 py-4 flex items-center justify-between text-white">
+    <div class="bg-white rounded-2xl max-w-lg w-full border border-[#DAE8E1] shadow-xl overflow-hidden">
+      <div class="bg-[#087C69] px-5 py-4 flex items-center justify-between text-white">
         <div>
           <h3 class="font-extrabold text-sm sm:text-base">Available Surplus Food Listings Nearby</h3>
           <p class="text-[11px] text-emerald-100">Request an immediate replacement pickup for your route</p>
@@ -384,7 +404,7 @@
 
   <!-- Toast Banner -->
   <div id="toastBanner" class="hidden fixed bottom-5 right-5 z-50 max-w-sm">
-    <div class="bg-[#0F4C36] text-white px-4 py-3 rounded-xl shadow-lg border border-emerald-300/30 flex items-center gap-2.5 text-xs sm:text-sm font-semibold">
+    <div class="bg-[#075A50] text-white px-4 py-3 rounded-xl shadow-lg border border-emerald-300/30 flex items-center gap-2.5 text-xs sm:text-sm font-semibold">
       <span class="text-emerald-300 font-bold">✓</span>
       <span id="toastText">Notification updated</span>
     </div>
@@ -496,7 +516,7 @@
       document.querySelectorAll('.alert-filter-btn').forEach((btn) => {
         const isActive = btn.dataset.filter === activeAlertFilter;
         btn.className = isActive
-          ? 'alert-filter-btn px-3 py-1.5 rounded-lg text-xs font-bold bg-[#155E42] text-white transition cursor-pointer'
+          ? 'alert-filter-btn px-3 py-1.5 rounded-lg text-xs font-bold bg-[#087C69] text-white transition cursor-pointer'
           : 'alert-filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold text-gray-700 hover:bg-gray-100 transition cursor-pointer';
       });
     }
@@ -538,7 +558,7 @@
               <button
                 type="button"
                 onclick="openDispatchModal('${alert.id}')"
-                class="w-full py-2.5 px-4 rounded-xl bg-[#0F4C36] text-white font-bold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-2xs transition cursor-pointer"
+                class="w-full py-2.5 px-4 rounded-xl bg-[#075A50] text-white font-bold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-2xs transition cursor-pointer"
               >
                 <span>✓ Van Dispatched (${alert.dispatchedUnit.split(' ')[0]} ${alert.dispatchedUnit.split(' ')[1]})</span>
               </button>
@@ -547,23 +567,23 @@
               <button
                 type="button"
                 onclick="openDispatchModal('${alert.id}')"
-                class="w-full py-2.5 px-4 rounded-xl bg-[#155E42] hover:bg-[#0F4C36] text-white font-bold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-2xs transition cursor-pointer"
+                class="w-full py-2.5 px-4 rounded-xl bg-[#087C69] hover:bg-[#075A50] text-white font-bold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-2xs transition cursor-pointer"
               >
                 <span>Dispatch NGO Collection Van →</span>
               </button>
             `;
 
           return `
-            <article class="bg-[#EBF7F1] border-2 border-[#155E42]/60 rounded-2xl p-5 sm:p-6 space-y-4 shadow-2xs transition">
+            <article class="bg-[#E5F5EE] border-2 border-[#087C69]/60 rounded-2xl p-5 sm:p-6 space-y-4 shadow-2xs transition">
               <div class="flex flex-wrap items-center justify-between gap-2">
-                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-[#155E42] text-white text-[11px] font-extrabold tracking-wide uppercase">
+                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-[#087C69] text-white text-[11px] font-extrabold tracking-wide uppercase">
                   <span>✓</span>
                   <span>STATUS: REQUEST ACCEPTED</span>
                 </span>
 
                 <div class="flex items-center gap-2">
-                  ${alert.unread ? '<span class="w-2 h-2 rounded-full bg-[#155E42]" title="Unread alert"></span>' : ''}
-                  <span class="text-xs font-extrabold text-[#155E42] tabular-nums">
+                  ${alert.unread ? '<span class="w-2 h-2 rounded-full bg-[#087C69]" title="Unread alert"></span>' : ''}
+                  <span class="text-xs font-extrabold text-[#087C69] tabular-nums">
                     ${alert.timestamp} • #${alert.id}
                   </span>
                 </div>
@@ -587,7 +607,7 @@
                 <button
                   type="button"
                   onclick="openReplyAuditModal('${alert.id}')"
-                  class="w-full py-2.5 px-4 rounded-xl bg-white hover:bg-[#ECFDF5] border border-[#155E42]/40 text-[#155E42] font-bold text-xs sm:text-sm flex items-center justify-center gap-2 transition cursor-pointer"
+                  class="w-full py-2.5 px-4 rounded-xl bg-white hover:bg-[#E5F5EE] border border-[#087C69]/40 text-[#087C69] font-bold text-xs sm:text-sm flex items-center justify-center gap-2 transition cursor-pointer"
                 >
                   <span>✓ Status &amp; Restaurant Reply Stored</span>
                 </button>
@@ -598,29 +618,29 @@
 
         if (alert.type === 'rejected') {
           return `
-            <article class="bg-[#FDF2F2] border-2 border-[#F8B4B4] rounded-2xl p-5 sm:p-6 space-y-4 shadow-2xs transition">
+            <article class="bg-[#FFECEE] border-2 border-[#E5A1A7] rounded-2xl p-5 sm:p-6 space-y-4 shadow-2xs transition">
               <div class="flex flex-wrap items-center justify-between gap-2">
-                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-[#DC2626] text-white text-[11px] font-extrabold tracking-wide uppercase">
+                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-[#BC4751] text-white text-[11px] font-extrabold tracking-wide uppercase">
                   <span>✕</span>
                   <span>STATUS: REQUEST REJECTED</span>
                 </span>
 
                 <div class="flex items-center gap-2">
-                  ${alert.unread ? '<span class="w-2 h-2 rounded-full bg-[#DC2626]" title="Unread alert"></span>' : ''}
-                  <span class="text-xs font-extrabold text-[#991B1B] tabular-nums">
+                  ${alert.unread ? '<span class="w-2 h-2 rounded-full bg-[#BC4751]" title="Unread alert"></span>' : ''}
+                  <span class="text-xs font-extrabold text-[#942E3C] tabular-nums">
                     ${alert.timestamp} • #${alert.id}
                   </span>
                 </div>
               </div>
 
               <div class="space-y-1.5">
-                <h2 class="text-base sm:text-lg font-extrabold text-[#991B1B]">
+                <h2 class="text-base sm:text-lg font-extrabold text-[#942E3C]">
                   ${alert.title}
                 </h2>
                 <p class="text-xs sm:text-sm text-gray-700 font-medium">
                   ${alert.listingLine}
                 </p>
-                <p class="text-xs sm:text-sm font-bold text-[#991B1B]">
+                <p class="text-xs sm:text-sm font-bold text-[#942E3C]">
                   ${alert.restaurantNote}
                 </p>
               </div>
@@ -629,7 +649,7 @@
                 <button
                   type="button"
                   onclick="openAlternativeListingsModal()"
-                  class="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-white hover:bg-rose-50 border border-[#F87171] text-[#991B1B] font-bold text-xs sm:text-sm inline-flex items-center justify-center gap-2 transition cursor-pointer"
+                  class="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-white hover:bg-rose-50 border border-[#E5A1A7] text-[#942E3C] font-bold text-xs sm:text-sm inline-flex items-center justify-center gap-2 transition cursor-pointer"
                 >
                   <span>Browse Other Active Listings →</span>
                 </button>
@@ -640,9 +660,9 @@
 
         // Subsidized Partner Claim Alert Card
         return `
-          <article class="bg-white border border-[#D1DDD6] rounded-2xl p-5 sm:p-6 space-y-3.5 shadow-2xs transition">
+          <article class="bg-white border border-[#DAE8E1] rounded-2xl p-5 sm:p-6 space-y-3.5 shadow-2xs transition">
             <div class="flex flex-wrap items-center justify-between gap-2">
-              <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-[#FEF3C7] border border-[#F59E0B] text-[#92400E] text-[11px] font-extrabold tracking-wide uppercase">
+              <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-[#FFF4E2] border border-[#E3A33B] text-[#85570F] text-[11px] font-extrabold tracking-wide uppercase">
                 <span>★</span>
                 <span>SUBSIDIZED PARTNER CLAIM UPLOADED</span>
               </span>
@@ -659,7 +679,7 @@
               <p class="text-xs sm:text-sm text-gray-700">
                 ${alert.listingLine}
               </p>
-              <p class="text-xs sm:text-sm font-bold text-[#155E42] tabular-nums">
+              <p class="text-xs sm:text-sm font-bold text-[#087C69] tabular-nums">
                 ${alert.pickupLine}
               </p>
             </div>
@@ -668,7 +688,7 @@
               <button
                 type="button"
                 onclick="openReplyAuditModal('${alert.id}')"
-                class="px-4 py-2 rounded-xl bg-[#ECFDF5] hover:bg-[#D1FAE5] border border-[#A7F3D0] text-[#155E42] font-bold text-xs transition cursor-pointer"
+                class="px-4 py-2 rounded-xl bg-[#E5F5EE] hover:bg-[#E5F5EE] border border-[#B2DFCE] text-[#087C69] font-bold text-xs transition cursor-pointer"
               >
                 Inspect Uploaded Bill &amp; Verification Log
               </button>
@@ -689,7 +709,7 @@
       updateFilterButtonsAndCounters();
 
       document.getElementById('dispatchSummaryBox').innerHTML = `
-        <p class="font-extrabold text-[#155E42]">${alert.title} (#${alert.id})</p>
+        <p class="font-extrabold text-[#087C69]">${alert.title} (#${alert.id})</p>
         <p class="text-gray-700 font-medium">${alert.listingLine}</p>
         <p class="text-gray-700 font-bold tabular-nums">${alert.pickupLine}</p>
         <p class="text-gray-600">Location: ${alert.restaurantAddress}</p>
@@ -707,7 +727,7 @@
       if (chosenVehicle.includes('LHR-04')) {
         const unit04 = document.getElementById('unit04Status');
         unit04.textContent = 'En Route (#REQ-812)';
-        unit04.className = 'font-bold text-[#D97706]';
+        unit04.className = 'font-bold text-[#85570F]';
       }
 
       closeModal('dispatchModal');
@@ -726,14 +746,14 @@
       renderAlertsFeed();
 
       document.getElementById('replyAuditBody').innerHTML = `
-        <div class="bg-[#F8FAFC] border border-gray-200 rounded-xl p-4 space-y-2 tabular-nums">
+        <div class="bg-[#F7FAF8] border border-gray-200 rounded-xl p-4 space-y-2 tabular-nums">
           <div class="flex justify-between gap-2">
             <span class="text-gray-500">Request / Record ID:</span>
             <span class="font-extrabold text-gray-900">#${alert.id}</span>
           </div>
           <div class="flex justify-between gap-2">
             <span class="text-gray-500">Gate Pass / Verification:</span>
-            <span class="font-extrabold text-[#155E42]">${alert.gatePass}</span>
+            <span class="font-extrabold text-[#087C69]">${alert.gatePass}</span>
           </div>
           <div class="flex justify-between gap-2">
             <span class="text-gray-500">Pickup Location:</span>
@@ -744,8 +764,8 @@
             <span class="font-bold text-gray-900 text-right">${alert.dispatchedUnit || 'Awaiting Van Dispatch'}</span>
           </div>
         </div>
-        <div class="bg-[#ECFDF5] border border-[#A7F3D0] rounded-xl p-3.5 space-y-1">
-          <p class="text-[11px] font-extrabold uppercase tracking-wider text-[#155E42]">
+        <div class="bg-[#E5F5EE] border border-[#B2DFCE] rounded-xl p-3.5 space-y-1">
+          <p class="text-[11px] font-extrabold uppercase tracking-wider text-[#087C69]">
             Stored Partner Note
           </p>
           <p class="text-xs text-gray-800 leading-relaxed">
@@ -764,11 +784,11 @@
       const body = document.getElementById('alternativeListingsBody');
       body.innerHTML = alternativeSurplusListings.map((item) => {
         const btnMarkup = item.claimed
-          ? `<span class="px-3 py-1.5 rounded-lg bg-[#DCFCE7] text-[#155E42] font-bold text-xs">✓ Pickup Requested</span>`
-          : `<button type="button" onclick="claimAlternativeListing('${item.listingId}')" class="px-3.5 py-1.5 rounded-lg bg-[#155E42] hover:bg-[#0F4C36] text-white font-bold text-xs transition cursor-pointer">Request Pickup →</button>`;
+          ? `<span class="px-3 py-1.5 rounded-lg bg-[#E5F5EE] text-[#087C69] font-bold text-xs">✓ Pickup Requested</span>`
+          : `<button type="button" onclick="claimAlternativeListing('${item.listingId}')" class="px-3.5 py-1.5 rounded-lg bg-[#087C69] hover:bg-[#075A50] text-white font-bold text-xs transition cursor-pointer">Request Pickup →</button>`;
 
         return `
-          <div class="bg-[#FAFDFB] border border-[#D1DDD6] rounded-xl p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div class="bg-[#F7FAF8] border border-[#DAE8E1] rounded-xl p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
             <div class="space-y-1">
               <p class="text-xs sm:text-sm font-extrabold text-gray-900">
                 #${item.listingId} • ${item.restaurant}

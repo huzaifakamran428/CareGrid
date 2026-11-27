@@ -16,13 +16,13 @@
             sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
           },
           colors: {
-            cgEmerald: '#155E42',
-            cgEmeraldDark: '#0F4C36',
-            cgMint: '#ECFDF5',
-            cgMintBorder: '#A7F3D0',
-            cgAmber: '#F59E0B',
-            cgAmberBg: '#FFFBEB',
-            cgBorder: '#D1DDD6',
+            cgEmerald: '#087C69',
+            cgEmeraldDark: '#075A50',
+            cgMint: '#E5F5EE',
+            cgMintBorder: '#B2DFCE',
+            cgAmber: '#E3A33B',
+            cgAmberBg: '#FFF4E2',
+            cgBorder: '#DAE8E1',
           }
         }
       }
@@ -30,8 +30,8 @@
   </script>
   <style>
     body {
-      background-color: #F4F7F5;
-      color: #111827;
+      background-color: #F1F8F5;
+      color: #173D37;
       overflow-x: hidden;
     }
     .tabular-nums {
@@ -40,7 +40,7 @@
     select.cg-select-light {
       appearance: none;
       -webkit-appearance: none;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23155E42'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2.3' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23087C69'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2.3' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
       background-repeat: no-repeat;
       background-position: right 0.85rem center;
       background-size: 0.95rem;
@@ -54,17 +54,37 @@
       background-size: 0.85rem;
     }
   </style>
+<link rel="stylesheet" href="../shared/portal-theme.css">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* Shared CareGrid presentation: typography, neutral surfaces and semantic states. */
+html,body{font-family:'Plus Jakarta Sans',system-ui,-apple-system,'Segoe UI',sans-serif!important;color:#173D37}
+body{background:radial-gradient(ellipse at 8% 4%,#DFF2EA 0%,transparent 46%),radial-gradient(ellipse at 95% 95%,#FFF4E2 0%,transparent 40%),#F1F8F5}
+button,input,select,textarea{font-family:inherit!important}
+:focus-visible{outline:3px solid #E3A33B;outline-offset:2px}
+.text-gray-900,.text-gray-950,.text-gray-800,.text-slate-900{color:#173D37!important}
+.text-gray-500,.text-gray-600,.text-gray-700,.text-slate-500{color:#49665F!important}
+.bg-gray-50,.bg-gray-100,.bg-slate-50{background-color:#F7FAF8!important}
+.border-gray-200,.border-gray-300{border-color:#DAE8E1!important}
+.bg-blue-600,.bg-blue-700,.bg-emerald-600,.bg-emerald-700{background-color:#087C69!important}
+.text-blue-600,.text-blue-700,.text-blue-800{color:#075A50!important}
+.bg-blue-100,.bg-emerald-50,.bg-emerald-100{background-color:#E5F5EE!important}
+.bg-rose-600,.bg-rose-700{background-color:#BC4751!important}
+.bg-rose-50{background-color:#FFECEE!important}
+.text-rose-600,.text-rose-700,.text-rose-800,.text-rose-900{color:#942E3C!important}
+.border-rose-400{border-color:#E5A1A7!important}
+img[alt*="CareGrid"]{object-fit:contain}
+@media(max-width:760px){main,section{min-width:0}table{font-size:12px}}
+</style>
 </head>
 <body class="min-h-screen flex flex-col antialiased selection:bg-emerald-200 selection:text-emerald-950">
 
   <!-- Full-Width Production Top Navigation Bar -->
-  <header class="sticky top-0 z-40 w-full bg-[#155E42] text-white border-b border-emerald-950/30 shadow-sm">
+  <header class="sticky top-0 z-40 w-full bg-[#087C69] text-white border-b border-emerald-950/30 shadow-sm">
     <div class="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 py-3 flex flex-wrap items-center justify-between gap-3">
       <!-- Brand Identity -->
       <div class="flex items-center gap-3 min-w-0">
-        <div class="w-9 h-9 rounded-xl bg-[#F59E0B] text-[#0F4C36] font-extrabold text-sm flex items-center justify-center shrink-0 shadow-xs">
-          CG
-        </div>
+        <div class="w-9 h-9 rounded-xl bg-[#E3A33B] text-[#075A50] font-extrabold text-sm flex items-center justify-center shrink-0 shadow-xs" style="background:#fff"><img src="../shared/static/img/caregrid_logo.png" alt="CareGrid logo" style="width:100%;height:100%;object-fit:contain;border-radius:8px"></div>
         <div class="min-w-0">
           <div class="flex items-center gap-2">
             <span class="font-extrabold text-base sm:text-lg tracking-tight text-white truncate">
@@ -81,7 +101,7 @@
       </div>
 
       <!-- Module Navigation Links -->
-      <nav aria-label="Admin navigation" class="flex items-center gap-1 bg-[#0F4C36] p-1 rounded-xl border border-white/10 overflow-x-auto max-w-full">
+      <nav aria-label="Admin navigation" class="flex items-center gap-1 bg-[#075A50] p-1 rounded-xl border border-white/10 overflow-x-auto max-w-full">
         <button
           type="button"
           onclick="showToast('Navigated to Operations Overview')"
@@ -99,7 +119,7 @@
         <button
           type="button"
           aria-current="page"
-          class="px-3.5 py-1.5 rounded-lg text-xs font-bold bg-[#F59E0B] text-gray-950 shadow-xs cursor-pointer whitespace-nowrap"
+          class="px-3.5 py-1.5 rounded-lg text-xs font-bold bg-[#E3A33B] text-gray-950 shadow-xs cursor-pointer whitespace-nowrap"
         >
           Complaints &amp; Feedback
         </button>
@@ -113,8 +133,8 @@
       </nav>
 
       <!-- Logged-in Administrator Badge -->
-      <div class="hidden xl:flex items-center gap-2.5 px-3 py-1.5 rounded-xl bg-[#0F4C36] border border-white/15 shrink-0">
-        <div class="w-7 h-7 rounded-full bg-emerald-200 text-[#0F4C36] font-extrabold text-xs flex items-center justify-center">
+      <div class="hidden xl:flex items-center gap-2.5 px-3 py-1.5 rounded-xl bg-[#075A50] border border-white/15 shrink-0">
+        <div class="w-7 h-7 rounded-full bg-emerald-200 text-[#075A50] font-extrabold text-xs flex items-center justify-center">
           SA
         </div>
         <div class="text-left leading-tight">
@@ -140,7 +160,7 @@
       </div>
 
       <div class="flex flex-wrap items-center gap-2 shrink-0">
-        <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white border border-[#D1DDD6] text-xs font-bold text-[#155E42] shadow-2xs">
+        <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white border border-[#DAE8E1] text-xs font-bold text-[#087C69] shadow-2xs">
           <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
           <span>Beneficiary App Sync Active</span>
         </span>
@@ -150,23 +170,23 @@
     <!-- ===================================================================== -->
     <!-- SECTION 1: SUBMITTED BENEFICIARY COMPLAINTS QUEUE & COMPOSER          -->
     <!-- ===================================================================== -->
-    <section class="bg-white border border-[#B7D8C8] rounded-2xl shadow-xs overflow-hidden">
+    <section class="bg-white border border-[#B2DFCE] rounded-2xl shadow-xs overflow-hidden">
       <!-- Section Top Bar -->
-      <div class="bg-[#F2FAF6] border-b border-[#D1DDD6] px-4 sm:px-6 py-3.5 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+      <div class="bg-[#F7FAF8] border-b border-[#DAE8E1] px-4 sm:px-6 py-3.5 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div class="flex items-center gap-2.5">
-          <span class="w-7 h-7 rounded-lg bg-[#155E42]/10 text-[#155E42] flex items-center justify-center shrink-0" aria-hidden="true">
+          <span class="w-7 h-7 rounded-lg bg-[#087C69]/10 text-[#087C69] flex items-center justify-center shrink-0" aria-hidden="true">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
             </svg>
           </span>
-          <h2 class="text-sm sm:text-base font-extrabold text-[#155E42]">
+          <h2 class="text-sm sm:text-base font-extrabold text-[#087C69]">
             Submitted Beneficiary Complaints Queue &amp; Admin Resolution Composer
           </h2>
         </div>
 
         <!-- Live Counters Pill -->
-        <div class="self-start sm:self-auto inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-[#FFFBEB] border border-[#F59E0B] text-xs font-extrabold text-[#92400E] tabular-nums shrink-0">
-          <span class="w-2 h-2 rounded-full bg-[#D97706]"></span>
+        <div class="self-start sm:self-auto inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-[#FFF4E2] border border-[#E3A33B] text-xs font-extrabold text-[#85570F] tabular-nums shrink-0">
+          <span class="w-2 h-2 rounded-full bg-[#85570F]"></span>
           <span id="liveQueueCounter">2 Open / 14 Resolved</span>
         </div>
       </div>
@@ -175,7 +195,7 @@
       <div class="p-4 sm:p-6 grid grid-cols-1 lg:grid-cols-12 gap-5 items-stretch">
 
         <!-- Left Column: Submitted Complaints Queue -->
-        <div class="lg:col-span-5 bg-[#FAFDFB] border border-[#D1DDD6] rounded-2xl p-4 flex flex-col justify-between space-y-3.5">
+        <div class="lg:col-span-5 bg-[#F7FAF8] border border-[#DAE8E1] rounded-2xl p-4 flex flex-col justify-between space-y-3.5">
           <div class="space-y-3">
             <div class="flex flex-wrap items-center justify-between gap-2">
               <h3 class="text-xs font-extrabold uppercase tracking-wider text-gray-600">
@@ -188,7 +208,7 @@
                   type="button"
                   data-filter="all"
                   onclick="setQueueFilter('all')"
-                  class="queue-tab px-2.5 py-1 rounded-md text-[11px] font-bold bg-[#155E42] text-white transition cursor-pointer"
+                  class="queue-tab px-2.5 py-1 rounded-md text-[11px] font-bold bg-[#087C69] text-white transition cursor-pointer"
                 >
                   All (3)
                 </button>
@@ -223,20 +243,20 @@
         </div>
 
         <!-- Right Column: Admin Resolution Composer -->
-        <div class="lg:col-span-7 bg-white border border-[#D1DDD6] rounded-2xl p-4 sm:p-5 flex flex-col justify-between space-y-4">
+        <div class="lg:col-span-7 bg-white border border-[#DAE8E1] rounded-2xl p-4 sm:p-5 flex flex-col justify-between space-y-4">
           <div class="space-y-4">
             <!-- Composer Heading -->
             <div class="flex flex-wrap items-center justify-between gap-2">
-              <h3 id="composerHeading" class="text-base sm:text-lg font-extrabold text-[#155E42] tabular-nums">
+              <h3 id="composerHeading" class="text-base sm:text-lg font-extrabold text-[#087C69] tabular-nums">
                 Respond &amp; Update Status (#CMP-2026-4418)
               </h3>
-              <span id="composerPartnerBadge" class="text-[11px] font-bold px-2.5 py-1 rounded-lg bg-[#ECFDF5] text-[#155E42] border border-[#A7F3D0]">
+              <span id="composerPartnerBadge" class="text-[11px] font-bold px-2.5 py-1 rounded-lg bg-[#E5F5EE] text-[#087C69] border border-[#B2DFCE]">
                 MedCare Community Pharmacy • Gulberg III
               </span>
             </div>
 
             <!-- Beneficiary Original Context Summary Strip -->
-            <div class="bg-[#F8FAFC] border border-gray-200 rounded-xl p-3.5 space-y-1.5">
+            <div class="bg-[#F7FAF8] border border-gray-200 rounded-xl p-3.5 space-y-1.5">
               <div class="flex flex-wrap items-center justify-between gap-2 text-xs">
                 <span id="composerBeneficiaryMeta" class="font-bold text-gray-900">
                   Ayesha Bibi • Beneficiary ID: CG-BEN-2026-009481
@@ -266,7 +286,7 @@
                 rows="4"
                 oninput="handleResponseInput()"
                 placeholder="Write a clear, actionable resolution message for the beneficiary..."
-                class="w-full rounded-xl border-2 border-[#155E42] bg-white px-4 py-3 text-xs sm:text-sm text-gray-900 leading-relaxed focus:outline-none focus:ring-2 focus:ring-[#155E42]/25 transition resize-y"
+                class="w-full rounded-xl border-2 border-[#087C69] bg-white px-4 py-3 text-xs sm:text-sm text-gray-900 leading-relaxed focus:outline-none focus:ring-2 focus:ring-[#087C69]/25 transition resize-y"
               ></textarea>
               <p id="responseValidationHint" class="hidden text-xs font-semibold text-rose-600">
                 Please enter an official response before saving or updating the ticket status.
@@ -283,7 +303,7 @@
                 <div class="sm:col-span-6">
                   <select
                     id="statusSelect"
-                    class="cg-select-light w-full h-11 rounded-xl border border-[#155E42] bg-[#ECFDF5] hover:bg-[#E1F7EC] px-4 pr-10 text-xs sm:text-sm font-bold text-[#155E42] cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#155E42]/25 transition"
+                    class="cg-select-light w-full h-11 rounded-xl border border-[#087C69] bg-[#E5F5EE] hover:bg-[#E5F5EE] px-4 pr-10 text-xs sm:text-sm font-bold text-[#087C69] cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#087C69]/25 transition"
                   >
                     <option value="resolved">Resolved (Clear Flag)</option>
                     <option value="in_progress">In Progress (Under Investigation)</option>
@@ -296,7 +316,7 @@
                     id="sendReplyBtn"
                     type="button"
                     onclick="saveComplaintResolution()"
-                    class="w-full h-11 px-5 rounded-xl bg-[#155E42] hover:bg-[#0F4C36] disabled:bg-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed text-white font-bold text-xs sm:text-sm shadow-xs transition cursor-pointer flex items-center justify-center gap-2"
+                    class="w-full h-11 px-5 rounded-xl bg-[#087C69] hover:bg-[#075A50] disabled:bg-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed text-white font-bold text-xs sm:text-sm shadow-xs transition cursor-pointer flex items-center justify-center gap-2"
                   >
                     <span>✓</span>
                     <span>Send Reply &amp; Save</span>
@@ -308,7 +328,7 @@
 
           <!-- Helper Notes -->
           <div class="pt-1 space-y-1 text-xs">
-            <p class="font-bold text-[#155E42] flex items-center gap-1.5">
+            <p class="font-bold text-[#087C69] flex items-center gap-1.5">
               <span>✓</span>
               <span>Response immediately visible on Beneficiary Mobile App.</span>
             </p>
@@ -325,11 +345,11 @@
     <!-- ===================================================================== -->
     <!-- SECTION 2: BENEFICIARY SERVICE FEEDBACK & CONTINUOUS IMPROVEMENT      -->
     <!-- ===================================================================== -->
-    <section class="bg-white border border-[#B7D8C8] rounded-2xl shadow-xs overflow-hidden">
+    <section class="bg-white border border-[#B2DFCE] rounded-2xl shadow-xs overflow-hidden">
       <!-- Dark Emerald Header Bar -->
-      <div class="bg-[#0F4C36] px-4 sm:px-6 py-3.5 flex flex-col md:flex-row md:items-center justify-between gap-3">
+      <div class="bg-[#075A50] px-4 sm:px-6 py-3.5 flex flex-col md:flex-row md:items-center justify-between gap-3">
         <div class="flex items-center gap-2.5">
-          <span class="text-[#FBBF24] text-base leading-none" aria-hidden="true">★</span>
+          <span class="text-[#E3A33B] text-base leading-none" aria-hidden="true">★</span>
           <h2 class="text-sm sm:text-base font-extrabold text-white">
             Beneficiary Service Feedback &amp; Continuous Improvement Insights
           </h2>
@@ -337,7 +357,7 @@
 
         <!-- Average Rating + Filter Controls -->
         <div class="flex flex-wrap items-center gap-2.5 self-start md:self-auto">
-          <div class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/10 border border-white/15 text-xs sm:text-sm font-extrabold text-[#FBBF24] tabular-nums">
+          <div class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/10 border border-white/15 text-xs sm:text-sm font-extrabold text-[#E3A33B] tabular-nums">
             <span>Avg Rating:</span>
             <span id="avgRatingDisplay">4.8 / 5.0</span>
           </div>
@@ -346,7 +366,7 @@
           <select
             id="feedbackCategoryFilter"
             onchange="renderFeedbackCards()"
-            class="cg-select-dark bg-[#155E42] hover:bg-[#1B6B4D] text-white text-xs font-bold pl-3 pr-8 py-1.5 rounded-xl border border-white/20 cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#FBBF24]"
+            class="cg-select-dark bg-[#087C69] hover:bg-[#087C69] text-white text-xs font-bold pl-3 pr-8 py-1.5 rounded-xl border border-white/20 cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#E3A33B]"
           >
             <option value="all" class="bg-white text-gray-900">All Services</option>
             <option value="Diagnostics" class="bg-white text-gray-900">Diagnostics</option>
@@ -367,7 +387,7 @@
   </main>
 
   <!-- Clean Production Footer -->
-  <footer class="w-full bg-white border-t border-[#D1DDD6] mt-auto">
+  <footer class="w-full bg-white border-t border-[#DAE8E1] mt-auto">
     <div class="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-gray-500">
       <span>CareGrid Administrator Console • Beneficiary Support &amp; Quality Assurance</span>
       <span>All ticket resolutions and partner ratings are logged with audit timestamps</span>
@@ -376,7 +396,7 @@
 
   <!-- Toast Notification -->
   <div id="toastBanner" class="hidden fixed bottom-5 right-5 z-50 max-w-sm">
-    <div class="bg-[#0F4C36] text-white px-4 py-3 rounded-xl shadow-lg border border-emerald-300/30 flex items-center gap-2.5 text-xs sm:text-sm font-semibold">
+    <div class="bg-[#075A50] text-white px-4 py-3 rounded-xl shadow-lg border border-emerald-300/30 flex items-center gap-2.5 text-xs sm:text-sm font-semibold">
       <span class="text-emerald-300 font-bold">✓</span>
       <span id="toastText">Saved</span>
     </div>
@@ -502,7 +522,7 @@
       document.querySelectorAll('.queue-tab').forEach((btn) => {
         const isActive = btn.dataset.filter === filter;
         btn.className = isActive
-          ? 'queue-tab px-2.5 py-1 rounded-md text-[11px] font-bold bg-[#155E42] text-white transition cursor-pointer'
+          ? 'queue-tab px-2.5 py-1 rounded-md text-[11px] font-bold bg-[#087C69] text-white transition cursor-pointer'
           : 'queue-tab px-2.5 py-1 rounded-md text-[11px] font-semibold text-gray-600 hover:bg-gray-100 transition cursor-pointer';
       });
       renderComplaintsQueue();
@@ -511,20 +531,20 @@
     function getStatusBadgeMarkup(status) {
       if (status === 'resolved') {
         return `
-          <span class="inline-flex items-center px-3 py-1 rounded-md bg-[#155E42] text-white text-[11px] font-extrabold tracking-wide">
+          <span class="inline-flex items-center px-3 py-1 rounded-md bg-[#087C69] text-white text-[11px] font-extrabold tracking-wide">
             STATUS: RESOLVED ✓
           </span>
         `;
       }
       if (status === 'in_progress') {
         return `
-          <span class="inline-flex items-center px-3 py-1 rounded-md bg-[#F59E0B] text-gray-950 text-[11px] font-extrabold tracking-wide">
+          <span class="inline-flex items-center px-3 py-1 rounded-md bg-[#E3A33B] text-gray-950 text-[11px] font-extrabold tracking-wide">
             STATUS: IN PROGRESS
           </span>
         `;
       }
       return `
-        <span class="inline-flex items-center px-3 py-1 rounded-md bg-[#FEE2E2] text-[#991B1B] border border-[#FCA5A5] text-[11px] font-extrabold tracking-wide">
+        <span class="inline-flex items-center px-3 py-1 rounded-md bg-[#FFECEE] text-[#942E3C] border border-[#E5A1A7] text-[11px] font-extrabold tracking-wide">
           STATUS: OPEN
         </span>
       `;
@@ -554,19 +574,19 @@
 
         let cardSurface = '';
         if (isSelected && isResolved) {
-          cardSurface = 'bg-[#ECFDF5] border-[#155E42] ring-2 ring-[#155E42]/15';
+          cardSurface = 'bg-[#E5F5EE] border-[#087C69] ring-2 ring-[#087C69]/15';
         } else if (isSelected) {
-          cardSurface = 'bg-[#FFFBEB] border-[#D97706] ring-2 ring-[#F59E0B]/20';
+          cardSurface = 'bg-[#FFF4E2] border-[#85570F] ring-2 ring-[#E3A33B]/20';
         } else if (ticket.status === 'in_progress') {
-          cardSurface = 'bg-[#FFF8F8] hover:bg-[#FFF1F2] border-[#FDA4AF]';
+          cardSurface = 'bg-[#FFECEE] hover:bg-[#FFECEE] border-[#E5A1A7]';
         } else if (ticket.status === 'open') {
-          cardSurface = 'bg-white hover:bg-rose-50/40 border-[#FCA5A5]';
+          cardSurface = 'bg-white hover:bg-rose-50/40 border-[#E5A1A7]';
         } else {
-          cardSurface = 'bg-white hover:bg-[#ECFDF5]/60 border-[#D1DDD6]';
+          cardSurface = 'bg-white hover:bg-[#E5F5EE]/60 border-[#DAE8E1]';
         }
 
-        const titleColor = isResolved ? 'text-[#155E42]' : 'text-[#9F1239]';
-        const issueColor = isResolved ? 'text-[#166534]' : 'text-[#881337]';
+        const titleColor = isResolved ? 'text-[#087C69]' : 'text-[#942E3C]';
+        const issueColor = isResolved ? 'text-[#075A50]' : 'text-[#942E3C]';
 
         return `
           <div
@@ -703,21 +723,21 @@
 
       grid.innerHTML = filtered.map((item) => {
         const badgeStyle = item.reviewed
-          ? 'bg-[#ECFDF5] text-[#155E42] border-[#A7F3D0] hover:bg-[#D1FAE5]'
-          : 'bg-[#FFFBEB] text-[#92400E] border-[#FDE68A] hover:bg-[#FEF3C7]';
+          ? 'bg-[#E5F5EE] text-[#087C69] border-[#B2DFCE] hover:bg-[#E5F5EE]'
+          : 'bg-[#FFF4E2] text-[#85570F] border-[#F3D196] hover:bg-[#FFF4E2]';
         const badgeText = item.reviewed
           ? '✓ Acknowledged by Admin'
           : 'Flag for Partner Review';
 
         return `
-          <article class="bg-[#FAFDFB] border border-[#D1DDD6] rounded-2xl p-4 sm:p-5 flex flex-col justify-between space-y-3.5 hover:border-[#155E42]/50 transition">
+          <article class="bg-[#F7FAF8] border border-[#DAE8E1] rounded-2xl p-4 sm:p-5 flex flex-col justify-between space-y-3.5 hover:border-[#087C69]/50 transition">
             <div class="space-y-2.5">
               <div class="flex flex-wrap items-center justify-between gap-2">
                 <h3 class="text-sm sm:text-base font-extrabold text-gray-900">
                   ${item.providerName}
                 </h3>
-                <div class="inline-flex items-center gap-1 text-xs sm:text-sm font-extrabold text-[#D97706] tabular-nums">
-                  <span class="tracking-tight text-[#F59E0B]">${item.starsDisplay}</span>
+                <div class="inline-flex items-center gap-1 text-xs sm:text-sm font-extrabold text-[#85570F] tabular-nums">
+                  <span class="tracking-tight text-[#E3A33B]">${item.starsDisplay}</span>
                   <span>(${item.rating.toFixed(1)})</span>
                 </div>
               </div>
@@ -728,7 +748,7 @@
             </div>
 
             <div class="pt-2.5 border-t border-gray-200/80 flex flex-wrap items-center justify-between gap-2">
-              <p class="text-xs font-bold text-[#155E42] tabular-nums">
+              <p class="text-xs font-bold text-[#087C69] tabular-nums">
                 By: ${item.beneficiaryName} • Service ${item.serviceRef}
               </p>
 

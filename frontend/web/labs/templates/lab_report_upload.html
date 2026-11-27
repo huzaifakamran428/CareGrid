@@ -6,28 +6,28 @@
   <title>CareGrid | Upload Digital Lab Reports</title>
   <style>
     :root {
-      --primary-green: #14634B;
-      --primary-green-dark: #0F4E3B;
-      --header-badge-bg: #1E755B;
-      --header-badge-border: #3E8E75;
-      --amber-badge: #F4A623;
-      --mint-card-bg: #DDF2EA;
-      --mint-card-border: #2B7A62;
-      --dark-forest-text: #1B4332;
-      --muted-text: #4A635A;
-      --canvas-bg: #F8FAFC;
-      --neutral-btn-bg: #F1F5F4;
-      --neutral-btn-border: #D5DFDC;
-      --soft-red-bg: #FBE9EC;
-      --soft-red-border: #D6455D;
-      --crimson-badge: #D92D4B;
+      --primary-green: #087C69;
+      --primary-green-dark: #075A50;
+      --header-badge-bg: #096B5B;
+      --header-badge-border: #70BFAF;
+      --amber-badge: #E3A33B;
+      --mint-card-bg: #E5F5EE;
+      --mint-card-border: #B2DFCE;
+      --dark-forest-text: #173D37;
+      --muted-text: #49665F;
+      --canvas-bg: #F7FAF8;
+      --neutral-btn-bg: #F0F6F2;
+      --neutral-btn-border: #DAE8E1;
+      --soft-red-bg: #FFECEE;
+      --soft-red-border: #E5A1A7;
+      --crimson-badge: #BC4751;
     }
 
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-      font-family: 'Segoe UI', Inter, -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+      font-family: 'Plus Jakarta Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
     }
 
     body {
@@ -419,12 +419,33 @@
     }
   </style>
   <link rel="stylesheet" href="../../shared/portal-theme.css">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* Shared CareGrid presentation: typography, neutral surfaces and semantic states. */
+html,body{font-family:'Plus Jakarta Sans',system-ui,-apple-system,'Segoe UI',sans-serif!important;color:#173D37}
+body{background:radial-gradient(ellipse at 8% 4%,#DFF2EA 0%,transparent 46%),radial-gradient(ellipse at 95% 95%,#FFF4E2 0%,transparent 40%),#F1F8F5}
+button,input,select,textarea{font-family:inherit!important}
+:focus-visible{outline:3px solid #E3A33B;outline-offset:2px}
+.text-gray-900,.text-gray-950,.text-gray-800,.text-slate-900{color:#173D37!important}
+.text-gray-500,.text-gray-600,.text-gray-700,.text-slate-500{color:#49665F!important}
+.bg-gray-50,.bg-gray-100,.bg-slate-50{background-color:#F7FAF8!important}
+.border-gray-200,.border-gray-300{border-color:#DAE8E1!important}
+.bg-blue-600,.bg-blue-700,.bg-emerald-600,.bg-emerald-700{background-color:#087C69!important}
+.text-blue-600,.text-blue-700,.text-blue-800{color:#075A50!important}
+.bg-blue-100,.bg-emerald-50,.bg-emerald-100{background-color:#E5F5EE!important}
+.bg-rose-600,.bg-rose-700{background-color:#BC4751!important}
+.bg-rose-50{background-color:#FFECEE!important}
+.text-rose-600,.text-rose-700,.text-rose-800,.text-rose-900{color:#942E3C!important}
+.border-rose-400{border-color:#E5A1A7!important}
+img[alt*="CareGrid"]{object-fit:contain}
+@media(max-width:760px){main,section{min-width:0}table{font-size:12px}}
+</style>
 </head>
 <body data-caregrid-role="lab">
 
   <!-- SIDEBAR -->
   <aside class="sidebar">
-    <div class="brand-box"><img src="../../admin_portal/assets/caregrid-logo.jpg" alt="CareGrid logo" style="width:49px;height:49px;object-fit:cover;border-radius:12px;background:#fff;padding:3px;margin-bottom:9px">
+    <div class="brand-box"><img src="../../shared/static/img/caregrid_logo.png" alt="CareGrid logo" style="width:49px;height:49px;object-fit:contain;border-radius:12px;background:#fff;padding:3px;margin-bottom:9px">
       <span class="brand-pill">DIAGNOSTIC PARTNER</span>
       <div class="brand-title">CareGrid Labs</div>
       <div class="brand-sub">Welfare Diagnostic Portal</div>
